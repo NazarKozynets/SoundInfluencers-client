@@ -1,0 +1,250 @@
+.report {
+  padding: 80px 0;
+}
+
+.report-info {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 35px;
+
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
+  }
+
+  &-item {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  &-text {
+    color: var(--text);
+    font-family: Geometria;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    &-span {
+      font-weight: 700;
+    }
+
+    @media screen and (max-width: 600px) {
+      font-size: 20px;
+    }
+  }
+}
+
+.report-table {
+  margin-top: 62px;
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 30px;
+  overflow: hidden;
+  box-shadow: 0px 4px 20px 0px rgba(51, 48, 228, 0.5);
+  background: #fff;
+
+  @media screen and (max-width: 950px) {
+    display: none;
+  }
+}
+
+.report-table-header {
+  border-radius: 30px 30px 0px 0px;
+  background: rgb(49, 46, 227);
+  height: 84px;
+
+  &-item {
+    color: #fff;
+    font-family: Geometria;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 900;
+    line-height: normal;
+    text-align: center;
+  }
+}
+
+.report-table-body {
+  &-row {
+    height: 38px;
+    border-bottom: 1px solid rgba(50, 47, 228, 0.3);
+
+    &-item {
+      background: #fff;
+      color: #000;
+      text-align: center;
+      font-family: Geometria;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: normal;
+      text-align: center;
+      min-width: 86px;
+      max-width: 100px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+
+      &-first {
+        color: #000;
+        font-family: Geometria;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+        background: rgba(51, 48, 227, 0.3);
+        padding-left: 17px;
+        max-width: 100px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      &-second {
+        color: #000;
+        text-align: center;
+        font-family: Geometria;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+        text-align: center;
+        background: rgba(50, 47, 228, 0.1);
+        max-width: 100px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+  }
+
+  &-total {
+    height: 38px;
+
+    &-price {
+      background: #ff7a09;
+      color: var(--Black, #000);
+      font-family: Geometria;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 900;
+      line-height: normal;
+      padding-left: 17px;
+    }
+  }
+}
+
+.report-mobile {
+  margin-top: 20px;
+  border-radius: 30px;
+  background: #fff;
+  overflow: hidden;
+  box-shadow: 0px 4px 20px 0px rgba(51, 48, 228, 0.5);
+
+  @media screen and (min-width: 950px) {
+    display: none;
+  }
+}
+
+.report-mobile-item {
+  display: flex;
+  border-bottom: 1px solid #9694ea;
+
+  &-total {
+    color: var(--Black, #000);
+    font-family: Geometria;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 900;
+    line-height: normal;
+    padding: 11px 23px;
+  }
+  &-influencer {
+    padding: 24px;
+    background: rgba(51, 48, 227, 0.3);
+
+    color: #000;
+    font-family: Geometria;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    width: 20%;
+  }
+
+  &-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 24px 16px 20px 16px;
+    width: 100%;
+    &-followers {
+      color: #000;
+      font-family: Geometria;
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: normal;
+    }
+
+    &-brand {
+      display: flex;
+      justify-content: space-between;
+    }
+    &-date-post {
+      display: flex;
+      justify-content: space-between;
+    }
+    &-caption {
+      display: flex;
+      justify-content: space-between;
+    }
+    &-video {
+      display: flex;
+      justify-content: space-between;
+    }
+    &-swipe-up-link {
+      display: flex;
+      justify-content: space-between;
+    }
+    &-story-tag {
+      display: flex;
+      justify-content: space-between;
+    }
+    &-post-link {
+      display: flex;
+      justify-content: space-between;
+    }
+    &-screenshot {
+      display: flex;
+      justify-content: space-between;
+    }
+    &-impressions {
+      display: flex;
+      justify-content: space-between;
+    }
+    &-like {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    &-value {
+      color: #000;
+      font-family: Geometria;
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: normal;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    &-title {
+      color: rgba(0, 0, 0, 0.5);
+      text-align: right;
+      font-family: Geometria;
+      font-size: 10px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: normal;
+    }
+  }
+}

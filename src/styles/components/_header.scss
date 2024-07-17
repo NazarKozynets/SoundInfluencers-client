@@ -1,0 +1,120 @@
+.header-block {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    padding: 45px 0;
+    padding-bottom: 120px;
+}
+
+.header-navigation {
+    display: flex;
+    gap: 20px;
+}
+.header-thoomb {
+    display: flex;
+    align-items: center;
+    gap: 35px;
+}
+.header-mobile {
+    display: flex;
+    gap: 20px;
+
+    @media screen and (max-width: 700px) {
+        position: absolute;
+        bottom: 50px;
+        left: 0;
+        justify-content: center;
+        width: 100%;
+    }
+}
+.header-path {
+    color: var(--text);
+    font-family: Geometria;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+
+    @media screen and (max-width: 850px) {
+        position: absolute;
+        bottom: 15px;
+        left: 0;
+        width: 100%;
+        text-align: center;
+    }
+}
+
+.header-logo {
+    cursor: pointer;
+}
+
+.header-theme {
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 30px;
+    background: var(--background);
+    box-shadow: 0px 4px 20px 0px rgba(51, 48, 228, 0.5);
+    padding: 6px 10px;
+    cursor: pointer;
+    [data-theme="dark"] & {
+        border: 1px solid rgba(51, 48, 228, 0.5);
+    }
+}
+
+.header-login {
+    border-radius: 30px;
+    background: var(--background);
+    box-shadow: 0px 4px 20px 0px rgba(51, 48, 228, 0.5);
+    padding: 7px 19px;
+    cursor: pointer;
+
+    color: #ff7a09;
+    text-align: center;
+    font-family: Geometria;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.header-logout {
+    border-radius: 30px;
+    background: var(--background);
+    box-shadow: 0px 4px 20px 0px rgba(51, 48, 228, 0.5);
+    padding: 7px 19px;
+    cursor: pointer;
+
+    color: #ff7a09;
+    text-align: center;
+    font-family: Geometria;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+
+    @media screen and (max-width: 500px) {
+        position: absolute;
+        bottom: 60px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}
+
+.header-profile {
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 30px;
+    background: var(--background);
+    box-shadow: 0px 4px 20px 0px rgba(51, 48, 228, 0.5);
+    padding: 6px 10px;
+    cursor: pointer;
+    [data-theme="dark"] & {
+        border: 1px solid rgba(51, 48, 228, 0.5);
+    }
+}

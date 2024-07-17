@@ -1,0 +1,37 @@
+.button {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  cursor: pointer;
+}
+
+.checkbox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 30px;
+  background: #eef0f2;
+}
+
+[data-theme="dark"] .checkbox {
+  border: 1px solid var(--Blue, #3330e4);
+  background: rgba(238, 240, 242, 0.2);
+}
+
+.decor {
+  width: 14px;
+  height: 14px;
+  border-radius: 30px;
+  background: var(--Orange, #ff7a09);
+}
+
+.text {
+  color: var(--text);
+  font-family: Geometria;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}

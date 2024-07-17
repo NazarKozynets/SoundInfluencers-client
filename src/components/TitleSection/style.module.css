@@ -1,0 +1,39 @@
+.title {
+  color: #000;
+  text-align: center;
+  font-family: Geometria;
+  font-size: 38px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: normal;
+  text-transform: uppercase;
+  margin-bottom: 9px;
+}
+
+[data-theme="dark"] .title {
+  color: #fff;
+}
+
+.span {
+  color: #000;
+  text-align: center;
+  font-family: Geometria;
+  font-size: 38px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: normal;
+  text-transform: uppercase;
+  color: #3330e4;
+}
+
+@media screen and (max-width: 768px) {
+  .title {
+    font-size: 28px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .span {
+    font-size: 28px;
+  }
+}

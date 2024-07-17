@@ -1,0 +1,88 @@
+.block {
+  position: relative;
+  margin-top: 100px;
+}
+
+.label {
+  position: relative;
+}
+
+.title {
+  position: absolute;
+  bottom: calc(100% + 9px);
+  left: 0;
+  color: var(--text);
+  font-family: Geometria;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+
+.error {
+  position: absolute;
+  right: 25px;
+  top: 50%;
+  transform: translateY(-50%);
+
+  color: #f00;
+  font-family: Geometria;
+  font-size: 26px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+
+.input {
+  box-sizing: border-box;
+  width: 100%;
+  border: 1px solid transparent;
+  border-radius: 30px;
+  background: var(--placeholder-bg);
+  padding: 13px 33px;
+  min-height: 80px;
+  resize: none;
+
+  color: var(--text);
+  font-family: Geometria;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+
+  transition: border 250ms linear;
+}
+
+.input::placeholder {
+  color: var(--placeholder);
+  font-family: Geometria;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal;
+}
+
+.input:focus {
+  outline: none;
+  border-radius: 30px;
+  border: 1px solid #3330e4;
+  background: var(--placeholder-bg);
+}
+
+@media screen and (max-width: 768px) {
+  .title {
+    font-size: 16px;
+  }
+
+  .input {
+    font-size: 16px;
+  }
+
+  .input::placeholder {
+    font-size: 16px;
+  }
+
+  .item {
+    font-size: 16px;
+  }
+}

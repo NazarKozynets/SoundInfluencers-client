@@ -1,0 +1,143 @@
+.block {
+  position: relative;
+  margin-top: 100px;
+}
+
+.label {
+  position: relative;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+}
+
+.title {
+  position: absolute;
+  bottom: calc(100% + 23px);
+  left: 0;
+  color: var(--text);
+  font-family: Geometria;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+
+.placeholder {
+  color: var(--text);
+  font-family: Geometria;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.error {
+  position: absolute;
+  right: 25px;
+  top: 50%;
+  transform: translateY(-50%);
+
+  color: #f00;
+  font-family: Geometria;
+  font-size: 26px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+
+.selected {
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+
+  border-radius: 30px;
+  background: var(--background);
+  box-shadow: 0px 4px 20px 0px rgba(51, 48, 228, 0.5);
+  z-index: 2;
+  transition: opacity 250ms linear;
+}
+
+.item {
+  color: var(--text);
+  font-family: Geometria;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  padding: 9px 25px;
+
+  border-bottom: 1px solid rgba(51, 48, 228, 0.5);
+  transition: 250ms color linear;
+  transition-property: color, background;
+  cursor: pointer;
+}
+
+.item:last-child {
+  border-bottom: none;
+}
+
+.item:hover {
+  color: #3330e4;
+  background: rgba(51, 48, 228, 0.2);
+}
+
+.input {
+  overflow: hidden;
+  box-sizing: border-box;
+  width: 100%;
+  border: 1px solid transparent;
+  border-radius: 30px;
+  background: var(--placeholder-bg);
+  padding: 13px 33px;
+
+  color: var(--text);
+  font-family: Geometria;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+
+  transition: border 250ms linear;
+}
+
+.input::placeholder {
+  color: rgba(0, 0, 0, 0.5);
+  font-family: Geometria;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal;
+}
+
+.input:focus {
+  outline: none;
+  border-radius: 30px;
+  border: 1px solid #3330e4;
+  background: #eef0f2;
+}
+
+@media screen and (max-width: 768px) {
+  .title {
+    font-size: 16px;
+  }
+
+  .placeholder {
+    font-size: 16px;
+  }
+
+  .input {
+    font-size: 16px;
+  }
+
+  .input::placeholder {
+    font-size: 16px;
+  }
+
+  .item {
+    font-size: 16px;
+  }
+}

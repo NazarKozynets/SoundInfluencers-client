@@ -1,0 +1,121 @@
+.login-client {
+    padding: 80px 0;
+    &-second {
+        color: var(--text);
+        text-align: center;
+        font-family: Geometria;
+        font-size: 24px;
+        font-style: normal;
+        font-weight: 300;
+        line-height: normal;
+
+        @media screen and (max-width: 768px) {
+            font-size: 20px;
+        }
+    }
+
+    &-form {
+        max-width: 665px;
+        margin: 0 auto;
+
+        &-password {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 8px;
+
+            &-link {
+                color: rgba(0, 0, 0, 0.5);
+                font-family: Geometria;
+                font-size: 18px;
+                font-style: normal;
+                font-weight: 400;
+                line-height: normal;
+                text-decoration-line: underline;
+                cursor: pointer;
+            }
+        }
+
+        &-signup {
+            color: var(--text);
+            text-align: center;
+            font-family: Geometria;
+            font-size: 24px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: normal;
+            margin-top: 30px;
+
+            @media screen and (max-width: 550px) {
+                font-size: 20px;
+            }
+
+            &-link {
+                color: #000;
+                text-align: center;
+                font-family: Geometria;
+                font-size: 24px;
+                font-style: normal;
+                font-weight: 400;
+                line-height: normal;
+                text-decoration-line: underline;
+                cursor: pointer;
+            }
+        }
+    }
+}
+
+.forgot-password {
+    padding-bottom: 80px;
+}
+
+.forgot-password-modal {
+    padding: 45px 75px 80px 75px;
+
+    @media screen and (max-width: 768px) {
+        padding: 45px 18px 80px 18px;
+    }
+    &-title {
+        color: #3330e4;
+        text-align: center;
+        font-family: Geometria;
+        font-size: 38px;
+        font-style: normal;
+        font-weight: 800;
+        line-height: normal;
+        text-transform: uppercase;
+        margin-bottom: 28px;
+
+        @media screen and (max-width: 550px) {
+            font-size: 28px;
+        }
+    }
+
+    &-second {
+        color: #000;
+        text-align: center;
+        font-family: Geometria;
+        font-size: 24px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: normal;
+        margin-bottom: 28px;
+
+        @media screen and (max-width: 550px) {
+            font-size: 18px;
+        }
+    }
+
+    &-desc {
+        color: #000;
+        font-family: Geometria;
+        text-align: center;
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 300;
+        line-height: normal;
+
+        @media screen and (max-width: 550px) {
+            font-size: 16px;
+        }
+    }
+}

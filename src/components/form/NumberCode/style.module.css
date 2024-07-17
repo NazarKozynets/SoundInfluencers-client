@@ -1,0 +1,32 @@
+.block {
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+}
+
+input:focus {
+  outline: none;
+}
+
+.input1,
+.input2,
+.input3,
+.input4 {
+  width: 48px;
+  padding: 10px 0;
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+
+  color: var(--Gray, #808080);
+  font-family: Geometria;
+  text-align: center;
+  font-size: 28px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  background: var(--background);
+}
+
+[data-theme="dark"] input {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+}

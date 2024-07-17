@@ -1,0 +1,32 @@
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 10px 40px;
+  border-radius: 30px;
+  background: #ff7a09;
+
+  color: var(--background);
+  text-align: center;
+  font-family: Geometria;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+
+  box-shadow: 0px 0px 0px 0px rgba(255, 122, 9, 0.5);
+
+  transition: box-shadow 200ms linear;
+
+  cursor: pointer;
+}
+
+.button:hover {
+  box-shadow: 0px 4px 4px 0px rgba(255, 122, 9, 0.5);
+}
+@media screen and (max-width: 768px) {
+  .button {
+    font-size: 22px;
+  }
+}

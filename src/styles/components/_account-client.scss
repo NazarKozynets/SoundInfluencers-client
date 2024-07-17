@@ -1,0 +1,768 @@
+.account-client {
+  padding-bottom: 40px;
+}
+
+.account-client-menu {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-top: 60px;
+}
+
+.account-client-menu-item {
+  width: calc((100% - 40px) / 3);
+
+  @media screen and (max-width: 900px) {
+    width: calc((100% - 20px) / 2);
+  }
+  @media screen and (max-width: 550px) {
+    width: 100%;
+  }
+}
+
+.account-client-menu-button {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  padding: 48px 0;
+
+  border-radius: 30px;
+  background: var(--background);
+  box-shadow: 0px 4px 20px 0px rgba(51, 48, 228, 0.5);
+  cursor: pointer;
+  transition: background 250ms linear;
+  transition-property: background, box-shadow;
+
+  &:hover {
+    background: rgba(51, 48, 228, 0.1);
+    box-shadow: 0px 4px 20px 0px rgba(51, 48, 228, 0.7);
+  }
+}
+
+.account-client-menu-button-text {
+  color: var(--text);
+  text-align: center;
+  font-family: Geometria;
+  font-size: 28px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.account-client-title {
+  color: var(--text);
+  text-align: center;
+  font-family: Geometria;
+  font-size: 48px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: normal;
+  text-transform: uppercase;
+
+  @media screen and (max-width: 768px) {
+    font-size: 28px;
+  }
+}
+
+.account-client-second {
+  color: var(--text);
+  text-align: center;
+  font-family: Geometria;
+  font-size: 38px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal;
+  text-transform: uppercase;
+  margin-bottom: 70px;
+
+  @media screen and (max-width: 768px) {
+    font-size: 28px;
+  }
+}
+
+.account-client-offers {
+  display: flex;
+  gap: 20px;
+  margin-top: 60px;
+  margin-bottom: 110px;
+
+  @media screen and (max-width: 900px) {
+    flex-wrap: wrap;
+  }
+}
+
+.account-client-offers-item {
+  display: flex !important;
+  flex-direction: column;
+  // width: calc((100% - 40px) / 3);
+  border-radius: 30px;
+  background: var(--background);
+  box-shadow: 0px 4px 20px 0px rgba(51, 48, 228, 0.5);
+  overflow: hidden;
+  transition: opacity 250ms linear;
+  transition-property: opacity, filter;
+  cursor: pointer;
+
+  &.not-active {
+    filter: blur(2px);
+    opacity: 0.9;
+  }
+}
+
+.account-client-offers-title {
+  margin-top: 50px;
+  color: #3330e4;
+  text-align: center;
+  font-family: Geometria;
+  font-size: 26px;
+  font-style: normal;
+  font-weight: 900;
+  line-height: normal;
+  text-transform: uppercase;
+}
+
+.account-client-offers-text {
+  text-align: center;
+  font-family: Geometria;
+  font-size: 15px;
+  margin-top: 10px;
+  font-weight: 400;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.account-client-offers-block {
+  margin: 40px 0;
+  display: flex;
+  justify-content: center;
+}
+
+.account-client-offers-text-list {
+  list-style: disc;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  height: 500px;
+  overflow-y: scroll;
+}
+
+.account-client-offers-text-item {
+  color: var(--text);
+  font-family: Geometria;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  text-transform: uppercase;
+  list-style: disc;
+}
+
+.account-client-offers-button {
+  background: #3330e4;
+  margin-top: auto;
+  padding: 25px 0;
+  cursor: pointer;
+
+  color: #fff;
+  text-align: center;
+  font-family: Geometria;
+  font-size: 26px;
+  font-style: normal;
+  font-weight: 900;
+  line-height: normal;
+  text-transform: uppercase;
+}
+
+.account-client-choose-all {
+  &-block {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+  }
+
+  color: var(--text);
+  text-align: center;
+  font-family: Geometria;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  text-decoration-line: underline;
+  cursor: pointer;
+}
+
+.account-client-choose-total {
+  margin-top: 35px;
+  text-align: center;
+
+  color: var(--text);
+  text-align: center;
+  font-family: Geometria;
+  font-size: 26px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  text-transform: uppercase;
+
+  &-span {
+    color: var(--text);
+    font-family: Geometria;
+    font-size: 26px;
+    font-style: normal;
+    font-weight: 900;
+    line-height: normal;
+    text-transform: uppercase;
+  }
+}
+
+.ccount-client-choose {
+}
+
+.account-client-choose-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-top: 60px;
+  padding: 0 20px;
+}
+
+.swiper-pagination {
+  bottom: 125px !important;
+}
+
+.swiper-button-next, .swiper-button-prev {
+  margin-top: -100px !important;
+}
+
+.account-client-choose-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  padding: 10px 30px;
+  width: calc(((100% - 60px) - (60px * 4)) / 4);
+  border-radius: 30px;
+  background: var(--background);
+  box-shadow: 0px 4px 20px 0px rgba(51, 48, 228, 0.5);
+  transition: background 250ms linear;
+  transition-property: background, box-shadow, transform;
+  cursor: pointer;
+
+  &.active {
+    background: #ff7a09;
+    box-shadow: 0px 4px 20px 0px #ff7a09;
+  }
+
+  &.connect {
+    background: #0957ff;
+    box-shadow: 0px 4px 20px 0px #ff7a09;
+  }
+
+  &:hover &-connect {
+    opacity: 1;
+  }
+
+  @media screen and (max-width: 900px) {
+    width: calc(((100% - 60px) - (60px * 3)) / 3);
+  }
+  @media screen and (max-width: 600px) {
+    width: calc(((100% - 20px) - (60px * 2)) / 2);
+  }
+  @media screen and (max-width: 450px) {
+    width: 100%;
+  }
+
+  &:hover {
+    transform: scale(1.03);
+  }
+}
+
+.account-client-choose-item-content {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 15px;
+}
+
+.account-client-choose-item-connect {
+  opacity: 0;
+  pointer-events: none;
+  width: 80px;
+  height: 32px;
+  background: #0af483;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  position: absolute;
+  bottom: 110%;
+  left: 50%;
+  transform: translateX(-50%);
+  transition: opacity 250ms linear;
+
+  &-text {
+    text-align: center;
+    user-select: none;
+    font-size: 15px;
+    font-family: Geometria;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    color: var(--text);
+  }
+}
+
+.account-client-choose-item-content-text {
+  color: var(--text);
+  font-family: Geometria;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  text-transform: uppercase;
+  max-width: 140px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.account-client-post {
+  max-width: 665px;
+  margin: 0 auto;
+}
+
+.account-client-payment {
+  border-radius: 30px;
+  background: var(--background);
+  box-shadow: 0px 4px 20px 0px rgba(51, 48, 228, 0.5);
+  overflow: hidden;
+
+  &-header {
+    background: #3330e4;
+    padding: 25px 0;
+    display: flex;
+    justify-content: center;
+
+    &-title {
+      color: #fff;
+      text-align: center;
+      font-family: Geometria;
+      font-size: 38px;
+      font-style: normal;
+      font-weight: 800;
+      line-height: normal;
+      text-transform: uppercase;
+
+      @media screen and (max-width: 768px) {
+        font-size: 28px;
+      }
+
+      @media screen and (max-width: 550px) {
+        font-size: 18px;
+      }
+    }
+  }
+
+  &-content {
+    padding-top: 40px;
+    padding-bottom: 50px;
+
+    @media screen and (max-width: 768px) {
+      padding: 40px 24px 50px 24px;
+    }
+
+    @media screen and (max-width: 550px) {
+      padding: 40px 44px 50px 44px;
+    }
+
+    &-methods {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 32px;
+
+      @media screen and (max-width: 768px) {
+        flex-wrap: wrap;
+      }
+
+      &-item {
+        width: calc((100% - 40px) / 3);
+        max-width: 208px;
+        height: 117px;
+
+        @media screen and (max-width: 768px) {
+          width: calc((100% - 20px) / 2);
+        }
+
+        @media screen and (max-width: 550px) {
+          width: 100%;
+        }
+      }
+
+      &-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+
+        border-radius: 30px;
+        background: var(--background);
+        box-shadow: 0px 4px 20px 0px rgba(51, 48, 228, 0.5);
+
+        color: #3330e4;
+        text-align: center;
+        font-family: Geometria;
+        font-size: 26px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 26px; /* 100% */
+        text-transform: uppercase;
+
+        cursor: pointer;
+        transition: box-shadow 250ms linear;
+
+        &:hover {
+          box-shadow: 0px 4px 20px 0px #3330e4;
+        }
+      }
+    }
+
+    &-company {
+      max-width: 665px;
+      margin: 0 auto;
+      margin-top: 60px;
+
+      display: flex;
+      justify-content: space-between;
+
+      @media screen and (max-width: 768px) {
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 20px;
+      }
+      &-logo {
+        opacity: 0.5;
+
+        transition: opacity 250ms linear;
+        cursor: pointer;
+
+        &:hover {
+          opacity: 1;
+        }
+      }
+    }
+  }
+
+  &-select-transfer-data {
+    &-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text);
+      font-family: Geometria;
+      font-style: normal;
+      text-align: center;
+    }
+
+    &-value {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--text);
+      font-family: Geometria;
+      font-style: normal;
+      text-align: center;
+    }
+
+    &-warning {
+      font-size: 16px;
+      font-weight: 500;
+      color: #ff7a09;
+      font-family: Geometria;
+      font-style: normal;
+      text-align: center;
+      margin-top: 15px;
+    }
+  }
+}
+
+.account-client-bank {
+  padding: 63px 83px;
+
+  &-flex {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 80px;
+    gap: 80px;
+  }
+
+  &-label {
+    position: relative;
+    display: flex;
+    width: 100%;
+
+    &-title {
+      position: absolute;
+      bottom: calc(100% + 17px);
+      left: 0;
+
+      color: #000;
+      font-family: Geometria;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: normal;
+    }
+
+    &-icon {
+      position: absolute;
+      top: 50%;
+      right: 14px;
+      transform: translateY(-50%);
+    }
+  }
+
+  &-input {
+    padding: 14px 0;
+    width: 100%;
+
+    border: none;
+    border-bottom: 1px solid rgba(51, 48, 228, 0.5);
+
+    color: var(--Gray, #808080);
+    font-family: Geometria;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+
+    &:focus {
+      outline: none;
+    }
+
+    &::placeholder {
+      color: var(--Gray, #808080);
+      font-family: Geometria;
+      font-size: 24px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: normal;
+    }
+  }
+}
+
+.account-client-past-promos-second {
+  color: var(--text);
+  text-align: center;
+  font-family: Geometria;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal;
+
+  @media screen and (max-width: 768px) {
+    font-size: 20px;
+  }
+}
+
+.account-client-past-promos-form {
+  padding: 40px 80px;
+  &-list {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 20px;
+
+    @media screen and (max-width: 768pc) {
+      justify-content: center;
+    }
+  }
+
+  &-item {
+    width: calc((100% - (20px * 6)) / 6);
+
+    @media screen and (max-width: 768pc) {
+      width: unset;
+    }
+
+    &-button {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 17px;
+      cursor: pointer;
+    }
+  }
+
+  &-text {
+    color: var(--text);
+    font-family: Geometria;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+  }
+
+  &-image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 94px;
+    height: 94px;
+    background: rgba(51, 48, 228, 0.5);
+
+    &-text {
+      color: var(--text);
+      font-family: Geometria;
+      font-size: 13px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: normal;
+      max-width: 75px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+}
+
+.account-client-past-promos {
+  padding-bottom: 90px;
+}
+
+.account-client-past-promos-form-current {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  gap: 80px;
+  padding-top: 30px;
+
+  &-video {
+    max-width: 551px;
+    width: 100%;
+  }
+
+  &-content {
+    max-width: 483px;
+    width: 100%;
+    margin: 0 auto;
+
+    &-title {
+      color: #3330e4;
+      font-family: Geometria;
+      font-size: 26px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 26px; /* 100% */
+      text-transform: uppercase;
+
+      margin-bottom: 30px;
+    }
+
+    &-client {
+      color: var(--text);
+      font-family: Geometria;
+      font-size: 18px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: normal;
+      margin-bottom: 12px;
+
+      &-value {
+        font-weight: 400;
+      }
+    }
+
+    &-link {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      color: var(--text);
+      font-family: Geometria;
+      font-size: 18px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: normal;
+      margin-bottom: 12px;
+
+      &-value {
+        display: block;
+        font-weight: 400;
+        max-width: 140px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+
+    &-desc {
+      color: var(--text);
+      font-family: Geometria;
+      font-size: 18px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: normal;
+      margin-bottom: 12px;
+
+      &-value {
+        font-weight: 400;
+      }
+    }
+
+    &-date {
+      color: var(--text);
+      font-family: Geometria;
+      font-size: 18px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: normal;
+      margin-bottom: 12px;
+
+      &-value {
+        font-weight: 400;
+      }
+    }
+
+    &-wish {
+      color: var(--text);
+      font-family: Geometria;
+      font-size: 18px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: normal;
+      margin-bottom: 12px;
+
+      &-value {
+        font-weight: 400;
+      }
+    }
+  }
+}
+
+.account-client-past-promos-current-report {
+  color: var(--text);
+  text-align: center;
+  font-family: Geometria;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  text-decoration-line: underline;
+}
+
+.select-all{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.select-all button{
+  background-color: rgb(51, 48, 228) !important;
+  
+}
+.select-all button:hover{
+  box-shadow: 0px 4px 4px 0px rgba(51, 48, 228, 0.5) !important;
+}
