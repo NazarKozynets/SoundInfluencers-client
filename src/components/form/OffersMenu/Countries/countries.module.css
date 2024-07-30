@@ -1,0 +1,76 @@
+.countries {
+    font-family: Geometria;
+    margin-bottom: 30px;
+    margin-top: 35px;
+}
+
+.title {
+    color: #3330E4;
+    font-size: 28px;
+    font-weight: 800;
+    line-height: 30.19px;
+    text-align: left;
+}
+
+.countriesList {
+    font-size: 22px;
+    font-weight: 500;
+    line-height: 22.64px;
+    text-align: left;
+    list-style-type: none;
+    padding: 0;
+    margin: 20px 0 0 0;
+}
+
+.countriesListItem {
+    margin: 0 0 20px 0;
+}
+
+.countriesListItem label,
+.subcountriesListItem label {
+    display: flex;
+    align-items: center;
+}
+
+.subcountriesList {
+    list-style-type: none;
+    padding-left: 20px;
+    font-size: 22px;
+    font-weight: 500;
+    line-height: 22.64px;
+    text-align: left;
+    margin-bottom: 15px;
+}
+
+.subcountriesListItem {
+    margin-top: 15px;
+}
+
+.subcountriesListItem label {
+    display: flex;
+    align-items: center;
+}
+
+.countriesListItem label {
+    display: flex;
+    align-items: center;
+}
+
+input[type="checkbox"] {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #3330E4;
+    border-radius: 3px;
+    position: relative;
+    margin-right: 10px;
+    cursor: pointer;
+    vertical-align: middle;
+}
+
+input[type="checkbox"]:checked {
+    background-color: #3330E4;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}

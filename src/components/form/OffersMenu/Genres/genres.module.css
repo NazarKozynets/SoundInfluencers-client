@@ -1,0 +1,73 @@
+.genres {
+    font-family: Geometria;
+    margin-bottom: 30px;
+}
+
+.title {
+    color: #3330E4;
+    font-size: 28px;
+    font-weight: 800;
+    line-height: 30.19px;
+    text-align: left;
+}
+
+.genresList {
+    font-size: 22px;
+    font-weight: 500;
+    line-height: 22.64px;
+    text-align: left;
+    list-style-type: none;
+    padding: 0;
+    margin: 20px 0 0 0;
+}
+
+.genresListItem {
+    margin: 0 0 20px 0;
+}
+
+.genresListItem label,
+.subgenresListItem label {
+    display: flex;
+    align-items: center;
+}
+
+.subgenresList {
+    list-style-type: none;
+    padding-left: 20px;
+    font-size: 22px;
+    font-weight: 500;
+    line-height: 22.64px;
+    text-align: left;
+    margin-bottom: 15px;
+}
+
+.subgenresListItem {
+    margin-top: 15px;
+}
+
+.subgenresListItem label {
+    display: flex;
+    align-items: center;
+}
+
+.checkbox {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 1px solid #3330E4;
+    border-radius: 6px;
+    position: relative;
+    margin-right: 10px;
+    cursor: pointer;
+    vertical-align: middle; 
+}
+
+.checkboxChecked {
+    background-color: #3330E4;
+    background-image: url('../../../../images/vector.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    border: 1px solid #3330E4;
+    border-radius: 6px;
+}
