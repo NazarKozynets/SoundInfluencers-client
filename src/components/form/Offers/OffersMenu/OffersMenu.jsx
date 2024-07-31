@@ -3,7 +3,7 @@ import Genres from "./Genres/Genres";
 import Countries from "./Countries/Contries";
 import Categories from "./Categories/Categories";
 import "./offersMenu.css";
-import line from "../../../images/line-32.png";
+import line from "../../../../images/line-32.png";
 
 const OffersMenu = ({genres, countries, categories}) => {
     return (

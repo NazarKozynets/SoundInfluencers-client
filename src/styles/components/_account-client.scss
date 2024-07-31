@@ -226,6 +226,14 @@
   color: #000000;
 }
 
+.account-client-container-right-side-upper-side {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-left: 102px;
+    margin-right: 125px;
+}
+
 .account-client-choose-all {
   &-block {
     margin-top: 30px;
@@ -303,15 +311,14 @@
   //cursor: pointer;
   margin-right: 25px;
   margin-bottom: 24px;
-
   &.active {
-    background: #FF7A09BD;
-    box-shadow: 0px 4px 20px 0px #FF7A09E5;
+    background: #3330E480;
+    box-shadow: 0px 4px 20px 0px #3330E4;
   }
 
   &.connect {
-    background: #0957ff;
-    box-shadow: 0px 4px 20px 0px #ff7a09;
+    background: #FF7A09BD;
+    box-shadow: 0px 4px 20px 0px #FF7A09E5;
   }
 
   &:hover &-connect {
@@ -344,6 +351,9 @@
   background: #E5E5E5;
 
   &.active {
+    background: #3330E480;
+  }
+  &.connect {
     background: #FF7A0980;
   }
 }
@@ -901,16 +911,3 @@
   text-decoration-line: underline;
 }
 
-.select-all{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.select-all button{
-  background-color: rgb(51, 48, 228) !important;
-  
-}
-.select-all button:hover{
-  box-shadow: 0px 4px 4px 0px rgba(51, 48, 228, 0.5) !important;
-}

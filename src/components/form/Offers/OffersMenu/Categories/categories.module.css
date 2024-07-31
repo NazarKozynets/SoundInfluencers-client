@@ -45,7 +45,7 @@
 
 .checkboxChecked {
     background-color: #3330E4;
-    background-image: url('../../../../images/vector.png'); 
+    background-image: url('../../../../../images/vector.png'); 
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;

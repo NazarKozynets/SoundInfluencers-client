@@ -1,0 +1,68 @@
+.offers-budget-select {
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+}
+
+.offers-budget-select-title {
+    font-family: Geometria;
+    font-size: 28px;
+    font-weight: 800;
+    line-height: 30.19px;
+    text-align: left;
+    color: #3330E4;
+}
+
+.offers-budget-select-currency {
+    width: 72px;
+    height: 31px;
+    border-radius: 18.5px;
+    background: #3330E41A;
+    display: flex;
+    align-items: center;
+}
+
+.offers-budget-select-currency button {
+    background: none; 
+    border: none; 
+    margin: 5px 5px 5px 6px; 
+    font-family: Geometria;
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 22.64px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.offers-budget-select-input-budget {
+    width: auto;
+    height: 31px;
+    border-radius: 18.5px;
+    background: #3330E41A;
+    display: flex;
+    align-items: center;
+}
+
+.offers-budget-select-input-budget input {
+    width: calc(100% - 10px); 
+    height: 100%;
+    border: none;
+    background: transparent;
+    padding: 0 0 0 5px;
+    margin-top: -2px;  
+    box-sizing: border-box;
+    font-family: Geometria;
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 22.64px;
+}
+
+.offers-budget-select-input-budget input::placeholder {
+    font-family: Geometria;
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 22.64px;
+}
+
+
+

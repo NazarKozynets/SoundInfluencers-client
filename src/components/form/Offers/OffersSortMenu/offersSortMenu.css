@@ -1,0 +1,13 @@
+.sort-menu {
+    display: flex;
+    align-items: center;
+    max-width: 250px;
+}
+
+.sort-prefix {
+    font-family: Geometria;
+    font-size: 18px;
+    font-weight: 500;
+    color: #000000;
+    margin-right: 6px; 
+}

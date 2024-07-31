@@ -16,10 +16,12 @@ import {
 } from "swiper/modules";
 import GenreButtonList from "../../../../form/GenreButton/GenreButtonList";
 import {useNavigate} from "react-router-dom";
-import OffersMenu from "../../../../form/OffersMenu/OffersMenu";
-import OffersSearchBar from "../../../../form/OffersSearchBar/OffersSearchBar";
+import OffersMenu from "../../../../form/Offers/OffersMenu/OffersMenu";
+import OffersSearchBar from "../../../../form/Offers/OffersSearchBar/OffersSearchBar";
+import offersSortMenu from "../../../../form/Offers/OffersSortMenu/OffersSortMenu";
+import OffersSortMenu from "../../../../form/Offers/OffersSortMenu/OffersSortMenu";
+import OffersBudgetSelect from "../../../../form/Offers/OffersBudgetSelect/OffersBudgetSelect";
 import arrow from "../../../../../images/icons/arrow.svg";
-
 
 const AccountClientOffers = () => {
     const navigation = useNavigate();
@@ -27,6 +29,7 @@ const AccountClientOffers = () => {
     const dispatch = useDispatch();
     const [influencers, setInfluencers] = useState([]);
     const [isSelectAll, setIsSelectAll] = useState(false)
+    const [flippedAccountIndex, setFlippedAccountIndex] = useState(null);
 
     const currentPrice = useSelector((state) => state.createPromo.data.selectPrice.variant);
 
@@ -408,6 +411,10 @@ const AccountClientOffers = () => {
         getData();
     }, []);
 
+    const handleSeeMoreClick = (index) => {
+        setFlippedAccountIndex(index === flippedAccountIndex ? null : index);
+    };
+
     return (<section className="account-client">
         {/* <div className="container"> */}
         <div className="account-client-block" style={{position: "relative"}}>
@@ -500,91 +507,102 @@ const AccountClientOffers = () => {
             {/* </ul> */}
 
             <TitleSection title="Pick &" span="choose"/>
-            <div className="select-all">
-                <StandardButton
-                    text={isSelectAll ? "Unselect All" : "Select All"}
-                    onClick={toggleSelectAll}
-                />
-            </div>
 
-            <div className="account-client-container" style={{display: 'flex', flexDirection: 'row'}}>
+            <div className="account-client-container" style={{display: 'flex', flexDirection: 'row', marginTop: 35}}>
                 <OffersMenu/>
-                {/*<OffersSearchBar/>*/}
-                <div className="account-client-choose" style={{flex: 3, marginLeft: '20px'}}>
-                    <ul className="account-client-choose-list">
-                        {influencers.map((item, index) => (<li
-                            key={index}
-                            className={`account-client-choose-item ${item.connect ? "connect" : item.active ? "active" : ""}`}
-                            onClick={({target}) => {
-                                if (item.connect) return;
-                                selectInfluencer(item.instagramUsername);
-                            }}
-                        >
-                            {item.connect ? (<div className="account-client-choose-item-connect">
-                                <p className="account-client-choose-item-connect-text">
-                                    {item.connect_text}
-                                </p>
-                            </div>) : (<></>)}
+                <div className="account-client-container-right-side">
+                    <div className="account-client-container-right-side-upper-side">
+                        <OffersBudgetSelect/>
+                            <OffersSearchBar/>
+                            <OffersSortMenu/>
+                    </div>
+                    <div className="account-client-choose" style={{flex: 3, marginLeft: '20px'}}>
+                        <ul className="account-client-choose-list">
+                            {influencers.map((item, index) => (
+                                <li
+                                    key={index}
+                                    className={`account-client-choose-item ${item.connect ? "connect" : item.active ? "active" : ""} ${flippedAccountIndex === index ? 'flipped' : ''}`}
+                                    onClick={({target}) => {
+                                        if (item.connect) return;
+                                        selectInfluencer(item.instagramUsername);
+                                    }}
+                                >
+                                    {item.connect && (
+                                        <div className="account-client-choose-item-connect">
+                                            <p className="account-client-choose-item-connect-text">
+                                                {item.connect_text}
+                                            </p>
+                                        </div>
+                                    )}
 
-                            <div className={`account-client-choose-item-content ${item.connect ? "connect" : item.active ? "active" : ""}`} style={{}}>
-                                <ImageWithFallback
-                                    src={item.logo}
-                                    fallbackSrc={altLogo}
-                                    className="account-client-choose-item-image"
-                                />
-                                <p className="account-client-choose-item-content-username">
-                                    {item.instagramUsername}
-                                </p>
-                            </div>
-                            <div
-                                style={{
-                                    display: "flex", alignItems: "center", gap: 0, justifyContent: "center",
-                                }}
-                            >
-                                <div className="account-client-choose-item-content-second-container">
-                                    <div className="account-client-choose-item-content-second-container-left-part">
-        <span className="account-client-choose-item-content-icon-container">
-            <img
-                className="account-client-choose-item-content-icon"
-                src={instagram}
-                style={{paddingBottom: 0, pointerEvents: "none"}}
-            />
-        </span>
-                                        <p className="account-client-choose-item-content-text">
-                                            {formatFollowersNumber(item.followersNumber)}
+                                    <div
+                                        className={`account-client-choose-item-content ${item.connect ? "connect" : item.active ? "active" : ""}`}>
+                                        <ImageWithFallback
+                                            src={item.logo}
+                                            fallbackSrc={altLogo}
+                                            className="account-client-choose-item-image"
+                                        />
+                                        <p className="account-client-choose-item-content-username">
+                                            {item.instagramUsername}
                                         </p>
                                     </div>
-                                    <div className="account-client-choose-item-content-price">
-                                        <p>PRICE<span>{item.price}</span></p>
+                                    <div
+                                        style={{
+                                            display: "flex", alignItems: "center", gap: 0, justifyContent: "center",
+                                        }}
+                                    >
+                                        <div className="account-client-choose-item-content-second-container">
+                                            <div
+                                                className="account-client-choose-item-content-second-container-left-part">
+                                <span className="account-client-choose-item-content-icon-container">
+                                    <img
+                                        className="account-client-choose-item-content-icon"
+                                        src={instagram}
+                                        style={{paddingBottom: 0, pointerEvents: "none"}}
+                                    />
+                                </span>
+                                                <p className="account-client-choose-item-content-text">
+                                                    {formatFollowersNumber(item.followersNumber)}
+                                                </p>
+                                            </div>
+                                            <div className="account-client-choose-item-content-price">
+                                                <p>PRICE<span>{item.price}</span></p>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                                <div className="account-client-choose-item-content-third-container">
-                                    <button>
-                                        See more
-                                    </button>
-                                </div>
-                        </li>))}
-                    </ul>
+                                    <div className="account-client-choose-item-content-third-container">
+                                        <button
+                                            onClick={() => handleSeeMoreClick(index)}
+                                        >
+                                            See more
+                                        </button>
+                                    </div>
+                                    <div
+                                        className={`account-client-choose-item-back ${flippedAccountIndex === index ? 'show' : ''}`}>
+                                        {/*<p>AAAAAA</p>*/}
+                                    </div>
+                                </li>
+                            ))}
+                        </ul>
 
-                    <p className="account-client-choose-total">
-                        Total{" "}
-                        <span className="account-client-choose-total-span">
+                        <p className="account-client-choose-total">
+                            Total{" "}
+                            <span className="account-client-choose-total-span">
         {customePrice} €
       </span>
-                    </p>
+                        </p>
 
-                    <div
-                        style={{
-                            display: "flex", justifyContent: "center", marginTop: 40,
-                        }}
-                    >
-                        <StandardButton text="Continue" onClick={nextForm}/>
+                        <div
+                            style={{
+                                display: "flex", justifyContent: "center", marginTop: 40,
+                            }}
+                        >
+                            <StandardButton text="Continue" onClick={nextForm}/>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        {/* </div> */}
     </section>);
 };
 

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styles from "./countries.module.css";
-import vectorImage from "../../../../images/vector.png"; // Убедитесь, что путь правильный
+import vectorImage from "../../../../../images/vector.png"; // Убедитесь, что путь правильный
 
 const Countries = () => {
     const [checkedCountries, setCheckedCountries] = useState({});

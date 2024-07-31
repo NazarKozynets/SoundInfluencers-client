@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styles from "./categories.module.css";
-import vectorImage from "../../../../images/vector.png"; 
+import vectorImage from "../../../../../images/vector.png"; 
 
 const Categories = () => {
     const [checkedCategories, setCheckedCategories] = useState({});
