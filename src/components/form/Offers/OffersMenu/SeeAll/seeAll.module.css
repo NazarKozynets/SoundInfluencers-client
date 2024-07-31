@@ -1,0 +1,56 @@
+.container {
+    font-family: Geometria;
+    margin-bottom: 30px;
+}
+
+.seeAllButton {
+    font-family: Geometria;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 22.64px;
+    text-align: left;
+    background-color: transparent;
+    border: none;
+    color: #00000080;
+    cursor: pointer;
+    margin-bottom: 20px;
+    opacity: 1;
+}
+
+.buttonsContainer {
+    display: flex;
+    flex-direction: column; 
+    gap: 15px; 
+}
+
+.buttonWrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.itemButton {
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 22px;
+    font-weight: 500;
+    line-height: 22.64px; 
+    height: 32px;
+    width: 100px; 
+    text-align: center;
+}
+
+.itemButton.selected {
+    background-color: #3330E4;
+    color: #fff;
+    border: 1px solid #3330E4;
+}
+
+.itemLabel {
+    font-size: 22px;
+    font-weight: 500; 
+    line-height: 22.64px;
+}

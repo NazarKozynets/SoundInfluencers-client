@@ -3,7 +3,20 @@
     margin-bottom: 30px;
 }
 
+.mainContainer {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .title {
+    font-family: Geometria;
     color: #3330E4;
     font-size: 28px;
     font-weight: 800;
@@ -11,7 +24,22 @@
     text-align: left;
 }
 
+.seeAllButton {
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: Geometria;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 22.64px;
+    text-align: left;
+    color: #00000080;
+    margin-left: 20px;
+}
+
 .genresList {
+    font-family: Geometria;
     font-size: 22px;
     font-weight: 500;
     line-height: 22.64px;
@@ -25,6 +53,18 @@
     margin: 0 0 20px 0;
 }
 
+.genreItem {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.subgenreItem {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
 .genresListItem label,
 .subgenresListItem label {
     display: flex;
@@ -32,6 +72,7 @@
 }
 
 .subgenresList {
+    font-family: Geometria;
     list-style-type: none;
     padding-left: 20px;
     font-size: 22px;
@@ -54,20 +95,43 @@
     appearance: none;
     width: 20px;
     height: 20px;
-    border: 1px solid #3330E4;
-    border-radius: 6px;
+    border: 2px solid #3330E4;
+    border-radius: 3px;
     position: relative;
     margin-right: 10px;
     cursor: pointer;
-    vertical-align: middle; 
+    vertical-align: middle;
 }
 
 .checkboxChecked {
     background-color: #3330E4;
-    background-image: url('../../../../../images/vector.png');
+    background-image: url('../../../../../images/vector.png'); 
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
+}
+
+.randomNumberButton {
+    color: white;
+    width: 58px;
+    height: 31px;
+    border-radius: 18.5px;
+    background: #3330E41A;
+    font-family: Geometria;
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 22.64px;
+    text-align: center;
+    color: #000000;
+    margin-right: 18px;
+}
+
+.randomNumberButton:hover {
+    color: white;
+    width: 58px;
+    height: 31px;
+    border-radius: 18.5px;
+    background: #3330E41A;
     border: 1px solid #3330E4;
-    border-radius: 6px;
+    color: #000000;
 }

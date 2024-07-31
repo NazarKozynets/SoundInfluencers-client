@@ -4,12 +4,31 @@
     margin-top: 35px;
 }
 
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .title {
     color: #3330E4;
     font-size: 28px;
     font-weight: 800;
     line-height: 30.19px;
     text-align: left;
+}
+
+.seeAllButton {
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: Geometria;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 22.64px;
+    text-align: left;
+    color: #00000080;
 }
 
 .categoriesList {
@@ -26,9 +45,10 @@
     margin: 0 0 20px 0;
 }
 
-.categoriesListItem label {
+.categoryItem {
     display: flex;
     align-items: center;
+    justify-content: space-between;
 }
 
 .checkbox {
@@ -49,4 +69,29 @@
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
+}
+
+.randomNumberButton {
+    color: white;
+    width: 58px;
+    height: 31px;
+    border-radius: 18.5px;
+    background: #3330E41A;
+    font-family: Geometria;
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 22.64px;
+    text-align: center;
+    color: #000000;
+    margin-right: 18px;
+}
+
+.randomNumberButton:hover {
+    color: white;
+    width: 58px;
+    height: 31px;
+    border-radius: 18.5px;
+    background: #3330E41A;
+    border: 1px solid #3330E4;
+    color: #000000;
 }

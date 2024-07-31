@@ -1,6 +1,6 @@
 import React from "react";
 import Genres from "./Genres/Genres";
-import Countries from "./Countries/Contries";
+import Countries from "./Countries/Countries";
 import Categories from "./Categories/Categories";
 import "./offersMenu.css";
 import line from "../../../../images/line-32.png";

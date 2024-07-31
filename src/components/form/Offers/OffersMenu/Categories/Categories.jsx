@@ -1,6 +1,7 @@
 import React, { useState } from "react";
+import classNames from "classnames";
 import styles from "./categories.module.css";
-import vectorImage from "../../../../../images/vector.png"; 
+import vectorImage from "../../../../../images/vector.png";
 
 const Categories = () => {
     const [checkedCategories, setCheckedCategories] = useState({});
@@ -16,39 +17,32 @@ const Categories = () => {
         }));
     };
 
-    const checkboxStyle = {
-        width: '20px',
-        height: '20px',
-        border: '2px solid #3330E4',
-        borderRadius: '3px',
-        position: 'relative',
-        marginRight: '10px',
-        cursor: 'pointer',
-        verticalAlign: 'middle',
-    };
-
-    const checkedCheckboxStyle = {
-        ...checkboxStyle,
-        backgroundColor: '#3330E4',
-        backgroundImage: `url(${vectorImage})`,
-        backgroundSize: 'contain',
-        backgroundRepeat: 'no-repeat',
-        backgroundPosition: 'center',
-    };
+    const generateRandomNumber = () => Math.floor(Math.random() * 100) + 1;
 
     return (
         <div className={styles.categories}>
-            <h2 className={styles.title}>CATEGORIES</h2>
+            <div className={styles.header}>
+                <h2 className={styles.title}>CATEGORIES</h2>
+                <button className={styles.seeAllButton}>see all</button>
+            </div>
             <ul className={styles.categoriesList}>
                 {categories.map((category, index) => (
                     <li key={index} className={styles.categoriesListItem}>
-                        <input
-                            type="checkbox"
-                            checked={!!checkedCategories[category]}
-                            onChange={(e) => handleCheckboxChange(category, e.target.checked)}
-                            style={checkedCategories[category] ? checkedCheckboxStyle : checkboxStyle}
-                        />
-                        {category}
+                        <div className={styles.categoryItem}>
+                            <label>
+                                <input
+                                    type="checkbox"
+                                    checked={!!checkedCategories[category]}
+                                    onChange={(e) => handleCheckboxChange(category, e.target.checked)}
+                                    className={classNames({
+                                        [styles.checkbox]: true,
+                                        [styles.checkboxChecked]: !!checkedCategories[category]
+                                    })}
+                                />
+                                {category}
+                            </label>
+                            <button className={styles.randomNumberButton}>{generateRandomNumber()}</button>
+                        </div>
                     </li>
                 ))}
             </ul>

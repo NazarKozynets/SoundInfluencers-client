@@ -30,6 +30,7 @@ const AccountClientOffers = () => {
     const [influencers, setInfluencers] = useState([]);
     const [isSelectAll, setIsSelectAll] = useState(false)
     const [flippedAccountIndex, setFlippedAccountIndex] = useState(null);
+    const [activeIndices, setActiveIndices] = useState([]);
 
     const currentPrice = useSelector((state) => state.createPromo.data.selectPrice.variant);
 
@@ -411,6 +412,17 @@ const AccountClientOffers = () => {
         getData();
     }, []);
 
+    const handleCardClick = (index, isConnect) => {
+        if (!isConnect) {
+            setActiveIndices(prevIndices =>
+                prevIndices.includes(index)
+                    ? prevIndices.filter(i => i !== index)
+                    : [...prevIndices, index]
+            );
+        }
+        setFlippedAccountIndex(null);
+    };
+
     const handleSeeMoreClick = (index) => {
         setFlippedAccountIndex(index === flippedAccountIndex ? null : index);
     };
@@ -513,19 +525,16 @@ const AccountClientOffers = () => {
                 <div className="account-client-container-right-side">
                     <div className="account-client-container-right-side-upper-side">
                         <OffersBudgetSelect/>
-                            <OffersSearchBar/>
-                            <OffersSortMenu/>
+                        <OffersSearchBar/>
+                        <OffersSortMenu/>
                     </div>
                     <div className="account-client-choose" style={{flex: 3, marginLeft: '20px'}}>
                         <ul className="account-client-choose-list">
                             {influencers.map((item, index) => (
                                 <li
                                     key={index}
-                                    className={`account-client-choose-item ${item.connect ? "connect" : item.active ? "active" : ""} ${flippedAccountIndex === index ? 'flipped' : ''}`}
-                                    onClick={({target}) => {
-                                        if (item.connect) return;
-                                        selectInfluencer(item.instagramUsername);
-                                    }}
+                                    className={`account-client-choose-item ${item.connect ? "connect" : ""} ${activeIndices.includes(index) && !item.connect ? 'active' : ''} ${flippedAccountIndex === index ? 'flipped' : ''}`}
+                                    onClick={() => handleCardClick(index, item.connect)}
                                 >
                                     {item.connect && (
                                         <div className="account-client-choose-item-connect">
@@ -536,7 +545,8 @@ const AccountClientOffers = () => {
                                     )}
 
                                     <div
-                                        className={`account-client-choose-item-content ${item.connect ? "connect" : item.active ? "active" : ""}`}>
+                                        className={`account-client-choose-item-content ${item.connect ? "connect" : ""} ${activeIndices.includes(index) && !item.connect ? 'active' : ''} ${flippedAccountIndex === index ? 'flipped' : ''}`}
+                                    >
                                         <ImageWithFallback
                                             src={item.logo}
                                             fallbackSrc={altLogo}
@@ -548,19 +558,22 @@ const AccountClientOffers = () => {
                                     </div>
                                     <div
                                         style={{
-                                            display: "flex", alignItems: "center", gap: 0, justifyContent: "center",
+                                            display: "flex",
+                                            alignItems: "center",
+                                            gap: 0,
+                                            justifyContent: "center",
                                         }}
                                     >
                                         <div className="account-client-choose-item-content-second-container">
                                             <div
                                                 className="account-client-choose-item-content-second-container-left-part">
-                                <span className="account-client-choose-item-content-icon-container">
-                                    <img
-                                        className="account-client-choose-item-content-icon"
-                                        src={instagram}
-                                        style={{paddingBottom: 0, pointerEvents: "none"}}
-                                    />
-                                </span>
+            <span className="account-client-choose-item-content-icon-container">
+              <img
+                  className="account-client-choose-item-content-icon"
+                  src={instagram}
+                  style={{paddingBottom: 0, pointerEvents: "none"}}
+              />
+            </span>
                                                 <p className="account-client-choose-item-content-text">
                                                     {formatFollowersNumber(item.followersNumber)}
                                                 </p>
@@ -572,25 +585,28 @@ const AccountClientOffers = () => {
                                     </div>
                                     <div className="account-client-choose-item-content-third-container">
                                         <button
-                                            onClick={() => handleSeeMoreClick(index)}
+                                            onClick={(e) => {
+                                                e.stopPropagation(); // Prevent triggering the onClick of li
+                                                handleSeeMoreClick(index);
+                                            }}
                                         >
-                                            See more
+                                            {flippedAccountIndex === index ? 'See Less' : 'See More'}
                                         </button>
                                     </div>
                                     <div
-                                        className={`account-client-choose-item-back ${flippedAccountIndex === index ? 'show' : ''}`}>
-                                        {/*<p>AAAAAA</p>*/}
+                                        className={`account-client-choose-item-back ${flippedAccountIndex === index ? 'show' : ''}`}
+                                    >
+                                        <div className="account-client-choose-item-back-left-side">
+                                            <span>Countries</span>
+                                        </div>
+                                        <div className="account-client-choose-item-back-right-side">
+                                            <span>Genres</span>
+                                        </div>
                                     </div>
                                 </li>
                             ))}
                         </ul>
 
-                        <p className="account-client-choose-total">
-                            Total{" "}
-                            <span className="account-client-choose-total-span">
-        {customePrice} €
-      </span>
-                        </p>
 
                         <div
                             style={{
@@ -600,6 +616,12 @@ const AccountClientOffers = () => {
                             <StandardButton text="Continue" onClick={nextForm}/>
                         </div>
                     </div>
+                    <p className="account-client-choose-total">
+                        Total{" "}
+                        <span className="account-client-choose-total-span">
+        {customePrice} €
+      </span>
+                    </p>
                 </div>
             </div>
         </div>
