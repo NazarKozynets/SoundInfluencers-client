@@ -1,11 +1,9 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import Select, { components } from 'react-select';
 import './offersSortMenu.css';
 import checkImg from '../../../../images/icons/check.svg';
 
-const OffersSortMenu = () => {
-    const [sort, setSort] = useState({ value: 'Best Match', label: 'Best Match' });
-
+const OffersSortMenu = ({ selectedOption, onSortChange }) => {
     const options = [
         { value: 'Best Match', label: 'Best Match' },
         { value: 'Lowest Price', label: 'Lowest Price' },
@@ -93,7 +91,7 @@ const OffersSortMenu = () => {
             fontWeight: 500,
             color: '#000000',
             backgroundColor: state.isSelected ? '#FFFFFF' : '#FFFFFF',
-            paddingLeft: state.isSelected ? '20px' : '20px', // Удаляем отступ слева у выбранного элемента
+            paddingLeft: state.isSelected ? '20px' : '20px',
             paddingRight: '20px',
             position: 'relative',
             '&:hover': {
@@ -111,21 +109,19 @@ const OffersSortMenu = () => {
         })
     };
 
-    const Option = (props) => {
-        return (
-            <components.Option {...props} style={{ position: 'relative' }}>
-                {props.isSelected && <img src={checkImg} alt="check" style={{
-                    position: 'absolute',
-                    right: 10,
-                    top: '50%',
-                    transform: 'translateY(-50%)',
-                    width: 20,
-                    height: 20
-                }} />}
-                {props.children}
-            </components.Option>
-        );
-    };
+    const Option = (props) => (
+        <components.Option {...props} style={{ position: 'relative' }}>
+            {props.isSelected && <img src={checkImg} alt="check" style={{
+                position: 'absolute',
+                right: 10,
+                top: '50%',
+                transform: 'translateY(-50%)',
+                width: 20,
+                height: 20
+            }} />}
+            {props.children}
+        </components.Option>
+    );
 
     const SingleValue = ({ children, ...props }) => (
         <components.SingleValue {...props}>
@@ -134,11 +130,15 @@ const OffersSortMenu = () => {
         </components.SingleValue>
     );
 
+    const handleChange = (selectedOption) => {
+        onSortChange(selectedOption.value);
+    }
+
     return (
         <div className="sort-menu">
             <Select
-                value={sort}
-                onChange={setSort}
+                value={options.find(option => option.value === selectedOption)}
+                onChange={handleChange}
                 options={options}
                 styles={customStyles}
                 components={{ SingleValue, Option }}

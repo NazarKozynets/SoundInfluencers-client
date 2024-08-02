@@ -13,9 +13,9 @@ const genres = [
     { genre: 'Psy' }
 ];
 
-const GenreButtonsList = () => {
+const GenreButtonsList = ({prices}) => {
     const [activeGenre, setActiveGenre] = useState(null);
-
+ 
     const handleGenreClick = (genre, subText) => {
         if (activeGenre && activeGenre.genre === genre && activeGenre.subText === subText) {
             setActiveGenre(null);
@@ -28,6 +28,7 @@ const GenreButtonsList = () => {
         <div className="genre-buttons-list">
             {genres.map(({ genre, subText }) => (
                 <GenreButton
+                    prices={prices}
                     key={genre + (subText || '')}
                     genre={genre}
                     subText={subText}

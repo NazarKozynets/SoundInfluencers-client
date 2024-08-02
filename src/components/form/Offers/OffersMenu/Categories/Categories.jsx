@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import classNames from "classnames";
 import styles from "./categories.module.css";
-import vectorImage from "../../../../../images/vector.png";
 
 const Categories = () => {
     const [checkedCategories, setCheckedCategories] = useState({});
@@ -41,7 +40,7 @@ const Categories = () => {
                                 />
                                 {category}
                             </label>
-                            <button className={styles.randomNumberButton}>{generateRandomNumber()}</button>
+                            <button className={styles.randomNumberButton}>{0}</button>
                         </div>
                     </li>
                 ))}

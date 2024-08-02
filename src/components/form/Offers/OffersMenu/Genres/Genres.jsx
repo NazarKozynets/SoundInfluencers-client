@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import classNames from 'classnames';
 import styles from './genres.module.css';
 
-const Genres = () => {
-    const [checkedGenres, setCheckedGenres] = useState({});
+const Genres = ({ setCheckedGenres, influencers, setFilteredInfluencersByGenres, applyFilters }) => {
+    const [localCheckedGenres, setLocalCheckedGenres] = useState({});
 
     const genres = [
         { genre: 'Techno', subText: 'Melodic, Minimal' },
@@ -27,20 +27,32 @@ const Genres = () => {
     }, {});
 
     const handleCheckboxChange = (genre, checked) => {
-        setCheckedGenres(prevCheckedGenres => ({
-            ...prevCheckedGenres,
+        const newCheckedGenres = {
+            ...localCheckedGenres,
             [genre]: checked
-        }));
+        };
+        setLocalCheckedGenres(newCheckedGenres);
+        setCheckedGenres(newCheckedGenres);
+        applyFilters(); // Call applyFilters whenever genres change
     };
 
-    const generateRandomNumber = () => Math.floor(Math.random() * 100) + 1;
+    const getInfluencerCount = (musicStyle) => {
+        return influencers.filter(influencer => influencer.musicStyle === musicStyle).length;
+    };
+
+    const seeAllGenres = () => {
+        setLocalCheckedGenres({});
+        setCheckedGenres({});
+        setFilteredInfluencersByGenres(influencers);
+        applyFilters(); // Call applyFilters when resetting genres
+    };
 
     return (
         <div className={styles.mainContainer}>
             <div className={styles.genresSection}>
                 <div className={styles.header}>
                     <h2 className={styles.title}>GENRES</h2>
-                    <button className={styles.seeAllButton} style={{ marginLeft: '20px' }}>see all</button>
+                    <button className={styles.seeAllButton} onClick={seeAllGenres} style={{ marginLeft: '20px' }}>see all</button>
                 </div>
                 <ul className={styles.genresList}>
                     {Object.keys(groupedGenres).map((genre, index) => (
@@ -49,13 +61,13 @@ const Genres = () => {
                                 <label>
                                     <input
                                         type="checkbox"
-                                        className={classNames(styles.checkbox, { [styles.checkboxChecked]: checkedGenres[genre] })}
-                                        checked={!!checkedGenres[genre]}
+                                        className={classNames(styles.checkbox, { [styles.checkboxChecked]: localCheckedGenres[genre] })}
+                                        checked={!!localCheckedGenres[genre]}
                                         onChange={(e) => handleCheckboxChange(genre, e.target.checked)}
                                     />
                                     {genre}
                                 </label>
-                                <button className={styles.randomNumberButton}>{generateRandomNumber()}</button>
+                                <button className={styles.randomNumberButton}>{getInfluencerCount(genre)}</button>
                             </div>
                             {groupedGenres[genre].length > 0 && (
                                 <ul className={styles.subgenresList}>
@@ -65,13 +77,13 @@ const Genres = () => {
                                                 <label>
                                                     <input
                                                         type="checkbox"
-                                                        className={classNames(styles.checkbox, { [styles.checkboxChecked]: checkedGenres[subText] })}
-                                                        checked={!!checkedGenres[subText]}
+                                                        className={classNames(styles.checkbox, { [styles.checkboxChecked]: localCheckedGenres[subText] })}
+                                                        checked={!!localCheckedGenres[subText]}
                                                         onChange={(e) => handleCheckboxChange(subText, e.target.checked)}
                                                     />
                                                     {subText}
                                                 </label>
-                                                <button className={styles.randomNumberButton}>{generateRandomNumber()}</button>
+                                                <button className={styles.randomNumberButton}>{getInfluencerCount(subText)}</button>
                                             </div>
                                         </li>
                                     ))}

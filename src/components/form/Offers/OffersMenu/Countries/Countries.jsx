@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import styles from "./countries.module.css";
-import vectorImage from "../../../../../images/vector.png";
 
 const Countries = () => {
     const [checkedCountries, setCheckedCountries] = useState({});
@@ -37,7 +36,7 @@ const Countries = () => {
                                 />
                                 {country}
                             </label>
-                            <button className={styles.randomNumberButton}>{generateRandomNumber()}</button>
+                            <button className={styles.randomNumberButton}>{0}</button>
                         </div>
                     </li>
                 ))}

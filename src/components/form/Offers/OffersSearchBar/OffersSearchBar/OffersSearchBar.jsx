@@ -1,6 +1,6 @@
 import React from "react";  
 import { useState } from "react";
-import searchIcon from "../../../../images/icons/search.svg";
+import searchIcon from "../../../../../images/icons/search.svg";
 import "./offersSearchBar.css";
 
 const SearchBar = () => {

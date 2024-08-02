@@ -5,18 +5,21 @@ import Categories from "./Categories/Categories";
 import "./offersMenu.css";
 import line from "../../../../images/line-32.png";
 
-const OffersMenu = ({genres, countries, categories}) => {
+const OffersMenu = (props) => {
     return (
         <div className="menu">
             <div className="genres">
-                <Genres genres={genres}/>
+                <Genres influencers={props.influencers} 
+                        setCheckedGenres={props.setCheckedGenres}
+                        setFilteredInfluencersByGenres={props.setFilteredInfluencersByGenres}
+                        applyFilters={props.applyFilters}/>
             </div>
             <img src={line} alt="line"/>
             <div className="countries">
-                <Countries countries={countries}/>
+                <Countries/>
             </div>
             <img src={line} alt="line"/>
-            <Categories categories={categories}/>
+            <Categories/>
         </div>
     );
 };
