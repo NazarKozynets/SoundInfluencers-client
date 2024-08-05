@@ -1,22 +1,24 @@
-import React from "react";  
-import { useState } from "react";
+import React from "react";
 import searchIcon from "../../../../../images/icons/search.svg";
 import "./offersSearchBar.css";
 
-const SearchBar = () => {
-    const [input, setInput] = useState("");
+const SearchBar = ({ input, onChange }) => {
+    const handleChange = (e) => {
+        const value = e.target.value;
+        const regex = /^[a-zA-Z0-9\s-]*$/;
 
-    const handleChange = (value) => {
-        setInput(value);
+        if (regex.test(value)) {
+            onChange(value);
+        }
     };
 
     return (
         <div className="input-wrapper">
-            <img src={searchIcon} className="search-icon"/>
+            <img src={searchIcon} className="search-icon" />
             <input
                 placeholder="Search"
                 value={input}
-                onChange={(e) => handleChange(e.target.value)}
+                onChange={handleChange}
             />
         </div>
     );

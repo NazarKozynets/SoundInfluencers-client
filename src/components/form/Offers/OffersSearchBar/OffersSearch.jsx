@@ -1,38 +1,46 @@
-import React from "react";  
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import SearchBar from "./OffersSearchBar/OffersSearchBar";
-import OffersSearchBarResult from "./OffersSearchBarResult/OffersSearchBarResult";
 import OffersSearchBarResultsList from "./OffersSearchBarResultList/OffersSearchBarResultsList";
+import "./offersSearch.css";
 
-const OffersSearch = () => {
+const OffersSearch = ({ filteredInfluencers, setSearchResult }) => {
     const [searchInput, setSearchInput] = useState("");
     const [results, setResults] = useState([]);
+    const [showResults, setShowResults] = useState(true);
 
-    const influencers = [
-        {name: 'Influencer 1'},
-        {name: 'Influencer 2'},
-        {name: 'Influencer 3'},
-        // добавьте свои данные
-    ];
+    useEffect(() => {
+        if (searchInput === "") {
+            setSearchResult(null);
+            setShowResults(false); 
+        } else {
+            const filteredResults = filteredInfluencers.filter(influencer =>
+                influencer.instagramUsername && influencer.instagramUsername.toLowerCase().includes(searchInput.toLowerCase())
+            );
+            setResults(filteredResults);
+            setShowResults(true); 
+        }
+    }, [searchInput, filteredInfluencers, setSearchResult]);
 
     const handleSearchInputChange = (input) => {
         setSearchInput(input);
-        if (input === "") {
-            setResults([]);
-        } else {
-            const filteredResults = influencers.filter(influencer =>
-                influencer.name.toLowerCase().includes(input.toLowerCase())
-            );
-            setResults(filteredResults);
-        }
+    };
+
+    const handleResultSelect = (result) => {
+        setSearchResult(result);
+        setShowResults(false); 
     };
 
     return (
         <div className="search-container">
-            <SearchBar input={searchInput} onChange={handleSearchInputChange}/>
-            <OffersSearchBarResultsList results={results}/>
+            <SearchBar input={searchInput} onChange={handleSearchInputChange} />
+            {showResults && searchInput && (
+                <OffersSearchBarResultsList
+                    results={results}
+                    onResultSelect={handleResultSelect}
+                />
+            )}
         </div>
     );
-}
+};
 
 export default OffersSearch;

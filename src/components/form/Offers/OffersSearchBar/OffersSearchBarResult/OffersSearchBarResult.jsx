@@ -1,13 +1,17 @@
 import React from "react";
 import "./offersSearchBarResult.css";
 
-const OffersSearchBarResult = ({ result }) => {
+const OffersSearchBarResult = ({ result, onResultSelect }) => {
+    const handleClick = () => {
+        onResultSelect(result);
+    };
+
     return (
         <div
             className="search-result"
-            onClick={(e) => alert(`You selected ${result}!`)}
+            onClick={handleClick}
         >
-            {result}
+            {result.instagramUsername}
         </div>
     );
 };

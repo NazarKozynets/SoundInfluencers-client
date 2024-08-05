@@ -37,6 +37,7 @@ const AccountClientOffers = () => {
     const [budget, setBudget] = useState(10000000);
     const [filteredInfluencersByGenres, setFilteredInfluencersByGenres] = useState([]);
     const [sortMethod, setSortMethod] = useState('Best Match');
+    const [searchResult, setSearchResult] = useState(null);
 
     const currentPrice = useSelector((state) => state.createPromo.data.selectPrice.variant);
 
@@ -439,10 +440,9 @@ const AccountClientOffers = () => {
 
     useEffect(() => {
         applyFilters();
-    }, [budget, checkedGenres]);
-
+    }, [sortMethod, budget, checkedGenres]);
+    
     const applyFilters = () => {
-        console.log('Applying filters and sorting...');
         let filtered = influencers;
 
         const budgetString = budget ? budget.toString() : '';
@@ -450,7 +450,6 @@ const AccountClientOffers = () => {
 
         if (budgetValue < 10000000) {
             filtered = filtered.filter(item => {
-                // Преобразование строки цены в число
                 const itemPriceString = item.price ? item.price.toString() : '';
                 const itemPrice = parseFloat(itemPriceString.replace(/[^0-9.]/g, ''));
                 return itemPrice <= budgetValue;
@@ -483,7 +482,6 @@ const AccountClientOffers = () => {
 
         setFilteredInfluencers(filtered);
     };
-
 
     return (<section className="account-client">
         {/* <div className="container"> */}
@@ -528,7 +526,6 @@ const AccountClientOffers = () => {
                         slidesPerView: 4, spaceBetween: 40,
                     },
                 }}
-                onSlideChange={() => console.log("slide change")}
                 onSwiper={(swiper) => console.log(swiper)}
                 style={{padding: "30px 20px 180px 20px"}}
             >
@@ -578,11 +575,13 @@ const AccountClientOffers = () => {
 
             <TitleSection title="Pick &" span="choose"/>
 
-            <div className="account-client-container"
-                 style={{display: 'flex', flexDirection: 'row', marginTop: 35}}>
-                <OffersMenu influencers={influencers} setCheckedGenres={setCheckedGenres}
-                            setFilteredInfluencersByGenres={setFilteredInfluencersByGenres}
-                            applyFilters={applyFilters}/>
+            <div className="account-client-container" style={{display: 'flex', flexDirection: 'row', marginTop: 35}}>
+                <OffersMenu
+                    influencers={filteredInfluencers}
+                    setCheckedGenres={setCheckedGenres}
+                    setFilteredInfluencersByGenres={setFilteredInfluencers}
+                    applyFilters={applyFilters}
+                />
                 <div className="account-client-container-right-side">
                     <div className="account-client-container-right-side-upper-side">
                         <OffersBudgetSelect
@@ -590,8 +589,10 @@ const AccountClientOffers = () => {
                             setBudget={setBudget}
                             applyFilters={applyFilters}
                         />
-                        {/*<OffersSearchBar/>*/}
-                        <OffersSearch/>
+                        <OffersSearch
+                            filteredInfluencers={filteredInfluencers}
+                            setSearchResult={setSearchResult}
+                        />
                         <OffersSortMenu
                             selectedOption={sortMethod}
                             onSortChange={(newSortMethod) => {
@@ -601,30 +602,28 @@ const AccountClientOffers = () => {
                         />
                     </div>
                     <div className="account-client-choose" style={{flex: 3, marginLeft: '20px'}}>
-                        <ul className="account-client-choose-list">
-                            {filteredInfluencers.map((item, index) => (
+                        {searchResult ? (
+                            <ul className="account-client-choose-list">
                                 <li
-                                    key={index}
-                                    className={`account-client-choose-item ${item.connect ? "connect" : ""} ${activeIndices.includes(index) && !item.connect ? 'active' : ''} ${flippedAccountIndex === index ? 'flipped' : ''}`}
-                                    onClick={() => handleCardClick(index, item.connect)}
+                                    className={`account-client-choose-item ${searchResult.connect ? "connect" : ""} ${activeIndices.includes(searchResult.index) && !searchResult.connect ? 'active' : ''} ${flippedAccountIndex === searchResult.index ? 'flipped' : ''}`}
+                                    onClick={() => handleCardClick(searchResult.index, searchResult.connect)}
                                 >
-                                    {item.connect && (
+                                    {searchResult.connect && (
                                         <div className="account-client-choose-item-connect">
                                             <p className="account-client-choose-item-connect-text">
-                                                {item.connect_text}
+                                                {searchResult.connect_text}
                                             </p>
                                         </div>
                                     )}
                                     <div
-                                        className={`account-client-choose-item-content ${item.connect ? "connect" : ""} ${activeIndices.includes(index) && !item.connect ? 'active' : ''} ${flippedAccountIndex === index ? 'flipped' : ''}`}
-                                    >
+                                        className={`account-client-choose-item-content ${searchResult.connect ? "connect" : ""} ${activeIndices.includes(searchResult.index) && !searchResult.connect ? 'active' : ''} ${flippedAccountIndex === searchResult.index ? 'flipped' : ''}`}>
                                         <ImageWithFallback
-                                            src={item.logo}
+                                            src={searchResult.logo}
                                             fallbackSrc={altLogo}
                                             className="account-client-choose-item-image"
                                         />
                                         <p className="account-client-choose-item-content-username">
-                                            {item.instagramUsername}
+                                            {searchResult.instagramUsername}
                                         </p>
                                     </div>
                                     <div style={{
@@ -636,31 +635,29 @@ const AccountClientOffers = () => {
                                         <div className="account-client-choose-item-content-second-container">
                                             <div
                                                 className="account-client-choose-item-content-second-container-left-part">
-                                            <span className="account-client-choose-item-content-icon-container">
-                                                <img className="account-client-choose-item-content-icon" src={instagram}
-                                                     style={{paddingBottom: 0, pointerEvents: "none"}}/>
-                                            </span>
+                                    <span className="account-client-choose-item-content-icon-container">
+                                        <img className="account-client-choose-item-content-icon" src={instagram}
+                                             style={{paddingBottom: 0, pointerEvents: "none"}}/>
+                                    </span>
                                                 <p className="account-client-choose-item-content-text">
-                                                    {formatFollowersNumber(item.followersNumber)}
+                                                    {formatFollowersNumber(searchResult.followersNumber)}
                                                 </p>
                                             </div>
                                             <div className="account-client-choose-item-content-price">
-                                                <p>PRICE<span>{item.price}</span></p>
+                                                <p>PRICE<span>{searchResult.price}</span></p>
                                             </div>
                                         </div>
                                     </div>
                                     <div className="account-client-choose-item-content-third-container">
-                                        <button
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                handleSeeMoreClick(index);
-                                            }}
-                                        >
-                                            {flippedAccountIndex === index ? 'See Less' : 'See More'}
+                                        <button onClick={(e) => {
+                                            e.stopPropagation();
+                                            handleSeeMoreClick(searchResult.index);
+                                        }}>
+                                            {flippedAccountIndex === searchResult.index ? 'See Less' : 'See More'}
                                         </button>
                                     </div>
                                     <div
-                                        className={`account-client-choose-item-back ${flippedAccountIndex === index ? 'show' : ''}`}>
+                                        className={`account-client-choose-item-back ${flippedAccountIndex === searchResult.index ? 'show' : ''}`}>
                                         <div className="account-client-choose-item-back-left-side">
                                             <span>Countries</span>
                                         </div>
@@ -669,16 +666,76 @@ const AccountClientOffers = () => {
                                         </div>
                                     </div>
                                 </li>
-                            ))}
-                        </ul>
-
-                        <div
-                            style={{
-                                display: "flex", justifyContent: "center", marginTop: 40,
-                            }}
-                        >
-                            <StandardButton text="Continue" onClick={nextForm}/>
-                        </div>
+                            </ul>
+                        ) : (
+                            <ul className="account-client-choose-list">
+                                {filteredInfluencers.map((item, index) => (
+                                    <li
+                                        key={index}
+                                        className={`account-client-choose-item ${item.connect ? "connect" : ""} ${activeIndices.includes(index) && !item.connect ? 'active' : ''} ${flippedAccountIndex === index ? 'flipped' : ''}`}
+                                        onClick={() => handleCardClick(index, item.connect)}
+                                    >
+                                        {item.connect && (
+                                            <div className="account-client-choose-item-connect">
+                                                <p className="account-client-choose-item-connect-text">
+                                                    {item.connect_text}
+                                                </p>
+                                            </div>
+                                        )}
+                                        <div
+                                            className={`account-client-choose-item-content ${item.connect ? "connect" : ""} ${activeIndices.includes(index) && !item.connect ? 'active' : ''} ${flippedAccountIndex === index ? 'flipped' : ''}`}>
+                                            <ImageWithFallback
+                                                src={item.logo}
+                                                fallbackSrc={altLogo}
+                                                className="account-client-choose-item-image"
+                                            />
+                                            <p className="account-client-choose-item-content-username">
+                                                {item.instagramUsername}
+                                            </p>
+                                        </div>
+                                        <div style={{
+                                            display: "flex",
+                                            alignItems: "center",
+                                            gap: 0,
+                                            justifyContent: "center"
+                                        }}>
+                                            <div className="account-client-choose-item-content-second-container">
+                                                <div
+                                                    className="account-client-choose-item-content-second-container-left-part">
+                                        <span className="account-client-choose-item-content-icon-container">
+                                            <img className="account-client-choose-item-content-icon" src={instagram}
+                                                 style={{paddingBottom: 0, pointerEvents: "none"}}/>
+                                        </span>
+                                                    <p className="account-client-choose-item-content-text">
+                                                        {formatFollowersNumber(item.followersNumber)}
+                                                    </p>
+                                                </div>
+                                                <div className="account-client-choose-item-content-price">
+                                                    <p>PRICE<span>{item.price}</span></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="account-client-choose-item-content-third-container">
+                                            <button onClick={(e) => {
+                                                e.stopPropagation();
+                                                handleSeeMoreClick(index);
+                                            }}>
+                                                {flippedAccountIndex === index ? 'See Less' : 'See More'}
+                                            </button>
+                                        </div>
+                                        <div
+                                            className={`account-client-choose-item-back ${flippedAccountIndex === index ? 'show' : ''}`}>
+                                            <div className="account-client-choose-item-back-left-side">
+                                                <span>Countries</span>
+                                            </div>
+                                            <div className="account-client-choose-item-back-right-side">
+                                                <span>Genres</span>
+                                            </div>
+                                        </div>
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
                     </div>
                     <p className="account-client-choose-total">
                         Total{" "}
