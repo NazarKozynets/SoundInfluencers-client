@@ -131,7 +131,8 @@ const OffersSortMenu = ({ selectedOption, onSortChange }) => {
     );
 
     const handleChange = (selectedOption) => {
-        onSortChange(selectedOption.value);
+        const sortMethod = selectedOption.value;
+        onSortChange(sortMethod); 
     }
 
     return (

@@ -33,7 +33,7 @@ const Genres = ({ setCheckedGenres, influencers, setFilteredInfluencersByGenres,
         };
         setLocalCheckedGenres(newCheckedGenres);
         setCheckedGenres(newCheckedGenres);
-        applyFilters(); // Call applyFilters whenever genres change
+        applyFilters(); 
     };
 
     const getInfluencerCount = (musicStyle) => {
@@ -44,7 +44,7 @@ const Genres = ({ setCheckedGenres, influencers, setFilteredInfluencersByGenres,
         setLocalCheckedGenres({});
         setCheckedGenres({});
         setFilteredInfluencersByGenres(influencers);
-        applyFilters(); // Call applyFilters when resetting genres
+        applyFilters(); 
     };
 
     return (

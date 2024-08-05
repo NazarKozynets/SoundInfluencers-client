@@ -436,29 +436,29 @@ const AccountClientOffers = () => {
 
     useEffect(() => {
         setFilteredInfluencers(influencers);
-    }, influencers);
+    }, [influencers]);
 
     useEffect(() => {
-        applyFilters();
+        applyFiltersAndSort();
     }, [sortMethod, budget, checkedGenres]);
-    
-    const applyFilters = () => {
-        let filtered = influencers;
 
-        const budgetString = budget ? budget.toString() : '';
-        const budgetValue = parseFloat(budgetString.replace(/[^0-9.]/g, ''));
+    const applyFiltersAndSort = () => {
+        let filtered = [...influencers]; 
 
-        if (budgetValue < 10000000) {
-            filtered = filtered.filter(item => {
-                const itemPriceString = item.price ? item.price.toString() : '';
-                const itemPrice = parseFloat(itemPriceString.replace(/[^0-9.]/g, ''));
-                return itemPrice <= budgetValue;
-            });
+        // Применение фильтров
+        if (budget) {
+            const budgetValue = parseFloat(budget.toString().replace(/[^0-9.]/g, ''));
+            if (budgetValue < 10000000) {
+                filtered = filtered.filter(item => {
+                    const itemPrice = parseFloat(item.price.replace(/[^0-9.]/g, ''));
+                    return itemPrice <= budgetValue;
+                });
+            }
         }
 
         const selectedGenres = Object.keys(checkedGenres).filter(key => checkedGenres[key]);
         if (selectedGenres.length > 0) {
-            filtered = filtered.filter(influencer => selectedGenres.includes(influencer.musicStyle));
+            filtered = filtered.filter(item => selectedGenres.includes(item.musicStyle));
         }
 
         switch (sortMethod) {
@@ -475,12 +475,18 @@ const AccountClientOffers = () => {
                 filtered.sort((a, b) => b.followersNumber - a.followersNumber);
                 break;
             case 'Best Match':
+                // filtered = [...influencers];
+                break;
             default:
-                // Нет сортировки
+                // filtered = [...influencers];
                 break;
         }
 
         setFilteredInfluencers(filtered);
+    };
+
+    const handleSortChange = (newSortMethod) => {
+        setSortMethod(newSortMethod);
     };
 
     return (<section className="account-client">
@@ -577,17 +583,17 @@ const AccountClientOffers = () => {
 
             <div className="account-client-container" style={{display: 'flex', flexDirection: 'row', marginTop: 35}}>
                 <OffersMenu
-                    influencers={filteredInfluencers}
+                    influencers={influencers}
                     setCheckedGenres={setCheckedGenres}
                     setFilteredInfluencersByGenres={setFilteredInfluencers}
-                    applyFilters={applyFilters}
+                    applyFilters={applyFiltersAndSort}
                 />
                 <div className="account-client-container-right-side">
                     <div className="account-client-container-right-side-upper-side">
                         <OffersBudgetSelect
                             budget={budget}
                             setBudget={setBudget}
-                            applyFilters={applyFilters}
+                            applyFilters={applyFiltersAndSort}
                         />
                         <OffersSearch
                             filteredInfluencers={filteredInfluencers}
@@ -595,10 +601,7 @@ const AccountClientOffers = () => {
                         />
                         <OffersSortMenu
                             selectedOption={sortMethod}
-                            onSortChange={(newSortMethod) => {
-                                setSortMethod(newSortMethod);
-                                applyFilters();
-                            }}
+                            onSortChange={handleSortChange}
                         />
                     </div>
                     <div className="account-client-choose" style={{flex: 3, marginLeft: '20px'}}>
