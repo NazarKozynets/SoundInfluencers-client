@@ -38,7 +38,9 @@ const AccountClientOffers = () => {
     const [filteredInfluencersByGenres, setFilteredInfluencersByGenres] = useState([]);
     const [sortMethod, setSortMethod] = useState('Best Match');
     const [searchResult, setSearchResult] = useState(null);
-
+    const [selectedOffersGenres, setSelectedOffersGenres] = useState([]);
+    const [filteredOffersByGenres, setFilteredOffersByGenres] = useState(prices);
+    
     const currentPrice = useSelector((state) => state.createPromo.data.selectPrice.variant);
 
     const dataForm = useSelector((state) => state.createPromo.data);
@@ -49,6 +51,18 @@ const AccountClientOffers = () => {
 
     const selectInfluencers = useSelector((state) => state.createPromo.data.selectInfluencers);
 
+    useEffect(() => {
+        getData();
+    }, []);
+    
+    useEffect(() => {
+        setFilteredInfluencers(influencers);
+    }, [influencers]);
+
+    useEffect(() => {
+        applyFiltersAndSort();
+    }, [sortMethod, budget, checkedGenres]);
+    
     const selectPrice = (id) => {
         let balance = window.sessionStorage.getItem("balance");
 
@@ -292,7 +306,9 @@ const AccountClientOffers = () => {
     };
 
     const getData = async () => {
-        const result = await axios(`${process.env.REACT_APP_SERVER}/auth/influencers`);
+        const result = await axios(
+            `${process.env.REACT_APP_SERVER}/auth/influencers`
+        );
 
         const offers = await axios(`${process.env.REACT_APP_SERVER}/promos/offers`);
 
@@ -302,29 +318,59 @@ const AccountClientOffers = () => {
         if (result.data.code === 200) {
             if (selectInfluencers.length !== 0) {
                 const list = result.data.influencers.map((item) => {
-                    const findInfluencer = selectInfluencers.find((inf) => inf.influencerId === item._id && inf.instagramUsername === item.instagramUsername);
+                    const findInfluencer = selectInfluencers.find(
+                        (inf) =>
+                            inf.influencerId === item._id &&
+                            inf.instagramUsername === item.instagramUsername
+                    );
                     if (findInfluencer) {
                         return {
-                            ...item, active: true, connect: false,
+                            ...item,
+                            active: true,
+                            connect: false,
                         };
                     }
 
                     return {
-                        ...item, active: false, connect: false,
+                        ...item,
+                        active: false,
+                        connect: false,
                     };
                 });
                 return setInfluencers(list);
             }
             const listInfluencers = result.data.influencers.map((item) => ({
-                ...item, active: false, connect: false,
+                ...item,
+                active: false,
+                connect: false,
             })).sort((a, b) => {
-                // Assign a high order value for items without the order field
                 const orderA = a.order !== undefined ? a.order : Number.MAX_SAFE_INTEGER;
                 const orderB = b.order !== undefined ? b.order : Number.MAX_SAFE_INTEGER;
 
                 return orderA - orderB;
             });
 
+            // const connectInfluencer = offers.data.offers.flatMap((offer) => offer.connectInfluencer);
+            // const influencerIds = [...new Set(connectInfluencer.map((inf) => inf.influencerId))];
+            //
+            // const influencerPromises = influencerIds.map((id) => axios.get(`${process.env.REACT_APP_SERVER}/auth/influencer/${id}`));
+            // const influencerResponses = await Promise.all(influencerPromises);
+            //
+            // const musicStyles = influencerResponses.flatMap((response) => {
+            //     if (response.data.code === 200) {
+            //         return response.data.influencer.instagram.map((instagram) => instagram.musicStyle);
+            //     }
+            //     return [];
+            // });
+            //
+            // const resultObject = {
+            //     offerId: offers.data.offers.map((offer) => offer.id),
+            //     musicStyles: Array.from(new Set(musicStyles)), 
+            // };
+            //
+            // console.log(resultObject, "resultObject")
+            //
+            // setOffersInfluencersAndGenres(resultObject);
             setInfluencers(listInfluencers);
         }
     };
@@ -347,7 +393,6 @@ const AccountClientOffers = () => {
         }
         return list;
     };
-
 
     const toggleSelectAll = () => {
         let balance = window.sessionStorage.getItem("balance");
@@ -415,10 +460,6 @@ const AccountClientOffers = () => {
         }
     };
 
-    useEffect(() => {
-        getData();
-    }, []);
-
     const handleCardClick = (index, isConnect) => {
         if (!isConnect) {
             setActiveIndices(prevIndices =>
@@ -433,17 +474,9 @@ const AccountClientOffers = () => {
     const handleSeeMoreClick = (index) => {
         setFlippedAccountIndex(index === flippedAccountIndex ? null : index);
     };
-
-    useEffect(() => {
-        setFilteredInfluencers(influencers);
-    }, [influencers]);
-
-    useEffect(() => {
-        applyFiltersAndSort();
-    }, [sortMethod, budget, checkedGenres]);
-
+    
     const applyFiltersAndSort = () => {
-        let filtered = [...influencers]; 
+        let filtered = [...influencers];
 
         // Применение фильтров
         if (budget) {
@@ -489,6 +522,27 @@ const AccountClientOffers = () => {
         setSortMethod(newSortMethod);
     };
 
+    useEffect(() => {
+        if (selectedOffersGenres.length === 0) {
+            setFilteredOffersByGenres(prices);
+            return;
+        }
+
+        const filtered = prices.filter(offer => {
+            return offer.musicStyles.some(style => {
+                const styleGenres = style.genres;
+                return selectedOffersGenres.every(genre => styleGenres.includes(genre)) &&
+                    styleGenres.length === selectedOffersGenres.length;
+            });
+        });
+
+        setFilteredOffersByGenres(filtered);
+    }, [selectedOffersGenres, prices]);
+
+    const handleOffersGenreSelect = (genres) => {
+        setSelectedOffersGenres(genres);
+    };
+    
     return (<section className="account-client">
         {/* <div className="container"> */}
         <div className="account-client-block" style={{position: "relative"}}>
@@ -497,8 +551,8 @@ const AccountClientOffers = () => {
 
             <TitleSection title="Our" span="offers"/>
 
-            <GenreButtonList prices={prices}/>
-
+            <GenreButtonList onGenreSelect={handleOffersGenreSelect} />
+            
             <button
                 style={{
                     position: "absolute", top: 0, left: 50, width: 50, height: 50, cursor: "pointer",
@@ -532,49 +586,52 @@ const AccountClientOffers = () => {
                         slidesPerView: 4, spaceBetween: 40,
                     },
                 }}
-                onSwiper={(swiper) => console.log(swiper)}
-                style={{padding: "30px 20px 180px 20px"}}
+                style={{ padding: "30px 20px 180px 20px" }}
             >
-                {prices.map((item, index) => (<SwiperSlide key={item.id}>
-                    <li
-                        key={item.id}
-                        className={`account-client-offers-item ${currentPrice !== 0 ? currentPrice === item.id ? "active" : "not-active" : ""}`}
-                        onClick={() => selectPrice(item.id)}
-                    >
-                        <h3 className="account-client-offers-title">IG {item.id}M</h3>
-                        <p className="account-client-offers-text">{item.story}</p>
-                        <p className="account-client-offers-text">{item.network}</p>
-                        <p className="account-client-offers-text"> {item.followers}</p>
-                        <div className="account-client-offers-block">
-                            <ul className="account-client-offers-text-list">
-                                {item.connectInfluencer.map((item, index) => (<li
-                                    key={index}
-                                    className="account-client-offers-text-item"
-                                    style={{display: "flex", alignItems: "center"}}
-                                >
-                                    {item.avatar ? (<img
-                                        style={{
-                                            maxWidth: "58px",
-                                            maxHeight: "58px",
-                                            gap: "0px",
-                                            opacity: "0px",
-                                        }}
-                                        src={item.avatar}
-                                        alt={item.instagramUsername}
-                                    />) : null}
-
-                                    {item.instagramUsername}
-                                </li>))}
-                            </ul>
-                        </div>
-
-                        <button
-                            className={`account-client-offers-button ${currentPrice === item.id ? "active" : ""}`}
+                {filteredOffersByGenres.map((item) => (
+                    <SwiperSlide key={item.id}>
+                        <li
+                            key={item.id}
+                            className={`account-client-offers-item ${currentPrice !== 0 ? currentPrice === item.id ? "active" : "not-active" : ""}`}
+                            onClick={() => selectPrice(item.id)}
                         >
-                            {item.price} €
-                        </button>
-                    </li>
-                </SwiperSlide>))}
+                            <h3 className="account-client-offers-title">IG {item.id}M</h3>
+                            <p className="account-client-offers-text">{item.story}</p>
+                            <p className="account-client-offers-text">{item.network}</p>
+                            <p className="account-client-offers-text"> {item.followers}</p>
+                            <div className="account-client-offers-block">
+                                <ul className="account-client-offers-text-list">
+                                    {item.connectInfluencer.map((item, index) => (
+                                        <li
+                                            key={index}
+                                            className="account-client-offers-text-item"
+                                            style={{ display: "flex", alignItems: "center" }}
+                                        >
+                                            {item.avatar ? (<img
+                                                style={{
+                                                    maxWidth: "58px",
+                                                    maxHeight: "58px",
+                                                    gap: "0px",
+                                                    opacity: "0px",
+                                                }}
+                                                src={item.avatar}
+                                                alt={item.instagramUsername}
+                                            />) : null}
+
+                                            {item.instagramUsername}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+
+                            <button
+                                className={`account-client-offers-button ${currentPrice === item.id ? "active" : ""}`}
+                            >
+                                {item.price} €
+                            </button>
+                        </li>
+                    </SwiperSlide>
+                ))}
             </Swiper>
 
             {/* </ul> */}

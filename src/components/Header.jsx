@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import logo from "../images/icons/logo.svg";
 import profile from "../images/icons/profile.svg";
 import { useLocation, useNavigate, useNavigation } from "react-router-dom";
-import themeNight from "../images/icons/theme-night.svg";
+// import themeNight from "../images/icons/theme-night.svg";
 import themeDay from "../images/icons/theme-day.svg";
 import { useTheme } from "../ThemeContext";
 import UseVerify from "../hooks/useVerify";
@@ -79,13 +79,14 @@ const Header = ({ userType = "client", page = "login", path = "" }) => {
                   Logout
                 </button>
               )}
-              <button className="header-theme" onClick={toggleTheme}>
-                {theme.text === "#000" ? (
-                  <img className="header-theme-icon" src={themeNight} />
-                ) : (
-                  <img className="header-theme-icon" src={themeDay} />
-                )}
-              </button>
+              {/*<button className="header-theme" onClick={toggleTheme}>*/}
+              {/*  /!*{theme.text === "#000" ? (*!/*/}
+              {/*  /!*  <img className="header-theme-icon" src={themeNight} />*!/*/}
+              {/*  /!*) : (*!/*/}
+              {/*    <img className="header-theme-icon" src={themeDay} />*/}
+              {/*  /!*)*!/*/}
+              {/*  */}
+              {/*</button>*/}
 
               {!isAuth && page === "signup" && (
                 <div className="header-mobile">
