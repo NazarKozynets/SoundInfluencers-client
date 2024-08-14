@@ -16,7 +16,10 @@ const OffersMenu = (props) => {
             </div>
             <img src={line} alt="line"/>
             <div className="countries">
-                <Countries/>
+                <Countries influencers={props.influencers}
+                           setCheckedCountries={props.setCheckedCountries}
+                           setFilteredInfluencersByCountries={props.setFilteredInfluencersByCountries}
+                           applyFilters={props.applyFilters}/>
             </div>
             <img src={line} alt="line"/>
             <Categories/>

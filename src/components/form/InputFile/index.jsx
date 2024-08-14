@@ -36,6 +36,7 @@ const InputFile = ({
           type={disabled ? "text" : "file"}
           style={{
             borderColor: error ? "#FB1E1E" : "transparent",
+            height: "50px",
           }}
           className={
             className

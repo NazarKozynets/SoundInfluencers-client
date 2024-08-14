@@ -13,7 +13,8 @@ const Genres = ({ setCheckedGenres, influencers, setFilteredInfluencersByGenres,
         { genre: 'EDM' },
         { genre: 'D&B' },
         { genre: 'Bass' },
-        { genre: 'Psy' }
+        { genre: 'Psy, Trance' },
+        { genre: 'Dubstep' }
     ];
 
     const groupedGenres = genres.reduce((acc, { genre, subText }) => {

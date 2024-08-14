@@ -8,9 +8,9 @@
     font-family: Geometria;
     font-size: 28px;
     font-weight: 800;
-    line-height: 30.19px;
     text-align: left;
     color: #3330E4;
+    margin-top: -2px;
 }
 
 .offers-budget-select-currency {
@@ -20,6 +20,7 @@
     background: #3330E41A;
     display: flex;
     align-items: center;
+    margin-top: 2px;
 }
 
 .offers-budget-select-currency button {
@@ -29,7 +30,6 @@
     font-family: Geometria;
     font-size: 18px;
     font-weight: 300;
-    line-height: 22.64px;
     text-align: center;
     cursor: pointer;
 }
@@ -41,6 +41,7 @@
     background: #3330E41A;
     display: flex;
     align-items: center;
+    margin-top: 2px;
 }
 
 .offers-budget-select-input-budget input {
@@ -54,15 +55,14 @@
     font-family: Geometria;
     font-size: 18px;
     font-weight: 300;
-    line-height: 22.64px;
 }
 
 .offers-budget-select-input-budget input::placeholder {
     font-family: Geometria;
     font-size: 18px;
     font-weight: 300;
-    line-height: 22.64px;
 }
 
-
-
+.offers-budget-select-currency button.selected {
+    font-weight: 500;
+}

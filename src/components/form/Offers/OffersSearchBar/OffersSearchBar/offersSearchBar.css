@@ -7,6 +7,8 @@
     height: 15px;
     border-radius: 30px;
     border: 1px solid #3330E4;
+    /*position: absolute; !* Или use position: absolute; для фиксированного положения *!*/
+    /*z-index: 10;*/
 }
 
 input {
@@ -19,7 +21,7 @@ input {
     font-family: Geometria;
     font-size: 18px;
     font-weight: 500;
-    line-height: 22.64px;
+    line-height: 22.64px;   
     text-align: left;
     color: #000000;
 }
