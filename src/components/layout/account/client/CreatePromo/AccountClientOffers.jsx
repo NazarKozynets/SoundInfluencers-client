@@ -33,6 +33,7 @@ const AccountClientOffers = () => {
     const [flippedAccountIndex, setFlippedAccountIndex] = useState(null);
     const [activeIndices, setActiveIndices] = useState([]);
     const [filteredInfluencers, setFilteredInfluencers] = useState(influencers);
+    const [filteredInfluencersByBudget, setFilteredInfluencersByBudget] = useState([]);
     const [checkedGenres, setCheckedGenres] = useState({});
     const [checkedCountries, setCheckedCountries] = useState({});
     const [budget, setBudget] = useState(10000000);
@@ -41,7 +42,7 @@ const AccountClientOffers = () => {
     const [selectedOffersGenres, setSelectedOffersGenres] = useState([]);
     const [filteredOffersByGenres, setFilteredOffersByGenres] = useState(prices);
 
-    
+
     const currentPrice = useSelector((state) => state.createPromo.data.selectPrice.variant);
 
     const dataForm = useSelector((state) => state.createPromo.data);
@@ -51,6 +52,8 @@ const AccountClientOffers = () => {
     const customePrice = useSelector((state) => state.createPromo.data.selectPrice.price);
 
     const selectInfluencers = useSelector((state) => state.createPromo.data.selectInfluencers);
+
+    const currentCurrency = useSelector((state) => state.createPromo.data.currency);
 
     useEffect(() => {
         getData();
@@ -62,7 +65,11 @@ const AccountClientOffers = () => {
 
     useEffect(() => {
         applyFiltersAndSort();
-    }, [sortMethod, budget, checkedGenres]);
+    }, [sortMethod, checkedGenres]);
+
+    useEffect(() => {
+        applyBudgetFilter();
+    }, [budget]);
 
     const selectPrice = (id) => {
         let balance = window.sessionStorage.getItem("balance");
@@ -234,6 +241,7 @@ const AccountClientOffers = () => {
             variant: id, price: totalOffer,
         }));
     };
+    
 
     const selectInfluencer = (instagramUsername) => {
         console.log("ok2");
@@ -461,17 +469,6 @@ const AccountClientOffers = () => {
         }
     };
 
-    const handleCardClick = (index, isConnect) => {
-        if (!isConnect) {
-            setActiveIndices(prevIndices =>
-                prevIndices.includes(index)
-                    ? prevIndices.filter(i => i !== index)
-                    : [...prevIndices, index]
-            );
-        }
-        setFlippedAccountIndex(null);
-    };
-
     const handleSeeMoreClick = (index) => {
         setFlippedAccountIndex(index === flippedAccountIndex ? null : index);
     };
@@ -479,16 +476,15 @@ const AccountClientOffers = () => {
     const applyFiltersAndSort = () => {
         let filtered = [...influencers];
 
-        // Применение фильтров
-        if (budget) {
-            const budgetValue = parseFloat(budget.toString().replace(/[^0-9.]/g, ''));
-            if (budgetValue < 10000000) {
-                filtered = filtered.filter(item => {
-                    const itemPrice = parseFloat(item.price.replace(/[^0-9.]/g, ''));
-                    return itemPrice <= budgetValue;
-                });
-            }
-        }
+        // if (budget) {
+        //     const budgetValue = parseFloat(budget.toString().replace(/[^0-9.]/g, ''));
+        //     if (budgetValue < 10000000) {
+        //         filtered = filtered.filter(item => {
+        //             const itemPrice = parseFloat(item.price.replace(/[^0-9.]/g, ''));
+        //             return itemPrice <= budgetValue;
+        //         });
+        //     }
+        // }
 
         const selectedGenres = Object.keys(checkedGenres).filter(key => checkedGenres[key]);
         if (selectedGenres.length > 0) {
@@ -517,6 +513,33 @@ const AccountClientOffers = () => {
         }
 
         setFilteredInfluencers(filtered);
+    };
+
+    const applyBudgetFilter = () => {
+        // if (budget) {
+        //     const budgetValue = parseFloat(budget.toString().replace(/[^0-9.]/g, ''));
+        //     let selectedInfluencers = [];
+        //     let totalBudget = 0;
+        //     let remainingInfluencers = [...filteredInfluencers];
+        //
+        //     while (remainingInfluencers.length > 0) {
+        //         const randomIndex = Math.floor(Math.random() * remainingInfluencers.length);
+        //         const selected = remainingInfluencers[randomIndex];
+        //         const itemPrice = parseFloat(selected.price.replace(/[^0-9.]/g, ''));
+        //
+        //         if (totalBudget + itemPrice <= budgetValue) {
+        //             selectedInfluencers.push(selected);
+        //             totalBudget += itemPrice;
+        //         }
+        //
+        //         remainingInfluencers.splice(randomIndex, 1);
+        //     }
+        //
+        //     if (selectedInfluencers.length > 0) {
+        //
+        //         setFilteredInfluencersByBudget(selectedInfluencers);
+        //     }
+        // }
     };
 
     const handleSortChange = (newSortMethod) => {
@@ -591,23 +614,33 @@ const AccountClientOffers = () => {
 
         return musicStyle;
     };
-    
+
+    const calculatePriceForOffersAndInfluencers = (price) => {
+        let priceString = String(price);
+        let priceWithoutCurrency = parseInt(priceString.replace(/\D/g, ""), 10);
+
+        switch (currentCurrency) {
+            case "€":
+                return priceWithoutCurrency;
+            case "£":
+                return Math.round(0.8559 * priceWithoutCurrency);
+            case "$":
+                return Math.round(1.10 * priceWithoutCurrency);
+            default:
+                return priceWithoutCurrency;
+        }
+    }
+
     return (<section className="account-client">
-            {/* <div className="container"> */}
             <div className="account-client-block" style={{position: "relative"}}>
                 <h1 className="account-client-title">service offered</h1>
                 <h2 className="account-client-second">influencers post for clients</h2>
-
                 <TitleSection title="Our" span="offers"/>
-
-                <button
-                    style={{
-                        position: "absolute", top: 0, left: 50, width: 50, height: 50, cursor: "pointer",
-                    }}
-                    onClick={() => {
-                        navigation("/account/client/list-promo");
-                    }}
-                >
+                <button style={{
+                    position: "absolute", top: 0, left: 50, width: 50, height: 50, cursor: "pointer",
+                }} onClick={() => {
+                    navigation("/account/client/list-promo");
+                }}>
                     <img src={arrow} style={{transform: "rotate(180deg)"}}/>
                 </button>
 
@@ -656,50 +689,63 @@ const AccountClientOffers = () => {
                                 overflow: "hidden"
                             }}
                         >
-                            {filteredOffersByGenres.map((item) => (
-                                <SwiperSlide key={item.id}>
-                                    <li
-                                        key={item.id}
-                                        className={`account-client-offers-item ${currentPrice !== 0 ? currentPrice === item.id ? "active" : "not-active" : ""}`}
-                                        onClick={() => selectPrice(item.id)}
-                                    >
-                                        <h3 className="account-client-offers-title">IG {item.id}M</h3>
-                                        <p className="account-client-offers-text">{item.story}</p>
-                                        <p className="account-client-offers-text">{item.network}</p>
-                                        <p className="account-client-offers-text"> {item.followers}</p>
-                                        <div className="account-client-offers-block">
-                                            <ul className="account-client-offers-text-list">
-                                                {item.connectInfluencer.map((item, index) => (
-                                                    <li
-                                                        key={index}
-                                                        className="account-client-offers-text-item"
-                                                        style={{display: "flex", alignItems: "center"}}
-                                                    >
-                                                        {item.avatar ? (<img
-                                                            style={{
-                                                                maxWidth: "58px",
-                                                                maxHeight: "58px",
-                                                                gap: "0px",
-                                                                opacity: "0px",
-                                                            }}
-                                                            src={item.avatar}
-                                                            alt={item.instagramUsername}
-                                                        />) : null}
+                            {filteredOffersByGenres.sort((a, b) => {
+                                const extractNumber = (id) => parseInt(String(id).match(/\d+/)[0], 10);
+                                return extractNumber(a.id) - extractNumber(b.id);
+                            }).map((item) => {
+                                const matchingStyle = item.musicStyles.find(style => {
+                                    const styleGenres = style.genres;
+                                    return selectedOffersGenres.every(genre => styleGenres.includes(genre)) &&
+                                        styleGenres.length === selectedOffersGenres.length;
+                                });
 
-                                                        {item.instagramUsername}
-                                                    </li>
-                                                ))}
-                                            </ul>
-                                        </div>
+                                const price = matchingStyle ? matchingStyle.price : item.price;
 
-                                        <button
-                                            className={`account-client-offers-button ${currentPrice === item.id ? "active" : ""}`}
+                                return (
+                                    <SwiperSlide key={item.id}>
+                                        <li
+                                            key={item.id}
+                                            className={`account-client-offers-item ${currentPrice !== 0 ? currentPrice === item.id ? "active" : "not-active" : ""}`}
+                                            onClick={() => selectPrice(item.id)}
                                         >
-                                            {item.price} €
-                                        </button>
-                                    </li>
-                                </SwiperSlide>))
-                            }
+                                            <h3 className="account-client-offers-title">IG {item.id}M</h3>
+                                            <p className="account-client-offers-text">{item.story}</p>
+                                            <p className="account-client-offers-text">{item.network}</p>
+                                            <p className="account-client-offers-text"> {item.followers}</p>
+                                            <div className="account-client-offers-block">
+                                                <ul className="account-client-offers-text-list">
+                                                    {item.connectInfluencer.map((item, index) => (
+                                                        <li
+                                                            key={index}
+                                                            className="account-client-offers-text-item"
+                                                            style={{display: "flex", alignItems: "center"}}
+                                                        >
+                                                            {item.avatar ? (<img
+                                                                style={{
+                                                                    maxWidth: "58px",
+                                                                    maxHeight: "58px",
+                                                                    gap: "0px",
+                                                                    opacity: "0px",
+                                                                }}
+                                                                src={item.avatar}
+                                                                alt={item.instagramUsername}
+                                                            />) : null}
+
+                                                            {item.instagramUsername}
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            </div>
+
+                                            <button
+                                                className={`account-client-offers-button ${currentPrice === item.id ? "active" : ""}`}
+                                            >
+                                                {price != null ? calculatePriceForOffersAndInfluencers(price) : calculatePriceForOffersAndInfluencers(item.price)} {currentCurrency}
+                                            </button>
+                                        </li>
+                                    </SwiperSlide>
+                                );
+                            })}
                             <div className="swiper-button-next">
                             </div>
                             <div className="swiper-button-prev">
@@ -723,9 +769,10 @@ const AccountClientOffers = () => {
                     <div className="account-client-container-right-side">
                         <div className="account-client-container-right-side-upper-side">
                             <OffersBudgetSelect
-                                budget={budget}
                                 setBudget={setBudget}
-                                applyFilters={applyFiltersAndSort}
+                                filteredInfluencersByBudget={filteredInfluencersByBudget}
+                                setFilteredInfluencersByBudget={setFilteredInfluencersByBudget}
+                                selectInfluencer={selectInfluencer}
                             />
                             <OffersSearch
                                 filteredInfluencers={filteredInfluencers}
@@ -741,7 +788,16 @@ const AccountClientOffers = () => {
                                 <ul className="account-client-choose-list">
                                     <li
                                         className={`account-client-choose-item ${searchResult.connect ? "connect" : ""} ${activeIndices.includes(searchResult.index) && !searchResult.connect ? 'active' : ''} ${flippedAccountIndex === searchResult.index ? 'flipped' : ''}`}
-                                        onClick={() => handleCardClick(searchResult.index, searchResult.connect)}
+                                        onClick={() => {
+                                            if (!searchResult.connect) {
+                                                setActiveIndices(prevIndices =>
+                                                    prevIndices.includes(searchResult.index)
+                                                        ? prevIndices.filter(i => i !== searchResult.index)
+                                                        : [...prevIndices, searchResult.index]
+                                                );
+                                                selectInfluencer(searchResult.instagramUsername);
+                                            }
+                                        }}
                                     >
                                         {searchResult.connect && (
                                             <div className="account-client-choose-item-connect">
@@ -785,31 +841,98 @@ const AccountClientOffers = () => {
                                             </div>
                                         </div>
                                         <div className="account-client-choose-item-content-third-container">
-                                            <button onClick={(e) => {
-                                                e.stopPropagation();
-                                                handleSeeMoreClick(searchResult.index);
-                                            }}>
-                                                {flippedAccountIndex === searchResult.index ? 'See Less' : 'See More'}
-                                            </button>
+                                            {flippedAccountIndex !== searchResult.index && (
+                                                <button
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        handleSeeMoreClick(searchResult.index);
+                                                    }}
+                                                    className="see-more-button"
+                                                >
+                                                    See More
+                                                </button>
+                                            )}
                                         </div>
-                                        <div
-                                            className={`account-client-choose-item-back ${flippedAccountIndex === searchResult.index ? 'show' : ''}`}>
-                                            <div className="account-client-choose-item-back-left-side">
-                                                <span>Countries</span>
+
+                                        {flippedAccountIndex === searchResult.index && (
+                                            <div
+                                                className={`account-client-choose-item-expanded-content ${searchResult.connect ? 'connect' : ''} ${activeIndices.includes(searchResult.index) ? 'active' : ''}`}>
+                                                <div
+                                                    className={`account-client-choose-item-back show ${searchResult.connect ? 'connect' : ''} ${activeIndices.includes(searchResult.index) ? 'active' : ''}`}>
+                                                    <div className="account-client-choose-item-horizontal-line">
+                                                        <div
+                                                            className="account-client-choose-item-back-left-side">
+                                                            <span
+                                                                className="account-client-choose-item-back-countries-title">Countries</span>
+                                                            <ul className="account-client-choose-item-back-left-side-countries">
+                                                                {searchResult && searchResult.countries && Array.isArray(searchResult.countries) && searchResult.countries.length > 0 ? (
+                                                                    searchResult.countries.map((country, index) => (
+                                                                        <li key={index}
+                                                                            className="account-client-choose-item-back-left-side-country-percentage">
+                                                                                <span
+                                                                                    className="country-name">{country.country}</span>
+                                                                            <span
+                                                                                className="country-percentage">{country.percentage}%</span>
+                                                                        </li>
+                                                                    ))
+                                                                ) : (
+                                                                    <li>No countries available</li>
+                                                                )}
+                                                            </ul>
+                                                        </div>
+                                                        <div
+                                                            className="account-client-choose-item-back-right-side">
+                                                            <span
+                                                                className="account-client-choose-item-back-genres-title">Genres</span>
+                                                            <ul className="account-client-choose-item-back-right-side-genres">
+                                                                {searchResult.musicStyle && searchResult.musicSubStyles && (
+                                                                    <li>
+                                                                        {getDisplayGenre(searchResult.musicSubStyles, searchResult.musicStyle, searchResult.musicStyleOther)}
+                                                                    </li>
+                                                                )}
+                                                                {searchResult.musicStyleOther && searchResult.musicStyleOther.map((genre, index) => (
+                                                                    <li key={index}>
+                                                                        {searchResult.musicSubStyles && (genre === "Techno" || genre === "House") ? (
+                                                                            getDisplayGenre(searchResult.musicSubStyles, genre, searchResult.musicStyleOther)
+                                                                        ) : (
+                                                                            genre
+                                                                        )}
+                                                                    </li>
+                                                                ))}
+                                                            </ul>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <button
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        handleSeeMoreClick(searchResult.index);
+                                                    }}
+                                                    className="see-less-button"
+                                                >
+                                                    See Less
+                                                </button>
                                             </div>
-                                            <div className="account-client-choose-item-back-right-side">
-                                                <span>Genres</span>
-                                            </div>
-                                        </div>
+                                        )}
                                     </li>
                                 </ul>
-                            ) : (
-                                <ul className="account-client-choose-list">
-                                    {filteredInfluencers.map((item, index) => (
+                            ) : filteredInfluencersByBudget.length > 0 ? (
+                                (<ul className="account-client-choose-list">
+                                    {filteredInfluencersByBudget.map((item, index) => (
                                         <li
                                             key={index}
                                             className={`account-client-choose-item ${item.connect ? "connect" : ""} ${activeIndices.includes(index) && !item.connect ? 'active' : ''} ${flippedAccountIndex === index ? 'flipped' : ''}`}
-                                            onClick={() => handleCardClick(index, item.connect)}
+                                            onClick={() => {
+                                                if (!item.connect) {
+                                                    setActiveIndices(prevIndices =>
+                                                        prevIndices.includes(index)
+                                                            ? prevIndices.filter(i => i !== index)
+                                                            : [...prevIndices, index]
+                                                    );
+                                                    selectInfluencer(item.instagramUsername);
+                                                }
+                                            }}
                                         >
                                             {item.connect && (
                                                 <div className="account-client-choose-item-connect">
@@ -867,11 +990,16 @@ const AccountClientOffers = () => {
                                             </div>
 
                                             {flippedAccountIndex === index && (
-                                                <div className={`account-client-choose-item-expanded-content ${item.connect ? 'connect' : ''} ${activeIndices.includes(index) ? 'active' : ''}`}>
-                                                    <div className={`account-client-choose-item-back show ${item.connect ? 'connect' : ''} ${activeIndices.includes(index) ? 'active' : ''}`}>
-                                                        <div className="account-client-choose-item-horizontal-line">
-                                                            <div className="account-client-choose-item-back-left-side">
-                                                                <span className="account-client-choose-item-back-countries-title">Countries</span>
+                                                <div
+                                                    className={`account-client-choose-item-expanded-content ${item.connect ? 'connect' : ''} ${activeIndices.includes(index) ? 'active' : ''}`}>
+                                                    <div
+                                                        className={`account-client-choose-item-back show ${item.connect ? 'connect' : ''} ${activeIndices.includes(index) ? 'active' : ''}`}>
+                                                        <div
+                                                            className="account-client-choose-item-horizontal-line">
+                                                            <div
+                                                                className="account-client-choose-item-back-left-side">
+                                                                <span
+                                                                    className="account-client-choose-item-back-countries-title">Countries</span>
                                                                 <ul className="account-client-choose-item-back-left-side-countries">
                                                                     {item && item.countries && Array.isArray(item.countries) && item.countries.length > 0 ? (
                                                                         item.countries.map((country, index) => (
@@ -888,8 +1016,10 @@ const AccountClientOffers = () => {
                                                                     )}
                                                                 </ul>
                                                             </div>
-                                                            <div className="account-client-choose-item-back-right-side">
-                                                                <span className="account-client-choose-item-back-genres-title">Genres</span>
+                                                            <div
+                                                                className="account-client-choose-item-back-right-side">
+                                                                <span
+                                                                    className="account-client-choose-item-back-genres-title">Genres</span>
                                                                 <ul className="account-client-choose-item-back-right-side-genres">
                                                                     {item.musicStyle && item.musicSubStyles && (
                                                                         <li>
@@ -925,31 +1055,166 @@ const AccountClientOffers = () => {
 
                                         </li>
                                     ))}
-                                </ul>
-                            )}
+                                </ul>)
+                            ) : (<ul className="account-client-choose-list">
+                                {filteredInfluencers.map((item, index) => (
+                                    <li
+                                        key={index}
+                                        className={`account-client-choose-item ${item.connect ? "connect" : ""} ${activeIndices.includes(index) && !item.connect ? 'active' : ''} ${flippedAccountIndex === index ? 'flipped' : ''}`}
+                                        onClick={() => {
+                                            if (!item.connect) {
+                                                setActiveIndices(prevIndices =>
+                                                    prevIndices.includes(index)
+                                                        ? prevIndices.filter(i => i !== index)
+                                                        : [...prevIndices, index]
+                                                );
+                                                selectInfluencer(item.instagramUsername);
+                                            }
+                                        }}
+                                    >
+                                        {item.connect && (
+                                            <div className="account-client-choose-item-connect">
+                                                <p className="account-client-choose-item-connect-text">
+                                                    {item.connect_text}
+                                                </p>
+                                            </div>
+                                        )}
+                                        <div
+                                            className={`account-client-choose-item-content ${item.connect ? "connect" : ""} ${activeIndices.includes(index) && !item.connect ? 'active' : ''} ${flippedAccountIndex === index ? 'flipped' : ''}`}>
+                                            <ImageWithFallback
+                                                src={item.logo}
+                                                fallbackSrc={altLogo}
+                                                className="account-client-choose-item-image"
+                                            />
+                                            <p className="account-client-choose-item-content-username">
+                                                {item.instagramUsername}
+                                            </p>
+                                        </div>
+                                        <div style={{
+                                            display: "flex",
+                                            alignItems: "center",
+                                            gap: 0,
+                                            justifyContent: "center"
+                                        }}>
+                                            <div
+                                                className="account-client-choose-item-content-second-container">
+                                                <div
+                                                    className="account-client-choose-item-content-second-container-left-part">
+                                        <span className="account-client-choose-item-content-icon-container">
+                                            <img className="account-client-choose-item-content-icon" src={instagram}
+                                                 style={{paddingBottom: 0, pointerEvents: "none"}}/>
+                                        </span>
+                                                    <p className="account-client-choose-item-content-text">
+                                                        {formatFollowersNumber(item.followersNumber)}
+                                                    </p>
+                                                </div>
+                                                <div className="account-client-choose-item-content-price">
+                                                    <p>PRICE<span>{calculatePriceForOffersAndInfluencers(doublePrice(item.price))}{currentCurrency}</span></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="account-client-choose-item-content-third-container">
+                                            {flippedAccountIndex !== index && (
+                                                <button
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        handleSeeMoreClick(index);
+                                                    }}
+                                                    className="see-more-button"
+                                                >
+                                                    See More
+                                                </button>
+                                            )}
+                                        </div>
+
+                                        {flippedAccountIndex === index && (
+                                            <div
+                                                className={`account-client-choose-item-expanded-content ${item.connect ? 'connect' : ''} ${activeIndices.includes(index) ? 'active' : ''}`}>
+                                                <div
+                                                    className={`account-client-choose-item-back show ${item.connect ? 'connect' : ''} ${activeIndices.includes(index) ? 'active' : ''}`}>
+                                                    <div className="account-client-choose-item-horizontal-line">
+                                                        <div
+                                                            className="account-client-choose-item-back-left-side">
+                                                                <span
+                                                                    className="account-client-choose-item-back-countries-title">Countries</span>
+                                                            <ul className="account-client-choose-item-back-left-side-countries">
+                                                                {item && item.countries && Array.isArray(item.countries) && item.countries.length > 0 ? (
+                                                                    item.countries.map((country, index) => (
+                                                                        <li key={index}
+                                                                            className="account-client-choose-item-back-left-side-country-percentage">
+                                                                                <span
+                                                                                    className="country-name">{country.country}</span>
+                                                                            <span
+                                                                                className="country-percentage">{country.percentage}%</span>
+                                                                        </li>
+                                                                    ))
+                                                                ) : (
+                                                                    <li>No countries available</li>
+                                                                )}
+                                                            </ul>
+                                                        </div>
+                                                        <div
+                                                            className="account-client-choose-item-back-right-side">
+                                                                <span
+                                                                    className="account-client-choose-item-back-genres-title">Genres</span>
+                                                            <ul className="account-client-choose-item-back-right-side-genres">
+                                                                {item.musicStyle && item.musicSubStyles && (
+                                                                    <li>
+                                                                        {getDisplayGenre(item.musicSubStyles, item.musicStyle, item.musicStyleOther)}
+                                                                    </li>
+                                                                )}
+                                                                {item.musicStyleOther && item.musicStyleOther.map((genre, index) => (
+                                                                    <li key={index}>
+                                                                        {item.musicSubStyles && (genre === "Techno" || genre === "House") ? (
+                                                                            getDisplayGenre(item.musicSubStyles, genre, item.musicStyleOther)
+                                                                        ) : (
+                                                                            genre
+                                                                        )}
+                                                                    </li>
+                                                                ))}
+                                                            </ul>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <button
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        handleSeeMoreClick(index);
+                                                    }}
+                                                    className="see-less-button"
+                                                >
+                                                    See Less
+                                                </button>
+                                            </div>
+                                        )}
+
+
+                                    </li>
+                                ))}
+                            </ul>)
+                            }
                         </div>
                     </div>
                 </div>
+
                 <div>
                     <p className="account-client-choose-total">
                         Total{" "}
-                        <span className="account-client-choose-total-span">
-        {customePrice} €
-      </span>
+                        <span className="account-client-choose-total-span">{calculatePriceForOffersAndInfluencers(customePrice)} {currentCurrency}</span>
                     </p>
-                    <div
-                        style={{
-                            display: "flex",
-                            justifyContent: "center",
-                            marginTop: 40,
-                        }}
-                    >
+                    <div style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        marginTop: 40,
+                    }}>
                         <StandardButton text="Continue" onClick={nextForm}/>
                     </div>
                 </div>
             </div>
         </section>
-    );
+    )
+        ;
 };
 
 export default AccountClientOffers;

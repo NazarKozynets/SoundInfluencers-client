@@ -37,8 +37,14 @@ const Genres = ({ setCheckedGenres, influencers, setFilteredInfluencersByGenres,
         applyFilters(); 
     };
 
-    const getInfluencerCount = (musicStyle) => {
+    const getInfluencerCountForGenre = (musicStyle) => {
         return influencers.filter(influencer => influencer.musicStyle === musicStyle).length;
+    };
+
+    const getInfluencerCountForSubGenre = (subGenre) => {
+        return influencers.filter(influencer =>
+            influencer.musicSubStyles && influencer.musicSubStyles.some(style => style === subGenre)
+        ).length;
     };
 
     const seeAllGenres = () => {
@@ -68,7 +74,7 @@ const Genres = ({ setCheckedGenres, influencers, setFilteredInfluencersByGenres,
                                     />
                                     {genre}
                                 </label>
-                                <button className={styles.randomNumberButton}>{getInfluencerCount(genre)}</button>
+                                <button className={styles.randomNumberButton}>{getInfluencerCountForGenre(genre)}</button>
                             </div>
                             {groupedGenres[genre].length > 0 && (
                                 <ul className={styles.subgenresList}>
@@ -80,11 +86,11 @@ const Genres = ({ setCheckedGenres, influencers, setFilteredInfluencersByGenres,
                                                         type="checkbox"
                                                         className={classNames(styles.checkbox, { [styles.checkboxChecked]: localCheckedGenres[subText] })}
                                                         checked={!!localCheckedGenres[subText]}
-                                                        onChange={(e) => handleCheckboxChange(subText, e.target.checked)}
+                                                        // onChange={(e) => handleCheckboxChange(subText, e.target.checked)}
                                                     />
                                                     {subText}
                                                 </label>
-                                                <button className={styles.randomNumberButton}>{getInfluencerCount(subText)}</button>
+                                                <button className={styles.randomNumberButton}>{getInfluencerCountForSubGenre(subText)}</button>
                                             </div>
                                         </li>
                                     ))}

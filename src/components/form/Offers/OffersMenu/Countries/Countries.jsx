@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import classNames from 'classnames';
 import styles from './countries.module.css';
 
@@ -21,7 +21,6 @@ const Countries = ({influencers, setCheckedCountries, setFilteredInfluencersByCo
 
     const getInfluencerCount = (targetCountry) => {
         if (!Array.isArray(influencers)) {
-            console.error("Invalid input: influencers should be an array.");
             return 0;
         }
 
@@ -33,20 +32,20 @@ const Countries = ({influencers, setCheckedCountries, setFilteredInfluencersByCo
             if (influencer.countries && Array.isArray(influencer.countries)) {
                 const countries = influencer.countries;
 
-                // Find the country with the highest percentage
                 const highestPercentageCountry = countries.reduce((max, current) => {
                     if (current.percentage > max.percentage) {
                         return current;
                     }
                     return max;
-                }, { percentage: -Infinity });
+                }, {percentage: -Infinity});
 
                 if (highestPercentageCountry.country.toLowerCase() === lowerCaseTargetCountry) {
                     count++;
                 }
-            } else {
-                console.warn("Invalid countries data for influencer:", influencer);
             }
+            // } else {
+            //     console.warn("Invalid countries data for influencer:", influencer);
+            // }
         });
 
         return count;
@@ -61,22 +60,23 @@ const Countries = ({influencers, setCheckedCountries, setFilteredInfluencersByCo
             <div className={styles.countriesSection}>
                 <div className={styles.header}>
                     <h2 className={styles.title}>COUNTRIES</h2>
-                    <button className={styles.seeAllButton} onClick={seeAllCountries} style={{ }}><span>see all</span></button>
+                    <button className={styles.seeAllButton} onClick={seeAllCountries} style={{}}><span>see all</span>
+                    </button>
                 </div>
                 <ul className={styles.categoriesList}>
                     {Object.keys(categories).map((region, index) => (
                         <li key={index} className={styles.categoriesListItem}>
                             <div className={styles.categoryItem}>
                                 <label>
-                                    <input
-                                        type="checkbox"
-                                        className={classNames(styles.checkbox, { [styles.checkboxChecked]: localCheckedCountries[region] })}
-                                        checked={!!localCheckedCountries[region]}
-                                        onChange={(e) => handleCheckboxChange(region, e.target.checked)}
-                                    />
-                                    {region}
+                                    {/*<input*/}
+                                    {/*    type="checkbox"*/}
+                                    {/*    className={classNames(styles.checkbox, { [styles.checkboxChecked]: localCheckedCountries[region] })}*/}
+                                    {/*    checked={!!localCheckedCountries[region]}*/}
+                                    {/*    onChange={(e) => handleCheckboxChange(region, e.target.checked)}*/}
+                                    {/*/>*/}
+                                    {region}:
                                 </label>
-                                <button className={styles.randomNumberButton}>0</button>
+                                {/*<button className={styles.randomNumberButton}>0</button>*/}
                             </div>
                             {categories[region].length > 0 && (
                                 <ul className={styles.countriesList}>
@@ -86,13 +86,14 @@ const Countries = ({influencers, setCheckedCountries, setFilteredInfluencersByCo
                                                 <label>
                                                     <input
                                                         type="checkbox"
-                                                        className={classNames(styles.checkbox, { [styles.checkboxChecked]: localCheckedCountries[country] })}
+                                                        className={classNames(styles.checkbox, {[styles.checkboxChecked]: localCheckedCountries[country]})}
                                                         checked={!!localCheckedCountries[country]}
                                                         onChange={(e) => handleCheckboxChange(country, e.target.checked)}
                                                     />
                                                     {country}
                                                 </label>
-                                                <button className={styles.randomNumberButton}>{getInfluencerCount(country)}</button>
+                                                <button
+                                                    className={styles.randomNumberButton}>{getInfluencerCount(country)}</button>
                                             </div>
                                         </li>
                                     ))}
