@@ -94,6 +94,7 @@
 .swiper-button-next {
   margin-right: 10px;
 } 
+
 .swiper-button-prev {
   margin-left: 20px;
 }
@@ -353,7 +354,7 @@
   }
 }
 
-@media screen and (max-width: 1728px) {
+@media screen and (max-width: 1800px) {
   .account-client-choose-list {
     gap: 25px;
   }
@@ -366,9 +367,17 @@
     justify-content: space-between;
     margin: 0 50px 0 20px;
   }
-  //.account-client-offers-item {
-  //  margin-left: 45px;
-  //  width: 320px;
+  .account-client-offers-item {
+    margin-left: 0px !important;
+    width: 370px;
+  }
+  .account-client-offers-button {
+    width: 370px;
+  }
+  //.swiper-button-next {
+  //}
+  //.swiper-button-prev {
+  //  margin-left: 20px;
   //}
 }
 

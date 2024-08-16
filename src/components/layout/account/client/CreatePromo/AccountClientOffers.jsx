@@ -241,7 +241,6 @@ const AccountClientOffers = () => {
             variant: id, price: totalOffer,
         }));
     };
-    
 
     const selectInfluencer = (instagramUsername) => {
         console.log("ok2");
@@ -516,32 +515,37 @@ const AccountClientOffers = () => {
     };
 
     const applyBudgetFilter = () => {
-        // if (budget) {
-        //     const budgetValue = parseFloat(budget.toString().replace(/[^0-9.]/g, ''));
-        //     let selectedInfluencers = [];
-        //     let totalBudget = 0;
-        //     let remainingInfluencers = [...filteredInfluencers];
-        //
-        //     while (remainingInfluencers.length > 0) {
-        //         const randomIndex = Math.floor(Math.random() * remainingInfluencers.length);
-        //         const selected = remainingInfluencers[randomIndex];
-        //         const itemPrice = parseFloat(selected.price.replace(/[^0-9.]/g, ''));
-        //
-        //         if (totalBudget + itemPrice <= budgetValue) {
-        //             selectedInfluencers.push(selected);
-        //             totalBudget += itemPrice;
-        //         }
-        //
-        //         remainingInfluencers.splice(randomIndex, 1);
-        //     }
-        //
-        //     if (selectedInfluencers.length > 0) {
-        //
-        //         setFilteredInfluencersByBudget(selectedInfluencers);
-        //     }
-        // }
-    };
+        if (budget) {
+            const budgetValue = (parseFloat(budget.toString().replace(/[^0-9.]/g, ''))) * 0.5;
+            const parsePrice = (price) => parseFloat(price.toString().replace(/[^0-9.]/g, ''));
 
+            let affordableInfluencers = filteredInfluencers.filter(influencer => {
+                const price = parsePrice(influencer.price);
+                return price > 0 && price <= budgetValue;
+            });
+
+            let selectedInfluencers = [];
+            let totalBudget = 0;
+
+            affordableInfluencers = affordableInfluencers.sort(() => Math.random() - 0.5);
+
+            while (totalBudget < budgetValue && affordableInfluencers.length > 0) {
+                const influencer = affordableInfluencers.pop();
+                const influencerPrice = parsePrice(influencer.price);
+                if (totalBudget + influencerPrice <= budgetValue) {
+                    selectedInfluencers.push(influencer);
+                    totalBudget += influencerPrice;
+                }
+            }
+
+            if (selectedInfluencers.length < 4) {
+                selectedInfluencers = [...selectedInfluencers, ...affordableInfluencers.sort((a, b) => parsePrice(a.price) - parsePrice(b.price)).slice(0, 4 - selectedInfluencers.length)];
+            }
+
+            setFilteredInfluencersByBudget(selectedInfluencers);
+        }
+    };
+    
     const handleSortChange = (newSortMethod) => {
         setSortMethod(newSortMethod);
     };
@@ -679,11 +683,15 @@ const AccountClientOffers = () => {
                                 },
                                 1400: {
                                     slidesPerView: 4,
-                                    spaceBetween: 30, // уменьшите значение
+                                    spaceBetween: 20, // уменьшите значение
                                 },
+                                1800: {
+                                    slidesPerView: 4,
+                                    spaceBetween: 30, // уменьшите значение
+                                }
                             }}
                             style={{
-                                padding: "30px 75px 180px 70px",
+                                padding: "30px 0px 180px 40px",
                                 "--swiper-navigation-size": "80px",
                                 "--swiper-navigation-top-offset": "40%",
                                 overflow: "hidden"
@@ -836,7 +844,7 @@ const AccountClientOffers = () => {
                                                     </p>
                                                 </div>
                                                 <div className="account-client-choose-item-content-price">
-                                                    <p>PRICE<span>{searchResult.price}</span></p>
+                                                    <p>PRICE<span>{calculatePriceForOffersAndInfluencers(doublePrice(searchResult.price))}{currentCurrency}</span></p>
                                                 </div>
                                             </div>
                                         </div>
@@ -971,7 +979,7 @@ const AccountClientOffers = () => {
                                                         </p>
                                                     </div>
                                                     <div className="account-client-choose-item-content-price">
-                                                        <p>PRICE<span>{doublePrice(item.price)}</span></p>
+                                                        <p>PRICE<span>{calculatePriceForOffersAndInfluencers(doublePrice(item.price))}{currentCurrency}</span></p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1109,7 +1117,8 @@ const AccountClientOffers = () => {
                                                     </p>
                                                 </div>
                                                 <div className="account-client-choose-item-content-price">
-                                                    <p>PRICE<span>{calculatePriceForOffersAndInfluencers(doublePrice(item.price))}{currentCurrency}</span></p>
+                                                    <p>PRICE<span>{calculatePriceForOffersAndInfluencers(doublePrice(item.price))}{currentCurrency}</span>
+                                                    </p>
                                                 </div>
                                             </div>
                                         </div>
@@ -1201,7 +1210,8 @@ const AccountClientOffers = () => {
                 <div>
                     <p className="account-client-choose-total">
                         Total{" "}
-                        <span className="account-client-choose-total-span">{calculatePriceForOffersAndInfluencers(customePrice)} {currentCurrency}</span>
+                        <span
+                            className="account-client-choose-total-span">{calculatePriceForOffersAndInfluencers(customePrice)} {currentCurrency}</span>
                     </p>
                     <div style={{
                         display: "flex",

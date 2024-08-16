@@ -4,31 +4,27 @@ import lineImg from './Line 35.svg';
 import {useDispatch, useSelector} from "react-redux";
 import {setSelectCurrency} from "../../../../redux/slice/create-promo";
 
-const OffersBudgetSelect = ({ setBudget, filteredInfluencersByBudget, setFilteredInfluencersByBudget, selectInfluencer }) => {
+const OffersBudgetSelect = ({ setBudget, setFilteredInfluencersByBudget }) => {
     const [value, setValue] = useState("");
-    const [currency, setCurrency] = useState("€"); 
+    const [currency, setCurrency] = useState("€");
     const inputRef = useRef(null);
 
     const dispatch = useDispatch();
-    
+
     const handleChange = (e) => {
         const newValue = e.target.value.replace(/[^0-9]/g, '');
         setValue(newValue);
         if (newValue === '') {
             setFilteredInfluencersByBudget([]);
-            setCurrency("");
+            setCurrency("€");
+            dispatch(setSelectCurrency("€"));
         }
     };
 
     const handleKeyPress = (e) => {
         if (e.key === 'Enter') {
-            if (value === '') {
-                setBudget("10000000");
-                setCurrency("");
-            } else {
-                const newBudget = `${value}${currency}`;
-                setBudget(newBudget);
-            }
+            const newBudget = `${value}${currency}`;
+            setBudget(newBudget);
         }
     };
 

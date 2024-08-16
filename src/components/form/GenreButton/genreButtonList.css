@@ -1,7 +1,7 @@
 .genre-buttons-list {
     display: flex;
     justify-content: center;
-    margin: 40px 0;
+    margin: 40px 20px 0 20px;
     overflow-x: auto; /* Добавлено для горизонтальной прокрутки */
     white-space: nowrap; /* Запрещает перенос на новую строку */
 }

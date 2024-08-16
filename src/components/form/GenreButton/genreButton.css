@@ -37,3 +37,10 @@
   color: #ffffff;
   /*box-shadow: 0px 4px 20px 0px #3330E480;*/
 }
+
+@media screen and (max-width: 1728px) {
+  .genre-button {
+    width: 160px;
+    margin: 10px;
+  }
+}
