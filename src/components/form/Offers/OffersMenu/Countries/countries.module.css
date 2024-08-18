@@ -136,3 +136,37 @@
     /*border: 1px solid #3330E4;*/
     color: #000000;
 }
+
+/*@media (max-width: 1400px) {*/
+/*    .countries {*/
+/*        margin-bottom: 10px;*/
+/*    }*/
+/*    .title {*/
+/*        font-size: 24px;*/
+/*    }*/
+/*    .seeAllButton {*/
+/*        font-size: 16px;*/
+/*        margin-right: 5px !important;*/
+/*        padding: 0 !important;*/
+/*    }*/
+/*    .categoriesList {*/
+/*        font-size: 18px;*/
+/*        margin: 15px 0 0 0;*/
+/*    }*/
+/*    .countriesList {*/
+/*        font-size: 18px;*/
+/*        margin: 15px 0 0 0;*/
+/*    }*/
+/*    .countriesListItem {*/
+/*        margin: 0 0 10px 0;*/
+/*    }*/
+/*    .countryItem {*/
+/*        gap: 10px;*/
+/*    }*/
+/*    .randomNumberButton {*/
+/*        font-size: 16px;*/
+/*        max-width: 52px;*/
+/*        max-height: 30px;*/
+/*        margin-left: 37px;*/
+/*    }*/
+/*}*/

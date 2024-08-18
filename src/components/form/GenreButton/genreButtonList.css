@@ -5,3 +5,9 @@
     overflow-x: auto; /* Добавлено для горизонтальной прокрутки */
     white-space: nowrap; /* Запрещает перенос на новую строку */
 }
+
+@media screen and (max-width: 1800px) {
+    .genre-buttons-list {
+        margin: 40px 0 0 15px;
+    }
+}

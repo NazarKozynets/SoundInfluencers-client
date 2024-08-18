@@ -59,7 +59,7 @@ const Genres = ({ setCheckedGenres, influencers, setFilteredInfluencersByGenres,
             <div className={styles.genresSection}>
                 <div className={styles.header}>
                     <h2 className={styles.title}>GENRES</h2>
-                    <button className={styles.seeAllButton} onClick={seeAllGenres} style={{ marginLeft: '20px' }}>see all</button>
+                    <button className={styles.seeAllButton} onClick={seeAllGenres} >see all</button>
                 </div>
                 <ul className={styles.genresList}>
                     {Object.keys(groupedGenres).map((genre, index) => (

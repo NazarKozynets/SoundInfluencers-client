@@ -7,8 +7,15 @@
     height: 15px;
     border-radius: 30px;
     border: 1px solid #3330E4;
-    /*position: absolute; !* Или use position: absolute; для фиксированного положения *!*/
-    /*z-index: 10;*/
+    @media (max-width: 1800px) {
+        width: 400px;
+    }
+    @media (max-width: 1400px) {
+        width: 350px;
+    }
+    @media (max-width: 1300px) {
+        width: 300px;
+    }
 }
 
 input {
@@ -39,4 +46,3 @@ input::placeholder {
     width: 20px;
     height: 20px;
 }
-

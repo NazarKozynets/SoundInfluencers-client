@@ -77,9 +77,7 @@
     padding-left: 20px;
     font-size: 22px;
     font-weight: 500;
-    line-height: 22.64px;
     text-align: left;
-    margin-bottom: 15px;
 }
 
 .subgenresListItem {
@@ -135,3 +133,38 @@
     /*border: 1px solid #3330E4;*/
     color: #000000;
 }
+
+/*@media (max-width: 1400px) {*/
+/*    .genres {*/
+/*        margin-bottom: 40px;*/
+/*    }*/
+/*    .title {*/
+/*        font-size: 24px;*/
+/*    }*/
+/*    .seeAllButton {*/
+/*        font-size: 16px;*/
+/*        margin-left: 15px;*/
+/*    }*/
+/*    .genresList {*/
+/*        font-size: 18px;*/
+/*        margin: 15px 0 0 0;*/
+/*    }*/
+/*    .genresListItem {*/
+/*        margin: 0 0 10px 0;*/
+/*    }*/
+/*    .genreItem {*/
+/*        gap: 10px;*/
+/*    }*/
+/*    .subgenresList {*/
+/*        font-size: 18px;*/
+/*    }*/
+/*    .subgenresListItem {*/
+/*        margin-top: 10px;*/
+/*    }*/
+/*    .randomNumberButton {*/
+/*        font-size: 16px;*/
+/*        max-width: 52px;*/
+/*        max-height: 30px;*/
+/*        margin-left: 10px;*/
+/*    }*/
+/*}*/
