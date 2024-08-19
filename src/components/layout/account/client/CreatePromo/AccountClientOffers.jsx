@@ -16,7 +16,7 @@ import arrow from "../../../../../images/icons/arrow.svg";
 import OffersSearch from "../../../../form/Offers/OffersSearchBar/OffersSearch";
 import OffersList from "./AccountClientOffersComponents/OffersList";
 import InfluencersList from "./AccountClientOffersComponents/InfluencersList";
-import {calculatePriceForOffersAndInfluencers} from "../../../../../utils/price";
+import {calculatePriceForOffersAndInfluencers, doublePrice} from "../../../../../utils/price";
 
 
 const AccountClientOffers = () => {
@@ -44,6 +44,8 @@ const AccountClientOffers = () => {
 
     const selectInfluencers = useSelector((state) => state.createPromo.data.selectInfluencers);
 
+    const selectInfluencersByBudget = useSelector((state) => state.createPromo.data.selectInfluencersByBudget);
+
     const currentCurrency = useSelector((state) => state.createPromo.data.currency);
 
     useEffect(() => {
@@ -56,11 +58,7 @@ const AccountClientOffers = () => {
 
     useEffect(() => {
         applyFiltersAndSort();
-    }, [sortMethod, checkedGenres]);
-
-    useEffect(() => {
-        applyBudgetFilter();
-    }, [budget]);
+    }, [sortMethod, checkedGenres, checkedCountries]);
 
     const selectPrice = (id) => {
         let balance = window.sessionStorage.getItem("balance");
@@ -234,13 +232,13 @@ const AccountClientOffers = () => {
     };
 
     const selectInfluencer = (instagramUsername) => {
-        console.log("ok2");
         // dispatch(
         //   setSelectPrice({
         //     variant: 0,
         //     price: 0,
         //   })
         // );
+
         let balance = window.sessionStorage.getItem("balance");
 
         const updateList = influencers.map((item) => {
@@ -268,11 +266,8 @@ const AccountClientOffers = () => {
 
             if (current.active) {
                 if (!current.connect) {
-                    if (currentPrice !== 0) {
-                        return acc + Number(price) * 2;
-                    } else {
-                        return acc + Number(price) * 2;
-                    }
+                    // Преобразование цены в соответствии с валютой
+                    return acc + calculatePriceForOffersAndInfluencers(price, currentCurrency) * 2;
                 } else {
                     return acc;
                 }
@@ -289,15 +284,17 @@ const AccountClientOffers = () => {
                 influencerId: item._id, instagramUsername: item.instagramUsername, confirmation: "wait",
             }));
 
-        let totalCustomOffer = priceOffer?.price + newPrice;
+        // Преобразование цены предложения в соответствии с валютой
+        let totalCustomOffer = priceOffer ? calculatePriceForOffersAndInfluencers(priceOffer.price, currentCurrency) + newPrice : newPrice;
 
-        dispatch(setSelectAmount(priceOffer ? totalCustomOffer : 0 + newPrice));
+        dispatch(setSelectAmount(priceOffer ? totalCustomOffer : newPrice));
 
         if (totalCustomOffer > balance) totalCustomOffer = totalCustomOffer - balance;
         if (newPrice > balance) newPrice = newPrice - balance;
 
         dispatch(setSelectPrice({
-            variant: currentPrice, price: priceOffer ? totalCustomOffer : 0 + newPrice,
+            variant: currentPrice,
+            price: totalCustomOffer,
         }));
 
         dispatch(setSelectInfluencer([...filterInfluencers]));
@@ -452,19 +449,19 @@ const AccountClientOffers = () => {
     const applyFiltersAndSort = () => {
         let filtered = [...influencers];
 
-        // if (budget) {
-        //     const budgetValue = parseFloat(budget.toString().replace(/[^0-9.]/g, ''));
-        //     if (budgetValue < 10000000) {
-        //         filtered = filtered.filter(item => {
-        //             const itemPrice = parseFloat(item.price.replace(/[^0-9.]/g, ''));
-        //             return itemPrice <= budgetValue;
-        //         });
-        //     }
-        // }
-
         const selectedGenres = Object.keys(checkedGenres).filter(key => checkedGenres[key]);
         if (selectedGenres.length > 0) {
             filtered = filtered.filter(item => selectedGenres.includes(item.musicStyle));
+        }
+
+        const selectedCountries = Object.keys(checkedCountries).filter(key => checkedCountries[key]);
+        if (selectedCountries.length > 0) {
+            filtered = filtered.filter(item =>
+                Array.isArray(item.countries) &&
+                item.countries.some(country =>
+                    selectedCountries.includes(country.country)
+                )
+            );
         }
 
         switch (sortMethod) {
@@ -491,35 +488,35 @@ const AccountClientOffers = () => {
         setFilteredInfluencers(filtered);
     };
 
-    const applyBudgetFilter = () => {
+    const applyFiltersByBudget = () => {
+        let filtered = [...influencers];
         if (budget) {
-            const budgetValue = (parseFloat(budget.toString().replace(/[^0-9.]/g, ''))) * 0.5;
-            const parsePrice = (price) => parseFloat(price.toString().replace(/[^0-9.]/g, ''));
+            let totalPrice = 0;
+            const numberOfInfluencersFilteredByBudget = Math.floor(Math.random() * (10 - 4 + 1)) + 4;
+            const influencersFilteredByBudget = [];
+            const selectedInfluencers = new Set();
+            let attempts = 0;
+            const maxAttempts = 1000;
 
-            let affordableInfluencers = filteredInfluencers.filter(influencer => {
-                const price = parsePrice(influencer.price);
-                return price > 0 && price <= budgetValue;
-            });
+            while (attempts < maxAttempts) {
+                attempts++;
+                let randomInfluencer = filtered[Math.floor(Math.random() * filtered.length)];
+                let influencerPrice = parseFloat(randomInfluencer.price.replace(/[^0-9.]/g, '')) * 2;
 
-            let selectedInfluencers = [];
-            let totalBudget = 0;
+                if (!selectedInfluencers.has(randomInfluencer) && (influencerPrice + totalPrice <= budget)) {
+                    influencersFilteredByBudget.push(randomInfluencer);
+                    selectedInfluencers.add(randomInfluencer);
+                    totalPrice += influencerPrice;
 
-            affordableInfluencers = affordableInfluencers.sort(() => Math.random() - 0.5);
+                    let difference = budget - totalPrice;
 
-            while (totalBudget < budgetValue && affordableInfluencers.length > 0) {
-                const influencer = affordableInfluencers.pop();
-                const influencerPrice = parsePrice(influencer.price);
-                if (totalBudget + influencerPrice <= budgetValue) {
-                    selectedInfluencers.push(influencer);
-                    totalBudget += influencerPrice;
+                    if (difference <= 50 && difference >= 0) {
+                        break;
+                    }
                 }
             }
 
-            if (selectedInfluencers.length < 4) {
-                selectedInfluencers = [...selectedInfluencers, ...affordableInfluencers.sort((a, b) => parsePrice(a.price) - parsePrice(b.price)).slice(0, 4 - selectedInfluencers.length)];
-            }
-
-            setFilteredInfluencersByBudget(selectedInfluencers);
+            setFilteredInfluencersByBudget(influencersFilteredByBudget);
         }
     };
 
@@ -556,11 +553,10 @@ const AccountClientOffers = () => {
                     <div className="account-client-container-right-side">
                         <div className="account-client-container-right-side-upper-side">
                             <OffersBudgetSelect
+                                applyFiltersByBudget={applyFiltersByBudget}
                                 budget={budget}
                                 setBudget={setBudget}
-                                filteredInfluencersByBudget={filteredInfluencersByBudget}
                                 setFilteredInfluencersByBudget={setFilteredInfluencersByBudget}
-                                selectInfluencer={selectInfluencer}
                             />
                             <div className="account-client-container-right-side-upper-side-offers-search">
                                 <OffersSearch
@@ -575,17 +571,23 @@ const AccountClientOffers = () => {
                         </div>
                         <div className="account-client-choose" style={{flex: 3, marginLeft: '20px'}}>
                             {searchResult ? (
-                                <InfluencersList influencers={searchResult} activeIndices={activeIndices}
+                                <InfluencersList influencers={searchResult}
+                                                 activeIndices={activeIndices}
                                                  setActiveIndices={setActiveIndices}
-                                                 selectInfluencer={selectInfluencer}/>
+                                                 selectInfluencer={selectInfluencer}
+                                                 isSearch={true}/>
                             ) : filteredInfluencersByBudget.length > 0 ? (
-                                <InfluencersList influencers={filteredInfluencersByBudget} activeIndices={activeIndices}
+                                <InfluencersList influencers={filteredInfluencersByBudget}
+                                                 activeIndices={activeIndices}
                                                  setActiveIndices={setActiveIndices}
-                                                 selectInfluencer={selectInfluencer}/>
+                                                 selectInfluencer={selectInfluencer}
+                                                 isSearch={false}/>
                             ) : (
-                                <InfluencersList influencers={filteredInfluencers} activeIndices={activeIndices}
+                                <InfluencersList influencers={filteredInfluencers}
+                                                 activeIndices={activeIndices}
                                                  setActiveIndices={setActiveIndices}
-                                                 selectInfluencer={selectInfluencer}/>
+                                                 selectInfluencer={selectInfluencer}
+                                                 isSearch={false}/>
                             )}
                         </div>
                     </div>

@@ -123,7 +123,7 @@ const OffersList = ({prices, selectPrice}) => {
                                         <button
                                             className={`account-client-offers-button ${currentPrice === item.id ? "active" : ""}`}
                                         >
-                                            {price != null ? calculatePriceForOffersAndInfluencers(price) : calculatePriceForOffersAndInfluencers(item.price)} {currentCurrency}
+                                            {price != null ? calculatePriceForOffersAndInfluencers(price, currentCurrency) : calculatePriceForOffersAndInfluencers(item.price, currentCurrency)} {currentCurrency}
                                         </button>
                                     </li>
                                 </SwiperSlide>
