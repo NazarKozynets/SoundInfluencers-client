@@ -16,6 +16,9 @@
     @media (max-width: 1300px) {
         width: 300px;
     }
+    @media (max-width: 768px) {
+        width: 170px;
+    }
 }
 
 input {

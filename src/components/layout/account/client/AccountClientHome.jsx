@@ -37,7 +37,7 @@ const AccountClientHome = () => {
 
   return (
     <section className="account-client">
-      <div className="container">
+      <div className="container" style={{display: 'flex', justifyContent: "center"}}>
         <div className="account-client-block">
           <TitleSection title="MY" span="account" />
 

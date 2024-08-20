@@ -2,12 +2,30 @@
     display: flex;
     justify-content: center;
     margin: 40px 20px 0 20px;
-    overflow-x: auto; 
-    white-space: nowrap; 
+    overflow-x: auto;
+    white-space: nowrap;
 }
 
-@media screen and (max-width: 1800px) {
+@media screen and (max-width: 800px) {
     .genre-buttons-list {
-        margin: 40px 0 0 15px;
+        display: flex;
+        justify-content: flex-start;
+        margin: 20px 0 0 0;
+        /*overflow-x: auto;*/
+        white-space: nowrap;
+        scroll-snap-type: x mandatory; 
+    }
+
+    .genre-buttons-list::before {
+        content: ''; 
+        display: inline-block;
+        width: 10px; 
+    }
+}
+
+@media screen and (max-width: 550px) {
+    .genre-buttons-list {
+        margin-top: 20px;
+        padding-left: 10px; 
     }
 }

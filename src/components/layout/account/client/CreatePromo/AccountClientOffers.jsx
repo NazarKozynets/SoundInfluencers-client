@@ -17,7 +17,7 @@ import OffersSearch from "../../../../form/Offers/OffersSearchBar/OffersSearch";
 import OffersList from "./AccountClientOffersComponents/OffersList";
 import InfluencersList from "./AccountClientOffersComponents/InfluencersList";
 import {calculatePriceForOffersAndInfluencers, doublePrice} from "../../../../../utils/price";
-
+import MobileInfluencersList from "./AccountClientOffersComponents/MobileInfluencersList";
 
 const AccountClientOffers = () => {
     const navigation = useNavigate();
@@ -47,6 +47,8 @@ const AccountClientOffers = () => {
     const selectInfluencersByBudget = useSelector((state) => state.createPromo.data.selectInfluencersByBudget);
 
     const currentCurrency = useSelector((state) => state.createPromo.data.currency);
+
+    const isMobile = window.innerWidth <= 768;
 
     useEffect(() => {
         getData();
@@ -526,72 +528,88 @@ const AccountClientOffers = () => {
 
     return (<section className="account-client">
             <div className="account-client-block" style={{position: "relative"}}>
-                <h1 className="account-client-title">service offered</h1>
-                <h2 className="account-client-second">influencers post for clients</h2>
-                <TitleSection title="Our" span="offers"/>
-                <button style={{
-                    position: "absolute", top: 0, left: 50, width: 50, height: 50, cursor: "pointer",
-                }} onClick={() => navigation("/account/client/list-promo")}>
-                    <img src={arrow} style={{transform: "rotate(180deg)"}}/>
-                </button>
+                <div className="account-client-back-button">
+                    <button style={{
+                        position: "absolute", top: 0, left: 50, width: 48, height: 48, cursor: "pointer",
+                    }} onClick={() => navigation("/account/client/list-promo")}>
+                        <img src={arrow} style={{transform: "rotate(180deg)"}}/>
+                    </button>
+                </div>
+
+                <div className="account-client-title-block">
+                    <h1 className="account-client-title">service offered</h1>
+                    <h2 className="account-client-second">influencers post for clients</h2>
+                </div>
+
+                <div className="account-client-title-offers">
+                    <TitleSection title="Our" span="offers"/>
+                </div>
 
                 <OffersList prices={prices} selectPrice={selectPrice}
                             calculatePriceForOffersAndInfluencers={calculatePriceForOffersAndInfluencers}/>
 
-                <TitleSection title="Pick &" span="choose"/>
+                <div className="account-client-influencers-list-title">
+                    <TitleSection title="Pick &" span="choose"/>
+                </div>
 
-                <div className="account-client-container"
-                     style={{display: 'flex', flexDirection: 'row', marginTop: 35}}>
-                    <OffersMenu
-                        influencers={influencers}
-                        setCheckedGenres={setCheckedGenres}
-                        setCheckedCountries={setCheckedCountries}
-                        setFilteredInfluencersByGenres={setFilteredInfluencers}
-                        setFilteredInfluencersByCountries={setFilteredInfluencers}
-                        applyFilters={applyFiltersAndSort}
-                    />
-                    <div className="account-client-container-right-side">
-                        <div className="account-client-container-right-side-upper-side">
-                            <OffersBudgetSelect
-                                applyFiltersByBudget={applyFiltersByBudget}
-                                budget={budget}
-                                setBudget={setBudget}
-                                setFilteredInfluencersByBudget={setFilteredInfluencersByBudget}
-                            />
-                            <div className="account-client-container-right-side-upper-side-offers-search">
-                                <OffersSearch
-                                    filteredInfluencers={filteredInfluencers}
-                                    setSearchResult={setSearchResult}
+                {isMobile ? <MobileInfluencersList filteredInfluencers={filteredInfluencers}
+                                                   setSearchResult={setSearchResult}/> :
+                    <div className="account-client-container"
+                         style={{
+                             display: 'flex',
+                             flexDirection: 'row',
+                             marginTop: 35
+                         }}>
+                        {isMobile ? null : <OffersMenu
+                            influencers={influencers}
+                            setCheckedGenres={setCheckedGenres}
+                            setCheckedCountries={setCheckedCountries}
+                            setFilteredInfluencersByGenres={setFilteredInfluencers}
+                            setFilteredInfluencersByCountries={setFilteredInfluencers}
+                            applyFilters={applyFiltersAndSort}
+                        />}
+                        <div className="account-client-container-right-side">
+                            {isMobile ? null : <div className="account-client-container-right-side-upper-side">
+                                <OffersBudgetSelect
+                                    applyFiltersByBudget={applyFiltersByBudget}
+                                    budget={budget}
+                                    setBudget={setBudget}
+                                    setFilteredInfluencersByBudget={setFilteredInfluencersByBudget}
                                 />
-                                <OffersSortMenu
-                                    selectedOption={sortMethod}
-                                    onSortChange={handleSortChange}
-                                />
+                                <div className="account-client-container-right-side-upper-side-offers-search">
+                                    <OffersSearch
+                                        filteredInfluencers={filteredInfluencers}
+                                        setSearchResult={setSearchResult}
+                                    />
+                                    <OffersSortMenu
+                                        selectedOption={sortMethod}
+                                        onSortChange={handleSortChange}
+                                    />
+                                </div>
+                            </div>}
+                            <div className="account-client-choose" style={{flex: 3, marginLeft: '20px'}}>
+                                {searchResult ? (
+                                    <InfluencersList influencers={searchResult}
+                                                     activeIndices={activeIndices}
+                                                     setActiveIndices={setActiveIndices}
+                                                     selectInfluencer={selectInfluencer}
+                                                     isSearch={true}/>
+                                ) : filteredInfluencersByBudget.length > 0 ? (
+                                    <InfluencersList influencers={filteredInfluencersByBudget}
+                                                     activeIndices={activeIndices}
+                                                     setActiveIndices={setActiveIndices}
+                                                     selectInfluencer={selectInfluencer}
+                                                     isSearch={false}/>
+                                ) : (
+                                    <InfluencersList influencers={filteredInfluencers}
+                                                     activeIndices={activeIndices}
+                                                     setActiveIndices={setActiveIndices}
+                                                     selectInfluencer={selectInfluencer}
+                                                     isSearch={false}/>
+                                )}
                             </div>
                         </div>
-                        <div className="account-client-choose" style={{flex: 3, marginLeft: '20px'}}>
-                            {searchResult ? (
-                                <InfluencersList influencers={searchResult}
-                                                 activeIndices={activeIndices}
-                                                 setActiveIndices={setActiveIndices}
-                                                 selectInfluencer={selectInfluencer}
-                                                 isSearch={true}/>
-                            ) : filteredInfluencersByBudget.length > 0 ? (
-                                <InfluencersList influencers={filteredInfluencersByBudget}
-                                                 activeIndices={activeIndices}
-                                                 setActiveIndices={setActiveIndices}
-                                                 selectInfluencer={selectInfluencer}
-                                                 isSearch={false}/>
-                            ) : (
-                                <InfluencersList influencers={filteredInfluencers}
-                                                 activeIndices={activeIndices}
-                                                 setActiveIndices={setActiveIndices}
-                                                 selectInfluencer={selectInfluencer}
-                                                 isSearch={false}/>
-                            )}
-                        </div>
-                    </div>
-                </div>
+                    </div>}
 
                 <div>
                     <p className="account-client-choose-total">

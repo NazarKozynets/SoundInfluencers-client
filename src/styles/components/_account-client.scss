@@ -159,7 +159,6 @@
   color: var(--text);
 }
 
-
 .account-client-offers-block {
   margin: 25px 0 46px 0;
   display: flex;
@@ -1094,6 +1093,41 @@
   text-decoration-line: underline;
 }
 
+.account-client-mobile-filtering-buttons {
+  margin-top: 14px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.account-client-mobile-filtering-buttons-filters {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 157px;
+  height: 27px;
+  border-radius: 30px;
+  padding: 10px;
+  position: relative;
+  background: #FF7A09;
+
+  span {
+    font-family: Geometria;
+    font-size: 14px;
+    font-weight: 700;
+    color: #FFFFFF;
+    text-align: center;
+    margin: 0 auto;
+  }
+
+  img {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}
+
 @media screen and (max-width: 1800px) {
   .swiper-div {
     margin: 0 50px 0 0px !important;
@@ -1259,6 +1293,11 @@
 }
 
 @media screen and (max-width: 1300px) {
+  .account-client-block {
+    text-align: center;
+    margin: 31px 0 0 0 !important;
+
+  }
   .account-client-choose-list {
     gap: 28px;
   }
@@ -1324,5 +1363,139 @@
     padding: 0;
     margin-top: 10px;
     margin-left: 40%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .account-client-block {
+    overflow: hidden;
+  }
+  .account-client-title-block {
+    padding: 0 10% 0 10%;
+    width: 80%;
+    margin: 0 auto;
+  }
+  .account-client-title {
+    font-family: Geometria;
+    font-size: 28px;
+    font-weight: 800;
+    text-align: center;
+  }
+
+  .account-client-second {
+    font-family: Geometria;
+    font-size: 28px;
+    font-weight: 400;
+    text-align: center;
+  }
+
+
+  .account-client-back-button {
+    position: relative;
+    z-index: 100000;
+    top: -52px;
+    left: 0;
+    margin-left: -8%;
+    max-width: calc(100% - 30px);
+  }
+
+  .account-client-back-button img {
+    width: 30px;
+    height: 30px;
+  }
+
+  //Offers List
+  .account-client-title-offers {
+    display: flex;
+    justify-content: center;
+    margin: -31px 0 0 0 !important;
+  }
+
+  .account-client-offers-item {
+    max-width: 303px;
+    max-height: 511px;
+    box-shadow: 0px 1px 10px 0px #3330E480;
+  }
+  .account-client-offers-button {
+    max-width: 303px;
+    max-height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .swiper-div {
+    margin: 0 0 0 0 !important;
+    box-sizing: border-box;
+  }
+  .swiper-wrapper {
+    display: flex;
+    align-items: center;
+    padding-right: calc((100vw - 100%) / 2) !important;
+  }
+  .swiper-slide {
+    display: flex;
+    justify-content: center;
+  }
+  .swiper-button-next,
+  .swiper-button-prev {
+    display: none !important;
+  }
+  .account-client-offers-text-list {
+    list-style: disc;
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+    margin-top: -16px;
+    padding-top: 10px;
+    max-height: 225px;
+    padding-right: 50px;
+    padding-left: 7px;
+  }
+  .swiper-pagination {
+    align-content: space-between;
+    display: none !important;
+  }
+  //Influencers List  
+  .account-client-influencers-list-title {
+    margin: -100px 0 0 0 !important;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .account-client-title-offers {
+    margin: -20px 0 0 0 !important;
+  }
+  .swiper-div {
+    width: calc(100% + 20px);
+    box-sizing: border-box;
+  }
+  .account-client-offers-item {
+    max-width: 85%;
+    margin: 0;
+    padding: 0;
+    box-shadow: 0px 1px 4px 0px #3330E480;
+  }
+  .swiper-wrapper {
+    padding-right: calc((100vw - 100%) / 2) !important;
+  }
+  .account-client-offers-button {
+    max-width: 100%;
+    max-height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    padding: 0 10px;
+  }
+  .account-client-offers-text-list {
+    margin-top: -16px;
+    padding-top: 10px;
+    max-height: 230px;
+    padding-right: 40px;
+    padding-left: 7px;
+    overflow-y: auto;
+  }
+  .account-client-offers-text-item {
+    font-size: 14px;
   }
 }

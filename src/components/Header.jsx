@@ -70,15 +70,15 @@ const Header = ({ userType = "client", page = "login", path = "" }) => {
             </div>
 
             <div className="header-navigation">
-              {isAuth && (
-                <button
-                  className="header-logout"
-                  type="button"
-                  onClick={logoutRequest}
-                >
-                  Logout
-                </button>
-              )}
+              {/*{isAuth && (*/}
+              {/*  <button*/}
+              {/*    className="header-logout"*/}
+              {/*    type="button"*/}
+              {/*    onClick={logoutRequest}*/}
+              {/*  >*/}
+              {/*    Logout*/}
+              {/*  </button>*/}
+              {/*)}*/}
               {/*<button className="header-theme" onClick={toggleTheme}>*/}
               {/*  /!*{theme.text === "#000" ? (*!/*/}
               {/*  /!*  <img className="header-theme-icon" src={themeNight} />*!/*/}

@@ -33,7 +33,7 @@ const OffersList = ({prices, selectPrice}) => {
     const handleOffersGenreSelect = (genres) => {
         setSelectedOffersGenres(genres);
     };
-    
+
     return (
         <div className="account-client-offers">
             <div className="genre-swiper-container">
@@ -46,7 +46,7 @@ const OffersList = ({prices, selectPrice}) => {
                             prevEl: ".swiper-button-prev",
                         }}
                         pagination={{
-                            enabled: true, bulletElement: "button", clickable: true, dynamicBullets: true,
+                            enabled: true, bulletElement: "button", clickable: true,
                         }}
                         breakpoints={{
                             0: {
@@ -65,12 +65,6 @@ const OffersList = ({prices, selectPrice}) => {
                                 slidesPerView: 4,
                             }
                         }}
-                        // style={{
-                        //     padding: "30px 0 180px 0",
-                        //     "--swiper-navigation-size": "80px",
-                        //     "--swiper-navigation-top-offset": "40%",
-                        //     overflow: "hidden"
-                        // }}
                     >
                         {filteredOffersByGenres.sort((a, b) => {
                             const extractNumber = (id) => parseInt(String(id).match(/\d+/)[0], 10);
@@ -129,15 +123,14 @@ const OffersList = ({prices, selectPrice}) => {
                                 </SwiperSlide>
                             );
                         })}
-                        <div className="swiper-button-next">
-                        </div>
-                        <div className="swiper-button-prev">
-                        </div>
+                        <div className="swiper-button-next"></div>
+                        <div className="swiper-button-prev"></div>
                     </Swiper>
                 </div>
             </div>
         </div>
     );
+
 }
 
 export default OffersList;
