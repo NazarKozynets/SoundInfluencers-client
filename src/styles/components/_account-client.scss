@@ -1424,8 +1424,8 @@
     justify-content: center;
   }
   .swiper-div {
-    margin: 0 0 0 0 !important;
     box-sizing: border-box;
+    margin: 0 !important;
   }
   .swiper-wrapper {
     display: flex;
@@ -1457,7 +1457,36 @@
   }
   //Influencers List  
   .account-client-influencers-list-title {
-    margin: -100px 0 0 0 !important;
+    margin: -50px 0 0 0 !important;
+  }
+  .account-client-container-right-side {
+    margin-left: 0;
+  }
+  .account-client-choose-list {
+    margin-top: 36px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 21px;
+  }
+  .account-client-choose-item {
+    max-width: 236px;
+    height: 142px;
+    box-shadow: 0 4px 20px 0 #3330E480;
+  }
+  .account-client-choose-item-content {
+    height: 70px;
+    gap: 0;
+  }
+  .account-client-choose-item-image {
+    margin-left: 0;
+    max-height: 65px;
+    max-width: 65px;
+  }
+  .account-client-choose-item-content-username {
+    font-size: 18px;
+    font-weight: 700;
+    text-align: left;
   }
 }
 

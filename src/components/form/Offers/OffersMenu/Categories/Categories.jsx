@@ -1,28 +1,47 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import classNames from "classnames";
 import styles from "./categories.module.css";
 
-const Categories = () => {
-    const [checkedCategories, setCheckedCategories] = useState({});
+const Categories = ({
+                        checkedCategories,
+                        influencers,
+                        setCheckedCategories,
+                        setFilteredInfluencersByCategories
+                    }) => {
+    const [localCheckedCategories, setLocalCheckedCategories] = useState({});
+
+    useEffect(() => {
+        setLocalCheckedCategories(checkedCategories || {});
+    }, [checkedCategories]);
 
     const categories = [
         'Ibiza', 'Memes', 'Dancing'
     ];
 
     const handleCheckboxChange = (category, checked) => {
-        setCheckedCategories(prevCheckedCategories => ({
-            ...prevCheckedCategories,
+        const newCheckedCategories = {
+            ...localCheckedCategories,
             [category]: checked
-        }));
+        };
+        setLocalCheckedCategories(newCheckedCategories);
+        setCheckedCategories(newCheckedCategories);
     };
 
-    const generateRandomNumber = () => Math.floor(Math.random() * 100) + 1;
+    const getInfluencersCountForCategory = (category) => {
+        return influencers.filter(influencer => influencer.categories && influencer.categories.includes(category)).length;
+    };
+
+    const seeAllCategories = () => {
+        setLocalCheckedCategories({});
+        setCheckedCategories({});
+        setFilteredInfluencersByCategories(influencers);
+    };
 
     return (
         <div className={styles.categories}>
             <div className={styles.header}>
                 <h2 className={styles.title}>CATEGORIES</h2>
-                <button className={styles.seeAllButton}>see all</button>
+                <button className={styles.seeAllButton} onClick={seeAllCategories}>see all</button>
             </div>
             <ul className={styles.categoriesList}>
                 {categories.map((category, index) => (
@@ -31,16 +50,17 @@ const Categories = () => {
                             <label>
                                 <input
                                     type="checkbox"
-                                    checked={!!checkedCategories[category]}
+                                    checked={!!localCheckedCategories[category]}
                                     onChange={(e) => handleCheckboxChange(category, e.target.checked)}
                                     className={classNames({
                                         [styles.checkbox]: true,
-                                        [styles.checkboxChecked]: !!checkedCategories[category]
+                                        [styles.checkboxChecked]: !!localCheckedCategories[category]
                                     })}
                                 />
                                 {category}
                             </label>
-                            <button className={styles.randomNumberButton}>{0}</button>
+                            <button
+                                className={styles.randomNumberButton}>{getInfluencersCountForCategory(category)}</button>
                         </div>
                     </li>
                 ))}

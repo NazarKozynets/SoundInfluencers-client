@@ -29,11 +29,20 @@ const AccountClientOffers = () => {
     const [filteredInfluencers, setFilteredInfluencers] = useState(influencers);
     const [filteredInfluencersByBudget, setFilteredInfluencersByBudget] = useState([]);
     const [checkedGenres, setCheckedGenres] = useState({});
+    const [checkedSubGenres, setCheckedSubGenres] = useState({});
     const [checkedCountries, setCheckedCountries] = useState({});
+    const [checkedCategories, setCheckedCategories] = useState({});
     const [budget, setBudget] = useState(null);
     const [sortMethod, setSortMethod] = useState('Best Match');
     const [searchResult, setSearchResult] = useState(null);
-
+    const [filterParams, setFilterParams] = useState({
+        sortMethod: 'Best Match',
+        checkedGenres: {},
+        checkedCategories: {},
+        checkedSubGenres: {},
+        checkedCountries: {},
+    });
+    
     const currentPrice = useSelector((state) => state.createPromo.data.selectPrice.variant);
 
     const dataForm = useSelector((state) => state.createPromo.data);
@@ -43,8 +52,6 @@ const AccountClientOffers = () => {
     const customePrice = useSelector((state) => state.createPromo.data.selectPrice.price);
 
     const selectInfluencers = useSelector((state) => state.createPromo.data.selectInfluencers);
-
-    const selectInfluencersByBudget = useSelector((state) => state.createPromo.data.selectInfluencersByBudget);
 
     const currentCurrency = useSelector((state) => state.createPromo.data.currency);
 
@@ -60,7 +67,7 @@ const AccountClientOffers = () => {
 
     useEffect(() => {
         applyFiltersAndSort();
-    }, [sortMethod, checkedGenres, checkedCountries]);
+    }, [influencers, filterParams]);
 
     const selectPrice = (id) => {
         let balance = window.sessionStorage.getItem("balance");
@@ -268,7 +275,6 @@ const AccountClientOffers = () => {
 
             if (current.active) {
                 if (!current.connect) {
-                    // Преобразование цены в соответствии с валютой
                     return acc + calculatePriceForOffersAndInfluencers(price, currentCurrency) * 2;
                 } else {
                     return acc;
@@ -286,7 +292,6 @@ const AccountClientOffers = () => {
                 influencerId: item._id, instagramUsername: item.instagramUsername, confirmation: "wait",
             }));
 
-        // Преобразование цены предложения в соответствии с валютой
         let totalCustomOffer = priceOffer ? calculatePriceForOffersAndInfluencers(priceOffer.price, currentCurrency) + newPrice : newPrice;
 
         dispatch(setSelectAmount(priceOffer ? totalCustomOffer : newPrice));
@@ -450,10 +455,24 @@ const AccountClientOffers = () => {
 
     const applyFiltersAndSort = () => {
         let filtered = [...influencers];
+        const { sortMethod, checkedGenres, checkedCategories, checkedSubGenres, checkedCountries } = filterParams;
 
         const selectedGenres = Object.keys(checkedGenres).filter(key => checkedGenres[key]);
-        if (selectedGenres.length > 0) {
+        const selectedCategories = Object.keys(checkedCategories).filter(key => checkedCategories[key]);
+
+        if (selectedGenres.length > 0 && selectedCategories.length === 0) {
             filtered = filtered.filter(item => selectedGenres.includes(item.musicStyle));
+        } else if (selectedCategories.length > 0 && selectedGenres.length === 0) {
+            filtered = filtered.filter(item =>
+                item.categories && selectedCategories.some(category => item.categories.includes(category))
+            );
+        }
+
+        const selectedSubGenres = Object.keys(checkedSubGenres).filter(key => checkedSubGenres[key]);
+        if (selectedSubGenres.length > 0) {
+            filtered = filtered.filter(item => {
+                return item.musicSubStyles && item.musicSubStyles.length > 0 && item.musicSubStyles.some(subGenre => selectedSubGenres.includes(subGenre));
+            });
         }
 
         const selectedCountries = Object.keys(checkedCountries).filter(key => checkedCountries[key]);
@@ -480,14 +499,37 @@ const AccountClientOffers = () => {
                 filtered.sort((a, b) => b.followersNumber - a.followersNumber);
                 break;
             case 'Best Match':
-                // filtered = [...influencers];
                 break;
             default:
-                // filtered = [...influencers];
                 break;
         }
 
         setFilteredInfluencers(filtered);
+    };
+
+    const handleSetCheckedGenres = (newCheckedGenres) => {
+        if (Object.keys(newCheckedGenres).length > 0) {
+            setCheckedCategories({});
+        }
+        setCheckedGenres(newCheckedGenres);
+        updateFilterParams({ checkedGenres: newCheckedGenres });
+    };
+
+    const handleSetCheckedSubGenres = (newCheckedSubGenres) => {
+        if (Object.keys(newCheckedSubGenres).length > 0) {
+            setCheckedCategories({});
+        }
+        setCheckedSubGenres(newCheckedSubGenres);
+        updateFilterParams({ checkedSubGenres: newCheckedSubGenres });
+    };
+
+    const handleSetCheckedCategories = (newCheckedCategories) => {
+        if (Object.keys(newCheckedCategories).length > 0) {
+            setCheckedGenres({});
+            setCheckedSubGenres({});
+        }
+        setCheckedCategories(newCheckedCategories);
+        updateFilterParams({ checkedCategories: newCheckedCategories });
     };
 
     const applyFiltersByBudget = () => {
@@ -522,8 +564,17 @@ const AccountClientOffers = () => {
         }
     };
 
-    const handleSortChange = (newSortMethod) => {
-        setSortMethod(newSortMethod);
+    const handleSortChange = (sortMethod) => {
+        updateFilterParams({
+            sortMethod: sortMethod
+        });
+    };
+
+    const updateFilterParams = (newParams) => {
+        setFilterParams(prevParams => ({
+            ...prevParams,
+            ...newParams
+        }));
     };
 
     return (<section className="account-client">
@@ -552,64 +603,69 @@ const AccountClientOffers = () => {
                     <TitleSection title="Pick &" span="choose"/>
                 </div>
 
-                {isMobile ? <MobileInfluencersList filteredInfluencers={filteredInfluencers}
-                                                   setSearchResult={setSearchResult}/> :
-                    <div className="account-client-container"
-                         style={{
-                             display: 'flex',
-                             flexDirection: 'row',
-                             marginTop: 35
-                         }}>
-                        {isMobile ? null : <OffersMenu
-                            influencers={influencers}
-                            setCheckedGenres={setCheckedGenres}
-                            setCheckedCountries={setCheckedCountries}
-                            setFilteredInfluencersByGenres={setFilteredInfluencers}
-                            setFilteredInfluencersByCountries={setFilteredInfluencers}
-                            applyFilters={applyFiltersAndSort}
-                        />}
-                        <div className="account-client-container-right-side">
-                            {isMobile ? null : <div className="account-client-container-right-side-upper-side">
-                                <OffersBudgetSelect
-                                    applyFiltersByBudget={applyFiltersByBudget}
-                                    budget={budget}
-                                    setBudget={setBudget}
-                                    setFilteredInfluencersByBudget={setFilteredInfluencersByBudget}
+                <div className="account-client-container"
+                     style={{
+                         display: 'flex',
+                         flexDirection: 'row',
+                         marginTop: 35
+                     }}>
+                    {isMobile ? null : <OffersMenu
+                        influencers={influencers}
+                        setCheckedGenres={handleSetCheckedGenres}
+                        setCheckedCategories={handleSetCheckedCategories}
+                        setCheckedSubGenres={handleSetCheckedSubGenres}
+                        setCheckedCountries={setCheckedCountries}
+                        setFilteredInfluencersByGenres={setFilteredInfluencers}
+                        setFilteredInfluencersByCountries={setFilteredInfluencers}
+                        setFilteredInfluencersByCategories={setFilteredInfluencers}
+                        checkedGenres={checkedGenres}
+                        checkedCategories={checkedCategories}
+                        checkedSubGenres={checkedSubGenres}
+                        updateFilterParams={updateFilterParams}
+                    />}
+                    <div className="account-client-container-right-side">
+                        {isMobile ? <MobileInfluencersList filteredInfluencers={filteredInfluencers} setSearchResult={setSearchResult}/> : <div className="account-client-container-right-side-upper-side">
+                            <OffersBudgetSelect
+                                applyFiltersByBudget={applyFiltersByBudget}
+                                budget={budget}
+                                setBudget={setBudget}
+                                setFilteredInfluencersByBudget={setFilteredInfluencersByBudget}
+                                setActiveIndices={setActiveIndices}
+                            />
+                            <div className="account-client-container-right-side-upper-side-offers-search">
+                                <OffersSearch
+                                    filteredInfluencers={filteredInfluencers}
+                                    setSearchResult={setSearchResult}
                                 />
-                                <div className="account-client-container-right-side-upper-side-offers-search">
-                                    <OffersSearch
-                                        filteredInfluencers={filteredInfluencers}
-                                        setSearchResult={setSearchResult}
-                                    />
-                                    <OffersSortMenu
-                                        selectedOption={sortMethod}
-                                        onSortChange={handleSortChange}
-                                    />
-                                </div>
-                            </div>}
-                            <div className="account-client-choose" style={{flex: 3, marginLeft: '20px'}}>
-                                {searchResult ? (
-                                    <InfluencersList influencers={searchResult}
-                                                     activeIndices={activeIndices}
-                                                     setActiveIndices={setActiveIndices}
-                                                     selectInfluencer={selectInfluencer}
-                                                     isSearch={true}/>
-                                ) : filteredInfluencersByBudget.length > 0 ? (
-                                    <InfluencersList influencers={filteredInfluencersByBudget}
-                                                     activeIndices={activeIndices}
-                                                     setActiveIndices={setActiveIndices}
-                                                     selectInfluencer={selectInfluencer}
-                                                     isSearch={false}/>
-                                ) : (
-                                    <InfluencersList influencers={filteredInfluencers}
-                                                     activeIndices={activeIndices}
-                                                     setActiveIndices={setActiveIndices}
-                                                     selectInfluencer={selectInfluencer}
-                                                     isSearch={false}/>
-                                )}
+                                <OffersSortMenu
+                                    selectedOption={filterParams.sortMethod}
+                                    onSortChange={handleSortChange}
+                                />
                             </div>
+                        </div>}
+                        <div className="account-client-choose" style={{flex: 3, marginLeft: '20px'}}>
+                            {searchResult ? (
+                                <InfluencersList influencers={searchResult}
+                                                 activeIndices={activeIndices}
+                                                 setActiveIndices={setActiveIndices}
+                                                 selectInfluencer={selectInfluencer}
+                                                 isSearch={true}/>
+                            ) : filteredInfluencersByBudget.length > 0 ? (
+                                <InfluencersList influencers={filteredInfluencersByBudget}
+                                                 activeIndices={activeIndices}
+                                                 setActiveIndices={setActiveIndices}
+                                                 selectInfluencer={selectInfluencer}
+                                                 isSearch={false}/>
+                            ) : (
+                                <InfluencersList influencers={filteredInfluencers}
+                                                 activeIndices={activeIndices}
+                                                 setActiveIndices={setActiveIndices}
+                                                 selectInfluencer={selectInfluencer}
+                                                 isSearch={false}/>
+                            )}
                         </div>
-                    </div>}
+                    </div>
+                </div>
 
                 <div>
                     <p className="account-client-choose-total">
@@ -627,8 +683,7 @@ const AccountClientOffers = () => {
                 </div>
             </div>
         </section>
-    )
-        ;
+    );
 };
 
 export default AccountClientOffers;

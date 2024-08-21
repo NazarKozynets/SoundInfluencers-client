@@ -7,7 +7,7 @@ const MobileInfluencersList = (props) => {
     return (
         <div>
             <div className="account-client-mobile-filtering-buttons">
-                <button onClick={() => console.log(props.filteredInfluencers, 'filtered')}
+                <button onClick={() => alert('asdasdasdas')}
                         className="account-client-mobile-filtering-buttons-filters">
                     <img src={filterImg} alt="filter"/>
                     <span>Filters</span>

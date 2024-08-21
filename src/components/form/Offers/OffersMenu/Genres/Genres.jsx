@@ -1,10 +1,19 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import classNames from 'classnames';
 import styles from './genres.module.css';
 
-const Genres = ({ setCheckedGenres, influencers, setFilteredInfluencersByGenres, applyFilters }) => {
+const Genres = ({ checkedSubGenres, checkedGenres, setCheckedGenres, setCheckedSubGenres, influencers, setFilteredInfluencersByGenres }) => {
     const [localCheckedGenres, setLocalCheckedGenres] = useState({});
+    const [localCheckedSubGenres, setLocalCheckedSubGenres] = useState({});
+    
+    useEffect(() => {
+        setLocalCheckedGenres(checkedGenres); 
+    }, [checkedGenres]);
 
+    useEffect(() => {
+        setLocalCheckedSubGenres(checkedSubGenres);
+    }, [checkedSubGenres]);
+    
     const genres = [
         { genre: 'Techno', subText: 'Melodic, Minimal' },
         { genre: 'Techno', subText: 'Hard, Peak' },
@@ -34,7 +43,15 @@ const Genres = ({ setCheckedGenres, influencers, setFilteredInfluencersByGenres,
         };
         setLocalCheckedGenres(newCheckedGenres);
         setCheckedGenres(newCheckedGenres);
-        applyFilters(); 
+    };
+
+    const handleSubCheckboxChange = (subGenre, checked) => {
+        const newCheckedSubGenres = {
+            ...localCheckedSubGenres,
+            [subGenre]: checked
+        };
+        setLocalCheckedSubGenres(newCheckedSubGenres);
+        setCheckedSubGenres(newCheckedSubGenres);
     };
 
     const getInfluencerCountForGenre = (musicStyle) => {
@@ -50,8 +67,9 @@ const Genres = ({ setCheckedGenres, influencers, setFilteredInfluencersByGenres,
     const seeAllGenres = () => {
         setLocalCheckedGenres({});
         setCheckedGenres({});
+        setLocalCheckedSubGenres({});
+        setCheckedSubGenres({});
         setFilteredInfluencersByGenres(influencers);
-        applyFilters(); 
     };
 
     return (
@@ -84,9 +102,9 @@ const Genres = ({ setCheckedGenres, influencers, setFilteredInfluencersByGenres,
                                                 <label>
                                                     <input
                                                         type="checkbox"
-                                                        className={classNames(styles.checkbox, { [styles.checkboxChecked]: localCheckedGenres[subText] })}
-                                                        checked={!!localCheckedGenres[subText]}
-                                                        // onChange={(e) => handleCheckboxChange(subText, e.target.checked)}
+                                                        className={classNames(styles.checkbox, { [styles.checkboxChecked]: localCheckedSubGenres[subText] })}
+                                                        checked={!!localCheckedSubGenres[subText]}
+                                                        onChange={(e) => handleSubCheckboxChange(subText, e.target.checked)}
                                                     />
                                                     {subText}
                                                 </label>

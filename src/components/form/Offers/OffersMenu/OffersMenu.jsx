@@ -9,20 +9,25 @@ const OffersMenu = (props) => {
     return (
         <div className="menu">
             <div className="genres">
-                <Genres influencers={props.influencers} 
+                <Genres checkedGenres={props.checkedGenres}
+                        influencers={props.influencers}
                         setCheckedGenres={props.setCheckedGenres}
                         setFilteredInfluencersByGenres={props.setFilteredInfluencersByGenres}
-                        applyFilters={props.applyFilters}/>
+                        setCheckedSubGenres={props.setCheckedSubGenres}
+                        checkedSubGenres={props.checkedSubGenres}/>
             </div>
             <img src={line} alt="line"/>
             <div className="countries">
                 <Countries influencers={props.influencers}
                            setCheckedCountries={props.setCheckedCountries}
                            setFilteredInfluencersByCountries={props.setFilteredInfluencersByCountries}
-                           applyFilters={props.applyFilters}/>
+                           updateFilterParams={props.updateFilterParams}/>
             </div>
             <img src={line} alt="line"/>
-            <Categories/>
+            <Categories checkedCategories={props.checkedCategories}
+                        influencers={props.influencers}
+                        setCheckedCategories={props.setCheckedCategories}
+                        setFilteredInfluencersByCategories={props.setFilteredInfluencersByCategories}/>
         </div>
     );
 };

@@ -2,23 +2,30 @@ import React, { useState, useEffect, useRef } from "react";
 import "./offersBudgetSelect.css";
 import lineImg from './Line 34.svg';
 import {useDispatch, useSelector} from "react-redux";
-import {setSelectCurrency} from "../../../../redux/slice/create-promo";
+import {setSelectCurrency, setSelectInfluencer, setSelectPrice} from "../../../../redux/slice/create-promo";
 
-const OffersBudgetSelect = ({ budget, setBudget, setFilteredInfluencersByBudget, applyFiltersByBudget }) => {
+const OffersBudgetSelect = ({ budget, setBudget, setFilteredInfluencersByBudget, applyFiltersByBudget, setActiveIndices }) => {
     const [currency, setCurrency] = useState("€");
     const inputRef = useRef(null);
 
     const dispatch = useDispatch();
-
+    const selectInfluencers = useSelector((state) => state.createPromo.data.selectInfluencers);
+    
     const handleChange = (e) => {
         setBudget(e.target.value);
         if (e.target.value === "") {
             setFilteredInfluencersByBudget([]);
+            dispatch(setSelectInfluencer([]));
+            dispatch(setSelectPrice({ variant: 0, price: 0 }));
+            setActiveIndices([]);
         }
     };
 
     const handleCalculate = () => {
         applyFiltersByBudget();
+        dispatch(setSelectInfluencer([]));
+        dispatch(setSelectPrice({ variant: 0, price: 0 }));
+        setActiveIndices([]);
     };
 
     const handleCurrencyChange = (newCurrency) => {

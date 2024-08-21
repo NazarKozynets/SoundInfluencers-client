@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import classNames from 'classnames';
 import styles from './countries.module.css';
 
-const Countries = ({ influencers, setCheckedCountries, setFilteredInfluencersByCountries, applyFilters }) => {
+const Countries = ({ influencers, setCheckedCountries, setFilteredInfluencersByCountries, updateFilterParams }) => {
     const [localCheckedCountries, setLocalCheckedCountries] = useState({});
 
     const categories = {
@@ -25,7 +25,7 @@ const Countries = ({ influencers, setCheckedCountries, setFilteredInfluencersByC
 
         setLocalCheckedCountries(newCheckedCountries);
         setCheckedCountries(newCheckedCountries);
-        applyFilters();
+        updateFilterParams({ countries: Object.keys(newCheckedCountries) });
     };
 
     const getInfluencerCountForCountry = (targetCountry) => {
@@ -38,7 +38,7 @@ const Countries = ({ influencers, setCheckedCountries, setFilteredInfluencersByC
         return influencers.filter(influencer =>
             Array.isArray(influencer.countries) &&
             influencer.countries.some(country =>
-                country.country.toLowerCase() === lowerCaseTargetCountry
+                country && country.country && country.country.toLowerCase() === lowerCaseTargetCountry
             )
         ).length;
     };
@@ -53,7 +53,7 @@ const Countries = ({ influencers, setCheckedCountries, setFilteredInfluencersByC
         setLocalCheckedCountries({});
         setCheckedCountries({});
         setFilteredInfluencersByCountries(influencers);
-        applyFilters();
+        updateFilterParams({ countries: [] });
     };
 
     return (
