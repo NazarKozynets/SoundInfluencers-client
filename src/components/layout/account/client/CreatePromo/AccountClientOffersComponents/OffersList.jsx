@@ -6,34 +6,19 @@ import {useSelector} from "react-redux";
 import GenreButtonList from "../../../../../form/GenreButton/GenreButtonList";
 import {calculatePriceForOffersAndInfluencers} from "../../../../../../utils/price";
 
-const OffersList = ({prices, selectPrice}) => {
-    const [selectedOffersGenres, setSelectedOffersGenres] = useState([]);
-    const [filteredOffersByGenres, setFilteredOffersByGenres] = useState(prices);
-
+const OffersList = ({setSelectedOffersGenres, selectedOffersGenres, setFilteredOffersByGenres, filteredOffersByGenres, influencers, selectPrice, prices}) => {
     const currentPrice = useSelector((state) => state.createPromo.data.selectPrice.variant);
     const currentCurrency = useSelector((state) => state.createPromo.data.currency);
-    
-    useEffect(() => {
-        if (selectedOffersGenres.length === 0) {
-            setFilteredOffersByGenres(prices);
-            return;
-        }
-
-        const filtered = prices.filter(offer => {
-            return offer.musicStyles.some(style => {
-                const styleGenres = style.genres;
-                return selectedOffersGenres.every(genre => styleGenres.includes(genre)) &&
-                    styleGenres.length === selectedOffersGenres.length;
-            });
-        });
-
-        setFilteredOffersByGenres(filtered);
-    }, [selectedOffersGenres, prices]);
 
     const handleOffersGenreSelect = (genres) => {
         setSelectedOffersGenres(genres);
     };
 
+    const getInfluencerAvatar = (influencers, username) => {
+        const insta = influencers.find(insta => insta.instagramUsername === username);
+        return insta ? insta.logo : null;
+    };
+    
     return (
         <div className="account-client-offers">
             <div className="genre-swiper-container">
@@ -75,9 +60,8 @@ const OffersList = ({prices, selectPrice}) => {
                                 return selectedOffersGenres.every(genre => styleGenres.includes(genre)) &&
                                     styleGenres.length === selectedOffersGenres.length;
                             });
-
                             const price = matchingStyle ? matchingStyle.price : item.price;
-
+                            const influencersForOffer = matchingStyle ? matchingStyle.connectInfluencer : item.connectInfluencer || []; 
                             return (
                                 <SwiperSlide key={item.id}>
                                     <li
@@ -91,26 +75,31 @@ const OffersList = ({prices, selectPrice}) => {
                                         <p className="account-client-offers-text"> {item.followers}</p>
                                         <div className="account-client-offers-block">
                                             <ul className="account-client-offers-text-list">
-                                                {item.connectInfluencer.map((item, index) => (
-                                                    <li
-                                                        key={index}
-                                                        className="account-client-offers-text-item"
-                                                        style={{display: "flex", alignItems: "center"}}
-                                                    >
-                                                        {item.avatar ? (<img
-                                                            style={{
-                                                                maxWidth: "58px",
-                                                                maxHeight: "58px",
-                                                                gap: "0px",
-                                                                opacity: "0px",
-                                                            }}
-                                                            src={item.avatar}
-                                                            alt={item.instagramUsername}
-                                                        />) : null}
+                                                {influencersForOffer.map((influencer, index) => {
+                                                    const avatarUrl = getInfluencerAvatar(influencers, influencer.instagramUsername);
 
-                                                        {item.instagramUsername}
-                                                    </li>
-                                                ))}
+                                                    return (
+                                                        <li
+                                                            key={index}
+                                                            className="account-client-offers-text-item"
+                                                            style={{ display: 'flex', alignItems: 'center' }}
+                                                        >
+                                                            {avatarUrl ? (
+                                                                <img
+                                                                    style={{
+                                                                        maxWidth: '58px',
+                                                                        maxHeight: '58px',
+                                                                        gap: '0px',
+                                                                        opacity: '0px',
+                                                                    }}
+                                                                    src={avatarUrl}
+                                                                    alt={influencer.instagramUsername}
+                                                                />
+                                                            ) : null}
+                                                            {influencer.instagramUsername}
+                                                        </li>
+                                                    );
+                                                })}
                                             </ul>
                                         </div>
 

@@ -23,6 +23,8 @@ import MobileInfluencersListMenu from "./AccountClientOffersComponents/MobileInf
 const AccountClientOffers = () => {
     const navigation = useNavigate();
     const [prices, setPrices] = useState([]);
+    const [selectedOffersGenres, setSelectedOffersGenres] = useState([]);
+    const [filteredOffersByGenres, setFilteredOffersByGenres] = useState(prices);
     const dispatch = useDispatch();
     const [influencers, setInfluencers] = useState([]);
     const [isSelectAll, setIsSelectAll] = useState(false)
@@ -67,75 +69,159 @@ const AccountClientOffers = () => {
 
     useEffect(() => {
         applyFiltersAndSort();
-        console.log('filterParams', filterParams)
     }, [influencers, filterParams]);
+
+    useEffect(() => {
+        if (selectedOffersGenres.length === 0) {
+            setFilteredOffersByGenres(prices);
+            return;
+        }
+
+        const filtered = prices.filter(offer => {
+            return offer.musicStyles.some(style => {
+                const styleGenres = style.genres;
+                return selectedOffersGenres.every(genre => styleGenres.includes(genre)) &&
+                    styleGenres.length === selectedOffersGenres.length;
+            });
+        });
+
+        setFilteredOffersByGenres(filtered);
+    }, [selectedOffersGenres, prices]);
 
     const selectPrice = (id) => {
         let balance = window.sessionStorage.getItem("balance");
 
-        const searchPrice = prices.find((item) => item.id === id);
-
         const calculatePrice = (price) => calculatePriceForOffersAndInfluencers(price, currentCurrency);
 
-        const updateList = influencers.map((item) => {
-            if (searchPrice.connectInfluencer.find((fin) => fin.influencerId === item._id && fin.instagramUsername === item.instagramUsername)) {
-                return {
-                    ...item, active: true, connect: true, connect_text: `Offer ${searchPrice.id}`,
-                };
-            } else {
-                if (item.active && item.connect) {
-                    return {
-                        ...item, active: false, connect: false,
-                    };
-                }
-                return {
-                    ...item,
-                };
-            }
-        });
+        if (selectedOffersGenres.length > 0) {
+            const searchPrice = filteredOffersByGenres.find((item) => item.id === id);
 
-        const filterInfluencers = searchPrice.connectInfluencer.map((item) => ({
-            influencerId: item.influencerId, confirmation: "wait", instagramUsername: item.instagramUsername,
-        }));
-
-        if (selectInfluencers.length !== 0) {
-            const currentSelectInfluencers = selectInfluencers.map((item) => ({
-                influencerId: item.influencerId, confirmation: "wait", instagramUsername: item.instagramUsername,
-            }));
-            const filterCurrentSelectInfluencer = [];
-            [...filterInfluencers].forEach((item) => {
-                const checkUnion = filterCurrentSelectInfluencer.find((fin) => fin.instagramUsername === item.instagramUsername);
-                if (!checkUnion) {
-                    filterCurrentSelectInfluencer.push(item);
-                }
+            const matchingStyle = searchPrice.musicStyles.find(style => {
+                const styleGenres = style.genres;
+                return selectedOffersGenres.every(genre => styleGenres.includes(genre)) &&
+                    styleGenres.length === selectedOffersGenres.length;
             });
-            dispatch(setSelectInfluencer(filterCurrentSelectInfluencer));
-        } else {
-            dispatch(setSelectInfluencer(filterInfluencers));
-        }
-        setInfluencers(updateList);
 
-        if (currentPrice === id) {
-            const checkInfluencers = influencers.map((item) => {
-                if (item.connect) {
+            searchPrice.matchingStyle = matchingStyle;
+
+            const offerPrice = matchingStyle ? matchingStyle.price : searchPrice.price;
+
+            const updateList = influencers.map((item) => {
+                if (matchingStyle.connectInfluencer.find((fin) => fin.influencerId === item._id && fin.instagramUsername === item.instagramUsername)) {
                     return {
-                        ...item, connect: false, active: false,
+                        ...item, active: true, connect: true, connect_text: `Offer ${searchPrice.id}`,
                     };
                 } else {
+                    if (item.active && item.connect) {
+                        return {
+                            ...item, active: false, connect: false,
+                        };
+                    }
                     return {
                         ...item,
                     };
                 }
             });
 
-            setInfluencers(checkInfluencers);
-
-            const currentSelectInfluencers = influencers.filter((item) => !item.connect && item.active);
-
-            const totalSelectInfluencers = currentSelectInfluencers.map((item) => ({
-                influencerId: item._id, confirmation: "wait", instagramUsername: item.instagramUsername,
+            const filterInfluencers = matchingStyle.connectInfluencer.map((item) => ({
+                influencerId: item.influencerId, confirmation: "wait", instagramUsername: item.instagramUsername,
             }));
-            dispatch(setSelectInfluencer(totalSelectInfluencers));
+
+            if (selectInfluencers.length !== 0) {
+                const currentSelectInfluencers = selectInfluencers.map((item) => ({
+                    influencerId: item.influencerId, confirmation: "wait", instagramUsername: item.instagramUsername,
+                }));
+                const filterCurrentSelectInfluencer = [];
+                [...filterInfluencers].forEach((item) => {
+                    const checkUnion = filterCurrentSelectInfluencer.find((fin) => fin.instagramUsername === item.instagramUsername);
+                    if (!checkUnion) {
+                        filterCurrentSelectInfluencer.push(item);
+                    }
+                });
+                dispatch(setSelectInfluencer(filterCurrentSelectInfluencer));
+            } else {
+                dispatch(setSelectInfluencer(filterInfluencers));
+            }
+            setInfluencers(updateList);
+
+            if (currentPrice === id) {
+                const checkInfluencers = influencers.map((item) => {
+                    if (item.connect) {
+                        return {
+                            ...item, connect: false, active: false,
+                        };
+                    } else {
+                        return {
+                            ...item,
+                        };
+                    }
+                });
+
+                setInfluencers(checkInfluencers);
+
+                const currentSelectInfluencers = influencers.filter((item) => !item.connect && item.active);
+
+                const totalSelectInfluencers = currentSelectInfluencers.map((item) => ({
+                    influencerId: item._id, confirmation: "wait", instagramUsername: item.instagramUsername,
+                }));
+                dispatch(setSelectInfluencer(totalSelectInfluencers));
+
+                let newPrice = influencers.reduce((acc, current) => {
+                    if (!current.price) return acc;
+                    let price = current.price.replace(/\D/g, "");
+
+                    if (current.customPrice) {
+                        price = current.customPrice;
+                    }
+
+                    if (current.active) {
+                        if (!current.connect) {
+                            const influencerPrice = calculatePrice(price) * 2;
+                            return acc + influencerPrice;
+                        } else {
+                            return acc;
+                        }
+                    } else {
+                        return acc;
+                    }
+                }, 0);
+
+                dispatch(setSelectPrice({
+                    variant: 0, price: newPrice
+                }));
+                return;
+            }
+
+            if (customePrice !== 0) {
+                const newPrice = influencers.reduce((acc, current) => {
+                    if (!current.price) return acc;
+                    let price = current.price.replace(/\D/g, "");
+
+                    if (current.customPrice) {
+                        price = current.customPrice;
+                    }
+
+                    const checkConnect = matchingStyle.connectInfluencer.find((item) => item.influencerId === current._id && item.instagramUsername === current.instagramUsername);
+
+                    if (checkConnect) return acc;
+
+                    if (current.active) {
+                        if (!current.connect) {
+                            const influencerPrice = calculatePrice(price) * 2;
+                            return acc + influencerPrice;
+                        } else {
+                            return acc;
+                        }
+                    } else {
+                        return acc;
+                    }
+                }, 0);
+
+                dispatch(setSelectPrice({
+                    variant: id, price: calculatePrice(matchingStyle.price) + newPrice,
+                }));
+                return;
+            }
 
             let newPrice = influencers.reduce((acc, current) => {
                 if (!current.price) return acc;
@@ -147,7 +233,11 @@ const AccountClientOffers = () => {
 
                 if (current.active) {
                     if (!current.connect) {
-                        return acc + calculatePrice(price) * 2;
+                        if (currentPrice !== 0) {
+                            return acc + calculatePrice(price) * 2;
+                        } else {
+                            return acc + calculatePrice(price) * 2;
+                        }
                     } else {
                         return acc;
                     }
@@ -156,14 +246,143 @@ const AccountClientOffers = () => {
                 }
             }, 0);
 
-            dispatch(setSelectPrice({
-                variant: 0, price: newPrice
-            }));
-            return;
-        }
+            let totalOffer = matchingStyle.price; 
+            let totalCustomOffer = totalOffer + newPrice;
 
-        if (customePrice !== 0) {
-            const newPrice = influencers.reduce((acc, current) => {
+            if (totalCustomOffer > balance) totalCustomOffer = totalCustomOffer - balance;
+            if (newPrice > balance) newPrice = newPrice - balance;
+            if (totalOffer > balance) totalOffer = totalOffer - balance;
+
+            dispatch(setSelectAmount(totalCustomOffer > 0 ? calculatePrice(totalCustomOffer) : newPrice));
+            dispatch(setSelectPrice({
+                variant: id, price: calculatePrice(totalOffer),
+            }));
+        }
+        else {
+            const searchPrice = prices.find((item) => item.id === id);
+
+            const updateList = influencers.map((item) => {
+                if (searchPrice.connectInfluencer.find((fin) => fin.influencerId === item._id && fin.instagramUsername === item.instagramUsername)) {
+                    return {
+                        ...item, active: true, connect: true, connect_text: `Offer ${searchPrice.id}`,
+                    };
+                } else {
+                    if (item.active && item.connect) {
+                        return {
+                            ...item, active: false, connect: false,
+                        };
+                    }
+                    return {
+                        ...item,
+                    };
+                }
+            });
+
+            const filterInfluencers = searchPrice.connectInfluencer.map((item) => ({
+                influencerId: item.influencerId, confirmation: "wait", instagramUsername: item.instagramUsername,
+            }));
+
+            if (selectInfluencers.length !== 0) {
+                const currentSelectInfluencers = selectInfluencers.map((item) => ({
+                    influencerId: item.influencerId, confirmation: "wait", instagramUsername: item.instagramUsername,
+                }));
+                const filterCurrentSelectInfluencer = [];
+                [...filterInfluencers].forEach((item) => {
+                    const checkUnion = filterCurrentSelectInfluencer.find((fin) => fin.instagramUsername === item.instagramUsername);
+                    if (!checkUnion) {
+                        filterCurrentSelectInfluencer.push(item);
+                    }
+                });
+                dispatch(setSelectInfluencer(filterCurrentSelectInfluencer));
+            } else {
+                dispatch(setSelectInfluencer(filterInfluencers));
+            }
+            setInfluencers(updateList);
+
+            if (currentPrice === id) {
+                const checkInfluencers = influencers.map((item) => {
+                    if (item.connect) {
+                        return {
+                            ...item, connect: false, active: false,
+                        };
+                    } else {
+                        return {
+                            ...item,
+                        };
+                    }
+                });
+
+                setInfluencers(checkInfluencers);
+
+                const currentSelectInfluencers = influencers.filter((item) => !item.connect && item.active);
+
+                const totalSelectInfluencers = currentSelectInfluencers.map((item) => ({
+                    influencerId: item._id, confirmation: "wait", instagramUsername: item.instagramUsername,
+                }));
+                dispatch(setSelectInfluencer(totalSelectInfluencers));
+
+                let newPrice = influencers.reduce((acc, current) => {
+                    if (!current.price) return acc;
+                    let price = current.price.replace(/\D/g, "");
+
+                    if (current.customPrice) {
+                        price = current.customPrice;
+                    }
+
+                    if (current.active) {
+                        if (!current.connect) {
+                            return acc + calculatePrice(price) * 2;
+                        } else {
+                            return acc;
+                        }
+                    } else {
+                        return acc;
+                    }
+                }, 0);
+
+                dispatch(setSelectPrice({
+                    variant: 0, price: newPrice
+                }));
+                return;
+            }
+
+            if (customePrice !== 0) {
+                const newPrice = influencers.reduce((acc, current) => {
+                    if (!current.price) return acc;
+                    let price = current.price.replace(/\D/g, "");
+
+                    if (current.customPrice) {
+                        price = current.customPrice;
+                    }
+
+                    const checkConnect = (() => {
+                        const searchPrice = prices.find((item) => item.id === id);
+                        if (!searchPrice) return false;
+                        return searchPrice.connectInfluencer.find((item) => item.influencerId === current._id && item.instagramUsername === current.instagramUsername);
+                    })();
+
+                    if (checkConnect) return acc;
+
+                    if (current.active) {
+                        if (!current.connect) {
+                            return acc + calculatePrice(price) * 2;
+                        } else {
+                            return acc;
+                        }
+                    } else {
+                        return acc;
+                    }
+                }, 0);
+
+                const priceOffer = prices.find((item) => item.id === id);
+
+                dispatch(setSelectPrice({
+                    variant: id, price: calculatePrice(priceOffer.price) + newPrice,
+                }));
+                return;
+            }
+
+            let newPrice = influencers.reduce((acc, current) => {
                 if (!current.price) return acc;
                 let price = current.price.replace(/\D/g, "");
 
@@ -171,17 +390,13 @@ const AccountClientOffers = () => {
                     price = current.customPrice;
                 }
 
-                const checkConnect = (() => {
-                    const searchPrice = prices.find((item) => item.id === id);
-                    if (!searchPrice) return false;
-                    return searchPrice.connectInfluencer.find((item) => item.influencerId === current._id && item.instagramUsername === current.instagramUsername);
-                })();
-
-                if (checkConnect) return acc;
-
                 if (current.active) {
                     if (!current.connect) {
-                        return acc + calculatePrice(price) * 2;
+                        if (currentPrice !== 0) {
+                            return acc + calculatePrice(price) * 2;
+                        } else {
+                            return acc + calculatePrice(price) * 2;
+                        }
                     } else {
                         return acc;
                     }
@@ -190,56 +405,26 @@ const AccountClientOffers = () => {
                 }
             }, 0);
 
-            const priceOffer = prices.find((item) => item.id === id);
+            const priceOffer = prices.find((item) => item.id === currentPrice);
+            let totalOffer = prices.find((item) => item.id === id).price;
+            let totalCustomOffer = priceOffer?.price + newPrice;
+
+            dispatch(setSelectAmount(priceOffer ? calculatePrice(totalCustomOffer) : newPrice));
+
+            dispatch(setSelectAmount(totalOffer));
+
+            if (totalCustomOffer > balance) totalCustomOffer = totalCustomOffer - balance;
+            if (newPrice > balance) newPrice = newPrice - balance;
+            if (totalOffer > balance) totalOffer = totalOffer - balance;
 
             dispatch(setSelectPrice({
-                variant: id, price: calculatePrice(priceOffer.price) + newPrice,
+                variant: id, price: calculatePrice(priceOffer ? totalCustomOffer : newPrice),
             }));
-            return;
+
+            dispatch(setSelectPrice({
+                variant: id, price: calculatePrice(totalOffer),
+            }));
         }
-
-        let newPrice = influencers.reduce((acc, current) => {
-            if (!current.price) return acc;
-            let price = current.price.replace(/\D/g, "");
-
-            if (current.customPrice) {
-                price = current.customPrice;
-            }
-
-            if (current.active) {
-                if (!current.connect) {
-                    if (currentPrice !== 0) {
-                        return acc + calculatePrice(price) * 2;
-                    } else {
-                        return acc + calculatePrice(price) * 2;
-                    }
-                } else {
-                    return acc;
-                }
-            } else {
-                return acc;
-            }
-        }, 0);
-
-        const priceOffer = prices.find((item) => item.id === currentPrice);
-        let totalOffer = prices.find((item) => item.id === id).price;
-        let totalCustomOffer = priceOffer?.price + newPrice;
-
-        dispatch(setSelectAmount(priceOffer ? calculatePrice(totalCustomOffer) : newPrice));
-
-        dispatch(setSelectAmount(totalOffer));
-
-        if (totalCustomOffer > balance) totalCustomOffer = totalCustomOffer - balance;
-        if (newPrice > balance) newPrice = newPrice - balance;
-        if (totalOffer > balance) totalOffer = totalOffer - balance;
-
-        dispatch(setSelectPrice({
-            variant: id, price: calculatePrice(priceOffer ? totalCustomOffer : newPrice),
-        }));
-
-        dispatch(setSelectPrice({
-            variant: id, price: calculatePrice(totalOffer),
-        }));
     };
 
     const selectInfluencer = (instagramUsername) => {
@@ -287,16 +472,28 @@ const AccountClientOffers = () => {
         }, 0);
 
         const priceOffer = prices.find((item) => item.id === currentPrice);
-
         const filterInfluencers = updateList
             .filter((item) => item.active)
             .map((item) => ({
                 influencerId: item._id, instagramUsername: item.instagramUsername, confirmation: "wait",
             }));
 
-        let totalCustomOffer = priceOffer ? calculatePriceForOffersAndInfluencers(priceOffer.price, currentCurrency) + newPrice : newPrice;
+        const selectedGenres = selectedOffersGenres.length > 0;
+        let totalCustomOffer;
+        if (selectedGenres) {
+            const searchPrice = filteredOffersByGenres.find((item) => item.id === currentPrice);
+            const matchingStyle = searchPrice?.musicStyles.find(style => {
+                const styleGenres = style.genres;
+                return selectedOffersGenres.every(genre => styleGenres.includes(genre)) &&
+                    styleGenres.length === selectedOffersGenres.length;
+            });
+            const matchingStylePrice = matchingStyle ? matchingStyle.price : 0;
+            totalCustomOffer = matchingStylePrice + newPrice;
+        } else {
+            totalCustomOffer = priceOffer ? calculatePriceForOffersAndInfluencers(priceOffer.price, currentCurrency) + newPrice : newPrice;
+        }
 
-        dispatch(setSelectAmount(priceOffer ? totalCustomOffer : newPrice));
+        dispatch(setSelectAmount(totalCustomOffer));
 
         if (totalCustomOffer > balance) totalCustomOffer = totalCustomOffer - balance;
         if (newPrice > balance) newPrice = newPrice - balance;
@@ -385,7 +582,6 @@ const AccountClientOffers = () => {
         console.log(dataForm, "1 dataForm");
         dispatch(setCurrentWindow(1));
     };
-
     const createInfList = (score) => {
         const list = [];
         let sum = 0;
@@ -602,9 +798,10 @@ const AccountClientOffers = () => {
                     <TitleSection title="Our" span="offers"/>
                 </div>
 
-                <OffersList prices={prices} selectPrice={selectPrice}
-                            calculatePriceForOffersAndInfluencers={calculatePriceForOffersAndInfluencers}/>
-
+                <OffersList prices={prices} selectPrice={selectPrice} filteredOffersByGenres={filteredOffersByGenres}
+                            selectedOffersGenres={selectedOffersGenres}
+                            influencers={influencers}
+                            setSelectedOffersGenres={setSelectedOffersGenres}/>
                 <div className="account-client-influencers-list-title">
                     <TitleSection title="Pick &" span="choose"/>
                 </div>
