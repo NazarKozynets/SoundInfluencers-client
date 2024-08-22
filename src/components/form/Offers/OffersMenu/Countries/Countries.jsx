@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import classNames from 'classnames';
 import styles from './countries.module.css';
 
-const Countries = ({ influencers, setCheckedCountries, setFilteredInfluencersByCountries, updateFilterParams }) => {
+const Countries = ({ filterParams, influencers, setCheckedCountries, setFilteredInfluencersByCountries, updateFilterParams }) => {
     const [localCheckedCountries, setLocalCheckedCountries] = useState({});
 
+    const isMobile = window.innerWidth <= 768;
+    
     const categories = {
         'North America': ['US', 'Canada'],
         'Europe': ['UK', 'Germany', 'Italy', 'Spain', 'France', 'Netherlands', 'Belgium'],
@@ -25,8 +27,8 @@ const Countries = ({ influencers, setCheckedCountries, setFilteredInfluencersByC
 
         setLocalCheckedCountries(newCheckedCountries);
         setCheckedCountries(newCheckedCountries);
-        updateFilterParams({ countries: Object.keys(newCheckedCountries) });
     };
+
 
     const getInfluencerCountForCountry = (targetCountry) => {
         if (!Array.isArray(influencers)) {
@@ -68,12 +70,25 @@ const Countries = ({ influencers, setCheckedCountries, setFilteredInfluencersByC
                         <li key={index} className={styles.categoriesListItem}>
                             <div className={styles.categoryItem}>
                                 <label>
-                                    <input
-                                        type="checkbox"
-                                        className={classNames(styles.checkbox, { [styles.checkboxChecked]: getSelectedStateForRegion(region) })}
-                                        checked={!!localCheckedCountries[region]}
-                                        onChange={(e) => handleCheckboxChange(region, e.target.checked)}
-                                    />
+                                    {isMobile ? (
+                                        <input
+                                            type="checkbox"
+                                            className={classNames(styles.checkbox, {
+                                                [styles.checkboxChecked]: filterParams.checkedCountries[region] || localCheckedCountries[region]
+                                            })}
+                                            checked={!!filterParams.checkedCountries[region] || !!localCheckedCountries[region]}
+                                            onChange={(e) => handleCheckboxChange(region, e.target.checked)}
+                                        />
+                                    ) : (
+                                        <input
+                                            type="checkbox"
+                                            className={classNames(styles.checkbox, {
+                                                [styles.checkboxChecked]: localCheckedCountries[region]
+                                            })}
+                                            checked={!!localCheckedCountries[region]}
+                                            onChange={(e) => handleCheckboxChange(region, e.target.checked)}
+                                        />
+                                    )}
                                     {region}:
                                 </label>
                                 <button className={styles.randomNumberButton}>
@@ -86,14 +101,28 @@ const Countries = ({ influencers, setCheckedCountries, setFilteredInfluencersByC
                                         <li key={idx} className={styles.countriesListItem}>
                                             <div className={styles.countryItem}>
                                                 <label>
-                                                    <input
-                                                        type="checkbox"
-                                                        className={classNames(styles.checkbox, { [styles.checkboxChecked]: localCheckedCountries[country] })}
-                                                        checked={!!localCheckedCountries[country]}
-                                                        onChange={(e) => handleCheckboxChange(country, e.target.checked)}
-                                                    />
+                                                    {isMobile ? (
+                                                        <input
+                                                            type="checkbox"
+                                                            className={classNames(styles.checkbox, {
+                                                                [styles.checkboxChecked]: filterParams.checkedCountries[country] || localCheckedCountries[country]
+                                                            })}
+                                                            checked={!!filterParams.checkedCountries[country] || !!localCheckedCountries[country]}
+                                                            onChange={(e) => handleCheckboxChange(country, e.target.checked)}
+                                                        />
+                                                    ) : (
+                                                        <input
+                                                            type="checkbox"
+                                                            className={classNames(styles.checkbox, {
+                                                                [styles.checkboxChecked]: localCheckedCountries[country]
+                                                            })}
+                                                            checked={!!localCheckedCountries[country]}
+                                                            onChange={(e) => handleCheckboxChange(country, e.target.checked)}
+                                                        />
+                                                    )}
                                                     {country}
                                                 </label>
+
                                                 <button className={styles.randomNumberButton}>
                                                     {getInfluencerCountForCountry(country)}
                                                 </button>

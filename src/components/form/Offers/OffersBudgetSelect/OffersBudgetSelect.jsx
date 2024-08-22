@@ -1,22 +1,34 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, {useState, useEffect, useRef} from "react";
 import "./offersBudgetSelect.css";
 import lineImg from './Line 34.svg';
+import searchImg from '../../../../images/icons/search.svg'
 import {useDispatch, useSelector} from "react-redux";
-import {setSelectCurrency, setSelectInfluencer, setSelectPrice} from "../../../../redux/slice/create-promo";
+import {setSelectCurrency, setSelectInfluencer, setSelectPrice } from "../../../../redux/slice/create-promo";
 
-const OffersBudgetSelect = ({ budget, setBudget, setFilteredInfluencersByBudget, applyFiltersByBudget, setActiveIndices }) => {
-    const [currency, setCurrency] = useState("€");
+const OffersBudgetSelect = ({
+                                budget,
+                                mobileBudget, 
+                                setMobileBudget,
+                                setBudget,
+                                setFilteredInfluencersByBudget,
+                                applyFiltersByBudget,
+                                setActiveIndices
+                            }) => {
     const inputRef = useRef(null);
 
+    const currentCurrency = useSelector((state) => state.createPromo.data.currency);
+
     const dispatch = useDispatch();
-    const selectInfluencers = useSelector((state) => state.createPromo.data.selectInfluencers);
-    
+
+    const isMobile = window.innerWidth <= 768;
+
     const handleChange = (e) => {
         setBudget(e.target.value);
+        setMobileBudget(e.target.value);
         if (e.target.value === "") {
             setFilteredInfluencersByBudget([]);
             dispatch(setSelectInfluencer([]));
-            dispatch(setSelectPrice({ variant: 0, price: 0 }));
+            dispatch(setSelectPrice({variant: 0, price: 0}));
             setActiveIndices([]);
         }
     };
@@ -24,12 +36,11 @@ const OffersBudgetSelect = ({ budget, setBudget, setFilteredInfluencersByBudget,
     const handleCalculate = () => {
         applyFiltersByBudget();
         dispatch(setSelectInfluencer([]));
-        dispatch(setSelectPrice({ variant: 0, price: 0 }));
+        dispatch(setSelectPrice({variant: 0, price: 0}));
         setActiveIndices([]);
     };
 
     const handleCurrencyChange = (newCurrency) => {
-        setCurrency(newCurrency);
         dispatch(setSelectCurrency(newCurrency));
     };
 
@@ -41,21 +52,21 @@ const OffersBudgetSelect = ({ budget, setBudget, setFilteredInfluencersByBudget,
                 </div>
                 <div className="offers-budget-select-currency">
                     <button
-                        className={`euro ${currency === "€" ? "selected" : ""}`}
+                        className={`euro ${currentCurrency === "€" ? "selected" : ""}`}
                         onClick={() => handleCurrencyChange("€")}
                     >
                         €
                     </button>
                     <img src={lineImg} alt="line"/>
                     <button
-                        className={`pound ${currency === "£" ? "selected" : ""}`}
+                        className={`pound ${currentCurrency === "£" ? "selected" : ""}`}
                         onClick={() => handleCurrencyChange("£")}
                     >
                         £
                     </button>
                     <img src={lineImg} alt="line"/>
                     <button
-                        className={`dollar ${currency === "$" ? "selected" : ""}`}
+                        className={`dollar ${currentCurrency === "$" ? "selected" : ""}`}
                         onClick={() => handleCurrencyChange("$")}
                     >
                         $
@@ -63,17 +74,35 @@ const OffersBudgetSelect = ({ budget, setBudget, setFilteredInfluencersByBudget,
                 </div>
             </div>
             <div className="offers-budget-select-input-budget">
-                <input
-                    type="text"
-                    onChange={handleChange}
-                    ref={inputRef}
-                    placeholder={"Input your budget..."}
-                />
-                <button onClick={() => handleCalculate()}>Calculate</button>
+                {isMobile ? <>
+                    <input
+                        type="text"
+                        onChange={handleChange}
+                        value={mobileBudget ? mobileBudget : ""}
+                        ref={inputRef}
+                        placeholder="1000.."
+                    />
+                    <button onClick={() => handleCalculate()}
+                            className="offers-mobile-budget-select-input-budget-button">
+                        <img src={searchImg} alt=""/>
+                    </button>
+                </> : (
+                    <>
+                        <input
+                            type="text"
+                            onChange={handleChange}
+                            ref={inputRef}
+                            placeholder={"Input your budget..."}
+                        />
+                        <button onClick={() => handleCalculate()}>Calculate</button>
+                    </>
+                )}
             </div>
+
         </div>
 
-    );
+    )
+        ;
 }
 
 export default OffersBudgetSelect;

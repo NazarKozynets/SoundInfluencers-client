@@ -642,7 +642,10 @@
   text-align: center;
   margin-top: 10px;
   transition: opacity 100ms linear;
-  margin-left: 35%;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0 !important;
 }
 
 .account-client-choose-item-expanded-content {
@@ -1389,7 +1392,6 @@
     text-align: center;
   }
 
-
   .account-client-back-button {
     position: relative;
     z-index: 100000;
@@ -1460,14 +1462,33 @@
     margin: -50px 0 0 0 !important;
   }
   .account-client-container-right-side {
-    margin-left: 0;
+    margin-left: auto;
+    margin-right: auto;
+    width: 300px; 
   }
   .account-client-choose-list {
     margin-top: 36px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    padding-top: 15px;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(3, 1fr);
+    justify-items: center;
     gap: 21px;
+    max-height: calc((3 * 142px + 2 * 21px) + 17px);
+    overflow-y: scroll; 
+    overflow-x: hidden; 
+  }
+  .account-client-choose-list::-webkit-scrollbar {
+    width: 11px !important;
+  }
+  .account-client-choose-list::-webkit-scrollbar-track {
+    background: #D6D6FA;
+    border-radius: 10px;
+    cursor: default;
+  }
+  .account-client-choose-list::-webkit-scrollbar-thumb {
+    background: #3330E44D;
+    border-radius: 10px !important;
   }
   .account-client-choose-item {
     max-width: 236px;
@@ -1487,6 +1508,56 @@
     font-size: 18px;
     font-weight: 700;
     text-align: left;
+  }
+  .account-client-choose-item-content-second-container {
+    margin: 13px 0 0 0;
+    padding: 0 0 0 60px;
+  }
+
+  .account-client-choose-item-content-text {
+    font-size: 18px;
+    font-weight: 500;
+    text-align: left;
+  }
+  .account-client-choose-item-content-price {
+    font-size: 18px;
+    font-weight: 500;
+    margin-right: 60px;
+
+    span {
+      padding-bottom: 3px;
+      font-size: 18px;
+    }
+  }
+  .account-client-choose-item-content-icon-container {
+    margin-left: 0;
+  }
+  .account-client-choose-item-content-third-container .see-more-button {
+    padding: 8px;
+    font-size: 16px;
+  }
+  .account-client-choose-item-back {
+    margin: 0;
+    padding: 0;
+
+    span {
+      font-size: 18px;
+    }
+  }
+  .account-client-choose-item-back-left-side {
+    margin-left: 10px;
+  }
+  .account-client-choose-item-back-right-side {
+    margin-left: 3px;
+  }
+  .account-client-choose-item-expanded-content .see-less-button {
+    padding: 20px;
+    font-size: 16px;
+    margin-top: 10px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0;
   }
 }
 

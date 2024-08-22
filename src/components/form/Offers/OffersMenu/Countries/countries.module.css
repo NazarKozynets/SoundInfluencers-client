@@ -27,8 +27,8 @@
 
 .seeAllButton {
     border: none;
-    padding: 10px;
-    margin-left: 40px;
+    /*padding: 10px;*/
+    /*margin-left: 40px;*/
     margin-top: 40px;
     border-radius: 6px;
     cursor: pointer;
@@ -79,9 +79,7 @@
     padding-left: 20px;
     font-size: 22px;
     font-weight: 500;
-    line-height: 22.64px;
     text-align: left;
-    margin-bottom: 15px;
 }
 
 .countriesListItem {
@@ -124,49 +122,77 @@
     line-height: 22.64px;
     text-align: center;
     color: #000000;
-    margin-right: 5px;
+    /*margin-right: 5px;*/
+    margin-left: 40px;
 }
 
 .randomNumberButton:hover {
     color: white;
-    width: 58px;
-    height: 31px;
     border-radius: 18.5px;
     background: #3330E41A;
     /*border: 1px solid #3330E4;*/
     color: #000000;
 }
 
-/*@media (max-width: 1400px) {*/
-/*    .countries {*/
-/*        margin-bottom: 10px;*/
-/*    }*/
-/*    .title {*/
-/*        font-size: 24px;*/
-/*    }*/
-/*    .seeAllButton {*/
-/*        font-size: 16px;*/
-/*        margin-right: 5px !important;*/
-/*        padding: 0 !important;*/
-/*    }*/
-/*    .categoriesList {*/
-/*        font-size: 18px;*/
-/*        margin: 15px 0 0 0;*/
-/*    }*/
-/*    .countriesList {*/
-/*        font-size: 18px;*/
-/*        margin: 15px 0 0 0;*/
-/*    }*/
-/*    .countriesListItem {*/
-/*        margin: 0 0 10px 0;*/
-/*    }*/
-/*    .countryItem {*/
-/*        gap: 10px;*/
-/*    }*/
-/*    .randomNumberButton {*/
-/*        font-size: 16px;*/
-/*        max-width: 52px;*/
-/*        max-height: 30px;*/
-/*        margin-left: 37px;*/
-/*    }*/
-/*}*/
+@media (max-width: 768px) {
+    .mainContainer {
+       gap: 10px;
+    }
+
+    .title {
+        font-size: 24px;
+        line-height: 28px;
+    }
+
+    .seeAllButton {
+        font-size: 18px;
+        padding: 28px 0 0 0;
+        margin-top: 10px;
+    }
+
+    .categoriesList {
+        font-size: 18px;
+        line-height: 22px;
+        margin: 20px 0 0 0;
+    }
+
+    .categoriesListItem {
+        margin: 0 0 10px 0;
+    }
+
+    .categoryItem {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        /*gap: 8px;*/
+    }
+
+    .countryItem {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .countriesList {
+        font-size: 18px;
+    }
+
+    .countriesListItem {
+        margin-top: 10px;
+    }
+
+    .randomNumberButton {
+        font-size: 14px;
+        width: 50px;
+        height: 28px;
+        border-radius: 14px;
+        margin-left: 55px;
+    }
+
+    .checkbox {
+        width: 18px;
+        height: 18px;
+        margin-right: 8px;
+    }
+}
+

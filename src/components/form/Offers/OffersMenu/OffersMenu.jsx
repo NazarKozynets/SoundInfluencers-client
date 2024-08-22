@@ -14,20 +14,28 @@ const OffersMenu = (props) => {
                         setCheckedGenres={props.setCheckedGenres}
                         setFilteredInfluencersByGenres={props.setFilteredInfluencersByGenres}
                         setCheckedSubGenres={props.setCheckedSubGenres}
-                        checkedSubGenres={props.checkedSubGenres}/>
+                        checkedSubGenres={props.checkedSubGenres}
+                        checkedCategories={props.checkedCategories}
+                        filterParams={props.filterParams}/>
             </div>
             <img src={line} alt="line"/>
             <div className="countries">
                 <Countries influencers={props.influencers}
                            setCheckedCountries={props.setCheckedCountries}
                            setFilteredInfluencersByCountries={props.setFilteredInfluencersByCountries}
-                           updateFilterParams={props.updateFilterParams}/>
+                           updateFilterParams={props.updateFilterParams}
+                           filterParams={props.filterParams}/>
             </div>
             <img src={line} alt="line"/>
-            <Categories checkedCategories={props.checkedCategories}
-                        influencers={props.influencers}
-                        setCheckedCategories={props.setCheckedCategories}
-                        setFilteredInfluencersByCategories={props.setFilteredInfluencersByCategories}/>
+            <div className="categories">
+                <Categories checkedCategories={props.checkedCategories}
+                            checkedGenres={props.checkedGenres}
+                            checkedSubGenres={props.checkedSubGenres}
+                            influencers={props.influencers}
+                            setCheckedCategories={props.setCheckedCategories}
+                            setFilteredInfluencersByCategories={props.setFilteredInfluencersByCategories}
+                            filterParams={props.filterParams}/>
+            </div>
         </div>
     );
 };

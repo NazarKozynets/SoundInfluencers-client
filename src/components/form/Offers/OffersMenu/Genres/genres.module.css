@@ -26,7 +26,6 @@
 
 .seeAllButton {
     border: none;
-    padding: 10px 20px;
     border-radius: 6px;
     cursor: pointer;
     font-family: Geometria;
@@ -35,7 +34,6 @@
     line-height: 22.64px;
     text-align: left;
     color: #00000080;
-    margin-left: 20px;
 }
 
 .genresList {
@@ -103,7 +101,7 @@
 
 .checkboxChecked {
     background-color: #3330E4;
-    background-image: url('../../../../../images/vector.png'); 
+    background-image: url('../../../../../images/vector.png');
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
@@ -121,7 +119,8 @@
     line-height: 22.64px;
     text-align: center;
     color: #000000;
-    margin-right: 18px;
+    /*margin-right: 18px;*/
+    margin-left: 4px;
 }
 
 .randomNumberButton:hover {
@@ -134,37 +133,53 @@
     color: #000000;
 }
 
-/*@media (max-width: 1400px) {*/
-/*    .genres {*/
-/*        margin-bottom: 40px;*/
-/*    }*/
-/*    .title {*/
-/*        font-size: 24px;*/
-/*    }*/
-/*    .seeAllButton {*/
-/*        font-size: 16px;*/
-/*        margin-left: 15px;*/
-/*    }*/
-/*    .genresList {*/
-/*        font-size: 18px;*/
-/*        margin: 15px 0 0 0;*/
-/*    }*/
-/*    .genresListItem {*/
-/*        margin: 0 0 10px 0;*/
-/*    }*/
-/*    .genreItem {*/
-/*        gap: 10px;*/
-/*    }*/
-/*    .subgenresList {*/
-/*        font-size: 18px;*/
-/*    }*/
-/*    .subgenresListItem {*/
-/*        margin-top: 10px;*/
-/*    }*/
-/*    .randomNumberButton {*/
-/*        font-size: 16px;*/
-/*        max-width: 52px;*/
-/*        max-height: 30px;*/
-/*        margin-left: 10px;*/
-/*    }*/
-/*}*/
+@media (max-width: 768px) {
+    .mainContainer {
+        gap: 10px;
+    }
+
+    .title {
+        font-size: 24px;
+        line-height: 28px;
+    }
+
+    .seeAllButton {
+        font-size: 18px;
+    }
+
+    .genresList {
+        font-size: 18px;
+        line-height: 22px;
+    }
+
+    .genresListItem {
+        margin: 0 0 10px 0;
+    }
+
+    .subgenresList {
+        font-size: 18px;
+    }
+
+    .subgenresListItem {
+        margin-top: 10px;
+    }
+
+    .randomNumberButton {
+        font-size: 14px;
+        width: 50px;
+        height: 28px;
+        border-radius: 18.5px;
+        margin-left: 20px;
+    }
+
+    .randomNumberButton:hover {
+        width: 50px;
+        height: 28px;
+    }
+
+    .checkbox {
+        width: 18px;
+        height: 18px;
+        margin-right: 8px;
+    }
+}

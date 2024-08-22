@@ -123,3 +123,54 @@
     }
 }
 
+@media screen and (max-width: 768px) {
+    .offers-budget-select {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 12px; 
+        padding: 3px;
+    }
+    .offers-budget-select-title-currency {
+        display: flex;
+        align-items: center;
+        gap: 12px; 
+        width: auto;
+    }
+    .offers-budget-select-title {
+        font-size: 24px;
+        font-weight: 800;
+        padding-top: 4px;
+        text-align: left;
+    }
+    .offers-budget-select-currency {
+        display: flex;
+        align-items: center;
+        gap: 0; 
+    }
+    .offers-budget-select-input-budget {
+        display: flex;
+        align-items: center;
+        width: 135px; 
+        height: 31px;
+        margin: 2px 0 0 0;
+    }
+    .offers-budget-select-input-budget input {
+        height: 31px;
+        margin-right: 12px; 
+        padding-top: 2px;
+    }
+    .offers-budget-select-input-budget button {
+        width: 60px;
+        height: 31px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .offers-mobile-budget-select-input-budget-button img {
+        filter: invert(1) brightness(100) grayscale(100);
+        width: 22px;
+        height: 22px;
+    }
+
+}

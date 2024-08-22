@@ -1,13 +1,17 @@
-.categories {
+.mainContainer {
     font-family: Geometria;
     margin-bottom: 30px;
     margin-top: 35px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
 .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    width: 100%;
 }
 
 .title {
@@ -20,14 +24,12 @@
 
 .seeAllButton {
     border: none;
-    padding: 10px 20px;
     border-radius: 6px;
     cursor: pointer;
     font-family: Geometria;
     font-size: 18px;
     font-weight: 400;
     line-height: 22.64px;
-    text-align: left;
     color: #00000080;
 }
 
@@ -37,8 +39,8 @@
     line-height: 22.64px;
     text-align: left;
     list-style-type: none;
+    margin-top: 20px;
     padding: 0;
-    margin: 20px 0 0 0;
 }
 
 .categoriesListItem {
@@ -65,7 +67,7 @@
 
 .checkboxChecked {
     background-color: #3330E4;
-    background-image: url('../../../../../images/vector.png'); 
+    background-image: url('../../../../../images/vector.png');
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
@@ -83,45 +85,47 @@
     line-height: 22.64px;
     text-align: center;
     color: #000000;
-    margin-right: 18px;
+    padding: 0;
+    border: none;
 }
 
-.randomNumberButton:hover {
-    color: white;
-    width: 58px;
-    height: 31px;
-    border-radius: 18.5px;
-    background: #3330E41A;
-    /*border: 1px solid #3330E4;*/
-    color: #000000;
-}
+@media (max-width: 768px) {
+    .mainContainer {
+        gap: 10px;
+    }
 
-/*@media (max-width: 1400px) {*/
-/*    .categories {*/
-/*        margin-bottom: 10px;*/
-/*        margin-top: 25px;*/
-/*    }*/
-/*    .title {*/
-/*        font-size: 24px;*/
-/*    }*/
-/*    .seeAllButton {*/
-/*        font-size: 16px;*/
-/*        margin-right: 13px;*/
-/*    }*/
-/*    .categoriesList {*/
-/*        font-size: 18px;*/
-/*        margin: 15px 0 0 0;*/
-/*    }*/
-/*    .categoriesListItem {*/
-/*        margin: 0 0 10px 0;*/
-/*    }*/
-/*    .categoryItem {*/
-/*        gap: 10px;*/
-/*    }*/
-/*    .randomNumberButton {*/
-/*        font-size: 16px;*/
-/*        max-width: 52px;*/
-/*        max-height: 30px;*/
-/*        margin-right: 31px;*/
-/*    }*/
-/*}*/
+    .title {
+        font-size: 24px;
+        line-height: 26.19px;
+    }
+
+    .seeAllButton {
+        font-size: 16px;
+        line-height: 20.64px;
+    }
+
+    .categoriesListItem {
+        margin: 0 0 15px 0;
+    }
+
+    .categoriesList {
+        font-size: 18px;
+        line-height: 18.64px;
+    }
+
+    .checkbox {
+        width: 18px;
+        height: 18px;
+        border: 2px solid #3330E4;
+        border-radius: 3px;
+        margin-right: 10px;
+    }
+
+    .randomNumberButton {
+        width: 50px;
+        height: 26px;
+        border-radius: 16.5px;
+        font-size: 16px;
+        line-height: 20.64px;
+    }
+}
