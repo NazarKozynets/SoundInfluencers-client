@@ -43,11 +43,12 @@
     flex: 1;
     overflow-y: scroll !important;
     max-height: 100%; 
+    display: flex;
+    align-items: center;
 }
 
 .filters-window-content-budget {
     margin-top: 25px;
-    margin-left: 10px;
     align-self: center;
 }
 
@@ -60,7 +61,8 @@
 
 .filters-window-content-offers-menu {
     margin-top: 29px;
-    width: 270px;
-    align-self: center;
+    width: 100%;
+    display: flex;
+    justify-content: center;
     /*margin-right: 10px;*/
 }

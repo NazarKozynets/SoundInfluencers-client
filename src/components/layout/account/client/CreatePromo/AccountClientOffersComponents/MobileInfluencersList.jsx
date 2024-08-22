@@ -30,35 +30,35 @@ const MobileInfluencersListMenu = (props) => {
                             <span>Filters</span>
                             <button onClick={() => setIsFiltersWindowOpen(false)}><img src={closeImg} alt=""/></button>
                         </Sheet.Header>
-                        <Sheet.Content disableDrag={true} className="filters-window-content">
+                        <Sheet.Content className="filters-window-content" disableDrag={true}>
                             <Sheet.Scroller>
-                                <div className="filters-window-content-budget">
-                                    <OffersBudgetSelect setBudget={props.setBudget}
-                                                        setFilteredInfluencersByBudget={props.setFilteredInfluencersByBudget}
-                                                        applyFiltersByBudget={props.applyFiltersByBudget}
-                                                        setMobileBudget={setMobileBudget}
-                                                        mobileBudget={mobileBudget}
-                                                        setActiveIndices={props.setActiveIndices}/>
-                                </div>
-                                <div className="filters-window-content-sort-menu">
-                                    <OffersSortMenu selectedOption={props.selectedOption}
-                                                    onSortChange={props.onSortChange}/>
-                                </div>
-                                <div className="filters-window-content-offers-menu">
-                                    <OffersMenu influencers={props.influencers}
-                                                setCheckedGenres={props.setCheckedGenres}
-                                                setCheckedCategories={props.setCheckedCategories}
-                                                setCheckedSubGenres={props.setCheckedSubGenres}
-                                                setCheckedCountries={props.setCheckedCountries}
-                                                setFilteredInfluencersByGenres={props.setFilteredInfluencersByGenres}
-                                                setFilteredInfluencersByCountries={props.setFilteredInfluencersByCountries}
-                                                setFilteredInfluencersByCategories={props.setFilteredInfluencersByCategories}
-                                                checkedGenres={props.checkedGenres}
-                                                filterParams={props.filterParams}
-                                                checkedCategories={props.checkedCategories}
-                                                checkedSubGenres={props.checkedSubGenres}
-                                                updateFilterParams={props.updateFilterParams}/>
-                                </div>
+                                    <div className="filters-window-content-budget">
+                                        <OffersBudgetSelect setBudget={props.setBudget}
+                                                            setFilteredInfluencersByBudget={props.setFilteredInfluencersByBudget}
+                                                            applyFiltersByBudget={props.applyFiltersByBudget}
+                                                            setMobileBudget={setMobileBudget}
+                                                            mobileBudget={mobileBudget}
+                                                            setActiveIndices={props.setActiveIndices}/>
+                                    </div>
+                                    <div className="filters-window-content-sort-menu">
+                                        <OffersSortMenu selectedOption={props.selectedOption}
+                                                        onSortChange={props.onSortChange}/>
+                                    </div>
+                                    <div className="filters-window-content-offers-menu">
+                                        <OffersMenu influencers={props.influencers}
+                                                    setCheckedGenres={props.setCheckedGenres}
+                                                    setCheckedCategories={props.setCheckedCategories}
+                                                    setCheckedSubGenres={props.setCheckedSubGenres}
+                                                    setCheckedCountries={props.setCheckedCountries}
+                                                    setFilteredInfluencersByGenres={props.setFilteredInfluencersByGenres}
+                                                    setFilteredInfluencersByCountries={props.setFilteredInfluencersByCountries}
+                                                    setFilteredInfluencersByCategories={props.setFilteredInfluencersByCategories}
+                                                    checkedGenres={props.checkedGenres}
+                                                    filterParams={props.filterParams}
+                                                    checkedCategories={props.checkedCategories}
+                                                    checkedSubGenres={props.checkedSubGenres}
+                                                    updateFilterParams={props.updateFilterParams}/>
+                                    </div>
                             </Sheet.Scroller>
                         </Sheet.Content>
                     </Sheet.Container>
