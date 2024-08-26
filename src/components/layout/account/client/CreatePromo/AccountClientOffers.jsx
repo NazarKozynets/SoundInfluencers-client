@@ -27,10 +27,9 @@ const AccountClientOffers = () => {
     const [filteredOffersByGenres, setFilteredOffersByGenres] = useState(prices);
     const dispatch = useDispatch();
     const [influencers, setInfluencers] = useState([]);
-    const [isSelectAll, setIsSelectAll] = useState(false)
+    const [isSelectAll, setIsSelectAll] = useState(false);
     const [activeIndices, setActiveIndices] = useState([]);
     const [filteredInfluencers, setFilteredInfluencers] = useState(influencers);
-    const [filteredInfluencersByBudget, setFilteredInfluencersByBudget] = useState([]);
     const [checkedGenres, setCheckedGenres] = useState({});
     const [checkedSubGenres, setCheckedSubGenres] = useState({});
     const [checkedCountries, setCheckedCountries] = useState({});
@@ -43,7 +42,11 @@ const AccountClientOffers = () => {
         checkedCategories: {},
         checkedSubGenres: {},
         checkedCountries: {},
+        budget: null
     });
+
+    const [filteredInfluencersByBudget, setFilteredInfluencersByBudget] = useState([]);
+
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
     const currentPrice = useSelector((state) => state.createPromo.data.selectPrice.variant);
@@ -69,7 +72,7 @@ const AccountClientOffers = () => {
             window.removeEventListener('resize', checkIsMobile);
         };
     }, []);
-    
+
     useEffect(() => {
         getData();
     }, []);
@@ -244,7 +247,7 @@ const AccountClientOffers = () => {
 
             let totalOffer = calculatePrice(offerPrice);
             let totalCustomOffer = totalOffer + newPrice;
-            
+
             if (totalCustomOffer > balance) totalCustomOffer = totalCustomOffer - balance;
             if (newPrice > balance) newPrice = newPrice - balance;
             if (totalOffer > balance) totalOffer = totalOffer - balance;
@@ -253,8 +256,7 @@ const AccountClientOffers = () => {
             dispatch(setSelectPrice({
                 variant: id, price: totalOffer,
             }));
-        }
-        else {
+        } else {
             const searchPrice = prices.find((item) => item.id === id);
 
             const updateList = influencers.map((item) => {
@@ -424,29 +426,40 @@ const AccountClientOffers = () => {
     };
 
     const selectInfluencer = (instagramUsername) => {
-        // dispatch(
-        //   setSelectPrice({
-        //     variant: 0,
-        //     price: 0,
-        //   })
-        // );
-
         let balance = window.sessionStorage.getItem("balance");
+        let updateList;
 
-        const updateList = influencers.map((item) => {
-            if (item.instagramUsername === instagramUsername) {
-                if (item.active) {
+        if (filteredInfluencersByBudget.length > 0) {
+            updateList = filteredInfluencersByBudget.map((item) => {
+                if (item.instagramUsername === instagramUsername) {
+                    if (item.active) {
+                        return {
+                            ...item, active: false, connect: false,
+                        };
+                    }
                     return {
-                        ...item, active: false, connect: false,
+                        ...item, active: true, connect: false,
                     };
                 }
-                return {
-                    ...item, active: true, connect: false,
-                };
-            }
 
-            return item;
-        });
+                return item;
+            });
+        } else {
+            updateList = influencers.map((item) => {
+                if (item.instagramUsername === instagramUsername) {
+                    if (item.active) {
+                        return {
+                            ...item, active: false, connect: false,
+                        };
+                    }
+                    return {
+                        ...item, active: true, connect: false,
+                    };
+                }
+
+                return item;
+            });
+        }
 
         let newPrice = updateList.reduce((acc, current) => {
             if (!current.price) return acc;
@@ -500,7 +513,12 @@ const AccountClientOffers = () => {
         }));
 
         dispatch(setSelectInfluencer([...filterInfluencers]));
-        setInfluencers(updateList);
+        
+        if (filteredInfluencersByBudget.length > 0) {
+            setFilteredInfluencersByBudget(updateList);
+        } else {
+            setInfluencers(updateList);
+        }
     };
 
     const getData = async () => {
@@ -535,7 +553,8 @@ const AccountClientOffers = () => {
                         connect: false,
                     };
                 });
-                return setInfluencers(list);
+                setInfluencers(list);
+                return;
             }
             const listInfluencers = result.data.influencers.map((item) => ({
                 ...item,
@@ -547,28 +566,6 @@ const AccountClientOffers = () => {
 
                 return orderA - orderB;
             });
-
-            // const connectInfluencer = offers.data.offers.flatMap((offer) => offer.connectInfluencer);
-            // const influencerIds = [...new Set(connectInfluencer.map((inf) => inf.influencerId))];
-            //
-            // const influencerPromises = influencerIds.map((id) => axios.get(`${process.env.REACT_APP_SERVER}/auth/influencer/${id}`));
-            // const influencerResponses = await Promise.all(influencerPromises);
-            //
-            // const musicStyles = influencerResponses.flatMap((response) => {
-            //     if (response.data.code === 200) {
-            //         return response.data.influencer.instagram.map((instagram) => instagram.musicStyle);
-            //     }
-            //     return [];
-            // });
-            //
-            // const resultObject = {
-            //     offerId: offers.data.offers.map((offer) => offer.id),
-            //     musicStyles: Array.from(new Set(musicStyles)), 
-            // };
-            //
-            // console.log(resultObject, "resultObject")
-            //
-            // setOffersInfluencersAndGenres(resultObject);
             setInfluencers(listInfluencers);
         }
     };
@@ -649,7 +646,7 @@ const AccountClientOffers = () => {
 
     const applyFiltersAndSort = () => {
         let filtered = [...influencers];
-        const {sortMethod, checkedGenres, checkedCategories, checkedSubGenres, checkedCountries} = filterParams;
+        const {sortMethod, checkedGenres, checkedCategories, checkedSubGenres, checkedCountries, budget} = filterParams;
 
         const selectedGenres = Object.keys(checkedGenres).filter(key => checkedGenres[key]);
         const selectedCategories = Object.keys(checkedCategories).filter(key => checkedCategories[key]);
@@ -663,12 +660,10 @@ const AccountClientOffers = () => {
         }
 
         const selectedSubGenres = Object.keys(checkedSubGenres).filter(key => checkedSubGenres[key]);
-        if (!selectedCategories.length > 0) {
-            if (selectedSubGenres.length > 0) {
-                filtered = filtered.filter(item => {
-                    return item.musicSubStyles && item.musicSubStyles.length > 0 && item.musicSubStyles.some(subGenre => selectedSubGenres.includes(subGenre));
-                });
-            }
+        if (!selectedCategories.length > 0 && selectedSubGenres.length > 0) {
+            filtered = filtered.filter(item => {
+                return item.musicSubStyles && item.musicSubStyles.length > 0 && item.musicSubStyles.some(subGenre => selectedSubGenres.includes(subGenre));
+            });
         }
 
         const selectedCountries = Object.keys(checkedCountries).filter(key => checkedCountries[key]);
@@ -676,6 +671,35 @@ const AccountClientOffers = () => {
             filtered = filtered.filter(item => {
                 return item.countries && item.countries.length > 0 && item.countries.some(country => selectedCountries.includes(country.country));
             });
+        }
+
+        if (budget !== null) {
+            let totalPrice = 0;
+            const influencersFilteredByBudget = [];
+            const selectedInfluencers = new Set();
+            let attempts = 0;
+            const maxAttempts = 1000;
+
+            while (attempts < maxAttempts && filtered.length > 0) {
+                attempts++;
+                let randomInfluencer = filtered[Math.floor(Math.random() * filtered.length)];
+                let influencerPrice = parseFloat(randomInfluencer.price.replace(/[^0-9.]/g, '')) * 2;
+
+                if (!selectedInfluencers.has(randomInfluencer) && (influencerPrice + totalPrice <= budget)) {
+                    influencersFilteredByBudget.push(randomInfluencer);
+                    selectedInfluencers.add(randomInfluencer);
+                    totalPrice += influencerPrice;
+
+                    let difference = budget - totalPrice;
+
+                    if (difference <= 50 && difference >= 0) {
+                        break;
+                    }
+                }
+            }
+
+            filtered = influencersFilteredByBudget;
+            setFilteredInfluencersByBudget(filtered);
         }
 
         switch (sortMethod) {
@@ -730,38 +754,6 @@ const AccountClientOffers = () => {
         updateFilterParams({checkedCountries: newCheckedCountries});
     };
 
-    const applyFiltersByBudget = () => {
-        let filtered = [...influencers];
-        if (budget) {
-            let totalPrice = 0;
-            const numberOfInfluencersFilteredByBudget = Math.floor(Math.random() * (10 - 4 + 1)) + 4;
-            const influencersFilteredByBudget = [];
-            const selectedInfluencers = new Set();
-            let attempts = 0;
-            const maxAttempts = 1000;
-
-            while (attempts < maxAttempts) {
-                attempts++;
-                let randomInfluencer = filtered[Math.floor(Math.random() * filtered.length)];
-                let influencerPrice = parseFloat(randomInfluencer.price.replace(/[^0-9.]/g, '')) * 2;
-
-                if (!selectedInfluencers.has(randomInfluencer) && (influencerPrice + totalPrice <= budget)) {
-                    influencersFilteredByBudget.push(randomInfluencer);
-                    selectedInfluencers.add(randomInfluencer);
-                    totalPrice += influencerPrice;
-
-                    let difference = budget - totalPrice;
-
-                    if (difference <= 50 && difference >= 0) {
-                        break;
-                    }
-                }
-            }
-
-            setFilteredInfluencersByBudget(influencersFilteredByBudget);
-        }
-    };
-
     const handleSortChange = (sortMethod) => {
         updateFilterParams({
             sortMethod: sortMethod
@@ -796,7 +788,7 @@ const AccountClientOffers = () => {
 
                 <OffersList prices={prices}
                             setFilteredOffersByGenres={setFilteredOffersByGenres}
-                            selectPrice={selectPrice} 
+                            selectPrice={selectPrice}
                             filteredOffersByGenres={filteredOffersByGenres}
                             selectedOffersGenres={selectedOffersGenres}
                             influencers={influencers}
@@ -831,8 +823,6 @@ const AccountClientOffers = () => {
                                                                setBudget={setBudget}
                                                                selectedOption={filterParams.sortMethod}
                                                                onSortChange={handleSortChange}
-                                                               setFilteredInfluencersByBudget={setFilteredInfluencersByBudget}
-                                                               applyFiltersByBudget={applyFiltersByBudget}
                                                                influencers={influencers}
                                                                setCheckedGenres={handleSetCheckedGenres}
                                                                setCheckedCategories={handleSetCheckedCategories}
@@ -841,20 +831,24 @@ const AccountClientOffers = () => {
                                                                setFilteredInfluencersByGenres={setFilteredInfluencers}
                                                                setFilteredInfluencersByCountries={setFilteredInfluencers}
                                                                setFilteredInfluencersByCategories={setFilteredInfluencers}
+                                                               budget={budget}
                                                                checkedGenres={checkedGenres}
                                                                checkedCategories={checkedCategories}
                                                                checkedSubGenres={checkedSubGenres}
                                                                filterParams={filterParams}
                                                                updateFilterParams={updateFilterParams}
+                                                               applyFiltersAndSort={applyFiltersAndSort}
+                                                               setFilteredInfluencersByBudget={setFilteredInfluencersByBudget}
                                                                setActiveIndices={setActiveIndices}/> :
                             <div className="account-client-container-right-side-upper-side">
                                 <OffersBudgetSelect
-                                    applyFiltersByBudget={applyFiltersByBudget}
                                     budget={budget}
                                     setBudget={setBudget}
-                                    setFilteredInfluencersByBudget={setFilteredInfluencersByBudget}
+                                    applyFiltersAndSort={applyFiltersAndSort}
+                                    updateFilterParams={updateFilterParams}
                                     setActiveIndices={setActiveIndices}
                                     setMobileBudget={null}
+                                    setFilteredInfluencersByBudget={setFilteredInfluencersByBudget}
                                 />
                                 <div className="account-client-container-right-side-upper-side-offers-search">
                                     <OffersSearch
@@ -874,12 +868,12 @@ const AccountClientOffers = () => {
                                                  setActiveIndices={setActiveIndices}
                                                  selectInfluencer={selectInfluencer}
                                                  isSearch={true}/>
-                            ) : filteredInfluencersByBudget.length > 0 ? (
-                                <InfluencersList influencers={filteredInfluencersByBudget}
-                                                 activeIndices={activeIndices}
-                                                 setActiveIndices={setActiveIndices}
-                                                 selectInfluencer={selectInfluencer}
-                                                 isSearch={false}/>
+                                ) : filteredInfluencersByBudget.length > 0 ? (
+                                    <InfluencersList influencers={filteredInfluencersByBudget}
+                                                     activeIndices={activeIndices}
+                                                     setActiveIndices={setActiveIndices}
+                                                     selectInfluencer={selectInfluencer}
+                                                     isSearch={false}/>
                             ) : (
                                 <InfluencersList influencers={filteredInfluencers}
                                                  activeIndices={activeIndices}

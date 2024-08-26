@@ -10,7 +10,6 @@ import OffersMenu from "../../../../../form/Offers/OffersMenu/OffersMenu";
 
 const MobileInfluencersListMenu = (props) => {
     const [isFiltersWindowOpen, setIsFiltersWindowOpen] = useState(false);
-    const [mobileFilterParams, setMobileFilterParams] = useState(props.filterParams);
     const [mobileBudget, setMobileBudget] = useState(null);
     
     return (
@@ -33,12 +32,14 @@ const MobileInfluencersListMenu = (props) => {
                         <Sheet.Content className="filters-window-content" disableDrag={true}>
                             <Sheet.Scroller>
                                     <div className="filters-window-content-budget">
-                                        <OffersBudgetSelect setBudget={props.setBudget}
-                                                            setFilteredInfluencersByBudget={props.setFilteredInfluencersByBudget}
-                                                            applyFiltersByBudget={props.applyFiltersByBudget}
-                                                            setMobileBudget={setMobileBudget}
+                                        <OffersBudgetSelect budget={props.budget}
+                                                            setBudget={props.setBudget}
+                                                            applyFiltersAndSort={props.applyFiltersAndSort}
+                                                            updateFilterParams={props.updateFilterParams}
                                                             mobileBudget={mobileBudget}
-                                                            setActiveIndices={props.setActiveIndices}/>
+                                                            setActiveIndices={props.setActiveIndices}
+                                                            setMobileBudget={setMobileBudget}
+                                                            setFilteredInfluencersByBudget={props.setFilteredInfluencersByBudget}/>
                                     </div>
                                     <div className="filters-window-content-sort-menu">
                                         <OffersSortMenu selectedOption={props.selectedOption}

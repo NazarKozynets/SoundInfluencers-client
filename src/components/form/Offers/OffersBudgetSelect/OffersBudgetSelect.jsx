@@ -7,41 +7,43 @@ import {setSelectCurrency, setSelectInfluencer, setSelectPrice } from "../../../
 
 const OffersBudgetSelect = ({
                                 budget,
-                                mobileBudget, 
+                                mobileBudget,
                                 setMobileBudget,
                                 setBudget,
-                                setFilteredInfluencersByBudget,
-                                applyFiltersByBudget,
-                                setActiveIndices
+                                applyFiltersAndSort, 
+                                setActiveIndices,
+                                updateFilterParams,
+                                setFilteredInfluencersByBudget
                             }) => {
     const inputRef = useRef(null);
-
     const currentCurrency = useSelector((state) => state.createPromo.data.currency);
-
     const dispatch = useDispatch();
-
     const isMobile = window.innerWidth <= 768;
-
+    
     const handleChange = (e) => {
-        setBudget(e.target.value);
-        
+        const newBudget = e.target.value;
+        setBudget(newBudget);
+
         if (isMobile) {
-            setMobileBudget(e.target.value);
+            setMobileBudget(newBudget);
         }
-        
-        if (e.target.value === "") {
+
+        if (newBudget === "") {
             setFilteredInfluencersByBudget([]);
+            updateFilterParams({ budget: null });
             dispatch(setSelectInfluencer([]));
-            dispatch(setSelectPrice({variant: 0, price: 0}));
+            dispatch(setSelectPrice({ variant: 0, price: 0 }));
             setActiveIndices([]);
         }
     };
 
     const handleCalculate = () => {
-        applyFiltersByBudget();
+        updateFilterParams({ budget: budget });
+        applyFiltersAndSort(); 
         dispatch(setSelectInfluencer([]));
-        dispatch(setSelectPrice({variant: 0, price: 0}));
+        dispatch(setSelectPrice({ variant: 0, price: 0 }));
         setActiveIndices([]);
+        console.log(budget);
     };
 
     const handleCurrencyChange = (newCurrency) => {
