@@ -24,7 +24,11 @@ const OffersBudgetSelect = ({
 
     const handleChange = (e) => {
         setBudget(e.target.value);
-        setMobileBudget(e.target.value);
+        
+        if (isMobile) {
+            setMobileBudget(e.target.value);
+        }
+        
         if (e.target.value === "") {
             setFilteredInfluencersByBudget([]);
             dispatch(setSelectInfluencer([]));

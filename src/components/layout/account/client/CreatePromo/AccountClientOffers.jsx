@@ -44,6 +44,7 @@ const AccountClientOffers = () => {
         checkedSubGenres: {},
         checkedCountries: {},
     });
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
     const currentPrice = useSelector((state) => state.createPromo.data.selectPrice.variant);
 
@@ -57,8 +58,18 @@ const AccountClientOffers = () => {
 
     const currentCurrency = useSelector((state) => state.createPromo.data.currency);
 
-    const isMobile = window.innerWidth <= 768;
+    const checkIsMobile = () => {
+        setIsMobile(window.innerWidth <= 768);
+    };
 
+    useEffect(() => {
+        window.addEventListener('resize', checkIsMobile);
+        checkIsMobile();
+        return () => {
+            window.removeEventListener('resize', checkIsMobile);
+        };
+    }, []);
+    
     useEffect(() => {
         getData();
     }, []);
@@ -72,21 +83,8 @@ const AccountClientOffers = () => {
     }, [influencers, filterParams]);
 
     useEffect(() => {
-        if (selectedOffersGenres.length === 0) {
-            setFilteredOffersByGenres(prices);
-            return;
-        }
-
-        const filtered = prices.filter(offer => {
-            return offer.musicStyles.some(style => {
-                const styleGenres = style.genres;
-                return selectedOffersGenres.every(genre => styleGenres.includes(genre)) &&
-                    styleGenres.length === selectedOffersGenres.length;
-            });
-        });
-
-        setFilteredOffersByGenres(filtered);
-    }, [selectedOffersGenres, prices]);
+        setFilteredOffersByGenres(prices);
+    }, [prices]);
 
     const selectPrice = (id) => {
         let balance = window.sessionStorage.getItem("balance");
@@ -103,9 +101,7 @@ const AccountClientOffers = () => {
             });
 
             searchPrice.matchingStyle = matchingStyle;
-
             const offerPrice = matchingStyle ? matchingStyle.price : searchPrice.price;
-
             const updateList = influencers.map((item) => {
                 if (matchingStyle.connectInfluencer.find((fin) => fin.influencerId === item._id && fin.instagramUsername === item.instagramUsername)) {
                     return {
@@ -246,16 +242,16 @@ const AccountClientOffers = () => {
                 }
             }, 0);
 
-            let totalOffer = matchingStyle.price; 
+            let totalOffer = calculatePrice(offerPrice);
             let totalCustomOffer = totalOffer + newPrice;
-
+            
             if (totalCustomOffer > balance) totalCustomOffer = totalCustomOffer - balance;
             if (newPrice > balance) newPrice = newPrice - balance;
             if (totalOffer > balance) totalOffer = totalOffer - balance;
 
             dispatch(setSelectAmount(totalCustomOffer > 0 ? calculatePrice(totalCustomOffer) : newPrice));
             dispatch(setSelectPrice({
-                variant: id, price: calculatePrice(totalOffer),
+                variant: id, price: totalOffer,
             }));
         }
         else {
@@ -798,7 +794,10 @@ const AccountClientOffers = () => {
                     <TitleSection title="Our" span="offers"/>
                 </div>
 
-                <OffersList prices={prices} selectPrice={selectPrice} filteredOffersByGenres={filteredOffersByGenres}
+                <OffersList prices={prices}
+                            setFilteredOffersByGenres={setFilteredOffersByGenres}
+                            selectPrice={selectPrice} 
+                            filteredOffersByGenres={filteredOffersByGenres}
                             selectedOffersGenres={selectedOffersGenres}
                             influencers={influencers}
                             setSelectedOffersGenres={setSelectedOffersGenres}/>
@@ -855,6 +854,7 @@ const AccountClientOffers = () => {
                                     setBudget={setBudget}
                                     setFilteredInfluencersByBudget={setFilteredInfluencersByBudget}
                                     setActiveIndices={setActiveIndices}
+                                    setMobileBudget={null}
                                 />
                                 <div className="account-client-container-right-side-upper-side-offers-search">
                                     <OffersSearch

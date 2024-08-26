@@ -1,28 +1,36 @@
-import react, {useEffect, useState} from 'react';
-import {Swiper, SwiperSlide} from "swiper/react";
-import {A11y, Autoplay, Navigation, Pagination, Scrollbar} from "swiper/modules";
-import React from "react";
-import {useSelector} from "react-redux";
+import React, { useEffect } from 'react';
+import { Swiper, SwiperSlide } from "swiper/react";
+import { A11y, Autoplay, Navigation, Pagination, Scrollbar } from "swiper/modules";
+import { useSelector } from "react-redux";
 import GenreButtonList from "../../../../../form/GenreButton/GenreButtonList";
-import {calculatePriceForOffersAndInfluencers} from "../../../../../../utils/price";
+import { calculatePriceForOffersAndInfluencers } from "../../../../../../utils/price";
 
-const OffersList = ({setSelectedOffersGenres, selectedOffersGenres, setFilteredOffersByGenres, filteredOffersByGenres, influencers, selectPrice, prices}) => {
+const OffersList = ({ setSelectedOffersGenres, selectedOffersGenres, setFilteredOffersByGenres, filteredOffersByGenres, influencers, selectPrice, prices }) => {
     const currentPrice = useSelector((state) => state.createPromo.data.selectPrice.variant);
     const currentCurrency = useSelector((state) => state.createPromo.data.currency);
 
-    const handleOffersGenreSelect = (genres) => {
-        setSelectedOffersGenres(genres);
-    };
+    useEffect(() => {
+        if (selectedOffersGenres.length > 0) {
+            setFilteredOffersByGenres(filteredOffersByGenres.filter((offer) => {
+                return offer.musicStyles.some((style) => {
+                    const styleGenres = style.genres;
+                    return styleGenres.includes(selectedOffersGenres[0]);  
+                });
+            }));
+        } else {
+            setFilteredOffersByGenres(prices);  
+        }
+    }, [selectedOffersGenres]);
 
     const getInfluencerAvatar = (influencers, username) => {
         const insta = influencers.find(insta => insta.instagramUsername === username);
         return insta ? insta.logo : null;
     };
-    
+
     return (
         <div className="account-client-offers">
             <div className="genre-swiper-container">
-                <GenreButtonList onGenreSelect={handleOffersGenreSelect}/>
+                <GenreButtonList setSelectedOffersGenres={setSelectedOffersGenres} selectedOffersGenres={selectedOffersGenres}/>
                 <div className="swiper-div">
                     <Swiper
                         modules={[Navigation, Pagination, Scrollbar, Autoplay, A11y]}
@@ -61,7 +69,7 @@ const OffersList = ({setSelectedOffersGenres, selectedOffersGenres, setFilteredO
                                     styleGenres.length === selectedOffersGenres.length;
                             });
                             const price = matchingStyle ? matchingStyle.price : item.price;
-                            const influencersForOffer = matchingStyle ? matchingStyle.connectInfluencer : item.connectInfluencer || []; 
+                            const influencersForOffer = matchingStyle ? matchingStyle.connectInfluencer : item.connectInfluencer;
                             return (
                                 <SwiperSlide key={item.id}>
                                     <li
@@ -119,7 +127,6 @@ const OffersList = ({setSelectedOffersGenres, selectedOffersGenres, setFilteredO
             </div>
         </div>
     );
-
-}
+};
 
 export default OffersList;

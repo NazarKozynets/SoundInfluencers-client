@@ -1,34 +1,32 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import GenreButton from './GenreButton';
 import './genreButtonList.css';
 
 const genres = [
-    {genre: 'Techno', subText: 'Melodic'},
-    {genre: 'Techno', subText: 'Hard'},
-    {genre: 'House', subText: 'Groovy'},
-    {genre: 'House', subText: 'Melodic, Afro'},
-    {genre: 'EDM'},
-    {genre: 'D&B'},
-    {genre: 'Bass'},
-    {genre: 'Dubstep'},
-    {genre: 'Dance'},
+    { genre: 'Techno', subText: 'Melodic' },
+    { genre: 'Techno', subText: 'Hard' },
+    { genre: 'House', subText: 'Tech House' },
+    { genre: 'House', subText: 'Melodic, Afro' },
+    { genre: 'EDM' },
+    { genre: 'D&B' },
+    { genre: 'Bass' },
+    { genre: 'Dubstep' },
+    { genre: 'Dance' },
 ];
 
-const GenreButtonsList = ({ onGenreSelect }) => {
-    const [activeGenres, setActiveGenres] = useState([]);
+const GenreButtonsList = ({ setSelectedOffersGenres }) => {
+    const [activeGenre, setActiveGenre] = useState(null);
 
     const handleGenreClick = (genre, subText) => {
         const selectedGenre = subText ? `${genre} (${subText})` : genre;
-        let newActiveGenres;
 
-        if (activeGenres.includes(selectedGenre)) {
-            newActiveGenres = activeGenres.filter(g => g !== selectedGenre);
+        if (activeGenre === selectedGenre) {
+            setActiveGenre(null);
+            setSelectedOffersGenres([]);  
         } else {
-            newActiveGenres = [...activeGenres, selectedGenre];
+            setActiveGenre(selectedGenre);
+            setSelectedOffersGenres([selectedGenre]);  
         }
-
-        setActiveGenres(newActiveGenres);
-        onGenreSelect(newActiveGenres); 
     };
 
     return (
@@ -40,8 +38,8 @@ const GenreButtonsList = ({ onGenreSelect }) => {
                         key={selectedGenre}
                         genre={genre}
                         subText={subText}
-                        isActive={activeGenres.includes(selectedGenre)}
-                        onClick={handleGenreClick}
+                        isActive={activeGenre === selectedGenre}
+                        onClick={() => handleGenreClick(genre, subText)}
                     />
                 );
             })}
