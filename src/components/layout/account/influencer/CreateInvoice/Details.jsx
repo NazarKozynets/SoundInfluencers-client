@@ -112,7 +112,7 @@ const CreateInvoiceDetails = () => {
     <>
       <div className="container-form">
         <p className="create-invoice-second">Fill Invoice Recipient details</p>
-
+        
         <div className="create-invoice-select">
           <button
             className={`create-invoice-select-button ${
