@@ -84,17 +84,30 @@ const Genres = ({
 
         const genre = Object.keys(groupedGenres).find(genre => groupedGenres[genre].includes(subGenre));
         if (genre) {
-            const hasActiveSubGenres = groupedGenres[genre].some(subText => localCheckedSubGenres[subText]);
-            setLocalCheckedGenres(prev => ({
-                ...prev,
-                [genre]: true
-            }));
-            setCheckedGenres(prev => ({
-                ...prev,
-                [genre]: true
-            }));
+            const hasActiveSubGenres = groupedGenres[genre].some(subText => newCheckedSubGenres[subText]);
+
+            if (hasActiveSubGenres) {
+                setLocalCheckedGenres(prev => ({
+                    ...prev,
+                    [genre]: true
+                }));
+                setCheckedGenres(prev => ({
+                    ...prev,
+                    [genre]: true
+                }));
+            } else {
+                setLocalCheckedGenres(prev => ({
+                    ...prev,
+                    [genre]: false
+                }));
+                setCheckedGenres(prev => ({
+                    ...prev,
+                    [genre]: false
+                }));
+            }
         }
     };
+
 
     const getInfluencerCountForGenre = (musicStyle) => {
         return influencers.filter(influencer => influencer.musicStyle === musicStyle).length;

@@ -1,11 +1,21 @@
-import React, { useEffect } from 'react';
-import { Swiper, SwiperSlide } from "swiper/react";
-import { A11y, Autoplay, Navigation, Pagination, Scrollbar } from "swiper/modules";
-import { useSelector } from "react-redux";
+import React, {useEffect} from 'react';
+import {Swiper, SwiperSlide} from "swiper/react";
+import {A11y, Autoplay, Navigation, Pagination, Scrollbar} from "swiper/modules";
+import {useSelector} from "react-redux";
 import GenreButtonList from "../../../../../form/GenreButton/GenreButtonList";
-import { calculatePriceForOffersAndInfluencers } from "../../../../../../utils/price";
+import {calculatePriceForOffersAndInfluencers} from "../../../../../../utils/price";
+import ImageWithFallback from "../../../../../ImageWithFallback";
+import altLogo from "../../../../../../images/alt-logo.jpg";
 
-const OffersList = ({ setSelectedOffersGenres, selectedOffersGenres, setFilteredOffersByGenres, filteredOffersByGenres, influencers, selectPrice, prices }) => {
+const OffersList = ({
+                        setSelectedOffersGenres,
+                        selectedOffersGenres,
+                        setFilteredOffersByGenres,
+                        filteredOffersByGenres,
+                        influencers,
+                        selectPrice,
+                        prices
+                    }) => {
     const currentPrice = useSelector((state) => state.createPromo.data.selectPrice.variant);
     const currentCurrency = useSelector((state) => state.createPromo.data.currency);
 
@@ -14,11 +24,11 @@ const OffersList = ({ setSelectedOffersGenres, selectedOffersGenres, setFiltered
             setFilteredOffersByGenres(filteredOffersByGenres.filter((offer) => {
                 return offer.musicStyles.some((style) => {
                     const styleGenres = style.genres;
-                    return styleGenres.includes(selectedOffersGenres[0]);  
+                    return styleGenres.includes(selectedOffersGenres[0]);
                 });
             }));
         } else {
-            setFilteredOffersByGenres(prices);  
+            setFilteredOffersByGenres(prices);
         }
     }, [selectedOffersGenres]);
 
@@ -30,7 +40,8 @@ const OffersList = ({ setSelectedOffersGenres, selectedOffersGenres, setFiltered
     return (
         <div className="account-client-offers">
             <div className="genre-swiper-container">
-                <GenreButtonList setSelectedOffersGenres={setSelectedOffersGenres} selectedOffersGenres={selectedOffersGenres}/>
+                <GenreButtonList setSelectedOffersGenres={setSelectedOffersGenres}
+                                 selectedOffersGenres={selectedOffersGenres}/>
                 <div className="swiper-div">
                     <Swiper
                         modules={[Navigation, Pagination, Scrollbar, Autoplay, A11y]}
@@ -71,53 +82,57 @@ const OffersList = ({ setSelectedOffersGenres, selectedOffersGenres, setFiltered
                             const price = matchingStyle ? matchingStyle.price : item.price;
                             const influencersForOffer = matchingStyle ? matchingStyle.connectInfluencer : item.connectInfluencer;
                             return (
-                                <SwiperSlide key={item.id}>
-                                    <li
-                                        key={item.id}
-                                        className={`account-client-offers-item ${currentPrice !== 0 ? currentPrice === item.id ? "active" : "not-active" : ""}`}
-                                        onClick={() => selectPrice(item.id)}
-                                    >
-                                        <h3 className="account-client-offers-title">IG {item.id}M</h3>
-                                        <p className="account-client-offers-text">{item.story}</p>
-                                        <p className="account-client-offers-text">{item.network}</p>
-                                        <p className="account-client-offers-text"> {item.followers}</p>
-                                        <div className="account-client-offers-block">
-                                            <ul className="account-client-offers-text-list">
-                                                {influencersForOffer.map((influencer, index) => {
-                                                    const avatarUrl = getInfluencerAvatar(influencers, influencer.instagramUsername);
+                                <>
+                                    {influencersForOffer && (
+                                        <SwiperSlide key={item.id}>
+                                            <li
+                                                key={item.id}
+                                                className={`account-client-offers-item ${currentPrice !== 0 ? currentPrice === item.id ? "active" : "not-active" : ""}`}
+                                                onClick={() => selectPrice(item.id)}
+                                            >
+                                                <h3 className="account-client-offers-title">IG {item.id}M</h3>
+                                                <p className="account-client-offers-text">{item.story}</p>
+                                                <p className="account-client-offers-text">{item.network}</p>
+                                                <p className="account-client-offers-text">{item.followers}</p>
+                                                <div className="account-client-offers-block">
+                                                    <ul className="account-client-offers-text-list">
+                                                        {influencersForOffer.map((influencer, index) => {
+                                                            const avatarUrl = getInfluencerAvatar(influencers, influencer.instagramUsername);
 
-                                                    return (
-                                                        <li
-                                                            key={index}
-                                                            className="account-client-offers-text-item"
-                                                            style={{ display: 'flex', alignItems: 'center' }}
-                                                        >
-                                                            {avatarUrl ? (
-                                                                <img
-                                                                    style={{
-                                                                        maxWidth: '58px',
-                                                                        maxHeight: '58px',
-                                                                        gap: '0px',
-                                                                        opacity: '0px',
-                                                                    }}
-                                                                    src={avatarUrl}
-                                                                    alt={influencer.instagramUsername}
-                                                                />
-                                                            ) : null}
-                                                            {influencer.instagramUsername}
-                                                        </li>
-                                                    );
-                                                })}
-                                            </ul>
-                                        </div>
+                                                            return (
+                                                                <li
+                                                                    key={index}
+                                                                    className="account-client-offers-text-item"
+                                                                    style={{ display: 'flex', alignItems: 'center' }}
+                                                                >
+                                                                    {avatarUrl ? (
+                                                                        <img
+                                                                            style={{
+                                                                                maxWidth: '58px',
+                                                                                maxHeight: '58px',
+                                                                                gap: '0px',
+                                                                                opacity: '0px',
+                                                                            }}
+                                                                            src={avatarUrl}
+                                                                            alt={influencer.instagramUsername}
+                                                                        />
+                                                                    ) : null}
+                                                                    {influencer.instagramUsername}
+                                                                </li>
+                                                            );
+                                                        })}
+                                                    </ul>
+                                                </div>
 
-                                        <button
-                                            className={`account-client-offers-button ${currentPrice === item.id ? "active" : ""}`}
-                                        >
-                                            {price != null ? calculatePriceForOffersAndInfluencers(price, currentCurrency) : calculatePriceForOffersAndInfluencers(item.price, currentCurrency)} {currentCurrency}
-                                        </button>
-                                    </li>
-                                </SwiperSlide>
+                                                <button
+                                                    className={`account-client-offers-button ${currentPrice === item.id ? "active" : ""}`}
+                                                >
+                                                    {price != null ? calculatePriceForOffersAndInfluencers(price, currentCurrency) : calculatePriceForOffersAndInfluencers(item.price, currentCurrency)} {currentCurrency}
+                                                </button>
+                                            </li>
+                                        </SwiperSlide>
+                                    )}
+                                </>
                             );
                         })}
                         <div className="swiper-button-next"></div>

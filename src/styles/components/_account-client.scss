@@ -219,6 +219,8 @@ body {
   font-size: 16px;
   font-weight: 500;
   text-align: left;
+
+  
 }
 
 .account-client-offers-button {
@@ -285,7 +287,7 @@ body {
 
 .account-client-container-right-side {
   margin-left: 70px;
-  
+
 }
 
 .account-client-choose-all {
@@ -1167,7 +1169,7 @@ body {
     gap: 25px;
     min-width: 1300px !important;
   }
-  .account-client-container-right-side-upper-side-offers-search{
+  .account-client-container-right-side-upper-side-offers-search {
     margin-right: 0px;
   }
 }
@@ -1386,6 +1388,25 @@ body {
   }
 }
 
+@media screen and (max-width: 1000px) {
+  .account-client-block {
+    text-align: center;
+    margin: 31px 0 0 0 !important;
+  }
+  .account-client-choose-list {
+    gap: 20px;
+    min-width: 0 !important;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(3, 1fr);
+    //justify-items: center;
+  }
+  .account-client-choose-item {
+    width: 500px;
+    height: 185px;
+  }
+}
+
 @media screen and (max-width: 768px) {
   .account-client-block {
     overflow: hidden;
@@ -1481,7 +1502,7 @@ body {
   .account-client-container-right-side {
     margin-left: auto;
     margin-right: auto;
-    width: 300px; 
+    width: 300px;
   }
   .account-client-choose-list {
     margin-top: 36px;
@@ -1492,8 +1513,8 @@ body {
     justify-items: center;
     gap: 21px;
     max-height: calc((3 * 142px + 2 * 21px) + 17px);
-    overflow-y: scroll; 
-    overflow-x: hidden; 
+    overflow-y: scroll;
+    overflow-x: hidden;
   }
   .account-client-choose-list::-webkit-scrollbar {
     width: 11px !important;

@@ -43,7 +43,6 @@ const OffersBudgetSelect = ({
         dispatch(setSelectInfluencer([]));
         dispatch(setSelectPrice({ variant: 0, price: 0 }));
         setActiveIndices([]);
-        console.log(budget);
     };
 
     const handleCurrencyChange = (newCurrency) => {

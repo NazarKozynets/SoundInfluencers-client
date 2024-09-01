@@ -16,7 +16,11 @@ import arrow from "../../../../../images/icons/arrow.svg";
 import OffersSearch from "../../../../form/Offers/OffersSearchBar/OffersSearch";
 import OffersList from "./AccountClientOffersComponents/OffersList";
 import InfluencersList from "./AccountClientOffersComponents/InfluencersList";
-import {calculatePriceForOffersAndInfluencers, doublePrice} from "../../../../../utils/price";
+import {
+    calculatePriceForOffersAndInfluencers,
+    calculatePricePerFollower,
+    doublePrice
+} from "../../../../../utils/price";
 import MobileInfluencersList from "./AccountClientOffersComponents/MobileInfluencersList";
 import MobileInfluencersListMenu from "./AccountClientOffersComponents/MobileInfluencersList";
 
@@ -650,16 +654,19 @@ const AccountClientOffers = () => {
 
         const selectedGenres = Object.keys(checkedGenres).filter(key => checkedGenres[key]);
         const selectedCategories = Object.keys(checkedCategories).filter(key => checkedCategories[key]);
+        const selectedSubGenres = Object.keys(checkedSubGenres).filter(key => checkedSubGenres[key]);
 
         if (selectedGenres.length > 0 && selectedCategories.length === 0) {
-            filtered = filtered.filter(item => selectedGenres.includes(item.musicStyle));
+            filtered = filtered.filter(item =>
+                selectedGenres.includes(item.musicStyle) ||
+                (item.musicSubStyles && item.musicSubStyles.some(subGenre => selectedSubGenres.includes(subGenre)))
+            );
         } else if (selectedCategories.length > 0 && selectedGenres.length === 0) {
             filtered = filtered.filter(item =>
                 item.categories && selectedCategories.some(category => item.categories.includes(category))
             );
         }
 
-        const selectedSubGenres = Object.keys(checkedSubGenres).filter(key => checkedSubGenres[key]);
         if (!selectedCategories.length > 0 && selectedSubGenres.length > 0) {
             filtered = filtered.filter(item => {
                 return item.musicSubStyles && item.musicSubStyles.length > 0 && item.musicSubStyles.some(subGenre => selectedSubGenres.includes(subGenre));
@@ -674,30 +681,50 @@ const AccountClientOffers = () => {
         }
 
         if (budget !== null) {
-            let totalPrice = 0;
+            // let totalPrice = 0;
+            // const influencersFilteredByBudget = [];
+            // const selectedInfluencers = new Set();
+            // let attempts = 0;
+            // const maxAttempts = 1000;
+            //
+            // while (attempts < maxAttempts && filtered.length > 0) {
+            //     attempts++;
+            //     let randomInfluencer = filtered[Math.floor(Math.random() * filtered.length)];
+            //     let influencerPrice = parseFloat(randomInfluencer.price.replace(/[^0-9.]/g, '')) * 2;
+            //
+            //     if (!selectedInfluencers.has(randomInfluencer) && (influencerPrice + totalPrice <= budget)) {
+            //         influencersFilteredByBudget.push(randomInfluencer);
+            //         selectedInfluencers.add(randomInfluencer);
+            //         totalPrice += influencerPrice;
+            //
+            //         let difference = budget - totalPrice;
+            //
+            //         if (difference <= 50 && difference >= 0) {
+            //             break;
+            //         }
+            //     }
+            // }
+            
+            
+            // const influencersFilteredByBudget = [];
+            
             const influencersFilteredByBudget = [];
-            const selectedInfluencers = new Set();
-            let attempts = 0;
-            const maxAttempts = 1000;
+            const sortedInfluencers = filtered.sort((a, b) => {
+                const pricePerFollowerA = calculatePricePerFollower(a, currentCurrency);
+                const pricePerFollowerB = calculatePricePerFollower(b, currentCurrency);
+                return pricePerFollowerA - pricePerFollowerB;
+            });
+            let totalPrice = 0;
+            for (let i = 0; i < sortedInfluencers.length; i++) {
+                const influencer = sortedInfluencers[i];
+                const influencerPrice = calculatePriceForOffersAndInfluencers(influencer.price, currentCurrency) * 2;
 
-            while (attempts < maxAttempts && filtered.length > 0) {
-                attempts++;
-                let randomInfluencer = filtered[Math.floor(Math.random() * filtered.length)];
-                let influencerPrice = parseFloat(randomInfluencer.price.replace(/[^0-9.]/g, '')) * 2;
-
-                if (!selectedInfluencers.has(randomInfluencer) && (influencerPrice + totalPrice <= budget)) {
-                    influencersFilteredByBudget.push(randomInfluencer);
-                    selectedInfluencers.add(randomInfluencer);
+                if (totalPrice + influencerPrice <= budget) {
+                    influencersFilteredByBudget.push(influencer);
                     totalPrice += influencerPrice;
-
-                    let difference = budget - totalPrice;
-
-                    if (difference <= 50 && difference >= 0) {
-                        break;
-                    }
-                }
+                } 
             }
-
+            
             filtered = influencersFilteredByBudget;
             setFilteredInfluencersByBudget(filtered);
         }

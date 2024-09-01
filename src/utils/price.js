@@ -29,3 +29,7 @@ export function doublePrice(priceString) {
         ? `${doubledPrice}${currencySymbol}`
         : `${doubledPrice}`;
 }
+
+export function calculatePricePerFollower(influencer, currentCurrency) {
+    return calculatePriceForOffersAndInfluencers(influencer.price, currentCurrency) / influencer.followersNumber;
+}

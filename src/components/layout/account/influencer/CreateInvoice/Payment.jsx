@@ -38,12 +38,6 @@ const CreateInvoicePayment = () => {
         amount: false,
     });
     
-    // const selectedPaymentMethod = useSelector((state) => state.createInvoice.selectedPaymentMethod)
-    //
-    // useEffect(() => {
-    //     console.log(selectedPaymentMethod)
-    // }, [selectedPaymentMethod]);
-
     const nextForm = () => {
         let listError = {
             // payee: false,

@@ -1,8 +1,8 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import ImageWithFallback from "../../../../../ImageWithFallback";
 import altLogo from "../../../../../../images/alt-logo.jpg";
 import instagram from "../../../../../../images/icons/instagram.svg";
-import {calculatePriceForOffersAndInfluencers, doublePrice} from "../../../../../../utils/price";
+import {calculatePriceForOffersAndInfluencers, doublePrice, calculatePricePerFollower} from "../../../../../../utils/price";
 import {useSelector} from "react-redux";
 
 const InfluencersList = ({influencers, activeIndices, setActiveIndices, selectInfluencer, isSearch}) => {
