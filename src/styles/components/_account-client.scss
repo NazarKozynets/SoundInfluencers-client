@@ -684,6 +684,10 @@ body {
 .account-client-post {
   max-width: 665px;
   margin: 0 auto;
+  
+  @media screen and (max-width: 915px) {
+    //margin: 0;
+  }
 }
 
 .account-client-payment {

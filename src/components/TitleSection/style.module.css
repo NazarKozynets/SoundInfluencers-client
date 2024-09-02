@@ -29,12 +29,12 @@
 @media screen and (max-width: 768px) {
   .title {
     font-size: 28px;
-    display: inline; 
+    display: inline;
     white-space: nowrap;
   }
 
   .span {
     font-size: 28px;
-    display: inline; 
+    display: block; 
   }
 }

@@ -84,25 +84,23 @@ const AccountClientPostContent = () => {
     <section className="account-client">
       <div className="container-form">
         <div className="account-client-block" style={{ position: "relative" }}>
-          <button
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              width: 50,
-              height: 50,
-              cursor: "pointer",
-            }}
-            onClick={() => {
-              dispatch(setCurrentWindow(0));
-            }}
-          >
-            <img src={arrow} style={{ transform: "rotate(180deg)" }} />
-          </button>
-          <TitleSection title="post" span="this content" />
+          <div className="account-client-back-button">
+            <button style={{
+              position: "absolute", top: 0, left: 50, width: 48, height: 48, cursor: "pointer",
+            }} onClick={() => navigation("/account/client/list-promo")}>
+              <img src={arrow} style={{transform: "rotate(180deg)"}}/>
+            </button>
+          </div>
+          <TitleSection title="post" span="this content"/>
 
-          <FormContainer style={{ marginTop: "60px" }}>
+          <FormContainer style={{marginTop: "60px"}}>
             <form className="account-client-post">
+              <TextInput
+                  title="Campaign Name"
+                  placeholder="Enter Campaign Name"
+                  style={{marginTop: "60px"}}
+                  silverColor={true}
+              />
               <TextInput
                 title="Videolink"
                 placeholder="Enter videolink"
@@ -111,6 +109,7 @@ const AccountClientPostContent = () => {
                 setValue={(value) => dispatch(setVideoLink(value))}
                 error={formError.videoLink}
                 onFocus={() => setFormError({ ...formError, videoLink: false })}
+                silverColor={true}
               />
               <TextArea
                 title="Post Description"
@@ -131,6 +130,7 @@ const AccountClientPostContent = () => {
                 setValue={(value) => dispatch(setStoryTag(value))}
                 error={formError.storyTag}
                 onFocus={() => setFormError({ ...formError, storyTag: false })}
+                silverColor={true}
               />
               <TextInput
                 title="Swipe Up Link"
@@ -142,6 +142,7 @@ const AccountClientPostContent = () => {
                 onFocus={() =>
                   setFormError({ ...formError, swipeUpLink: false })
                 }
+                silverColor={true}
               />
               <TextInput
                 title="Date Request"
@@ -174,10 +175,11 @@ const AccountClientPostContent = () => {
                 onFocus={() =>
                   setFormError({ ...formError, dateRequest: false })
                 }
+                silverColor={true}
               />
               <TextArea
-                title="Special Wishes"
-                placeholder="Write here if you have any deadlines and specifications "
+                title="Special Requests"
+                placeholder="Enter special requests"
                 style={{ marginTop: "60px" }}
                 value={dataPromo.specialWishes}
                 setValue={(value) => dispatch(setSpecialWishes(value))}
