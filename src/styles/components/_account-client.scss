@@ -717,6 +717,16 @@ body {
   }
 }
 
+.account-client-post-campaign-name {
+  margin-top: 34px;
+  p {
+    font-family: Geometria;
+    font-size: 24px;
+    font-weight: 700;
+    text-align: center;
+  }
+}
+
 .account-client-payment {
   border-radius: 30px;
   background: var(--background);
@@ -1168,6 +1178,38 @@ body {
     left: 10px;
     top: 50%;
     transform: translateY(-50%);
+  }
+}
+
+.account-client-save-and-estimate-form {
+  .account-client-save-and-estimate-form-first-block {
+    gap: 49px;
+    margin-top: 30px;
+    span {
+      font-family: Geometria;
+      font-size: 28px;
+      font-weight: 700;
+      color: #3330E4;
+    }
+    p {
+      font-family: Geometria;
+      font-size: 18px;
+      font-weight: 700;
+      padding-top: 6px;
+    }
+    button {
+      width: 74px;
+      height: 35px;
+      border-radius: 30px;
+      font-family: Geometria;
+      font-size: 18px;
+      font-weight: 700;
+    }
+  }
+  .account-client-save-and-estimate-form-meetfox {
+    width: 100%;
+    height: 600px;
+    border: none;
   }
 }
 

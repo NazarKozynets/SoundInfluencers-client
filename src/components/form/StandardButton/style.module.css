@@ -29,4 +29,35 @@
   .button {
     font-size: 22px;
   }
+  .buttonBlue {
+    font-size: 22px;
+  }
+}
+
+.buttonBlue {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 10px 40px;
+  border-radius: 30px;
+  background: blue;
+
+  color: var(--background);
+  text-align: center;
+  font-family: Geometria;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+
+  box-shadow: 0px 0px 0px 0px #3330E4;
+
+
+  transition: box-shadow 200ms linear;
+
+  cursor: pointer;
+}
+.buttonBlue:hover {
+  box-shadow: 0px 4px 4px 0px #3330E4;
 }

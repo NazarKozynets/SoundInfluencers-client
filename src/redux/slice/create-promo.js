@@ -10,6 +10,7 @@ const initialState = {
             price: 0,
         },
         selectInfluencers: [],
+        campaignName: "",
         videoLink: "",
         postDescription: "",
         storyTag: "",
@@ -39,6 +40,9 @@ export const createPromoSlice = createSlice({
         },
         setSelectInfluencer: (state, action) => {
             state.data.selectInfluencers = action.payload;
+        },
+        setCampaignName: (state, action) => {
+            state.data.campaignName = action.payload;
         },
         setVideoLink: (state, action) => {
             state.data.videoLink = action.payload;
@@ -71,6 +75,7 @@ export const createPromoSlice = createSlice({
                     price: 0,
                 },
                 selectInfluencers: [],
+                campaignName: "",
                 videoLink: "",
                 postDescription: "",
                 storyTag: "",
@@ -90,6 +95,7 @@ export const {
     setSelectPrice,
     setSelectAmount,
     setSelectInfluencer,
+    setCampaignName,
     setVideoLink,
     setPostDescription,
     setDateRequest,

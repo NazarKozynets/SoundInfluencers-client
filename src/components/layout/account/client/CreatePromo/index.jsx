@@ -1,44 +1,48 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import AccountClientOffers from "./AccountClientOffers";
 import AccountClientPostContent from "./AccountClientPostContent";
 import AccountClientPayment from "./AccountClientPayment";
-import { useDispatch, useSelector } from "react-redux";
+import AccountClientDetailsQuestion from "./AccountClientDetailsQuestion";
+import {useDispatch, useSelector} from "react-redux";
 import {
-  setCurrentWindow,
-  setSelectAmount,
-  setSelectInfluencer,
-  setSelectPrice,
+    setCurrentWindow,
+    setSelectAmount,
+    setSelectInfluencer,
+    setSelectPrice,
 } from "../../../../../redux/slice/create-promo";
+import AccountClientSaveAndEstimateCampaign from "./AccountClientSaveAndEstimateCampaign";
 
 const CreatePromo = () => {
-  const dispatch = useDispatch();
-  const currentWindow = useSelector((state) => state.createPromo.currentWindow);
+    const dispatch = useDispatch();
+    const currentWindow = useSelector((state) => state.createPromo.currentWindow);
 
-  useEffect(() => {
-    return () => {
-      dispatch(setSelectInfluencer([]));
-      dispatch(
-        setSelectPrice({
-          variant: 0,
-          price: 0,
-        })
-      );
-      dispatch(setSelectAmount(0));
-      dispatch(setCurrentWindow(0));
-    };
-  }, []);
+    useEffect(() => {
+        return () => {
+            dispatch(setSelectInfluencer([]));
+            dispatch(
+                setSelectPrice({
+                    variant: 0,
+                    price: 0,
+                })
+            );
+            dispatch(setSelectAmount(0));
+            dispatch(setCurrentWindow(0));
+        };
+    }, []);
 
-  return (
-    <>
-      {
-        [
-          <AccountClientOffers />,
-          <AccountClientPostContent />,
-          <AccountClientPayment />,
-        ][currentWindow]
-      }
-    </>
-  );
+    return (
+        <>
+            {
+                [
+                    <AccountClientOffers/>,
+                    <AccountClientDetailsQuestion/>,
+                    <AccountClientSaveAndEstimateCampaign/>,
+                    <AccountClientPostContent/>,
+                    <AccountClientPayment/>,
+                ][currentWindow]
+            }
+        </>
+    );
 };
 
 export default CreatePromo;

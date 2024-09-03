@@ -576,7 +576,6 @@ const AccountClientOffers = () => {
 
     const nextForm = () => {
         if (customePrice === 0 || selectInfluencers.length === 0) return;
-        console.log(dataForm, "1 dataForm");
         dispatch(setCurrentWindow(1));
     };
     const createInfList = (score) => {
