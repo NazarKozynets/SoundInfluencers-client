@@ -9,9 +9,13 @@ import invoice from "../../../../images/icons/invoice.svg";
 import accountDetails from "../../../../images/icons/details-account.svg";
 import support from "../../../../images/icons/support.svg";
 
-import instagram from "../../../../images/icons/instagram.webp";
-import spotify from "../../../../images/icons/spotify-svg.png";
-
+import instagram from "../../../../images/icons/socialMedias/instagram.png";
+import tiktok from "../../../../images/icons/socialMedias/tiktok.png";
+import youtube from "../../../../images/icons/socialMedias/youtube.png";
+import spotify from "../../../../images/icons/socialMedias/spotify.png";
+import soundcloud from "../../../../images/icons/socialMedias/soundcloud.png";
+import facebook from "../../../../images/icons/socialMedias/facebook.png"; 
+import radio from "../../../../images/icons/socialMedias/radio.png";
 
 import { useNavigate } from "react-router-dom";
 import ModalWindow from "../../../ModalWindow";
@@ -59,104 +63,94 @@ const AccountClientOffer = () => {
           <ul className="account-client-menu">
             <li className="account-client-menu-item">
               <button
-                className="account-client-menu-button"
-                onClick={() => navigation("/account/client/instagram-promo")}
+                  className="account-client-menu-button"
+                  onClick={() => navigation("/account/client/instagram-promo")}
               >
-                <img
-                  className="account-client-menu-button-icon"
-                  src={instagram}
-                  alt="account-menu-icon"
+                <img width={60} height={60}
+                     className="account-client-menu-button-icon"
+                     src={instagram}
+                     alt="account-menu-icon"
                 />
                 <p className="account-client-menu-button-text">Instagram</p>
               </button>
             </li>
-            <li className="account-client-menu-item">
+            <li className="account-client-menu-item coming-soon">
               <button
-                className="account-client-menu-button"
-                onClick={() => navigation("/account/client/ongoing-promos")}
+                  className="account-client-menu-button"
               >
                 <img
-                  className="account-client-menu-button-icon"
-                  src={ongoing}
-                  alt="account-menu-icon"
+                    width={60} height={60}
+                    className="account-client-menu-button-icon"
+                    src={tiktok}
+                    alt="account-menu-icon"
                 />
-                <p className="account-client-menu-button-text">
-                  Facebook
-                </p>
+                <p className="account-client-menu-button-text">Tik Tok</p>
               </button>
             </li>
-            <li className="account-client-menu-item">
+            <li className="account-client-menu-item coming-soon">
               <button
-                className="account-client-menu-button"
-                onClick={() => navigation("/account/client/tiktok-promo")}
+                  className="account-client-menu-button"
               >
                 <img
-                  className="account-client-menu-button-icon"
-                  src={newIcon}
-                  alt="account-menu-icon"
+                    width={60} height={60}
+                    className="account-client-menu-button-icon"
+                    src={spotify}
+                    alt="account-menu-icon"
                 />
-                <p className="account-client-menu-button-text">TikTok</p>
+                <p className="account-client-menu-button-text">Spotify</p>
               </button>
             </li>
-            <li className="account-client-menu-item">
+            <li className="account-client-menu-item coming-soon">
               <button
-                className="account-client-menu-button"
-                onClick={() => navigation("/account/client/invoice-details")}
+                  className="account-client-menu-button"
               >
                 <img
-                  className="account-client-menu-button-icon"
-                  src={invoice}
-                  alt="account-menu-icon"
+                    width={60} height={60}
+                    className="account-client-menu-button-icon"
+                    src={facebook}
+                    alt="account-menu-icon"
                 />
-                <p className="account-client-menu-button-text">
-                  Soundcloud
-                </p>
+                <p className="account-client-menu-button-text">Facebook</p>
               </button>
             </li>
-            <li className="account-client-menu-item">
+            <li className="account-client-menu-item coming-soon">
               <button
-                className="account-client-menu-button"
-                onClick={() => navigation("/account/client/details")}
+                  className="account-client-menu-button"
               >
                 <img
-                  className="account-client-menu-button-icon account-client-menu-button-icon-spotify"
-                  src={spotify}
-                  alt="account-menu-icon"
+                    width={60} height={60}
+                    className="account-client-menu-button-icon"
+                    src={soundcloud}
+                    alt="account-menu-icon"
                 />
-                <p className="account-client-menu-button-text">
-                 Spotify
-                </p>
+                <p className="account-client-menu-button-text">Soundcloud</p>
               </button>
             </li>
-            <li className="account-client-menu-item">
-              <a
-                href="mailto:admin@soundinfluencers.com?subject=Support%20Request"
-                className="account-client-menu-button"
+            <li className="account-client-menu-item coming-soon">
+              <button
+                  className="account-client-menu-button"
               >
                 <img
-                  className="account-client-menu-button-icon"
-                  src={support}
-                  alt="account-menu-icon"
+                    width={60} height={60}
+                    className="account-client-menu-button-icon"
+                    src={youtube}
+                    alt="account-menu-icon"
                 />
-                <p className="account-client-menu-button-text">
-                  Press
-                </p>
-              </a>
+                <p className="account-client-menu-button-text">YouTube</p>
+              </button>
             </li>
-            <li className="account-client-menu-item">
-              <a
-                href="mailto:admin@soundinfluencers.com?subject=Support%20Request"
-                className="account-client-menu-button"
+            <li className="account-client-menu-item coming-soon">
+              <button
+                  className="account-client-menu-button"
               >
                 <img
-                  className="account-client-menu-button-icon"
-                  src={support}
-                  alt="account-menu-icon"
+                    width={60} height={60}
+                    className="account-client-menu-button-icon"
+                    src={radio}
+                    alt="account-menu-icon"
                 />
-                <p className="account-client-menu-button-text">
-                  Promo Inflyte
-                </p>
-              </a>
+                <p className="account-client-menu-button-text">Radio</p>
+              </button>
             </li>
           </ul>
         </div>
@@ -164,15 +158,15 @@ const AccountClientOffer = () => {
 
       <ModalWindow isOpen={isPopup} setClose={setIsPopup}>
         <div className="signup-client-modal">
-          <img className="signup-client-modal-icon" src={acceptIcon} />
+          <img className="signup-client-modal-icon" src={acceptIcon}/>
 
           <h2 className="signup-client-modal-title">Congratulations!</h2>
 
           <p className="signup-client-modal-second">
             You can now check the status of your Promotion request in the{" "}
             <button
-              className="signup-client-modal-second"
-              style={{
+                className="signup-client-modal-second"
+                style={{
                 color: "#3330E4",
                 textDecorationLine: "underline",
                 cursor: "pointer",
