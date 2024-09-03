@@ -719,6 +719,7 @@ body {
 
 .account-client-post-campaign-name {
   margin-top: 34px;
+
   p {
     font-family: Geometria;
     font-size: 24px;
@@ -976,20 +977,64 @@ body {
   }
 
   &-item {
-    width: calc((100% - (20px * 6)) / 6);
-
+    width: calc((100% - (20px * 6)) / 6) !important;
     @media screen and (max-width: 768pc) {
       width: unset;
     }
 
     &-button {
-      width: 100%;
+      height: 94px !important;
+      margin-bottom: 7px;
+      border-radius: 24px;
+      background-color: #3330E41A;
       display: flex;
-      flex-direction: column;
       align-items: center;
-      gap: 17px;
-      cursor: pointer;
+      justify-content: center;
+      position: relative;
+      width: 100%;
+      height: 100%;
+      flex-direction: column;
+
+      &-inner-content {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+        gap: 6px;
+        
+        img {
+          width: 32px;
+          height: 32px;
+        }
+
+        p {
+          font-family: Geometria;
+          font-size: 14px;
+          font-weight: 500;
+          color: #3330E4;
+        }
+        margin-bottom: 14px;
+      }
+      
+
+      span {
+        font-family: Geometria;
+        font-size: 12px;
+        font-weight: 500;
+        color: white;
+        width: 100%;
+        height: 24px;
+        border-radius: 0 0 24px 24px;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        box-sizing: border-box;
+      }
     }
+
   }
 
   &-text {
@@ -1185,18 +1230,21 @@ body {
   .account-client-save-and-estimate-form-first-block {
     gap: 49px;
     margin-top: 30px;
+
     span {
       font-family: Geometria;
       font-size: 28px;
       font-weight: 700;
       color: #3330E4;
     }
+
     p {
       font-family: Geometria;
       font-size: 18px;
       font-weight: 700;
       padding-top: 6px;
     }
+
     button {
       width: 74px;
       height: 35px;
@@ -1206,6 +1254,7 @@ body {
       font-weight: 700;
     }
   }
+
   .account-client-save-and-estimate-form-meetfox {
     width: 100%;
     height: 600px;
