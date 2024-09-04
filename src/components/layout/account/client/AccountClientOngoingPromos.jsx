@@ -145,7 +145,9 @@ const AcountClientOngoingPromos = () => {
                                         {/*  </p>*/}
                                         {/*</button>*/}
                                         <div>
-                                            <button className="account-client-past-promos-form-item-button">
+                                            <button
+                                                onClick={() => navigation(`/account/client/ongoing-promos/${item._id}`)}
+                                                className="account-client-past-promos-form-item-button">
                                                 <div
                                                     className="account-client-past-promos-form-item-button-inner-content">
                                                     <img src={instagram} alt={"inst"}/>

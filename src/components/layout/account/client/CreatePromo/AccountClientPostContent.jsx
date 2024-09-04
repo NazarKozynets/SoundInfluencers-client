@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import TitleSection from "../../../../TitleSection";
 import FormContainer from "../../../../form/FormContainer";
 import TextInput from "../../../../form/TextInput";
@@ -17,7 +17,7 @@ import {
     setStoryTag,
     setSwipeUpLink,
     setVideoLink,
-    setCampaignName,
+    setCampaignName, setCreatedAt,
 } from "../../../../../redux/slice/create-promo";
 import {
     formatDateString,
@@ -29,15 +29,21 @@ const AccountClientPostContent = () => {
     const dispatch = useDispatch();
     const navigation = useNavigate();
     const dataPromo = useSelector((state) => state.createPromo.data);
-  
+
+    useEffect(() => {
+        const today = new Date().toISOString().split('T')[0];
+        dispatch(setCreatedAt(today));
+    }, []);
+    
     const [formError, setFormError] = useState({
         campaignName: false,
         videoLink: false,
         postDescription: false,
         storyTag: false,
         swipeUpLink: false,
-        dateRequest: false,
+        // dateRequest: false,
         specialWishes: false,
+        createdAt: false,
     });
 
     const nextForm = () => {
@@ -47,8 +53,9 @@ const AccountClientPostContent = () => {
             postDescription: false,
             storyTag: false,
             swipeUpLink: false,
-            dateRequest: false,
+            // dateRequest: false,
             specialWishes: false,
+            createdAt: false,
         };
 
         let haveError = false;
@@ -69,18 +76,25 @@ const AccountClientPostContent = () => {
             }
         }
 
-        if (!dataPromo.dateRequest) {
+        if (dataPromo.createdAt === "") {
             haveError = true;
-            setFormError({...listError, dateRequest: true});
-            return;
+            listError = {
+                ...listError,
+                createdAt: true,
+            };
         }
-
+        
+        // if (!dataPromo.dateRequest) {
+        //     haveError = true;
+        //     setFormError({...listError, dateRequest: true});
+        //     return;
+        // }
         if (haveError) {
             setFormError(listError);
             return;
         }
-
-        console.log(dataPromo);
+        
+        console.log(dataPromo)
         
         dispatch(setCurrentWindow(4));
     };
@@ -92,7 +106,7 @@ const AccountClientPostContent = () => {
                     <div className="account-client-back-button">
                         <button style={{
                             position: "absolute", top: 0, left: 50, width: 48, height: 48, cursor: "pointer",
-                        }} onClick={() => navigation("/account/client/list-promo")}>
+                        }} onClick={() => dispatch(setCurrentWindow(1))}>
                             <img src={arrow} style={{transform: "rotate(180deg)"}}/>
                         </button>
                     </div>
@@ -163,39 +177,39 @@ const AccountClientPostContent = () => {
                                     }
                                     silverColor={true}
                                 />
-                                <TextInput
-                                    title="Date Request"
-                                    placeholder="Enter data"
-                                    style={{marginTop: "60px"}}
-                                    value={dataPromo.dateRequest}
-                                    setValue={(value) => {
-                                        // Remove any non-digit characters
-                                        const numericValue = value.replace(/[^\d]/g, '');
-
-                                        // Format the string
-                                        let formattedValue = '';
-                                        if (numericValue.length <= 2) {
-                                            // First two digits for the day
-                                            formattedValue = numericValue;
-                                        } else if (numericValue.length <= 4) {
-                                            // Add slash after the day
-                                            formattedValue = `${numericValue.slice(0, 2)}/${numericValue.slice(2)}`;
-                                        } else {
-                                            // Add slashes for both day and month
-                                            formattedValue = `${numericValue.slice(0, 2)}/${numericValue.slice(2, 4)}/${numericValue.slice(4, 8)}`;
-                                        }
-
-                                        // Update state
-
-                                        dispatch(setDateRequest(formattedValue))
-                                        // setFormData({ ...formData, datePost: formattedValue });
-                                    }}
-                                    error={formError.dateRequest}
-                                    onFocus={() =>
-                                        setFormError({...formError, dateRequest: false})
-                                    }
-                                    silverColor={true}
-                                />
+                                {/*<TextInput*/}
+                                {/*    title="Date Request"*/}
+                                {/*    placeholder="Enter data"*/}
+                                {/*    style={{marginTop: "60px"}}*/}
+                                {/*    value={dataPromo.dateRequest}*/}
+                                {/*    setValue={(value) => {*/}
+                                {/*        // Remove any non-digit characters*/}
+                                {/*        const numericValue = value.replace(/[^\d]/g, '');*/}
+                                
+                                {/*        // Format the string*/}
+                                {/*        let formattedValue = '';*/}
+                                {/*        if (numericValue.length <= 2) {*/}
+                                {/*            // First two digits for the day*/}
+                                {/*            formattedValue = numericValue;*/}
+                                {/*        } else if (numericValue.length <= 4) {*/}
+                                {/*            // Add slash after the day*/}
+                                {/*            formattedValue = `${numericValue.slice(0, 2)}/${numericValue.slice(2)}`;*/}
+                                {/*        } else {*/}
+                                {/*            // Add slashes for both day and month*/}
+                                {/*            formattedValue = `${numericValue.slice(0, 2)}/${numericValue.slice(2, 4)}/${numericValue.slice(4, 8)}`;*/}
+                                {/*        }*/}
+                                
+                                {/*        // Update state*/}
+                                
+                                {/*        dispatch(setDateRequest(formattedValue))*/}
+                                {/*        // setFormData({ ...formData, datePost: formattedValue });*/}
+                                {/*    }}*/}
+                                {/*    error={formError.dateRequest}*/}
+                                {/*    onFocus={() =>*/}
+                                {/*        setFormError({...formError, dateRequest: false})*/}
+                                {/*    }*/}
+                                {/*    silverColor={true}*/}
+                                {/*/>*/}
                                 <TextArea
                                     title="Special Requests"
                                     placeholder="Enter special requests"
@@ -207,26 +221,17 @@ const AccountClientPostContent = () => {
                                         setFormError({...formError, specialWishes: false})
                                     }
                                 />
-
-                                <div
-                                    style={{
-                                        display: "flex",
-                                        justifyContent: "center",
-                                        marginTop: "60px",
-                                    }}
-                                >
-                                </div>
                             </form>
                         </FormContainer>
                         <div style={{
                             marginTop: '72px',
                             display: 'flex',
-                            flexDirection: 'column', 
-                            alignItems: 'center',    
+                            flexDirection: 'column',
+                            alignItems: 'center',
                             gap: '90px',
                         }}>
                             <StandardButton text="Add Additional Video" isBlue={true}/>
-                            <StandardButton text="Continue" onClick={nextForm}/>
+                            <StandardButton text="Continue" onClick={() => nextForm()}/>
                         </div>
                     </div>
                 </div>

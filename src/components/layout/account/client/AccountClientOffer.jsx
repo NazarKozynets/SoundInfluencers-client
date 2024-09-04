@@ -16,6 +16,8 @@ import spotify from "../../../../images/icons/socialMedias/spotify.png";
 import soundcloud from "../../../../images/icons/socialMedias/soundcloud.png";
 import facebook from "../../../../images/icons/socialMedias/facebook.png"; 
 import radio from "../../../../images/icons/socialMedias/radio.png";
+import press from "../../../../images/icons/socialMedias/tablet 1.png";
+import clubDJ from "../../../../images/icons/socialMedias/send (1) 1.png";
 
 import { useNavigate } from "react-router-dom";
 import ModalWindow from "../../../ModalWindow";
@@ -150,6 +152,32 @@ const AccountClientOffer = () => {
                     alt="account-menu-icon"
                 />
                 <p className="account-client-menu-button-text">Radio</p>
+              </button>
+            </li>
+            <li className="account-client-menu-item coming-soon">
+              <button
+                  className="account-client-menu-button"
+              >
+                <img
+                    width={60} height={60}
+                    className="account-client-menu-button-icon"
+                    src={press}
+                    alt="account-menu-icon"
+                />
+                <p className="account-client-menu-button-text">Press</p>
+              </button>
+            </li>
+            <li className="account-client-menu-item coming-soon">
+              <button
+                  className="account-client-menu-button"
+              >
+                <img
+                    width={60} height={60}
+                    className="account-client-menu-button-icon"
+                    src={clubDJ}
+                    alt="account-menu-icon"
+                />
+                <p className="account-client-menu-button-text">Club DJs</p>
               </button>
             </li>
           </ul>

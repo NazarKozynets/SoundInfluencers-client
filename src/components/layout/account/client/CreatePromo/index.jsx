@@ -4,13 +4,14 @@ import AccountClientPostContent from "./AccountClientPostContent";
 import AccountClientPayment from "./AccountClientPayment";
 import AccountClientDetailsQuestion from "./AccountClientDetailsQuestion";
 import {useDispatch, useSelector} from "react-redux";
+import AccountClientCampaignStrategy from "./AccountClientCampaignStrategy";
+import AccountClientSaveAndEstimateCampaign from "./AccountClientSaveAndEstimateCampaign";
 import {
     setCurrentWindow,
     setSelectAmount,
     setSelectInfluencer,
     setSelectPrice,
 } from "../../../../../redux/slice/create-promo";
-import AccountClientSaveAndEstimateCampaign from "./AccountClientSaveAndEstimateCampaign";
 
 const CreatePromo = () => {
     const dispatch = useDispatch();
@@ -38,6 +39,7 @@ const CreatePromo = () => {
                     <AccountClientDetailsQuestion/>,
                     <AccountClientSaveAndEstimateCampaign/>,
                     <AccountClientPostContent/>,
+                    <AccountClientCampaignStrategy/>,
                     <AccountClientPayment/>,
                 ][currentWindow]
             }

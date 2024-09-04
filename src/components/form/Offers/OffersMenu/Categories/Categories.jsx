@@ -17,7 +17,7 @@ const Categories = ({
     const isMobile = window.innerWidth <= 768;
     
     const categories = [
-        'Ibiza', 'Memes', 'Dancing'
+        'Ibiza', 'Meme', 'Dancing'
     ];
 
     const handleCheckboxChange = (category, checked) => {

@@ -991,8 +991,7 @@ body {
       align-items: center;
       justify-content: center;
       position: relative;
-      width: 100%;
-      height: 100%;
+      width: 100% !important;
       flex-direction: column;
 
       &-inner-content {
@@ -1004,7 +1003,7 @@ body {
         height: 100%;
         cursor: pointer;
         gap: 6px;
-        
+
         img {
           width: 32px;
           height: 32px;
@@ -1016,9 +1015,10 @@ body {
           font-weight: 500;
           color: #3330E4;
         }
+
         margin-bottom: 14px;
       }
-      
+
 
       span {
         font-family: Geometria;
@@ -1032,6 +1032,8 @@ body {
         bottom: 0;
         left: 0;
         box-sizing: border-box;
+        align-content: center;
+        padding-bottom: 3px;
       }
     }
 
@@ -1261,6 +1263,170 @@ body {
     border: none;
   }
 }
+
+.account-client-campaign-strategy {
+  &-title {
+    p {
+      font-family: Geometria;
+      font-size: 24px;
+      font-weight: 700;
+      text-align: center;
+      margin-top: 35px;
+    }
+  }
+
+  &-details {
+    padding: 0 69px;
+    margin-top: 60px;
+    display: flex;
+    justify-content: space-around;
+    p {
+      font-family: Geometria;
+      font-size: 24px;
+      font-weight: 400;
+    }
+    span {
+      font-family: Geometria;
+      font-size: 24px;
+      font-weight: 700;
+    }
+    &-first,
+    &-third {
+      flex: 1;
+      border: 2px solid #3330E4;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 20px 0 20px 64px;
+    }
+
+    &-second {
+      flex: 1;
+      border-top: 2px solid #3330E4;
+      border-bottom: 2px solid #3330E4;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 20px 0 20px 64px;
+    }
+
+    &-first {
+      border-radius: 40px 0 0 40px;
+    }
+
+    &-third {
+      border-radius: 0 40px 40px 0;
+    }
+  }
+  
+  &-influencers {
+    margin-top: 65px;
+    .account-client-campaign-strategy-influencers-table-container {
+      width: 50%;
+      margin: auto;
+      box-shadow: 0px 4px 20px 0px #3330E480;
+      border-radius: 30px;
+      overflow: hidden;
+      margin-top: 10px;
+      transition: width 0.3s ease;
+    }
+
+    .account-client-campaign-strategy-influencers-table-container.expanded {
+      width: 90%; 
+    }
+
+    .account-client-campaign-strategy-influencers-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .account-client-campaign-strategy-influencers-table-header {
+      height: 84px;
+      border-radius: 0 0 30px 30px;
+      background: #3330E4;
+      color: #fff;
+      text-align: left;
+    }
+
+    .account-client-campaign-strategy-influencers-table-header th {
+      font-family: Geometria;
+      font-size: 14px;
+      font-weight: 900;
+      text-align: center;
+      padding: 20px;
+      &:first-child {
+        border-radius: 30px 0 0 0;
+      }
+      &:last-child {
+        border-radius: 0 30px 0 0;
+      }
+    }
+
+    .account-client-campaign-strategy-influencers-table td {
+      padding: 9px 0 9px 17px;
+    }
+
+    .account-client-campaign-strategy-influencers-table tbody tr td {
+      border-bottom: 1px solid #c8c8f8;
+    }
+
+    .account-client-campaign-strategy-influencers-table tbody tr td:nth-child(1),
+    .account-client-campaign-strategy-influencers-table tbody tr td:nth-child(3) {
+      background: #ebebfd;
+    }
+
+    .account-client-campaign-strategy-influencers-table tbody tr td:nth-child(2),
+    .account-client-campaign-strategy-influencers-table tbody tr td:nth-child(4),
+    .account-client-campaign-strategy-influencers-table tbody tr td:nth-child(5) {
+      background: #FFFFFF;
+    }
+
+    .account-client-campaign-strategy-influencers-table-footer {
+      height: 84px;
+      border-radius: 30px 30px 0 0;
+      background: #3330E4;
+      color: #fff;
+      text-align: left;
+    }
+
+    .account-client-campaign-strategy-influencers-table-footer td {
+      font-family: Geometria;
+      font-size: 17px;
+      font-weight: 800;
+      padding: 20px;
+      background: #ffbd84;
+      color: black;
+    }
+
+    .account-client-campaign-strategy-influencers-table-footer td:first-child {
+      border-radius: 0 0 0 30px;
+      background: #FF7A09;
+      text-align: center;
+      width: 250px;
+    }
+
+    .account-client-campaign-strategy-influencers-table-footer td:nth-child(2) {
+      font-weight: 700;
+    }
+
+    .account-client-campaign-strategy-influencers-table-footer td:nth-child(3),
+    .account-client-campaign-strategy-influencers-table-footer td:nth-child(3) {
+      background: #ebad82;
+      width: 200px;
+    }
+  }
+  
+  &-buttons {
+    display: flex;
+    justify-content: center;
+    margin-top: 93px;
+    
+    button {
+      width: 294px;
+    }
+  }
+}
+
 
 @media screen and (max-width: 1800px) {
   .swiper-div {

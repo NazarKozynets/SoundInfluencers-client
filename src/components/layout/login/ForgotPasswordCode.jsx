@@ -26,7 +26,7 @@ const ForgotPasswordCode = () => {
       );
 
       if (result.data.code === 200) {
-        navigation("/login/client");
+        navigation("/");
       }
     } catch (err) {
       console.log(err);

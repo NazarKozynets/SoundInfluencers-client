@@ -7,6 +7,7 @@ import axios from "axios";
 import {setClearForm, setCurrentWindow} from "../../../../../redux/slice/create-promo";
 import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
+import arrow from "../../../../../images/icons/arrow.svg";
 const AccountClientSaveAndEstimateCampaign = () => {
     // const [data, setData] = useState(null);
     
@@ -54,13 +55,13 @@ const AccountClientSaveAndEstimateCampaign = () => {
     return (
         <section className="account-client">
             <div className="container-form">
-                {/*<div className="account-client-back-button">*/}
-                {/*    <button style={{*/}
-                {/*        position: "absolute", top: 200, left: 50, width: 48, height: 48, cursor: "pointer",*/}
-                {/*    }} onClick={() => navigation("/account/client/list-promo")}>*/}
-                {/*        <img src={arrow} style={{transform: "rotate(180deg)"}}/>*/}
-                {/*    </button>*/}
-                {/*</div>*/}
+                <div className="account-client-back-button">
+                    <button style={{
+                        position: "absolute", top: 200, left: 100, width: 48, height: 48, cursor: "pointer",
+                    }} onClick={() => dispatch(setCurrentWindow(1))}>
+                        <img src={arrow} style={{transform: "rotate(180deg)"}}/>
+                    </button>
+                </div>
                 <TitleSection title="post" span="this content"/>
                 <FormContainer style={{marginTop: "60px"}}>
                     <form style={{

@@ -15,10 +15,11 @@ const initialState = {
         postDescription: "",
         storyTag: "",
         swipeUpLink: "",
-        dateRequest: "",
+        dateRequest: "01/01/01",
         specialWishes: "",
         paymentType: "",
         paymentStatus: "wait",
+        createdAt: "",
     },
 };
 
@@ -65,6 +66,9 @@ export const createPromoSlice = createSlice({
         setPaymentType: (state, action) => {
             state.data.paymentType = action.payload;
         },
+        setCreatedAt: (state, action) => {
+            state.data.createdAt = action.payload;
+        },
 
         setClearForm: (state) => {
             state.data = {
@@ -84,6 +88,7 @@ export const createPromoSlice = createSlice({
                 specialWishes: "",
                 paymentType: "",
                 paymentStatus: "wait",
+                createdAt: "",
             };
         },
     },
@@ -103,6 +108,7 @@ export const {
     setSwipeUpLink,
     setSpecialWishes,
     setPaymentType,
+    setCreatedAt,
     setClearForm,
 } = createPromoSlice.actions;
 

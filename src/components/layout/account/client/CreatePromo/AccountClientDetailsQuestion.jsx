@@ -2,11 +2,13 @@ import React from "react";
 import arrow from "../../../../../images/icons/arrow.svg";
 import TitleSection from "../../../../TitleSection";
 import FormContainer from "../../../../form/FormContainer";
-import {setCurrentWindow} from "../../../../../redux/slice/create-promo";
+import {setClearForm, setCurrentWindow} from "../../../../../redux/slice/create-promo";
 import {useDispatch, useSelector} from "react-redux";
+import {useNavigate} from "react-router-dom";
 
 const AccountClientDetailsQuestion = () => {
     const dispatch = useDispatch();
+    const navigation = useNavigate();
     
     const nextFormForNoButton = () => {
         dispatch(setCurrentWindow(2));
@@ -16,16 +18,21 @@ const AccountClientDetailsQuestion = () => {
         dispatch(setCurrentWindow(3));
     };
     
+    const nextFormForBackButton = () => {
+        dispatch(setCurrentWindow(0));
+        dispatch(setClearForm());
+    };
+    
     return (
         <section className="account-client">
             <div className="container-form">
-                {/*<div className="account-client-back-button">*/}
-                {/*    <button style={{*/}
-                {/*        position: "absolute", top: 200, left: 50, width: 48, height: 48, cursor: "pointer",*/}
-                {/*    }} onClick={() => navigation("/account/client/list-promo")}>*/}
-                {/*        <img src={arrow} style={{transform: "rotate(180deg)"}}/>*/}
-                {/*    </button>*/}
-                {/*</div>*/}
+                <div className="account-client-back-button">
+                    <button style={{
+                        position: "absolute", top: 200, left: 50, width: 48, height: 48, cursor: "pointer",
+                    }} onClick={() => nextFormForBackButton()}>
+                        <img src={arrow} style={{transform: "rotate(180deg)"}}/>
+                    </button>
+                </div>
                 <TitleSection title="post" span="this content"/>
                 <FormContainer style={{marginTop: "60px"}}>
                     <form style={{
