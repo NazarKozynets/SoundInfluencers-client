@@ -948,6 +948,38 @@ body {
   }
 }
 
+.account-client-payment-po {
+  &-container {
+    padding-left: 87px;
+    span {
+      font-family: Geometria;
+      font-size: 28px;
+      font-weight: 700;
+      color: #3330E4;
+    }
+
+    p {
+      font-family: Geometria;
+      font-size: 18px;
+      font-weight: 700;
+      padding-top: 10px;
+    }
+
+    &-first {
+      display: flex;
+      gap: 27px; 
+      margin-top: 45px;
+
+      > * {
+        display: flex;
+        align-items: center;
+        gap: 5px; 
+      }
+    }
+  }
+}
+
+
 .account-client-past-promos-second {
   color: var(--text);
   text-align: center;
@@ -1322,7 +1354,7 @@ body {
   &-influencers {
     margin-top: 65px;
     .account-client-campaign-strategy-influencers-table-container {
-      width: 50%;
+      width: 65%;
       margin: auto;
       box-shadow: 0px 4px 20px 0px #3330E480;
       border-radius: 30px;
@@ -1363,7 +1395,7 @@ body {
     }
 
     .account-client-campaign-strategy-influencers-table td {
-      padding: 9px 0 9px 17px;
+      padding: 9px 15px 9px 15px;
     }
 
     .account-client-campaign-strategy-influencers-table tbody tr td {
@@ -1371,7 +1403,8 @@ body {
     }
 
     .account-client-campaign-strategy-influencers-table tbody tr td:nth-child(1),
-    .account-client-campaign-strategy-influencers-table tbody tr td:nth-child(3) {
+    .account-client-campaign-strategy-influencers-table tbody tr td:nth-child(3),
+    .account-client-campaign-strategy-influencers-table tbody tr td:nth-child(6){
       background: #ebebfd;
     }
 

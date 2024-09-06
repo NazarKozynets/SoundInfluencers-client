@@ -16,8 +16,8 @@ import spotify from "../../../../images/icons/socialMedias/spotify.png";
 import soundcloud from "../../../../images/icons/socialMedias/soundcloud.png";
 import facebook from "../../../../images/icons/socialMedias/facebook.png"; 
 import radio from "../../../../images/icons/socialMedias/radio.png";
-import press from "../../../../images/icons/socialMedias/tablet 1.png";
-import clubDJ from "../../../../images/icons/socialMedias/send (1) 1.png";
+import press from "../../../../images/icons/socialMedias/tablet.png";
+import clubDJ from "../../../../images/icons/socialMedias/send.png";
 
 import { useNavigate } from "react-router-dom";
 import ModalWindow from "../../../ModalWindow";

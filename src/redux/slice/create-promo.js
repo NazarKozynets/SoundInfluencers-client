@@ -1,4 +1,4 @@
-import {createSlice} from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     currentWindow: 0,
@@ -11,15 +11,18 @@ const initialState = {
         },
         selectInfluencers: [],
         campaignName: "",
-        videoLink: "",
-        postDescription: "",
-        storyTag: "",
-        swipeUpLink: "",
-        dateRequest: "01/01/01",
-        specialWishes: "",
         paymentType: "",
         paymentStatus: "wait",
         createdAt: "",
+        videos: [
+            {
+                videoLink: "",
+                postDescription: "",
+                storyTag: "",
+                swipeUpLink: "",
+                specialWishes: "",
+            },
+        ],
     },
 };
 
@@ -31,7 +34,7 @@ export const createPromoSlice = createSlice({
             state.currentWindow = action.payload;
         },
         setSelectCurrency: (state, action) => {
-            state.data.currency = action.payload
+            state.data.currency = action.payload;
         },
         setSelectPrice: (state, action) => {
             state.data.selectPrice = action.payload;
@@ -42,26 +45,11 @@ export const createPromoSlice = createSlice({
         setSelectInfluencer: (state, action) => {
             state.data.selectInfluencers = action.payload;
         },
+        updateSelectInfluencer: (state, action) => {
+            state.data.selectInfluencers = action.payload;
+        },
         setCampaignName: (state, action) => {
             state.data.campaignName = action.payload;
-        },
-        setVideoLink: (state, action) => {
-            state.data.videoLink = action.payload;
-        },
-        setPostDescription: (state, action) => {
-            state.data.postDescription = action.payload;
-        },
-        setDateRequest: (state, action) => {
-            state.data.dateRequest = action.payload;
-        },
-        setStoryTag: (state, action) => {
-            state.data.storyTag = action.payload;
-        },
-        setSwipeUpLink: (state, action) => {
-            state.data.swipeUpLink = action.payload;
-        },
-        setSpecialWishes: (state, action) => {
-            state.data.specialWishes = action.payload;
         },
         setPaymentType: (state, action) => {
             state.data.paymentType = action.payload;
@@ -69,7 +57,25 @@ export const createPromoSlice = createSlice({
         setCreatedAt: (state, action) => {
             state.data.createdAt = action.payload;
         },
-
+        addVideo: (state, action) => {
+            const newVideo = {
+                ...action.payload,
+                forInfluencers: [],
+            };
+            state.data.videos.push(newVideo);
+        },
+        updateVideo: (state, action) => {
+            const { index, videoData } = action.payload;
+            if (state.data.videos[index]) {
+                state.data.videos[index] = videoData;
+            }
+        },
+        removeVideo: (state, action) => {
+            const index = action.payload;
+            if (state.data.videos[index]) {
+                state.data.videos.splice(index, 1);
+            }
+        },
         setClearForm: (state) => {
             state.data = {
                 currency: "€",
@@ -80,15 +86,10 @@ export const createPromoSlice = createSlice({
                 },
                 selectInfluencers: [],
                 campaignName: "",
-                videoLink: "",
-                postDescription: "",
-                storyTag: "",
-                swipeUpLink: "",
-                dateRequest: "",
-                specialWishes: "",
                 paymentType: "",
                 paymentStatus: "wait",
                 createdAt: "",
+                videos: [],
             };
         },
     },
@@ -100,15 +101,13 @@ export const {
     setSelectPrice,
     setSelectAmount,
     setSelectInfluencer,
+    updateSelectInfluencer,
     setCampaignName,
-    setVideoLink,
-    setPostDescription,
-    setDateRequest,
-    setStoryTag,
-    setSwipeUpLink,
-    setSpecialWishes,
     setPaymentType,
     setCreatedAt,
+    addVideo,
+    updateVideo,
+    removeVideo,
     setClearForm,
 } = createPromoSlice.actions;
 

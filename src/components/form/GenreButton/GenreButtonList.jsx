@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import GenreButton from './GenreButton';
 import './genreButtonList.css';
 
@@ -17,15 +17,25 @@ const genres = [
 const GenreButtonsList = ({ setSelectedOffersGenres }) => {
     const [activeGenre, setActiveGenre] = useState(null);
 
+    useEffect(() => {
+        const initialGenre = 'Techno (Melodic)';
+        setActiveGenre(initialGenre);
+        setSelectedOffersGenres([]);
+    }, [setSelectedOffersGenres]);
+    
     const handleGenreClick = (genre, subText) => {
         const selectedGenre = subText ? `${genre} (${subText})` : genre;
-
+        
         if (activeGenre === selectedGenre) {
-            setActiveGenre(null);
+            setActiveGenre('Techno (Melodic)');
             setSelectedOffersGenres([]);  
         } else {
             setActiveGenre(selectedGenre);
-            setSelectedOffersGenres([selectedGenre]);  
+            if (selectedGenre === 'Techno (Melodic)') {
+                setSelectedOffersGenres([]);
+            } else {
+                setSelectedOffersGenres([selectedGenre]);
+            }
         }
     };
 

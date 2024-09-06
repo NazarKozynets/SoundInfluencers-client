@@ -25,14 +25,14 @@ const AccountClientDetailsQuestion = () => {
     
     return (
         <section className="account-client">
+            <div className="account-client-back-button">
+                <button style={{
+                    position: "absolute", top: "195px", left: 50, width: 48, height: 48, cursor: "pointer",
+                }} onClick={() => nextFormForBackButton()}>
+                    <img src={arrow} style={{transform: "rotate(180deg)"}}/>
+                </button>
+            </div>
             <div className="container-form">
-                <div className="account-client-back-button">
-                    <button style={{
-                        position: "absolute", top: 200, left: 50, width: 48, height: 48, cursor: "pointer",
-                    }} onClick={() => nextFormForBackButton()}>
-                        <img src={arrow} style={{transform: "rotate(180deg)"}}/>
-                    </button>
-                </div>
                 <TitleSection title="post" span="this content"/>
                 <FormContainer style={{marginTop: "60px"}}>
                     <form style={{

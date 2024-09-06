@@ -20,7 +20,7 @@ const OffersList = ({
     const currentCurrency = useSelector((state) => state.createPromo.data.currency);
 
     useEffect(() => {
-        if (selectedOffersGenres.length > 0) {
+        if (selectedOffersGenres.length > 0 && selectedOffersGenres) {
             setFilteredOffersByGenres(filteredOffersByGenres.filter((offer) => {
                 return offer.musicStyles.some((style) => {
                     const styleGenres = style.genres;
@@ -31,7 +31,7 @@ const OffersList = ({
             setFilteredOffersByGenres(prices);
         }
     }, [selectedOffersGenres]);
-
+    
     const getInfluencerAvatar = (influencers, username) => {
         const insta = influencers.find(insta => insta.instagramUsername === username);
         return insta ? insta.logo : null;

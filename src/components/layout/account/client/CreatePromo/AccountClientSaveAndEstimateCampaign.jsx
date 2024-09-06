@@ -57,7 +57,7 @@ const AccountClientSaveAndEstimateCampaign = () => {
             <div className="container-form">
                 <div className="account-client-back-button">
                     <button style={{
-                        position: "absolute", top: 200, left: 100, width: 48, height: 48, cursor: "pointer",
+                        position: "absolute", top: 200, left: 51, width: 48, height: 48, cursor: "pointer",
                     }} onClick={() => dispatch(setCurrentWindow(1))}>
                         <img src={arrow} style={{transform: "rotate(180deg)"}}/>
                     </button>

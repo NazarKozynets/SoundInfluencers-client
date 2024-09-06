@@ -1,19 +1,26 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import TitleSection from "../../../../TitleSection";
-import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import {useNavigate} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
 import axios from "axios";
 import StandardButton from "../../../../form/StandardButton";
-import { setCurrentWindow } from "../../../../../redux/slice/create-promo";
+import {
+    setCurrentWindow,
+    updateSelectInfluencer
+} from "../../../../../redux/slice/create-promo";
 import checkImg from "../../../../../images/icons/check.svg";
-import Select, { components } from "react-select";
+import Select, {components} from "react-select";
 import arrow from "../../../../../images/icons/arrow.svg";
+import watch from "../../../../../images/icons/view 1.svg"
+import CustomSelect from "../../../../form/Offers/CampaignStrategySelect/CampaignStrategySelect";
+
 
 const AccountClientCampaignStrategy = () => {
     const [instagramAccounts, setInstagramAccounts] = useState([]);
-    const [selectedOptionDateRequest, setSelectedOptionDateRequest] = useState('ASAP');
-    const [inputDate, setInputDate] = useState('');
-    const [showMore, setShowMore] = useState(false); 
+    const [selectedDates, setSelectedDates] = useState({});
+    const [selectedOptionDateRequest, setSelectedOptionDateRequest] = useState({});
+    const [selectedVideos, setSelectedVideos] = useState({});
+    const [showMore, setShowMore] = useState(false);
 
     const navigation = useNavigate();
     const dispatch = useDispatch();
@@ -53,6 +60,20 @@ const AccountClientCampaignStrategy = () => {
         getInstagramAccounts();
     }, [dataPromo.selectInfluencers]);
 
+    useEffect(() => {
+        const initialSelectedVideos = dataPromo.selectInfluencers.reduce((acc, influencer) => {
+            acc[influencer.instagramUsername] = {value: 'Video 1', label: 'Select'};
+            return acc;
+        }, {});
+
+        setSelectedOptionDateRequest(dataPromo.selectInfluencers.reduce((acc, influencer) => {
+            acc[influencer.instagramUsername] = {value: 'ASAP', label: 'ASAP'};
+            return acc;
+        }, {}));
+
+        setSelectedVideos(initialSelectedVideos);
+    }, [dataPromo.selectInfluencers]);
+
     const getTotalFollowers = () => {
         let totalFollowers = 0;
 
@@ -64,141 +85,46 @@ const AccountClientCampaignStrategy = () => {
     }
 
     const nextForm = () => {
+        const updatedSelectInfluencersData = dataPromo.selectInfluencers.map(influencer => {
+            const dateRequest = selectedOptionDateRequest[influencer.instagramUsername]?.value;
+            const dateToDo = dateRequest === 'ASAP'
+                ? 'ASAP'
+                : `${dateRequest} ${selectedDates[influencer.instagramUsername]}`;
+
+            return {
+                ...influencer,
+                dateRequest: dateToDo,
+                selectedVideo: selectedVideos[influencer.instagramUsername]?.value,
+            };
+        });
+
+        dispatch(updateSelectInfluencer(updatedSelectInfluencersData));
+
         dispatch(setCurrentWindow(5));
     };
 
-    const options = [
-        { value: 'ASAP', label: 'ASAP' },
-        { value: "Before", label: 'Before' },
-        { value: "After", label: 'After' },
+    const optionsForDateRequestColumn = [
+        {value: 'ASAP', label: 'ASAP'},
+        {value: "Before", label: 'Before'},
+        {value: "After", label: 'After'},
     ];
 
-    const customStyles = {
-        control: (provided) => ({
-            ...provided,
-            width: 'auto',
-            height: 30,
-            minHeight: 30,
-            borderRadius: 30,
-            border: '1px solid #3330E4',
-            paddingLeft: 10,
-            display: 'flex',
-            alignItems: 'center',
-            fontFamily: 'Geometria',
-            fontSize: 18,
-            fontWeight: 500,
-            color: '#000000',
-            boxShadow: 'none',
-            lineHeight: 'normal',
-            '&:hover': {
-                borderColor: '#3330E4'
-            }
-        }),
-        menu: (provided) => ({
-            ...provided,
-            borderRadius: 30,
-            width: 222,
-            maxHeight: 212,
-        }),
-        singleValue: (provided) => ({
-            ...provided,
-            color: '#000000',
-            display: 'flex',
-            alignItems: 'center'
-        }),
-        placeholder: (provided) => ({
-            ...provided,
-            position: 'absolute',
-            left: 10,
-            top: '50%',
-            transform: 'translateY(-50%)',
-            fontFamily: 'Geometria',
-            fontSize: 18,
-            fontWeight: 500,
-            color: '#000000'
-        }),
-        valueContainer: (provided) => ({
-            ...provided,
-            height: 30,
-            minHeight: 30,
-            padding: '0 0 2px 5px'
-        }),
-        input: (provided) => ({
-            ...provided,
-            height: 30,
-            minHeight: 30,
-            margin: 0,
-            padding: 0
-        }),
-        indicatorsContainer: (provided) => ({
-            ...provided,
-            height: 30
-        }),
-        indicatorSeparator: (provided) => ({
-            ...provided,
-            display: 'none'
-        }),
-        menuList: (provided) => ({
-            ...provided,
-            width: 222,
-            height: 212,
-            borderRadius: 30,
-            boxShadow: '0px 4px 20px 0px rgba(51, 48, 228, 0.50)',
-        }),
-        option: (provided, state) => ({
-            ...provided,
-            fontFamily: 'Geometria',
-            fontSize: 18,
-            fontWeight: 500,
-            color: '#000000',
-            backgroundColor: state.isSelected ? '#FFFFFF' : '#FFFFFF',
-            paddingLeft: state.isSelected ? '20px' : '20px',
-            paddingRight: '20px',
-            position: 'relative',
-            '&:hover': {
-                backgroundColor: '#3330E4',
-                color: '#FFFFFF'
-            }
-        }),
-        dropdownIndicator: (provided) => ({
-            ...provided,
-            padding: 0,
-            marginRight: 5,
-            '& svg': {
-                margin: 0
-            }
-        })
+    const optionsForVideoColumn = dataPromo.videos.map((video, index) => ({
+        value: video.videoLink,
+        label: `Video ${index + 1}`
+    }));
+
+    const handleDateChange = (influencerUsername, selectedOption) => {
+        const newSelectedOptionDateRequest = {...selectedOptionDateRequest, [influencerUsername]: selectedOption};
+        setSelectedOptionDateRequest(newSelectedOptionDateRequest);
+        const newSelectedDates = {
+            ...selectedDates,
+            [influencerUsername]: (selectedOption.value === 'Before' || selectedOption.value === 'After') ? '' : selectedOption.value,
+        };
+        setSelectedDates(newSelectedDates);
     };
 
-    const Option = (props) => (
-        <components.Option {...props} style={{ position: 'relative' }}>
-            {props.isSelected && <img src={checkImg} alt="check" style={{
-                position: 'absolute',
-                right: 10,
-                top: '50%',
-                transform: 'translateY(-50%)',
-                width: 20,
-                height: 20
-            }} />}
-            {props.children}
-        </components.Option>
-    );
-
-    const SingleValue = ({ children, ...props }) => (
-        <components.SingleValue {...props}>
-            {children}
-        </components.SingleValue>
-    );
-
-    const handleChangeDateRequest = (selectedOption) => {
-        const sortMethod = selectedOption.value;
-        setSelectedOptionDateRequest(sortMethod);
-        if (sortMethod === 'Before' || sortMethod === 'After') {
-            setInputDate(''); 
-        }
-    }
-
-    const handleDateInputChange = (e) => {
+    const handleDateInputChange = (influencerUsername, e) => {
         const value = e.target.value.replace(/[^0-9]/g, '').slice(0, 6);
         let formattedValue = value;
 
@@ -209,8 +135,11 @@ const AccountClientCampaignStrategy = () => {
             formattedValue = `${value.slice(0, 2)}/${value.slice(2, 4)}/${value.slice(4)}`;
         }
 
-        setInputDate(formattedValue);
-    }
+        setSelectedDates(prevDates => ({
+            ...prevDates,
+            [influencerUsername]: formattedValue,
+        }));
+    };
 
     const handleSeeMoreClick = () => {
         setShowMore(!showMore);
@@ -223,18 +152,10 @@ const AccountClientCampaignStrategy = () => {
             }
         }
     }
-    
+
     const findInsta = (influencer) => {
         return instagramAccounts.find(account => account.instagramUsername === influencer.instagramUsername);
     };
-    
-    // const findGenres = (instagram) => {
-    //     let genres = [];
-    //     if (instagram?.musicStyle) {
-    //         genres.push(instagram.musicStyle);
-    //     }
-    //     return genres;
-    // }
 
     const getDisplayGenre = (musicSubStyles, musicStyle, musicStyleOther) => {
         const technoSubgenres = ["Hard, Peak", "Melodic, Minimal"];
@@ -277,7 +198,12 @@ const AccountClientCampaignStrategy = () => {
             return 'No countries available';
         }
     };
-    
+
+    const handleVideoChange = (influencerUsername, selectedOption) => {
+        const newSelectedVideos = {...selectedVideos, [influencerUsername]: selectedOption};
+        setSelectedVideos(newSelectedVideos);
+    };
+
     return (
         <section className="account-client">
             <div className="account-client-campaign-strategy">
@@ -302,8 +228,7 @@ const AccountClientCampaignStrategy = () => {
                         <p>Posts & Stories: <span>{dataPromo.selectInfluencers.length}</span></p>
                     </div>
                     <div className="account-client-campaign-strategy-details-third">
-                        {/* TODO: Add video options*/}
-                        <p>Video Options: <span>{1}</span></p>
+                        <p>Video Options: <span>{dataPromo.videos.length}</span></p>
                     </div>
                 </div>
                 <div className="account-client-campaign-strategy-influencers">
@@ -330,7 +255,7 @@ const AccountClientCampaignStrategy = () => {
                                 <th>Total Followers</th>
                                 {showMore && <th>Genres</th>}
                                 {showMore && <th>Top 5 Countries</th>}
-                                {!showMore && <th>Date Request</th>}
+                                <th>Date Request</th>
                                 <th>Video</th>
                             </tr>
                             </thead>
@@ -349,46 +274,65 @@ const AccountClientCampaignStrategy = () => {
                                     }}>{findInsta(influencer)?.followersNumber ?? 0}</td>
                                     {showMore && <td style={{
                                         backgroundColor: '#ebebfd',
-                                        width: '30%',
                                         fontFamily: "Geometria",
                                         fontSize: "16px",
                                         fontWeight: "400",
+                                        width: '10%',
                                     }}>{getDisplayGenre(findInsta(influencer)?.musicSubStyles, findInsta(influencer)?.musicStyle, findInsta(influencer)?.musicStyleOther)}</td>}
                                     {showMore && <td style={{
                                         backgroundColor: '#ebebfd',
-                                        width: '30%',
                                         fontFamily: "Geometria",
                                         fontSize: "15px",
                                         fontWeight: "400",
                                     }}
-                                                     dangerouslySetInnerHTML={{__html: formatCountries(findInsta(influencer)?.countries)}}></td>}
-                                    {!showMore && (
-                                        <td>
-                                            <div style={{display: 'flex', alignItems: 'center'}}>
-                                                <Select
-                                                    value={{
-                                                        value: selectedOptionDateRequest,
-                                                        label: selectedOptionDateRequest
-                                                    }}
-                                                    onChange={handleChangeDateRequest}
-                                                    options={options}
-                                                    styles={customStyles}
-                                                    components={{SingleValue, Option}}
-                                                    isSearchable={false}
+                                                     dangerouslySetInnerHTML={{__html: formatCountries(findInsta(influencer)?.countries)}}/>}
+                                    <td>
+                                        <div style={{display: 'flex', alignItems: 'center'}}>
+                                            <CustomSelect
+                                                selectedOption={selectedOptionDateRequest[influencer.instagramUsername]}
+                                                setSelectedOption={(selectedOption) => {
+                                                    handleDateChange(influencer.instagramUsername, selectedOption);
+                                                }}
+                                                options={optionsForDateRequestColumn}
+                                            />
+
+                                            {(selectedOptionDateRequest[influencer.instagramUsername]?.value === 'Before' ||
+                                                selectedOptionDateRequest[influencer.instagramUsername]?.value === 'After') && (
+                                                <input
+                                                    type="text"
+                                                    value={selectedDates[influencer.instagramUsername] || ''}
+                                                    onChange={(e) => handleDateInputChange(influencer.instagramUsername, e)}
+                                                    placeholder="xx/xx/xx"
+                                                    style={{marginLeft: 10, width: 80, textAlign: 'center'}}
                                                 />
-                                                {(selectedOptionDateRequest === 'Before' || selectedOptionDateRequest === 'After') && (
-                                                    <input
-                                                        type="text"
-                                                        value={inputDate}
-                                                        onChange={handleDateInputChange}
-                                                        placeholder="xx/xx/xx"
-                                                        style={{marginLeft: 10, width: 80, textAlign: 'center'}}
+                                            )}
+
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div style={{display: 'flex', alignItems: 'center'}}>
+                                            <CustomSelect
+                                                selectedOption={selectedVideos[influencer.instagramUsername]}
+                                                setSelectedOption={(selectedOption) => handleVideoChange(influencer.instagramUsername, selectedOption)}
+                                                options={optionsForVideoColumn}
+                                            />
+                                            {selectedVideos[influencer.instagramUsername] && selectedVideos[influencer.instagramUsername].value && selectedVideos[influencer.instagramUsername].value !== 'Video 1' && (
+                                                <a
+                                                    href={selectedVideos[influencer.instagramUsername].value}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    style={{paddingLeft: 10}}
+                                                >
+                                                    <img
+                                                        src={watch}
+                                                        alt="Watch"
+                                                        style={{width: 24, height: 24, cursor: 'pointer'}}
                                                     />
-                                                )}
-                                            </div>
-                                        </td>
-                                    )}
-                                    <td>test</td>
+                                                </a>
+                                            )}
+                                        </div>
+                                    </td>
+
                                 </tr>
                             ))}
                             </tbody>
@@ -398,7 +342,7 @@ const AccountClientCampaignStrategy = () => {
                                 <td>{getTotalFollowers()}</td>
                                 {showMore && <td></td>}
                                 {showMore && <td style={{background: "#ebad82"}}></td>}
-                                {!showMore && <td></td>}
+                                <td></td>
                                 <td></td>
                             </tr>
                             </tfoot>

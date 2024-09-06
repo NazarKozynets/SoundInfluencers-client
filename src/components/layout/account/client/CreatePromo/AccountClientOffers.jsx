@@ -6,6 +6,7 @@ import axios from "axios";
 import StandardButton from "../../../../form/StandardButton";
 import {useDispatch, useSelector} from "react-redux";
 import {
+    setClearForm,
     setCurrentWindow, setSelectAmount, setSelectInfluencer, setSelectPrice,
 } from "../../../../../redux/slice/create-promo";
 import {useNavigate} from "react-router-dom";
@@ -98,7 +99,7 @@ const AccountClientOffers = () => {
 
         const calculatePrice = (price) => calculatePriceForOffersAndInfluencers(price, currentCurrency);
 
-        if (selectedOffersGenres.length > 0) {
+        if (selectedOffersGenres.length > 0 && selectedOffersGenres) {
             const searchPrice = filteredOffersByGenres.find((item) => item.id === id);
 
             const matchingStyle = searchPrice.musicStyles.find(style => {
@@ -798,7 +799,10 @@ const AccountClientOffers = () => {
                 <div className="account-client-back-button">
                     <button style={{
                         position: "absolute", top: 0, left: 50, width: 48, height: 48, cursor: "pointer",
-                    }} onClick={() => navigation("/account/client/list-promo")}>
+                    }} onClick={() => {
+                        dispatch(setClearForm());
+                        navigation("/account/client/list-promo");
+                    }}>
                         <img src={arrow} style={{transform: "rotate(180deg)"}}/>
                     </button>
                 </div>
