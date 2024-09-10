@@ -67,7 +67,10 @@ export const createPromoSlice = createSlice({
         updateVideo: (state, action) => {
             const { index, videoData } = action.payload;
             if (state.data.videos[index]) {
-                state.data.videos[index] = videoData;
+                state.data.videos[index] = {
+                    ...state.data.videos[index], 
+                    ...videoData 
+                };
             }
         },
         removeVideo: (state, action) => {

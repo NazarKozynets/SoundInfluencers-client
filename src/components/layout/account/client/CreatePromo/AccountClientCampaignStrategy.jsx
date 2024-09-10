@@ -6,13 +6,18 @@ import axios from "axios";
 import StandardButton from "../../../../form/StandardButton";
 import {
     setCurrentWindow,
-    updateSelectInfluencer
+    updateSelectInfluencer, updateVideo
 } from "../../../../../redux/slice/create-promo";
 import checkImg from "../../../../../images/icons/check.svg";
 import Select, {components} from "react-select";
 import arrow from "../../../../../images/icons/arrow.svg";
 import watch from "../../../../../images/icons/view 1.svg"
+import edit from "../../../../../images/icons/edit 1.svg"
 import CustomSelect from "../../../../form/Offers/CampaignStrategySelect/CampaignStrategySelect";
+import ModalWindow from "../../../../ModalWindow";
+import FormContainer from "../../../../form/FormContainer";
+import TextInput from "../../../../form/TextInput";
+import TextArea from "../../../../form/TextArea";
 
 
 const AccountClientCampaignStrategy = () => {
@@ -21,6 +26,8 @@ const AccountClientCampaignStrategy = () => {
     const [selectedOptionDateRequest, setSelectedOptionDateRequest] = useState({});
     const [selectedVideos, setSelectedVideos] = useState({});
     const [showMore, setShowMore] = useState(false);
+    const [editCampaign, setEditCampaign] = useState(false);
+    const [selectedVideoToEdit, setSelectedVideoToEdit] = useState(null);
 
     const navigation = useNavigate();
     const dispatch = useDispatch();
@@ -91,15 +98,20 @@ const AccountClientCampaignStrategy = () => {
                 ? 'ASAP'
                 : `${dateRequest} ${selectedDates[influencer.instagramUsername]}`;
 
+            const selectedVideo = selectedVideos[influencer.instagramUsername]?.value;
+
+            const videoLink = selectedVideo === "Video 1" && dataPromo.videos?.length > 0
+                ? dataPromo.videos[0].videoLink
+                : null;
+
             return {
                 ...influencer,
                 dateRequest: dateToDo,
-                selectedVideo: selectedVideos[influencer.instagramUsername]?.value,
+                selectedVideo: videoLink || selectedVideo,
             };
         });
 
         dispatch(updateSelectInfluencer(updatedSelectInfluencersData));
-
         dispatch(setCurrentWindow(5));
     };
 
@@ -204,6 +216,96 @@ const AccountClientCampaignStrategy = () => {
         setSelectedVideos(newSelectedVideos);
     };
 
+    const EditCampaignForm = () => {
+        const video = selectedVideoToEdit;
+        const videoIndex = dataPromo.videos.findIndex(v => v.videoLink === video.videoLink); 
+
+        const [videoParams, setVideoParams] = useState({
+            videoLink: video.videoLink,
+            postDescription: video.postDescription,
+            storyTag: video.storyTag,
+            swipeUpLink: video.swipeUpLink,
+            specialWishes: video.specialWishes
+        });
+
+        const handleInputChange = (field, value) => {
+            setVideoParams((prevParams) => ({
+                ...prevParams,
+                [field]: value
+            }));
+        };
+
+        const handleSave = () => {
+            dispatch(updateVideo({
+                index: videoIndex, 
+                videoData: videoParams 
+            }));
+            setEditCampaign(false);
+        };
+
+        return (
+            <div style={{ marginTop: 25 }}>
+                <p
+                    style={{
+                        fontFamily: "Geometria",
+                        fontSize: "24px",
+                        fontWeight: "700",
+                        textAlign: "center",
+                    }}
+                >
+                    {`Video ${dataPromo.videos.findIndex(v => v.videoLink === video.videoLink) + 1}`}
+                </p>
+                <form style={{ padding: 20 }}>
+                    <TextInput
+                        title="Videolink"
+                        placeholder="Enter videolink"
+                        style={{ marginTop: "30px" }}
+                        value={videoParams.videoLink}
+                        setValue={(value) => handleInputChange("videoLink", value)}
+                        silverColor={true}
+                    />
+                    <TextArea
+                        title="Post Description"
+                        placeholder="Enter description"
+                        style={{ marginTop: "60px" }}
+                        value={videoParams.postDescription}
+                        setValue={(value) => handleInputChange("postDescription", value)}
+                        silverColor={true}
+                    />
+                    <TextInput
+                        title="Story Tag"
+                        placeholder="Enter story tag"
+                        style={{ marginTop: "60px" }}
+                        value={videoParams.storyTag}
+                        setValue={(value) => handleInputChange("storyTag", value)}
+                        silverColor={true}
+                    />
+                    <TextInput
+                        title="Swipe Up Link"
+                        placeholder="Enter swipe up link"
+                        style={{ marginTop: "60px" }}
+                        value={videoParams.swipeUpLink}
+                        setValue={(value) => handleInputChange("swipeUpLink", value)}
+                        silverColor={true}
+                    />
+                    <TextArea
+                        title="Special Requests"
+                        placeholder="Enter special requests"
+                        style={{ marginTop: "60px" }}
+                        value={videoParams.specialWishes}
+                        setValue={(value) => handleInputChange("specialWishes", value)}
+                        silverColor={true}
+                    />
+                    <StandardButton text="Save" style={{
+                        width: "100%",
+                        marginTop: 20,
+                    }} onClick={handleSave}/>
+                </form>
+            </div>
+        );
+    };
+
+
     return (
         <section className="account-client">
             <div className="account-client-campaign-strategy">
@@ -224,7 +326,7 @@ const AccountClientCampaignStrategy = () => {
                         <p>Price: <span>{dataPromo.amount}{dataPromo.currency}</span></p>
                     </div>
                     <div className="account-client-campaign-strategy-details-second">
-                        <p>Combined Followers: <span>{dataPromo.selectPrice.variant}M</span></p>
+                        <p>Combined Followers: <span>{getTotalFollowers()}</span></p>
                         <p>Posts & Stories: <span>{dataPromo.selectInfluencers.length}</span></p>
                     </div>
                     <div className="account-client-campaign-strategy-details-third">
@@ -310,25 +412,35 @@ const AccountClientCampaignStrategy = () => {
                                         </div>
                                     </td>
                                     <td>
-                                        <div style={{display: 'flex', alignItems: 'center'}}>
+                                        <div style={{display: 'flex', alignItems: 'center', width: 100}}>
                                             <CustomSelect
                                                 selectedOption={selectedVideos[influencer.instagramUsername]}
                                                 setSelectedOption={(selectedOption) => handleVideoChange(influencer.instagramUsername, selectedOption)}
                                                 options={optionsForVideoColumn}
                                             />
                                             {selectedVideos[influencer.instagramUsername] && selectedVideos[influencer.instagramUsername].value && selectedVideos[influencer.instagramUsername].value !== 'Video 1' && (
-                                                <a
-                                                    href={selectedVideos[influencer.instagramUsername].value}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    style={{paddingLeft: 10}}
-                                                >
-                                                    <img
-                                                        src={watch}
-                                                        alt="Watch"
-                                                        style={{width: 24, height: 24, cursor: 'pointer'}}
-                                                    />
-                                                </a>
+                                                <button
+                                                    onClick={() => {
+                                                        const video = dataPromo.videos.find(video => video.videoLink === selectedVideos[influencer.instagramUsername].value);
+                                                        setSelectedVideoToEdit(video);
+                                                        setEditCampaign(true);
+                                                    }}
+                                                    style={{
+                                                        display: 'flex',
+                                                        alignItems: 'center',
+                                                        justifyContent: 'space-between',
+                                                        width: 52,
+                                                        height: 28,
+                                                        borderRadius: "10px",
+                                                        paddingLeft: 3,
+                                                        paddingRight: 3,
+                                                        marginLeft: 8,
+                                                        border: "1.5px solid #3330E4",
+                                                        boxSizing: 'border-box'
+                                                    }}>
+                                                    <img src={watch} alt="watch"/>
+                                                    <img src={edit} alt="edit"/>
+                                                </button>
                                             )}
                                         </div>
                                     </td>
@@ -354,6 +466,18 @@ const AccountClientCampaignStrategy = () => {
                     <StandardButton text="Continue" onClick={() => nextForm()}/>
                 </div>
             </div>
+
+            {selectedVideoToEdit && (
+                <ModalWindow
+                    header="Edit Campaign"
+                    isOpen={editCampaign}
+                    setClose={() => {
+                        setEditCampaign(false);
+                    }}
+                >
+                    <EditCampaignForm />
+                </ModalWindow>
+            )}
         </section>
     );
 }

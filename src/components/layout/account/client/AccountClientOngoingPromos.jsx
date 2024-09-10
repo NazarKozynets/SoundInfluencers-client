@@ -58,6 +58,8 @@ const AcountClientOngoingPromos = () => {
             return "distributing";
         } else if (statusPromo === "estimate") {
             return "estimating";
+        } else if (statusPromo === "po waiting") {
+            return "po waiting";
         } else {
             return "confirmed";
         }
