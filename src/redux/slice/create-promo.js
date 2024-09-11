@@ -79,6 +79,19 @@ export const createPromoSlice = createSlice({
                 state.data.videos.splice(index, 1);
             }
         },
+        setClearCampaignDetails: (state, action) => {
+            state.data.campaignName = "";
+            state.data.videos = [
+                {
+                    videoLink: "",
+                    postDescription: "",
+                    storyTag: "",
+                    swipeUpLink: "",
+                    specialWishes: "",
+                },
+            ];
+            state.data.createdAt = "";
+        },
         setClearForm: (state) => {
             state.data = {
                 currency: "€",
@@ -88,11 +101,8 @@ export const createPromoSlice = createSlice({
                     price: 0,
                 },
                 selectInfluencers: [],
-                campaignName: "",
                 paymentType: "",
                 paymentStatus: "wait",
-                createdAt: "",
-                videos: [],
             };
         },
     },
@@ -112,6 +122,7 @@ export const {
     updateVideo,
     removeVideo,
     setClearForm,
+    setClearCampaignDetails,
 } = createPromoSlice.actions;
 
 export default createPromoSlice.reducer;

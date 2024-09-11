@@ -2,7 +2,7 @@ import React from "react";
 import arrow from "../../../../../images/icons/arrow.svg";
 import TitleSection from "../../../../TitleSection";
 import FormContainer from "../../../../form/FormContainer";
-import {setClearForm, setCurrentWindow} from "../../../../../redux/slice/create-promo";
+import {setClearCampaignDetails, setCurrentWindow} from "../../../../../redux/slice/create-promo";
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 
@@ -20,7 +20,7 @@ const AccountClientDetailsQuestion = () => {
     
     const nextFormForBackButton = () => {
         dispatch(setCurrentWindow(0));
-        dispatch(setClearForm());
+        dispatch(setClearCampaignDetails());
     };
     
     return (

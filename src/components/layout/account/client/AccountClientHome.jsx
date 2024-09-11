@@ -11,7 +11,7 @@ import ModalWindow from "../../../ModalWindow";
 import StandardButton from "../../../form/StandardButton";
 import acceptIcon from "../../../../images/icons/accept.svg";
 import UseVerify from "../../../../hooks/useVerify";
-
+import {useSelector} from "react-redux";
 
 const AccountClientHome = () => {
   const navigation = useNavigate();
@@ -19,7 +19,7 @@ const AccountClientHome = () => {
   const [data, setData] = useState({
     balance: "0",
   });
-
+  
   const getData = async () => {
     try {
       const { dataFetch } = await UseVerify("client");
@@ -35,6 +35,9 @@ const AccountClientHome = () => {
     setIsPopup(+window.sessionStorage.getItem("isPopup") === 1);
   }, []);
 
+
+  const dataPromo = useSelector((state) => state.createPromo.data);
+  
   return (
     <section className="account-client">
       <div className="container" style={{display: 'flex', justifyContent: "center"}}>

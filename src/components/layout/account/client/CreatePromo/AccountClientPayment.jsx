@@ -15,14 +15,15 @@ import {useDispatch, useSelector} from "react-redux";
 import UseVerify from "../../../../../hooks/useVerify";
 import axios from "axios";
 import {
-    setCampaignName,
+    setCampaignName, setClearCampaignDetails,
     setClearForm,
-    setCurrentWindow,
+    setCurrentWindow, setPaymentType,
 } from "../../../../../redux/slice/create-promo";
 import {useNavigate} from "react-router-dom";
 
 import arrow from "../../../../../images/icons/arrow.svg";
 import TextInput from "../../../../form/TextInput";
+import acceptIcon from "../../../../../images/icons/accept.svg";
 
 const AccountClientPayment = () => {
     const [data, setData] = useState(null);
@@ -35,10 +36,9 @@ const AccountClientPayment = () => {
     const [valueForSendingInvoiceWithoutPONumber, setValueForSendingInvoiceWithoutPONumber] = useState("");
     const [valueForSendingInvoiceWithPONumber, setValueForSendingInvoiceWithPONumber] = useState("");
     const [valueForPONumber, setValueForPONumber] = useState("");
-    const [emailForSendingInvoiceWithoutPONumber, setEmailForSendingInvoiceWithoutPONumber] = useState("");
-    const [emailForSendingInvoiceWithPONumber, setEmailForSendingInvoiceWithPONumber] = useState("");
     const [poNumber, setPoNumber] = useState("");
     const [promoId, setPromoId] = useState(null);
+    const [isPopup, setIsPopup] = useState(false);
     
     const navigation = useNavigate();
 
@@ -78,9 +78,10 @@ const AccountClientPayment = () => {
     const createPromoTranfer = async () => {
         try {
             const {dataFetch} = await UseVerify();
+            const paymentType = checkWhatTypeOfPayment();
             const result = await axios.post(
                 `${process.env.REACT_APP_SERVER}/promos`,
-                {...dataPromo, userId: dataFetch._id}
+                {...dataPromo, userId: dataFetch._id, paymentType: paymentType}
             );
 
             if (result.data.code === 201) {
@@ -91,6 +92,7 @@ const AccountClientPayment = () => {
                         userId: dataFetch._id,
                         amount: dataPromo.selectPrice.price,
                         country: transferCurrent,
+                        paymentType: checkWhatTypeOfPayment(),
                     }
                 );
                 if (result.data.code === 201) {
@@ -98,6 +100,7 @@ const AccountClientPayment = () => {
                 }
                 window.sessionStorage.setItem("isPopup", 1);
                 dispatch(setClearForm());
+                dispatch(setClearCampaignDetails())
                 dispatch(setCurrentWindow(0));
             }
         } catch (err) {
@@ -107,12 +110,13 @@ const AccountClientPayment = () => {
 
     const createPromoEstimate = async () => {
         try {
+            const paymentType = checkWhatTypeOfPayment();
             const {dataFetch} = await UseVerify();
             const result = await axios.post(
-                `${process.env.REACT_APP_SERVER}/promos/estimate`,
-                {...dataPromo, userId: dataFetch._id}
+                `${process.env.REACT_APP_SERVER}/promos/estimate?isPO=true`,
+                {...dataPromo, userId: dataFetch._id, paymentType: paymentType}
             );
-
+            
             if (result.data.code === 201) {
                 setIsPoRequestNeed(true);
                 setTranfertCurrent('PO');
@@ -131,12 +135,11 @@ const AccountClientPayment = () => {
                 return;
             }
             const result = await axios.put(
-                `${process.env.REACT_APP_SERVER}/promos/update-estimate`,
-                null, 
+                `${process.env.REACT_APP_SERVER}/promos/update-estimate?isPoNeed=true`,
+                null,
                 {
                     params: {
                         promoId: promoId,
-                        isPoNeed: false
                     }
                 }
             );
@@ -148,9 +151,10 @@ const AccountClientPayment = () => {
                         userId: dataFetch._id,
                         amount: dataPromo.selectPrice.price,
                         country: transferCurrent,
-                        emailForSendingInvoice: emailForSendingInvoiceWithoutPONumber,
+                        emailForSendingInvoice: valueForSendingInvoiceWithoutPONumber,
                     }
                 );
+                setIsPopup(true);
             }
         } catch (err) {
             console.log(err);
@@ -165,12 +169,11 @@ const AccountClientPayment = () => {
                 return;
             }
             const result = await axios.put(
-                `${process.env.REACT_APP_SERVER}/promos/update-estimate`,
+                `${process.env.REACT_APP_SERVER}/promos/update-estimate?isPoNeed=true`,
                 null,
                 {
                     params: {
                         promoId: promoId,
-                        isPoNeed: true,
                     }
                 }
             );
@@ -182,10 +185,11 @@ const AccountClientPayment = () => {
                         userId: dataFetch._id,
                         amount: dataPromo.selectPrice.price,
                         country: transferCurrent,
-                        emailForSendingInvoice: emailForSendingInvoiceWithPONumber,
-                        poNumber: poNumber,
+                        emailForSendingInvoice: valueForSendingInvoiceWithPONumber,
+                        poNumber: valueForPONumber,
                     }
                 );
+                setIsPopup(true);
             }
         } catch (err) {
             console.log(err);
@@ -342,6 +346,16 @@ const AccountClientPayment = () => {
         }
     };
 
+    const checkWhatTypeOfPayment = () => {
+        if (isOpenTransfer) {
+            return "Bank transfer";
+        } else if (isOpenTransferPaypal) {
+            return "Paypal";
+        } else if (isOpenTransferCard) {
+            return "Bank card";
+        }
+    };
+    
     const getData = async () => {
         try {
             const {dataFetch} = await UseVerify();
@@ -561,8 +575,9 @@ const AccountClientPayment = () => {
                                                             />
                                                             <StandardButton
                                                                 onClick={() => {
-                                                                    setEmailForSendingInvoiceWithoutPONumber(valueForSendingInvoiceWithoutPONumber);
-                                                                    createTransferForSendingInvoiceWithoutPO();
+                                                                    if (valueForSendingInvoiceWithoutPONumber !== "") {
+                                                                        createTransferForSendingInvoiceWithoutPO();
+                                                                    }
                                                                 }}
                                                                 style={{
                                                                     width: 102,
@@ -610,8 +625,9 @@ const AccountClientPayment = () => {
                                                             />
                                                             <StandardButton
                                                                 onClick={() => {
-                                                                    setEmailForSendingInvoiceWithPONumber(valueForSendingInvoiceWithPONumber);
-                                                                    createTransferForSendingInvoiceWithPO();
+                                                                    if (poNumber !== "" && valueForSendingInvoiceWithPONumber !== "") {
+                                                                        createTransferForSendingInvoiceWithPO();
+                                                                    }
                                                                 }}
                                                                 style={{
                                                                     width: 102,
@@ -631,6 +647,14 @@ const AccountClientPayment = () => {
                                                          marginTop: '57px'
                                                      }}>
                                                     <StandardButton
+                                                        onClick={() => {
+                                                            setIsPoRequestNeed(false);
+                                                            setTranfertCurrent("");
+                                                            dispatch(setClearForm());
+                                                            dispatch(setClearCampaignDetails());
+                                                            dispatch(setCurrentWindow(0));
+                                                            navigation('/');
+                                                        }}
                                                         text="Confirm Process Completed"
                                                         style={{
                                                             width: 400,
@@ -872,6 +896,46 @@ const AccountClientPayment = () => {
                             <StandardButton text="Continue"/>
                         </div>
                     </form>
+                </div>
+            </ModalWindow>
+
+            <ModalWindow isOpen={isPopup} setClose={setIsPopup}>
+                <div className="signup-client-modal">
+                    <img className="signup-client-modal-icon" src={acceptIcon} />
+
+                    <h2 className="signup-client-modal-title">Congratulations!</h2>
+
+                    <p className="signup-client-modal-second">
+                        You can now check the status of your Promotion request in the{" "}
+                        <button
+                            className="signup-client-modal-second"
+                            style={{
+                                color: "#3330E4",
+                                textDecorationLine: "underline",
+                                cursor: "pointer",
+                            }}
+                            onClick={() => {
+                                setClearForm();
+                                setCurrentWindow(0);
+                                navigation("/account/client/ongoing-promos")
+                            }}
+                        >
+                            "Ongoing Promo"
+                        </button>
+                    </p>
+
+                    <StandardButton
+                        text="Ok"
+                        style={{
+                            padding: "8px 80px",
+                            marginTop: "30px",
+                            marginLeft: "auto",
+                            marginRight: "auto",
+                        }}
+                        onClick={() => {
+                            setIsPopup(false);
+                        }}
+                    />
                 </div>
             </ModalWindow>
         </>
