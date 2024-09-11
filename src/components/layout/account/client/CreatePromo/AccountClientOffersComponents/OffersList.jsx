@@ -74,7 +74,7 @@ const OffersList = ({
                             const extractNumber = (id) => parseInt(String(id).match(/\d+/)[0], 10);
                             return extractNumber(a.id) - extractNumber(b.id);
                         }).map((item) => {
-                            const matchingStyle = item.musicStyles.find(style => {
+                            const matchingStyle = item.musicStyles?.find(style => {
                                 const styleGenres = style.genres;
                                 return selectedOffersGenres.every(genre => styleGenres.includes(genre)) &&
                                     styleGenres.length === selectedOffersGenres.length;
