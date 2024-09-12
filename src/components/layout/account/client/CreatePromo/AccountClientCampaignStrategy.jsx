@@ -322,7 +322,7 @@ const AccountClientCampaignStrategy = () => {
                 </div>
                 <div className="account-client-campaign-strategy-details">
                     <div className="account-client-campaign-strategy-details-first">
-                        <p>Date: <span>{dataPromo.createdAt}</span></p>
+                        <p>Date: <span>{new Date(dataPromo?.createdAt).toLocaleDateString('en-GB')}</span></p>
                         <p>Price: <span>{dataPromo.amount}{dataPromo.currency}</span></p>
                     </div>
                     <div className="account-client-campaign-strategy-details-second">

@@ -24,18 +24,34 @@ const AcountInfluencerNewPromos = () => {
 
     const getData = async () => {
         try {
-            const {dataFetch} = await UseVerify();
+            const { dataFetch } = await UseVerify();
             const result = await axios(
                 `${process.env.REACT_APP_SERVER}/promos/get-new-promos?influencerId=${dataFetch._id}`
             );
 
             const filterData = result.data.promos.filter((item) => item);
-            setData(filterData);
-            console.log(filterData);
+
+            const updatedData = filterData.map(promo => {
+                if (promo.videos && promo.selectedVideo) {
+                    const video = promo.videos.find(videoItem => videoItem.videoLink === promo.selectedVideo);
+                    return {
+                        ...promo,
+                        video: video || null, 
+                        videos: undefined      
+                    };
+                }
+                return promo;
+            });
+
+            setData(updatedData);
+            console.log(updatedData);
+
         } catch (err) {
             console.log(err);
         }
     };
+
+
 
     const responsePromo = async (id, res, instagramUsername) => {
         if (!id || !res || !instagramUsername || isProcessing) return;
@@ -141,17 +157,31 @@ const AcountInfluencerNewPromos = () => {
                                         <p className="account-client-past-promos-form-current-content-link">
                                             Videolink:{" "}
                                             <a
-                                                href={item ? item.videoLink : "No Data"}
+                                                href={item ? item.video.videoLink : "No Data"}
                                                 className="account-client-past-promos-form-current-content-link-value"
                                             >
-                                                {item ? item.videoLink : "No Data"}
+                                                {item ? item.video.videoLink : "No Data"}
                                             </a>
                                         </p>
                                         <p className="account-client-past-promos-form-current-content-desc">
                                             Description:{" "}
                                             <span
                                                 className="account-client-past-promos-form-current-content-desc-value">
-                        {item ? item.postDescription : "No Data"}
+                        {item ? item.video.postDescription : "No Data"}
+                      </span>
+                                        </p>
+                                        <p className="account-client-past-promos-form-current-content-desc">
+                                            Story Link:{" "}
+                                            <span
+                                                className="account-client-past-promos-form-current-content-desc-value">
+                        {item ? item.video.swipeUpLink : "No Data"}
+                      </span>
+                                        </p>
+                                        <p className="account-client-past-promos-form-current-content-desc">
+                                            Story Tag:{" "}
+                                            <span
+                                                className="account-client-past-promos-form-current-content-desc-value">
+                        {item ? item.video.storyTag : "No Data"}
                       </span>
                                         </p>
                                         <p className="account-client-past-promos-form-current-content-date">
@@ -162,10 +192,10 @@ const AcountInfluencerNewPromos = () => {
                       </span>
                                         </p>
                                         <p className="account-client-past-promos-form-current-content-wish">
-                                            Special Wishes:{" "}
+                                            Special Requests:{" "}
                                             <span
                                                 className="account-client-past-promos-form-current-content-wish-value">
-                        {item ? item.specialWishes : "No Data"}
+                        {item ? item.video.specialWishes : "No Data"}
                       </span>
                                         </p>
                                     </div>

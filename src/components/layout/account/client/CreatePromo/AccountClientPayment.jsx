@@ -108,15 +108,15 @@ const AccountClientPayment = () => {
         }
     };
 
-    const createPromoEstimate = async () => {
+    const createPromoEstimate = async (isPoRequest) => {
         try {
-            const paymentType = checkWhatTypeOfPayment();
+            const paymentType = checkWhatTypeOfPayment(isPoRequest);
             const {dataFetch} = await UseVerify();
             const result = await axios.post(
                 `${process.env.REACT_APP_SERVER}/promos/estimate?isPO=true`,
                 {...dataPromo, userId: dataFetch._id, paymentType: paymentType}
             );
-            
+
             if (result.data.code === 201) {
                 setIsPoRequestNeed(true);
                 setTranfertCurrent('PO');
@@ -135,7 +135,7 @@ const AccountClientPayment = () => {
                 return;
             }
             const result = await axios.put(
-                `${process.env.REACT_APP_SERVER}/promos/update-estimate?isPoNeed=true`,
+                `${process.env.REACT_APP_SERVER}/promos/update-estimate?isPoNeed=false`,
                 null,
                 {
                     params: {
@@ -346,9 +346,13 @@ const AccountClientPayment = () => {
         }
     };
 
-    const checkWhatTypeOfPayment = () => {
+    const checkWhatTypeOfPayment = (isPoRequest) => {
         if (isOpenTransfer) {
-            return "Bank transfer";
+            if (isPoRequest) {
+                return "PO request";
+            } else {
+                return "Bank transfer";
+            }
         } else if (isOpenTransferPaypal) {
             return "Paypal";
         } else if (isOpenTransferCard) {
@@ -849,7 +853,7 @@ const AccountClientPayment = () => {
                             }}
                             text="PO REQUEST"
                             onClick={() => {
-                                createPromoEstimate();
+                                createPromoEstimate(true);
                             }}
                         />
                     </div>

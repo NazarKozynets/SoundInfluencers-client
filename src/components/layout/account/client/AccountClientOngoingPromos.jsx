@@ -89,10 +89,7 @@ const AcountClientOngoingPromos = () => {
             <div className="container-form">
                 <div className="account-client-past-promos-block" style={{position: 'relative'}}>
                     <TitleSection title="MY" span="account"/>
-
                     <p className="account-client-past-promos-second">Ongoing promos</p>
-
-
                     <button
                         style={{
                             position: "absolute",
@@ -153,7 +150,7 @@ const AcountClientOngoingPromos = () => {
                                                 <div
                                                     className="account-client-past-promos-form-item-button-inner-content">
                                                     <img src={instagram} alt={"inst"}/>
-                                                    <p>Promo Name</p>
+                                                    <p>{item?.campaignName?.length > 10 ? `${item.campaignName.slice(0, 10)}...` : item.campaignName}</p>
                                                 </div>
                                                 <span
                                                     style={{background: getBackgroundColor(item.statusPromo)}}>{returnStatus(item.statusPromo)}</span>

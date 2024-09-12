@@ -1,6 +1,97 @@
 .report {
-  padding: 80px 0;
+  &-po-form {
+    width: 50%;
+    margin: 0 auto;
+  }
+  
+  &-campaign-strategy-title {
+    margin-top: 100px;
+    p {
+      text-align: center;
+      font-family: Geometria;
+      font-size: 24px;
+      font-weight: 700;
+    }
+  }
+  
+  &-details {
+    padding: 0 69px;
+    margin-top: 60px;
+    display: flex;
+    justify-content: space-around;
+    p {
+      font-family: Geometria;
+      font-size: 24px;
+      font-weight: 400;
+    }
+    span {
+      font-family: Geometria;
+      font-size: 24px;
+      font-weight: 700;
+    }
+    &-first,
+    &-third {
+      flex: 1;
+      border: 2px solid #3330E4;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 20px 0 20px 64px;
+    }
+
+    &-second {
+      flex: 1;
+      border-top: 2px solid #3330E4;
+      border-bottom: 2px solid #3330E4;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 20px 0 20px 64px;
+    }
+
+    &-first {
+      border-radius: 40px 0 0 40px;
+    }
+
+    &-third {
+      border-radius: 0 40px 40px 0;
+    }
+  }
+  
+  &-campaign-strategy-details {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 35px;
+    
+    @media screen and (max-width: 768px) {
+      flex-direction: column;
+    }
+    
+    &-item {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    
+    &-text {
+      color: var(--text);
+      font-family: Geometria;
+      font-size: 24px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: normal;
+      &-span {
+        font-weight: 700;
+      }
+      
+      @media screen and (max-width: 600px) {
+        font-size: 20px;
+      }
+    }
+  }
 }
+
+
 
 .report-info {
   display: flex;
@@ -35,8 +126,8 @@
 }
 
 .report-table {
-  margin-top: 62px;
-  width: 100%;
+  width: 90%;
+  margin: 62px auto;
   border-collapse: collapse;
   border-radius: 30px;
   overflow: hidden;
@@ -116,7 +207,7 @@
   }
 
   &-total {
-    height: 38px;
+    height: 72px;
 
     &-price {
       background: #ff7a09;
@@ -127,6 +218,14 @@
       font-weight: 900;
       line-height: normal;
       padding-left: 17px;
+    }
+    
+    &-row-item {
+      background: #FF7A0980;
+    }
+    
+    &-row-item-second {
+      background: #ebad82;
     }
   }
 }
