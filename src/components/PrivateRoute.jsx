@@ -21,7 +21,7 @@ const PrivateRoute = ({ element: Element, role = "client", ...rest }) => {
         setisAuth(false);
         setLoading(false);
         dispatch(setAuthenticated(false));
-        return 
+        return
       }
       setisAuth(res.verify);
       setLoading(false);

@@ -24,6 +24,7 @@ import {
 } from "../../../../../utils/price";
 import MobileInfluencersList from "./AccountClientOffersComponents/MobileInfluencersList";
 import MobileInfluencersListMenu from "./AccountClientOffersComponents/MobileInfluencersList";
+import OffersFooter from "../../../../form/Offers/OffersFooterSection/OffersFooter";
 
 const AccountClientOffers = () => {
     const navigation = useNavigate();
@@ -574,11 +575,7 @@ const AccountClientOffers = () => {
             setInfluencers(listInfluencers);
         }
     };
-
-    const nextForm = () => {
-        if (customePrice === 0 || selectInfluencers.length === 0) return;
-        dispatch(setCurrentWindow(1));
-    };
+    
     const createInfList = (score) => {
         const list = [];
         let sum = 0;
@@ -915,20 +912,21 @@ const AccountClientOffers = () => {
                     </div>
                 </div>
 
-                <div>
-                    <p className="account-client-choose-total">
-                        Total{" "}
-                        <span
-                            className="account-client-choose-total-span">{calculatePriceForOffersAndInfluencers(customePrice)} {currentCurrency}</span>
-                    </p>
-                    <div style={{
-                        display: "flex",
-                        justifyContent: "center",
-                        marginTop: 40,
-                    }}>
-                        <StandardButton text="Continue" onClick={nextForm}/>
-                    </div>
-                </div>
+                {/*<div>*/}
+                {/*    <p className="account-client-choose-total">*/}
+                {/*        Total{" "}*/}
+                {/*        <span*/}
+                {/*            className="account-client-choose-total-span">{calculatePriceForOffersAndInfluencers(customePrice)} {currentCurrency}</span>*/}
+                {/*    </p>*/}
+                {/*    <div style={{*/}
+                {/*        display: "flex",*/}
+                {/*        justifyContent: "center",*/}
+                {/*        marginTop: 40,*/}
+                {/*    }}>*/}
+                {/*        <StandardButton text="Continue" onClick={nextForm}/>*/}
+                {/*    </div>*/}
+                {/*</div>*/}
+                <OffersFooter/>
             </div>
         </section>
     );

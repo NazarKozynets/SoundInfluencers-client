@@ -6,13 +6,13 @@ import ReportCampaigns from "../../../components/layout/account/influencer/Repor
 import UpdateOngoingPromo from "../../../components/layout/account/influencer/UpdateOngoingPromo";
 
 const AccountInfluencerUpdateIngoingPromoPage = () => {
-  return (
-    <>
-      <Header path="Influencer" />
-      <UpdateOngoingPromo />
-      <Background />
-    </>
-  );
+    return (
+        <>
+            <Header path="Influencer" />
+            <UpdateOngoingPromo />
+            <Background />
+        </>
+    );
 };
 
 export default AccountInfluencerUpdateIngoingPromoPage;

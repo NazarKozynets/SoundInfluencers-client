@@ -12,7 +12,7 @@ class JivoChat extends Component {
   }
 
   render() {
-    return <div id="jivo-chat-container" />;
+    return <div id="jivo-chat-container"/>;
   }
 }
 

@@ -7,6 +7,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 import arrow from "../../../../images/icons/arrow.svg";
+import instagram from "../../../../images/icons/socialMedias/instagram.png";
 
 
 function formatDate(inputDate) {
@@ -49,6 +50,36 @@ const AccountInfluencerOngoingPromos = () => {
   useEffect(() => {
     getData();
   }, []);
+
+  function getBackgroundColor(statusPromo) {
+    switch (statusPromo) {
+      case "wait":
+        return "#FF7A09";
+      case "estimate":
+        return "#FF3509";
+      case "work":
+        return "#3330E4";
+      case "po waiting":
+        return "#17A937";
+      default:
+        return "#3330E41A";
+    }
+  }
+
+  const returnStatus = (statusPromo) => {
+    if (statusPromo === "wait") {
+      return "pending";
+    } else if (statusPromo === "work") {
+      return "distributing";
+    } else if (statusPromo === "estimate") {
+      return "estimating";
+    } else if (statusPromo === "po waiting") {
+      return "po waiting";
+    } else {
+      return "confirmed";
+    }
+  };
+  
   return (
     <section className="account-client-past-promos">
       <div className="container-form">
@@ -77,28 +108,50 @@ const AccountInfluencerOngoingPromos = () => {
             <div className="account-client-past-promos-form">
               <ul className="account-client-past-promos-form-list">
                 {data.map((item, index) => (
-                  <li
-                    className="account-client-past-promos-form-item"
-                    key={item._id}
-                  >
-                    <button
-                      className="account-client-past-promos-form-item-button"
-                      onClick={() =>
-                        navigation(
-                          `/account/influencer/ongoing-promos/${item.promoId}/${item.instagramUsername}`
-                        )
-                      }
+                    <li
+                        className="account-client-past-promos-form-item"
+                        key={item._id}
                     >
-                      <div className="account-client-past-promos-form-image">
-                        <p className="account-client-past-promos-form-image-text">
-                          {item.client}
-                        </p>
+                      {/*<button*/}
+                      {/*  className="account-client-past-promos-form-item-button"*/}
+                      {/*  onClick={() =>*/}
+                      {/*    navigation(*/}
+                      {/*      `/account/influencer/ongoing-promos/${item.promoId}/${item.instagramUsername}`*/}
+                      {/*    )*/}
+                      {/*  }*/}
+                      {/*>*/}
+                      {/*  <div className="account-client-past-promos-form-image">*/}
+                      {/*    <p className="account-client-past-promos-form-image-text">*/}
+                      {/*      {item.client}*/}
+                      {/*    </p>*/}
+                      {/*  </div>*/}
+                      {/*  <p className="account-client-past-promos-form-text">*/}
+                      {/*    Promo {index + 1}*/}
+                      {/*  </p>*/}
+                      {/*</button>*/}
+                      <div>
+                        <button
+                            onClick={() => navigation(`/account/influencer/ongoing-promos/${item.promoId}/${item.instagramUsername}`)}
+                            className="account-client-past-promos-form-item-button">
+                          <div
+                              className="account-client-past-promos-form-item-button-inner-content">
+                            <img src={instagram} alt={"inst"}/>
+                            <p>{item?.campaignName?.length > 10 ? `${item.campaignName.slice(0, 10)}...` : item.campaignName}</p>
+                          </div>
+                          <span
+                              style={{background: getBackgroundColor(item.statusPromo)}}>{returnStatus(item.statusPromo)}</span>
+                        </button>
                       </div>
+                      <p style={{
+                        fontFamily: "Geometria",
+                        fontSize: "12px",
+                        fontWeight: "400",
+                        color: "#00000080",
+                      }}>{formatDate(item.createdAt)}</p>
                       <p className="account-client-past-promos-form-text">
                         Promo {index + 1}
                       </p>
-                    </button>
-                  </li>
+                    </li>
                 ))}
               </ul>
 

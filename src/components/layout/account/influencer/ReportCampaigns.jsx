@@ -16,6 +16,10 @@ import {setClearCampaignDetails, setClearForm, setCurrentWindow} from "../../../
 import FormContainer from "../../../form/FormContainer";
 import ModalWindow from "../../../ModalWindow";
 import acceptIcon from "../../../../images/icons/accept.svg";
+import imgIcon from "../../../../images/icons/iconsForCampaignReport/image- 1.svg";
+import instaIcon from "../../../../images/icons/iconsForCampaignReport/instagram 1.svg";
+import linkIcon from "../../../../images/icons/iconsForCampaignReport/link 1.svg";
+import videoIcon from "../../../../images/icons/iconsForCampaignReport/video 1.svg";
 
 const ReportCampaigns = () => {
     const params = useParams();
@@ -41,9 +45,9 @@ const ReportCampaigns = () => {
     const [valueForPONumber, setValueForPONumber] = useState("");
     const [poNumber, setPoNumber] = useState("");
     const [isPopup, setIsPopup] = useState(false);
-
-    const navigation = useNavigate();
     
+    const navigation = useNavigate();
+
     const [headers] = useState([{
         Header: "Date Post", accessor: "Date Post",
     }, {
@@ -68,14 +72,28 @@ const ReportCampaigns = () => {
     const getData = async () => {
         try {
             const {dataFetch} = await UseVerify();
-            const result = await axios(`${process.env.REACT_APP_SERVER}/promos/ongoing/one?id=${params.id}&userId=${dataFetch._id}`);
+            const result = await axios(
+                `${process.env.REACT_APP_SERVER}/promos/ongoing/one?id=${params.id}&userId=${dataFetch._id}`
+            );
             console.log(result.data.promo);
             setCompany(dataFetch);
+
             if (result.data.code === 200) {
-                console.log(result.data.promo, 'promo data')
                 setDataPromo(result.data.promo);
-                console.log(result.data.promo.selectInfluencers, 'influencers data')
-                setData(result.data.promo.selectInfluencers);
+
+                const resultInfluencers = result.data.promo.selectInfluencers.map((influencer) => {
+                    if (result.data.promo.videos && influencer.selectedVideo) {
+                        const video = result.data.promo.videos.find(videoItem => videoItem.videoLink === influencer.selectedVideo);
+
+                        return {
+                            ...influencer,
+                            video: video || null
+                        };
+                    }
+                    return influencer;
+                });
+
+                setData(resultInfluencers);
             }
         } catch (err) {
             console.log(err);
@@ -183,7 +201,7 @@ const ReportCampaigns = () => {
 
     return (
         <section className="report">
-            {dataPromo?.paymentType === "PO request" && (dataPromo?.statusPromo === 'PO waiting' || dataPromo?.statusPromo === 'estimate') && (
+            {dataPromo?.paymentType === "PO request" && (dataPromo?.statusPromo === 'po waiting' || dataPromo?.statusPromo === 'estimate') && (
                 <div className='report-po-form'>
                     <button
                         style={{
@@ -351,38 +369,97 @@ const ReportCampaigns = () => {
                     {dataPromo ? (<>
                         {data.map((item, indexRow) => (<tr className="report-table-body-row">
                             <td className="report-table-body-row-item-first">
-                                {item.instagramUsername ? item.instagramUsername : ""}
+                                {item.instagramUsername ? item.instagramUsername : "N/A"}
                             </td>
                             <td className="report-table-body-row-item">
-                                {item.followersNumber ? item.followersNumber : ""}
+                                {item.followersNumber ? item.followersNumber : "N/A"}
                             </td>
                             <td className="report-table-body-row-item-second">
-                                {dataPromo.createdAt ? formatDateStringReport(dataPromo.createdAt) : ""}
+                                {dataPromo.createdAt ? formatDateStringReport(dataPromo.createdAt) : "N/A"}
                             </td>
                             <td className="report-table-body-row-item">
+                                <button
+                                    onClick={() => {
+                                        window.open(item.video.videoLink, '_blank');
+                                    }}
+                                    style={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'space-between',
+                                        width: 52,
+                                        height: 28,
+                                        borderRadius: "10px",
+                                        paddingLeft: 3,
+                                        paddingRight: 3,
+                                        border: "2px solid black",
+                                        boxSizing: 'border-box',
+                                        margin: '0 auto',
+                                        cursor: 'pointer',
+                                    }}>
+                                    <img src={videoIcon} alt="watch"/>
+                                    <img src={linkIcon} alt="edit"/>
+                                </button>
                             </td>
                             <td className="report-table-body-row-item-second">
+                                {item.video ? item.video.postDescription : "N/A"}
                             </td>
                             <td className="report-table-body-row-item">
-                                
+                                {item.video ? item.video.storyTag : "N/A"}
                             </td>
                             <td className="report-table-body-row-item-second">
-                                
+                                {item.video.swipeUpLink ? (
+                                    <a href={
+                                        'https://' + item.video.swipeUpLink
+                                    } target="_blank" rel="noopener noreferrer" title={item.video.swipeUpLink}>
+                                        {item.video.swipeUpLink.slice(0, 10) + '...'}
+                                    </a>
+                                ) : (
+                                    "N/A"
+                                )}
                             </td>
                             <td className="report-table-body-row-item">
-                                
+                                {item.postLink ? <button
+                                    style={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'space-between',
+                                        width: 52,
+                                        height: 28,
+                                        borderRadius: "10px",
+                                        paddingLeft: 3,
+                                        paddingRight: 3,
+                                        border: "2px solid black",
+                                        boxSizing: 'border-box',
+                                        margin: '0 auto',
+                                    }}>
+                                    <img src={instaIcon} alt="watch"/>
+                                    <img src={linkIcon} alt="edit"/>
+                                </button> : "N/A"}
                             </td>
                             <td className="report-table-body-row-item-second">
-                                {item.screenshot ? (<a target="_blank"
-                                                       href={item.screenshot.toString().replace('dl.dropboxusercontent.com', 'www.dropbox.com')}>
-                                    {item.screenshot.toString().replace('dl.dropboxusercontent.com', 'www.dropbox.com')}
-                                </a>) : ("")}
+                                {item.screenshot ? <button
+                                    style={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'space-between',
+                                        width: 52,
+                                        height: 28,
+                                        borderRadius: "10px",
+                                        paddingLeft: 3,
+                                        paddingRight: 3,
+                                        border: "2px solid black",
+                                        boxSizing: 'border-box',
+                                        margin: '0 auto',
+                                    }}>
+                                    <img src={imgIcon} alt="watch"/>
+                                    <img src={linkIcon} alt="edit"/>
+                                </button> : "N/A"}
                             </td>
                             <td className="report-table-body-row-item">
-                                {item.impressions ? item.impressions : ""}
+                                {item.impressions ? item.impressions : "N/A"}
                             </td>
                             <td className="report-table-body-row-item-second">
-                                {item.like ? item.like : ""}
+                                {item.like ? item.like : "N/A"}
                             </td>
                         </tr>))}
                     </>) : null}
@@ -391,7 +468,14 @@ const ReportCampaigns = () => {
                             TOTAL: {dataPromo ? dataPromo.selectPrice.price : 0}€
                         </td>
 
-                        <td className="report-table-body-total-row-item"></td>
+                        <td className="report-table-body-total-row-item" style={{
+                            fontFamily: "Geometria",
+                            fontSize: "16px",
+                            fontWeight: 800,
+                            textAlign: "center",
+                        }}>
+                            {totalFollowers()}
+                        </td>
                         <td className="report-table-body-total-row-item-second"></td>
                         <td className="report-table-body-total-row-item"></td>
                         <td className="report-table-body-total-row-item-second"></td>
@@ -582,7 +666,7 @@ const ReportCampaigns = () => {
             </div>
             <ModalWindow isOpen={isPopup} setClose={setIsPopup}>
                 <div className="signup-client-modal">
-                    <img className="signup-client-modal-icon" src={acceptIcon} />
+                    <img className="signup-client-modal-icon" src={acceptIcon}/>
 
                     <h2 className="signup-client-modal-title">Congratulations!</h2>
 

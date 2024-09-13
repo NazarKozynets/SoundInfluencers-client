@@ -75,14 +75,15 @@ const AcountClientOngoingPromos = () => {
             case "wait":
                 return "#FF7A09";
             case "estimate":
-                return "rgba(0, 255, 0, 0.5)";
+                return "#FF3509";
             case "work":
                 return "#3330E4";
+            case "po waiting":
+                return "#17A937";
             default:
                 return "#3330E41A";
         }
     }
-
 
     return (
         <section className="account-client-past-promos">

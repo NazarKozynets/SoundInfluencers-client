@@ -191,7 +191,7 @@ const AccountClientPostContent = () => {
                                             silverColor={true}
                                         />
                                         <TextInput
-                                            title="Swipe Up Link"
+                                            title="Story Link"
                                             placeholder="Enter swipe up link"
                                             style={{marginTop: "60px"}}
                                             value={video.swipeUpLink}
