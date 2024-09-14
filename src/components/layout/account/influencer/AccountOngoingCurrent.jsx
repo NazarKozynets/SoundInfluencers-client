@@ -41,6 +41,8 @@ const AcountInfluencerOngoingCurrent = () => {
                     return influencer;
                 });
 
+                console.log(resultInfluencers, 'resultInfluencers')
+                
                 setDataInfluencer(resultInfluencers);
             }
 
@@ -175,9 +177,8 @@ const AcountInfluencerOngoingCurrent = () => {
                                         text="Submit Results & Get Paid"
                                         style={{padding: "9px 70px"}}
                                         onClick={() => {
-                                            console.log(dataInfluencer);
                                             navigation(
-                                                `/account/influencer/update-ongoing-promos/${data._id}/${dataInfluencer._id}/${params.instagram}`
+                                                `/account/influencer/update-ongoing-promos/${data._id}/${dataInfluencer[0].influencerId}/${params.instagram}`
                                             );
                                         }}
                                     />

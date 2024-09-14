@@ -68,14 +68,13 @@ const ReportCampaigns = () => {
         Header: "Likes", accessor: "Likes",
     }
     ]);
-
+    
     const getData = async () => {
         try {
             const {dataFetch} = await UseVerify();
             const result = await axios(
                 `${process.env.REACT_APP_SERVER}/promos/ongoing/one?id=${params.id}&userId=${dataFetch._id}`
             );
-            console.log(result.data.promo);
             setCompany(dataFetch);
 
             if (result.data.code === 200) {
@@ -375,7 +374,7 @@ const ReportCampaigns = () => {
                                 {item.followersNumber ? item.followersNumber : "N/A"}
                             </td>
                             <td className="report-table-body-row-item-second">
-                                {dataPromo.createdAt ? formatDateStringReport(dataPromo.createdAt) : "N/A"}
+                                {item.dateRequest ? item.dateRequest : "N/A"}
                             </td>
                             <td className="report-table-body-row-item">
                                 <button

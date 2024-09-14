@@ -15,21 +15,42 @@ const AcountClientPastPromosCurrent = () => {
   const params = useParams();
   const navigation = useNavigate();
   const [data, setData] = useState({});
+  const [dataInfluencer, setDataInfluencer] = useState({});
 
-  const getData = async () => {
-    try {
-      const { dataFetch } = await UseVerify();
-      const result = await axios(
-        `${process.env.REACT_APP_SERVER}/promos/history/one?userId=${dataFetch._id}&promosId=${params.id}`
-      );
+    const getData = async () => {
+        try {
+            const { dataFetch } = await UseVerify();
+            const result = await axios(
+                `${process.env.REACT_APP_SERVER}/promos/history/one?userId=${dataFetch._id}&promosId=${params.id}`
+            );
 
-      setData(result.data.promo);
-      console.log(result.data.promo);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+            let promoData = result.data.promo;
 
+            if (promoData.selectInfluencers && promoData.videos) {
+                promoData.selectInfluencers = promoData.selectInfluencers.map((influencer) => {
+                    const matchingVideo = promoData.videos.find(
+                        (video) => video.videoLink.trim().toLowerCase() === influencer.selectedVideo.trim().toLowerCase()
+                    );
+                    return matchingVideo ? { ...influencer, video: matchingVideo } : influencer;
+                });
+
+                const matchingInfluencer = promoData.selectInfluencers.find(
+                    (influencer) => influencer.influencerId === dataFetch._id
+                );
+
+                if (matchingInfluencer) {
+                    setDataInfluencer(matchingInfluencer); 
+                } else {
+                    console.log("No matching influencer found for _id:", dataFetch._id);
+                }
+            }
+
+            setData(promoData);
+        } catch (err) {
+            console.log(err);
+        }
+    };
+      
   useEffect(() => {
     getData();
   }, []);
@@ -105,29 +126,29 @@ const AcountClientPastPromosCurrent = () => {
                   <p className="account-client-past-promos-form-current-content-link">
                     Videolink:{" "}
                     <a
-                      href={data ? data.videoLink : "No Data"}
+                      href={dataInfluencer.video ? dataInfluencer.video.videoLink : "No Data"}
                       className="account-client-past-promos-form-current-content-link-value"
                       target="_blank"
                     >
-                      {data ? data.videoLink : "No Data"}
+                      {dataInfluencer.video ? dataInfluencer.video.videoLink : "No Data"}
                     </a>
                   </p>
                   <p className="account-client-past-promos-form-current-content-desc">
                     Description:{" "}
                     <span className="account-client-past-promos-form-current-content-desc-value">
-                      {data ? data.postDescription : "No Data"}
+                      {dataInfluencer.video ? dataInfluencer.video.postDescription : "No Data"}
                     </span>
                   </p>
                   <p className="account-client-past-promos-form-current-content-date">
                     Date Request:{" "}
                     <span className="account-client-past-promos-form-current-content-date-value">
-                      {data ? data.dateRequest : "No Data"}
+                      {dataInfluencer ? dataInfluencer.dateRequest : "No Data"}
                     </span>
                   </p>
                   <p className="account-client-past-promos-form-current-content-wish">
-                    Special Wishes:{" "}
+                    Special Requests:{" "}
                     <span className="account-client-past-promos-form-current-content-wish-value">
-                      {data ? data.specialWishes : "No Data"}
+                      {dataInfluencer.video ? dataInfluencer.video.specialWishes : "No Data"}
                     </span>
                   </p>
                 </div>

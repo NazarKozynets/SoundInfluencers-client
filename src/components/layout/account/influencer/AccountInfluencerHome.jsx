@@ -8,7 +8,7 @@ import accountDetails from "../../../../images/icons/details-account.svg";
 import support from "../../../../images/icons/support.svg";
 import AltButton from "../../../form/AltButton";
 import UseVerify from "../../../../hooks/useVerify";
-import { Link, useNavigate } from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import ModalWindow from "../../../ModalWindow";
 import StandardButton from "../../../form/StandardButton";
 
@@ -33,6 +33,10 @@ const AccountInfluencerHome = () => {
     getData();
   }, []);
 
+  useEffect(() => {
+    console.log(data, 'data')
+  }, [data]);
+  
   const handleInvoice = () => {
     if(+data.balance === 0 ) return setIsModal(true);
     navigation("/account/influencer/create-invoice")

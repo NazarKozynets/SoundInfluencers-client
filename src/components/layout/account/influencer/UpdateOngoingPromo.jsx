@@ -7,8 +7,10 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import ModalWindow from "../../../ModalWindow";
 import InputFile from "../../../form/InputFile";
+import UseVerify from "../../../../hooks/useVerify";
+import useVerify from "../../../../hooks/useVerify";
 
-const UpdateOngoingPromo = (influencerId) => {
+const UpdateOngoingPromo = () => {
     const params = useParams();
     const navigation = useNavigate();
 
@@ -22,7 +24,7 @@ const UpdateOngoingPromo = (influencerId) => {
         postLink: "",
         screenshot: "",
     });
-
+    
     const [screenshot, setScreenshot] = useState(null);
     const [isWindow, setIsWindow] = useState(false);
     const [isWindowTwo, setIsWindowTwo] = useState(false);
@@ -31,15 +33,16 @@ const UpdateOngoingPromo = (influencerId) => {
         if (!params.influencerId || !params.promoId || !params.instagram) {
             return navigation("/");
         }
+        
+        console.log(params, 'params')
+        
         try {
-            console.log(params, 'params')
-            
             const result = await axios(
                 `${process.env.REACT_APP_SERVER}/promos/get-ongoing-promo-one?influencerId=${params.influencerId}&promoId=${params.promoId}&instagramUsername=${params.instagram}`
             );
 
-            console.log(result.data.code, 'result code')
-            console.log(result.data, 'data')
+            // console.log(result.data.code, 'result code')
+            // console.log(result.data, 'data')
             
             if (result.data.code === 200) {
                 setFormData(result.data.promo);
