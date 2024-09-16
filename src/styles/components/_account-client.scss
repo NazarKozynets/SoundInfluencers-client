@@ -951,6 +951,7 @@ body {
 .account-client-payment-po {
   &-container {
     padding-left: 87px;
+
     span {
       font-family: Geometria;
       font-size: 28px;
@@ -967,13 +968,13 @@ body {
 
     &-first {
       display: flex;
-      gap: 27px; 
+      gap: 27px;
       margin-top: 45px;
 
       > * {
         display: flex;
         align-items: center;
-        gap: 5px; 
+        gap: 5px;
       }
     }
   }
@@ -1312,16 +1313,19 @@ body {
     margin-top: 60px;
     display: flex;
     justify-content: space-around;
+
     p {
       font-family: Geometria;
       font-size: 24px;
       font-weight: 400;
     }
+
     span {
       font-family: Geometria;
       font-size: 24px;
       font-weight: 700;
     }
+
     &-first,
     &-third {
       flex: 1;
@@ -1350,9 +1354,10 @@ body {
       border-radius: 0 40px 40px 0;
     }
   }
-  
+
   &-influencers {
     margin-top: 65px;
+
     .account-client-campaign-strategy-influencers-table-container {
       width: 65%;
       margin: auto;
@@ -1364,7 +1369,7 @@ body {
     }
 
     .account-client-campaign-strategy-influencers-table-container.expanded {
-      width: 90%; 
+      width: 90%;
     }
 
     .account-client-campaign-strategy-influencers-table {
@@ -1386,9 +1391,11 @@ body {
       font-weight: 900;
       text-align: center;
       padding: 20px;
+
       &:first-child {
         border-radius: 30px 0 0 0;
       }
+
       &:last-child {
         border-radius: 0 30px 0 0;
       }
@@ -1404,7 +1411,7 @@ body {
 
     .account-client-campaign-strategy-influencers-table tbody tr td:nth-child(1),
     .account-client-campaign-strategy-influencers-table tbody tr td:nth-child(3),
-    .account-client-campaign-strategy-influencers-table tbody tr td:nth-child(6){
+    .account-client-campaign-strategy-influencers-table tbody tr td:nth-child(6) {
       background: #ebebfd;
     }
 
@@ -1446,18 +1453,84 @@ body {
       width: 200px;
     }
   }
-  
+
   &-buttons {
     display: flex;
     justify-content: center;
     margin-top: 93px;
-    
+
     button {
       width: 294px;
     }
   }
 }
 
+.container-form-details-question {
+  width: 70%;
+  margin: 0 auto;
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    &-title {
+      margin-top: 25px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    &-form {
+      margin-top: -15px;
+
+      p {
+        margin-top: 15px;
+      }
+    }
+  }
+}
+
+.container-form-save-estimate {
+  width: 40%;
+  margin: 0 auto;
+
+  @media screen and (max-width: 768px) {
+    width: 90%;
+    &-title {
+      margin-top: 25px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    &-form {
+      margin-top: -15px;
+
+      .account-client-save-and-estimate-form-first-block {
+        margin-top: 70px;
+      }
+    }
+  }
+}
+
+.container-post-campaign-form {
+  width: 50%;
+  margin: 0 auto;
+  @media screen and (max-width: 768px) {
+    width: 90%;
+    .account-client-post-campaign-name {
+      margin-top: 80px;
+    }
+    .container-post-campaign-form-block {
+      margin-top: 30px !important;
+    }
+    .account-client-post {
+      padding-top: 30px;
+      right: 0 !important;
+    }
+    #account-client-post-delete-button {
+      top: 0 !important;
+      right: 0 !important;
+      margin-top: 15px;
+    }
+  }
+}
 
 @media screen and (max-width: 1800px) {
   .swiper-div {

@@ -54,7 +54,7 @@ const AccountClientSaveAndEstimateCampaign = () => {
     
     return (
         <section className="account-client">
-            <div className="container-form">
+            <div className="container-form-save-estimate">
                 <div className="account-client-back-button">
                     <button style={{
                         position: "absolute", top: 200, left: 51, width: 48, height: 48, cursor: "pointer",
@@ -62,31 +62,35 @@ const AccountClientSaveAndEstimateCampaign = () => {
                         <img src={arrow} style={{transform: "rotate(180deg)"}}/>
                     </button>
                 </div>
-                <TitleSection title="post" span="this content"/>
-                <FormContainer style={{marginTop: "60px"}}>
-                    <form style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
-                    }} className="account-client-save-and-estimate-form">
-                        <div className="account-client-save-and-estimate-form-first-block"
-                             style={{display: "flex", flexDirection: "column"}}>
-                            <div style={{display: "flex", gap: 28}}>
-                                <span>#1</span>
-                                <p>SAVE & SEND ESTIMATE</p>
-                                <StandardButton text={"Send"} onClick={() => createPromoEstimate()}/>
+                <div className="container-form-save-estimate-title">
+                    <TitleSection title="post" span="this content"/>
+                </div>
+                <div className="container-form-save-estimate-form">
+                    <FormContainer style={{marginTop: "60px"}}>
+                        <form style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "center",
+                        }} className="account-client-save-and-estimate-form">
+                            <div className="account-client-save-and-estimate-form-first-block"
+                                 style={{display: "flex", flexDirection: "column"}}>
+                                <div style={{display: "flex", gap: 28}}>
+                                    <span>#1</span>
+                                    <p>SAVE & SEND ESTIMATE</p>
+                                    <StandardButton text={"Send"} onClick={() => createPromoEstimate()}/>
+                                </div>
+                                <div style={{display: "flex", gap: 28}}>
+                                    <span>#2</span>
+                                    <p>BOOK A STRATEGY MEETING</p>
+                                </div>
+                                <div>
+                                    <iframe className="account-client-save-and-estimate-form-meetfox"
+                                            src="https://meetfox.com/en/e/napoleonpr/borderless?l=napoleon-pr-intro-meeting"/>
+                                </div>
                             </div>
-                            <div style={{display: "flex", gap: 28}}>
-                                <span>#2</span>
-                                <p>BOOK A STRATEGY MEETING</p>
-                            </div>
-                            <div>
-                                <iframe className="account-client-save-and-estimate-form-meetfox"
-                                        src="https://meetfox.com/en/e/napoleonpr/borderless?l=napoleon-pr-intro-meeting"/>
-                            </div>
-                        </div>
-                    </form>
-                </FormContainer>
+                        </form>
+                    </FormContainer>
+                </div>
             </div>
         </section>
     );

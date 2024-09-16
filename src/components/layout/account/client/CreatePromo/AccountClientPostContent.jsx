@@ -96,7 +96,7 @@ const AccountClientPostContent = () => {
                     <img src={arrow} style={{transform: "rotate(180deg)"}}/>
                 </button>
             </div>
-            <div className="container-form">
+            <div className="container-post-campaign-form">
                 <div className="account-client-block" style={{position: "relative"}}>
                     <TitleSection title="post" span="this content"/>
 
@@ -114,7 +114,7 @@ const AccountClientPostContent = () => {
                     </div>
 
                     {dataPromo.videos.map((video, index) => (
-                        <div key={index} style={{marginTop: 75}}>
+                        <div key={index} style={{marginTop: 75}} className="container-post-campaign-form-block">
                             <p
                                 style={{
                                     fontFamily: "Geometria",
@@ -128,6 +128,7 @@ const AccountClientPostContent = () => {
                             <FormContainer style={{marginTop: "40px"}}>
                                 <div style={{position: "relative"}}>
                                     {index > 0 && (<button 
+                                        id="account-client-post-delete-button"
                                         onClick={() => dispatch(removeVideo(index))}
                                         style={{
                                         position: "absolute",

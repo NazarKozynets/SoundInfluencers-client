@@ -95,6 +95,10 @@ const AccountClientOffers = () => {
         setFilteredOffersByGenres(prices);
     }, [prices]);
 
+    // useEffect(() => {
+    //     console.log("customePrice", customePrice);
+    // }, [customePrice]);
+    
     const selectPrice = (id) => {
         let balance = window.sessionStorage.getItem("balance");
 
@@ -102,7 +106,6 @@ const AccountClientOffers = () => {
 
         if (selectedOffersGenres.length > 0 && selectedOffersGenres) {
             const searchPrice = filteredOffersByGenres.find((item) => item.id === id);
-
             const matchingStyle = searchPrice.musicStyles.find(style => {
                 const styleGenres = style.genres;
                 return selectedOffersGenres.every(genre => styleGenres.includes(genre)) &&
@@ -129,12 +132,12 @@ const AccountClientOffers = () => {
             });
 
             const filterInfluencers = matchingStyle.connectInfluencer.map((item) => ({
-                influencerId: item.influencerId, confirmation: "wait", instagramUsername: item.instagramUsername,
+                influencerId: item.influencerId, confirmation: "wait", instagramUsername: item.instagramUsername, connect: item.connect, active: item.active
             }));
 
             if (selectInfluencers.length !== 0) {
                 const currentSelectInfluencers = selectInfluencers.map((item) => ({
-                    influencerId: item.influencerId, confirmation: "wait", instagramUsername: item.instagramUsername,
+                    influencerId: item.influencerId, confirmation: "wait", instagramUsername: item.instagramUsername, connect: item.connect, active: item.active
                 }));
                 const filterCurrentSelectInfluencer = [];
                 [...filterInfluencers].forEach((item) => {
@@ -167,7 +170,7 @@ const AccountClientOffers = () => {
                 const currentSelectInfluencers = influencers.filter((item) => !item.connect && item.active);
 
                 const totalSelectInfluencers = currentSelectInfluencers.map((item) => ({
-                    influencerId: item._id, confirmation: "wait", instagramUsername: item.instagramUsername,
+                    influencerId: item._id, confirmation: "wait", instagramUsername: item.instagramUsername, connect: item.connect, active: item.active
                 }));
                 dispatch(setSelectInfluencer(totalSelectInfluencers));
 
@@ -175,8 +178,8 @@ const AccountClientOffers = () => {
                     if (!current.price) return acc;
                     let price = current.price.replace(/\D/g, "");
 
-                    if (current.customPrice) {
-                        price = current.customPrice;
+                    if (current.customePrice) {
+                        price = current.customePrice;
                     }
 
                     if (current.active) {
@@ -283,12 +286,12 @@ const AccountClientOffers = () => {
             });
 
             const filterInfluencers = searchPrice.connectInfluencer.map((item) => ({
-                influencerId: item.influencerId, confirmation: "wait", instagramUsername: item.instagramUsername,
+                influencerId: item.influencerId, confirmation: "wait", instagramUsername: item.instagramUsername, 
             }));
 
             if (selectInfluencers.length !== 0) {
                 const currentSelectInfluencers = selectInfluencers.map((item) => ({
-                    influencerId: item.influencerId, confirmation: "wait", instagramUsername: item.instagramUsername,
+                    influencerId: item.influencerId, confirmation: "wait", instagramUsername: item.instagramUsername, connect: item.connect, active: item.active
                 }));
                 const filterCurrentSelectInfluencer = [];
                 [...filterInfluencers].forEach((item) => {
@@ -319,9 +322,8 @@ const AccountClientOffers = () => {
                 setInfluencers(checkInfluencers);
 
                 const currentSelectInfluencers = influencers.filter((item) => !item.connect && item.active);
-
                 const totalSelectInfluencers = currentSelectInfluencers.map((item) => ({
-                    influencerId: item._id, confirmation: "wait", instagramUsername: item.instagramUsername,
+                    influencerId: item._id, confirmation: "wait", instagramUsername: item.instagramUsername, 
                 }));
                 dispatch(setSelectInfluencer(totalSelectInfluencers));
 
@@ -490,7 +492,11 @@ const AccountClientOffers = () => {
         const filterInfluencers = updateList
             .filter((item) => item.active)
             .map((item) => ({
-                influencerId: item._id, instagramUsername: item.instagramUsername, confirmation: "wait",
+                influencerId: item._id,
+                instagramUsername: item.instagramUsername,
+                confirmation: "wait",
+                connect: item.connect,
+                active: item.active
             }));
 
         const selectedGenres = selectedOffersGenres.length > 0;
@@ -519,7 +525,7 @@ const AccountClientOffers = () => {
         }));
 
         dispatch(setSelectInfluencer([...filterInfluencers]));
-        
+
         if (filteredInfluencersByBudget.length > 0) {
             setFilteredInfluencersByBudget(updateList);
         } else {
@@ -545,13 +551,21 @@ const AccountClientOffers = () => {
                             inf.influencerId === item._id &&
                             inf.instagramUsername === item.instagramUsername
                     );
-                    if (findInfluencer) {
+                    if (findInfluencer && findInfluencer.active === true) {
                         return {
                             ...item,
                             active: true,
                             connect: false,
                         };
                     }
+                    if (findInfluencer && findInfluencer.connect === true) {
+                        return {
+                            ...item,
+                            active: false,
+                            connect: true,
+                        };
+                    }
+                    
 
                     return {
                         ...item,
@@ -575,75 +589,75 @@ const AccountClientOffers = () => {
             setInfluencers(listInfluencers);
         }
     };
-    
-    const createInfList = (score) => {
-        const list = [];
-        let sum = 0;
-        while (sum <= score) {
-            sum += 1;
-            if (sum > score) break;
-            list.push(<li key={sum} className="account-client-offers-text-item">
-                Influencer {sum}
-            </li>);
-        }
-        return list;
-    };
 
-    const toggleSelectAll = () => {
-        let balance = window.sessionStorage.getItem("balance");
+    // const createInfList = (score) => {
+    //     const list = [];
+    //     let sum = 0;
+    //     while (sum <= score) {
+    //         sum += 1;
+    //         if (sum > score) break;
+    //         list.push(<li key={sum} className="account-client-offers-text-item">
+    //             Influencer {sum}
+    //         </li>);
+    //     }
+    //     return list;
+    // };
 
-        const updateList = influencers.map((item) => {
-            return {
-                ...item, active: !isSelectAll, connect: false,
-            };
-        });
-
-        let newPrice = updateList.reduce((acc, current) => {
-            if (!current.price) return acc;
-            let price = current.price.replace(/\D/g, "");
-
-            if (current.customPrice) {
-                price = current.customPrice;
-            }
-
-            if (current.active) {
-                if (!current.connect) {
-                    if (currentPrice !== 0) {
-                        return acc + Number(price) * 2;
-                    } else {
-                        return acc + Number(price) * 2;
-                    }
-                } else {
-                    return acc;
-                }
-            } else {
-                return acc;
-            }
-        }, 0);
-
-        const priceOffer = prices.find((item) => item.id === currentPrice);
-
-        const filterInfluencers = updateList
-            .filter((item) => item.active)
-            .map((item) => ({
-                influencerId: item._id, instagramUsername: item.instagramUsername, confirmation: "wait",
-            }));
-
-        let totalCustomOffer = priceOffer?.price + newPrice;
-
-        dispatch(setSelectAmount(priceOffer ? totalCustomOffer : 0 + newPrice));
-
-        if (totalCustomOffer > balance) totalCustomOffer = totalCustomOffer - balance;
-        if (newPrice > balance) newPrice = newPrice - balance;
-
-        dispatch(setSelectPrice({
-            variant: currentPrice, price: priceOffer ? totalCustomOffer : 0 + newPrice,
-        }));
-
-        dispatch(setSelectInfluencer([...filterInfluencers]));
-        setInfluencers(updateList);
-        setIsSelectAll(!isSelectAll)
-    };
+    // const toggleSelectAll = () => {
+    //     let balance = window.sessionStorage.getItem("balance");
+    //
+    //     const updateList = influencers.map((item) => {
+    //         return {
+    //             ...item, active: !isSelectAll, connect: false,
+    //         };
+    //     });
+    //
+    //     let newPrice = updateList.reduce((acc, current) => {
+    //         if (!current.price) return acc;
+    //         let price = current.price.replace(/\D/g, "");
+    //
+    //         if (current.customPrice) {
+    //             price = current.customPrice;
+    //         }
+    //
+    //         if (current.active) {
+    //             if (!current.connect) {
+    //                 if (currentPrice !== 0) {
+    //                     return acc + Number(price) * 2;
+    //                 } else {
+    //                     return acc + Number(price) * 2;
+    //                 }
+    //             } else {
+    //                 return acc;
+    //             }
+    //         } else {
+    //             return acc;
+    //         }
+    //     }, 0);
+    //
+    //     const priceOffer = prices.find((item) => item.id === currentPrice);
+    //
+    //     const filterInfluencers = updateList
+    //         .filter((item) => item.active)
+    //         .map((item) => ({
+    //             influencerId: item._id, instagramUsername: item.instagramUsername, confirmation: "wait",
+    //         }));
+    //
+    //     let totalCustomOffer = priceOffer?.price + newPrice;
+    //
+    //     dispatch(setSelectAmount(priceOffer ? totalCustomOffer : 0 + newPrice));
+    //
+    //     if (totalCustomOffer > balance) totalCustomOffer = totalCustomOffer - balance;
+    //     if (newPrice > balance) newPrice = newPrice - balance;
+    //
+    //     dispatch(setSelectPrice({
+    //         variant: currentPrice, price: priceOffer ? totalCustomOffer : 0 + newPrice,
+    //     }));
+    //
+    //     dispatch(setSelectInfluencer([...filterInfluencers]));
+    //     setInfluencers(updateList);
+    //     setIsSelectAll(!isSelectAll)
+    // };
 
     const applyFiltersAndSort = () => {
         let filtered = [...influencers];
@@ -701,10 +715,10 @@ const AccountClientOffers = () => {
             //         }
             //     }
             // }
-            
-            
+
+
             // const influencersFilteredByBudget = [];
-            
+
             const influencersFilteredByBudget = [];
             const sortedInfluencers = filtered.sort((a, b) => {
                 const pricePerFollowerA = calculatePricePerFollower(a, currentCurrency);
@@ -719,9 +733,9 @@ const AccountClientOffers = () => {
                 if (totalPrice + influencerPrice <= budget) {
                     influencersFilteredByBudget.push(influencer);
                     totalPrice += influencerPrice;
-                } 
+                }
             }
-            
+
             filtered = influencersFilteredByBudget;
             setFilteredInfluencersByBudget(filtered);
         }
@@ -895,12 +909,12 @@ const AccountClientOffers = () => {
                                                  setActiveIndices={setActiveIndices}
                                                  selectInfluencer={selectInfluencer}
                                                  isSearch={true}/>
-                                ) : filteredInfluencersByBudget.length > 0 ? (
-                                    <InfluencersList influencers={filteredInfluencersByBudget}
-                                                     activeIndices={activeIndices}
-                                                     setActiveIndices={setActiveIndices}
-                                                     selectInfluencer={selectInfluencer}
-                                                     isSearch={false}/>
+                            ) : filteredInfluencersByBudget.length > 0 ? (
+                                <InfluencersList influencers={filteredInfluencersByBudget}
+                                                 activeIndices={activeIndices}
+                                                 setActiveIndices={setActiveIndices}
+                                                 selectInfluencer={selectInfluencer}
+                                                 isSearch={false}/>
                             ) : (
                                 <InfluencersList influencers={filteredInfluencers}
                                                  activeIndices={activeIndices}

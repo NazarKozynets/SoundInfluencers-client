@@ -20,18 +20,18 @@ const OffersList = ({
     const currentCurrency = useSelector((state) => state.createPromo.data.currency);
 
     useEffect(() => {
-        if (selectedOffersGenres.length > 0 && selectedOffersGenres) {
-            setFilteredOffersByGenres(filteredOffersByGenres.filter((offer) => {
-                return offer.musicStyles.some((style) => {
-                    const styleGenres = style.genres;
-                    return styleGenres.includes(selectedOffersGenres[0]);
-                });
-            }));
-        } else {
-            setFilteredOffersByGenres(prices);
+        setFilteredOffersByGenres(selectedOffersGenres.length > 0 ? prices.filter(price => {
+            const matchingStyle = price.musicStyles?.find(style => {
+                const styleGenres = style.genres;
+                return selectedOffersGenres.every(genre => styleGenres.includes(genre)) &&
+                    styleGenres.length === selectedOffersGenres.length;
+            });
+            return matchingStyle;
         }
+        ) : prices);
+        
     }, [selectedOffersGenres]);
-    
+
     const getInfluencerAvatar = (influencers, username) => {
         const insta = influencers.find(insta => insta.instagramUsername === username);
         return insta ? insta.logo : null;

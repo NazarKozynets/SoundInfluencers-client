@@ -9,6 +9,7 @@ const initialState = {
             variant: 0,
             price: 0,
         },
+        
         selectInfluencers: [],
         campaignName: "",
         paymentType: "",
