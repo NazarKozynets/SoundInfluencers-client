@@ -1298,6 +1298,7 @@ body {
 }
 
 .account-client-campaign-strategy {
+
   &-title {
     p {
       font-family: Geometria;
@@ -1305,6 +1306,21 @@ body {
       font-weight: 700;
       text-align: center;
       margin-top: 35px;
+    }
+
+    @media screen and (max-width: 768px) {
+      margin-top: 25px;
+
+      p {
+        margin-top: 10px;
+        font-size: 20px;
+      }
+
+      &-section {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
     }
   }
 
@@ -1352,6 +1368,39 @@ body {
 
     &-third {
       border-radius: 0 40px 40px 0;
+    }
+
+    @media screen and (max-width: 768px) {
+      padding: 0 20px;
+      flex-direction: column;
+      margin: 35px 0 0 0;
+
+      p {
+        font-size: 20px;
+      }
+
+      span {
+        font-size: 20px;
+      }
+
+      &-first, &-second, &-third {
+        padding: 20px 0 20px 20px;
+      }
+
+      &-first {
+        border-radius: 40px 40px 0 0;
+      }
+
+      &-second {
+        border-top: none;
+        border-bottom: none;
+        border-left: 2px solid #3330E4;
+        border-right: 2px solid #3330E4;
+      }
+
+      &-third {
+        border-radius: 0 0 40px 40px;
+      }
     }
   }
 
@@ -1452,6 +1501,13 @@ body {
       background: #ebad82;
       width: 200px;
     }
+
+    @media screen and (max-width: 768px) {
+      .account-client-campaign-strategy-influencers-table-container {
+        display: none;
+      }
+      margin-top: 40px;
+    }
   }
 
   &-buttons {
@@ -1461,6 +1517,111 @@ body {
 
     button {
       width: 294px;
+    }
+  }
+
+  &-mobile-table {
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    margin: 10px auto;
+
+    &-row {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 2px solid #4f91ed;
+      border-left: 2px solid #4f91ed;
+      border-right: 2px solid #4f91ed;
+
+      &:first-child {
+        border-top: 2px solid #4f91ed;
+        border-left: 2px solid #4f91ed;
+        border-right: 2px solid #4f91ed;
+        border-radius: 40px 40px 0 0;
+        overflow: hidden;
+      }
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      &-instagram {
+        font-family: Geometria, sans-serif;
+        font-size: 16px;
+        font-weight: 700;
+        text-align: left;
+        background: #c2c1f7;
+        padding: 20px;
+        flex: 1;
+        display: flex;
+        align-items: center;
+      }
+
+      &-content {
+        padding: 10px;
+        background: #fff;
+        flex: 2;
+        display: flex;
+        flex-direction: column;
+
+        &-followers {
+          display: flex;
+          p {
+            font-family: Geometria;
+            font-size: 14px;
+            font-weight: 400;
+          }
+          span {
+            font-family: Geometria;
+            font-size: 10px;
+            font-weight: 400;
+          }
+        }
+      }
+
+      //.date-request, .video-options {
+      //  margin-bottom: 10px;
+      //}
+      //
+      //.date-request p, .video-options p {
+      //  margin: 0;
+      //  font-weight: 600;
+      //  font-size: 12px;
+      //}
+      //
+      //select {
+      //  font-size: 14px;
+      //  padding: 5px;
+      //  border: 1px solid #3330E4;
+      //  border-radius: 5px;
+      //}
+      //
+      //.icons {
+      //  display: flex;
+      //  gap: 10px;
+      //}
+      //
+      //.icon {
+      //  width: 24px;
+      //  height: 24px;
+      //  background-color: #e6e6ff;
+      //  border-radius: 5px;
+      //  display: flex;
+      //  justify-content: center;
+      //  align-items: center;
+      //  border: 1px solid #3330E4;
+      //}
+    }
+
+    @media screen and (min-width: 769px) {
+      display: none;
+    }
+  }
+
+
+  @media screen and (max-width: 768px) {
+    .account-client-back-button {
+      display: none;
     }
   }
 }

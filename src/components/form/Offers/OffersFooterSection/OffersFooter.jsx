@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import StandardButton from "../../StandardButton";
 import {setCurrentWindow} from "../../../../redux/slice/create-promo";
@@ -23,7 +23,7 @@ const OffersFooter = () => {
             </div>
             <div className="right-side">
                 <p>TOTAL: {
-                    <span>{data.amount}{data.currency}</span>
+                    <span>{data.selectPrice.price}{data.currency}</span>
                 }</p>
                 <div className="right-side-button">
                     <StandardButton text="Continue" onClick={nextForm} style={{height: 40}}/>

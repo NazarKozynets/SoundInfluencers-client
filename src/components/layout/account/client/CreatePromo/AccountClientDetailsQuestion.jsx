@@ -1,14 +1,20 @@
-import React from "react";
+import React, {useEffect} from "react";
 import arrow from "../../../../../images/icons/arrow.svg";
 import TitleSection from "../../../../TitleSection";
 import FormContainer from "../../../../form/FormContainer";
-import {setClearCampaignDetails, setCurrentWindow} from "../../../../../redux/slice/create-promo";
+import {setClearCampaignDetails, setCurrentWindow, setSelectAmount} from "../../../../../redux/slice/create-promo";
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 
 const AccountClientDetailsQuestion = () => {
     const dispatch = useDispatch();
     const navigation = useNavigate();
+
+    const selectPrice = useSelector((state) => state.createPromo.data.selectPrice);
+    
+    useEffect(() => {
+        dispatch(setSelectAmount(selectPrice.price));
+    }, []);
 
     const nextFormForNoButton = () => {
         dispatch(setCurrentWindow(2));

@@ -4,7 +4,7 @@ import './genreButtonList.css';
 
 const genres = [
     { genre: 'Techno', subText: 'Melodic' },
-    { genre: 'Techno', subText: 'Hard' },
+    { genre: 'Techno', subText: 'Hard, Peak' },
     { genre: 'House', subText: 'Tech House' },
     { genre: 'House', subText: 'Melodic, Afro' },
     { genre: 'EDM' },

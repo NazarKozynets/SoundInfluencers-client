@@ -59,10 +59,6 @@ const InfluencersList = ({influencers, activeIndices, setActiveIndices, selectIn
     const handleSeeMoreClick = (index) => {
         setFlippedAccountIndex(index === flippedAccountIndex ? null : index);
     };
-
-    useEffect(() => {
-        console.log(selectInfluencers, "selectInfluencers")
-    }, [selectInfluencers]);
     
     return (
         <div>

@@ -95,10 +95,6 @@ const AccountClientOffers = () => {
         setFilteredOffersByGenres(prices);
     }, [prices]);
 
-    // useEffect(() => {
-    //     console.log("customePrice", customePrice);
-    // }, [customePrice]);
-    
     const selectPrice = (id) => {
         let balance = window.sessionStorage.getItem("balance");
 
@@ -117,7 +113,7 @@ const AccountClientOffers = () => {
             const updateList = influencers.map((item) => {
                 if (matchingStyle.connectInfluencer.find((fin) => fin.influencerId === item._id && fin.instagramUsername === item.instagramUsername)) {
                     return {
-                        ...item, active: true, connect: true, connect_text: `Offer ${searchPrice.id}`,
+                        ...item, active: false, connect: true, connect_text: `Offer ${searchPrice.id}`,
                     };
                 } else {
                     if (item.active && item.connect) {
@@ -132,12 +128,20 @@ const AccountClientOffers = () => {
             });
 
             const filterInfluencers = matchingStyle.connectInfluencer.map((item) => ({
-                influencerId: item.influencerId, confirmation: "wait", instagramUsername: item.instagramUsername, connect: item.connect, active: item.active
+                influencerId: item.influencerId,
+                confirmation: "wait",
+                instagramUsername: item.instagramUsername,
+                connect: true,
+                active: false
             }));
 
             if (selectInfluencers.length !== 0) {
                 const currentSelectInfluencers = selectInfluencers.map((item) => ({
-                    influencerId: item.influencerId, confirmation: "wait", instagramUsername: item.instagramUsername, connect: item.connect, active: item.active
+                    influencerId: item.influencerId,
+                    confirmation: "wait",
+                    instagramUsername: item.instagramUsername,
+                    connect: item.connect,
+                    active: item.active
                 }));
                 const filterCurrentSelectInfluencer = [];
                 [...filterInfluencers].forEach((item) => {
@@ -170,7 +174,11 @@ const AccountClientOffers = () => {
                 const currentSelectInfluencers = influencers.filter((item) => !item.connect && item.active);
 
                 const totalSelectInfluencers = currentSelectInfluencers.map((item) => ({
-                    influencerId: item._id, confirmation: "wait", instagramUsername: item.instagramUsername, connect: item.connect, active: item.active
+                    influencerId: item._id,
+                    confirmation: "wait",
+                    instagramUsername: item.instagramUsername,
+                    connect: item.connect,
+                    active: item.active
                 }));
                 dispatch(setSelectInfluencer(totalSelectInfluencers));
 
@@ -269,37 +277,56 @@ const AccountClientOffers = () => {
             const searchPrice = prices.find((item) => item.id === id);
 
             const updateList = influencers.map((item) => {
-                if (searchPrice.connectInfluencer.find((fin) => fin.influencerId === item._id && fin.instagramUsername === item.instagramUsername)) {
-                    return {
-                        ...item, active: true, connect: true, connect_text: `Offer ${searchPrice.id}`,
-                    };
-                } else {
-                    if (item.active && item.connect) {
-                        return {
-                            ...item, active: false, connect: false,
-                        };
-                    }
+                const isInfluencerConnected = searchPrice.connectInfluencer.find(
+                    (fin) => fin.influencerId === item._id && fin.instagramUsername === item.instagramUsername
+                );
+
+                if (isInfluencerConnected) {
                     return {
                         ...item,
+                        active: false,
+                        connect: true,
+                        connect_text: `Offer ${searchPrice.id}`,
+                    };
+                } else {
+                    return {
+                        ...item,
+                        // Если инфлюенсер не был подключен к офферу, сохраняем предыдущие значения
+                        active: item.active ?? false, // Оставляем значение, если оно уже было
+                        connect: item.connect ?? false, // Оставляем значение, если оно уже было
                     };
                 }
             });
 
             const filterInfluencers = searchPrice.connectInfluencer.map((item) => ({
-                influencerId: item.influencerId, confirmation: "wait", instagramUsername: item.instagramUsername, 
+                influencerId: item.influencerId,
+                confirmation: "wait",
+                instagramUsername: item.instagramUsername,
+                connect: true,  // Устанавливаем connect в true для связанных инфлюенсеров
+                active: false,  // Устанавливаем active в false для связанных инфлюенсеров
             }));
 
             if (selectInfluencers.length !== 0) {
                 const currentSelectInfluencers = selectInfluencers.map((item) => ({
-                    influencerId: item.influencerId, confirmation: "wait", instagramUsername: item.instagramUsername, connect: item.connect, active: item.active
+                    influencerId: item.influencerId,
+                    confirmation: "wait",
+                    instagramUsername: item.instagramUsername,
+                    connect: item.connect ?? false,  // Проверяем на наличие значения
+                    active: item.active ?? false,    // Проверяем на наличие значения
                 }));
+
                 const filterCurrentSelectInfluencer = [];
+
+                // Объединение старых и новых инфлюенсеров
                 [...filterInfluencers].forEach((item) => {
-                    const checkUnion = filterCurrentSelectInfluencer.find((fin) => fin.instagramUsername === item.instagramUsername);
+                    const checkUnion = filterCurrentSelectInfluencer.find(
+                        (fin) => fin.instagramUsername === item.instagramUsername
+                    );
                     if (!checkUnion) {
                         filterCurrentSelectInfluencer.push(item);
                     }
                 });
+
                 dispatch(setSelectInfluencer(filterCurrentSelectInfluencer));
             } else {
                 dispatch(setSelectInfluencer(filterInfluencers));
@@ -310,7 +337,9 @@ const AccountClientOffers = () => {
                 const checkInfluencers = influencers.map((item) => {
                     if (item.connect) {
                         return {
-                            ...item, connect: false, active: false,
+                            ...item,
+                            connect: false,  // Если инфлюенсер был связан, отключаем его
+                            active: false,
                         };
                     } else {
                         return {
@@ -321,10 +350,16 @@ const AccountClientOffers = () => {
 
                 setInfluencers(checkInfluencers);
 
-                const currentSelectInfluencers = influencers.filter((item) => !item.connect && item.active);
+                const currentSelectInfluencers = influencers.filter(
+                    (item) => !item.connect && item.active
+                );
+
                 const totalSelectInfluencers = currentSelectInfluencers.map((item) => ({
-                    influencerId: item._id, confirmation: "wait", instagramUsername: item.instagramUsername, 
+                    influencerId: item._id,
+                    confirmation: "wait",
+                    instagramUsername: item.instagramUsername,
                 }));
+
                 dispatch(setSelectInfluencer(totalSelectInfluencers));
 
                 let newPrice = influencers.reduce((acc, current) => {
@@ -335,19 +370,16 @@ const AccountClientOffers = () => {
                         price = current.customPrice;
                     }
 
-                    if (current.active) {
-                        if (!current.connect) {
-                            return acc + calculatePrice(price) * 2;
-                        } else {
-                            return acc;
-                        }
+                    if (current.active && !current.connect) {
+                        return acc + calculatePrice(price) * 2;
                     } else {
                         return acc;
                     }
                 }, 0);
 
                 dispatch(setSelectPrice({
-                    variant: 0, price: newPrice
+                    variant: 0,
+                    price: newPrice,
                 }));
                 return;
             }
@@ -417,7 +449,7 @@ const AccountClientOffers = () => {
 
             dispatch(setSelectAmount(priceOffer ? calculatePrice(totalCustomOffer) : newPrice));
 
-            dispatch(setSelectAmount(totalOffer));
+            dispatch(setSelectAmount(calculatePrice(totalOffer)));
 
             if (totalCustomOffer > balance) totalCustomOffer = totalCustomOffer - balance;
             if (newPrice > balance) newPrice = newPrice - balance;
@@ -472,7 +504,6 @@ const AccountClientOffers = () => {
         let newPrice = updateList.reduce((acc, current) => {
             if (!current.price) return acc;
             let price = current.price.replace(/\D/g, "");
-
             if (current.customPrice) {
                 price = current.customPrice;
             }
@@ -509,7 +540,7 @@ const AccountClientOffers = () => {
                     styleGenres.length === selectedOffersGenres.length;
             });
             const matchingStylePrice = matchingStyle ? matchingStyle.price : 0;
-            totalCustomOffer = matchingStylePrice + newPrice;
+            totalCustomOffer = calculatePriceForOffersAndInfluencers(matchingStylePrice, currentCurrency) + newPrice;
         } else {
             totalCustomOffer = priceOffer ? calculatePriceForOffersAndInfluencers(priceOffer.price, currentCurrency) + newPrice : newPrice;
         }
@@ -524,7 +555,7 @@ const AccountClientOffers = () => {
             price: totalCustomOffer,
         }));
 
-        dispatch(setSelectInfluencer([...filterInfluencers]));
+        dispatch(setSelectInfluencer([...selectInfluencers, ...filterInfluencers]));
 
         if (filteredInfluencersByBudget.length > 0) {
             setFilteredInfluencersByBudget(updateList);
@@ -565,7 +596,7 @@ const AccountClientOffers = () => {
                             connect: true,
                         };
                     }
-                    
+
 
                     return {
                         ...item,
