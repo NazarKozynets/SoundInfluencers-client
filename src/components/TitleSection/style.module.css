@@ -27,6 +27,10 @@
 }
 
 @media screen and (max-width: 768px) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
   .title {
     font-size: 28px;
     display: inline;

@@ -29,7 +29,9 @@ const ForgotPasswordEmail = () => {
     <section className="forgot-password">
       <div className="container-form">
         <div className="forgot-password-block">
-          <TitleSection title="Log in to" span="SoundInfluencers" />
+          <div style={{marginTop: window.innerWidth < 768 ? 50 : 0}}>
+            <TitleSection title="Log in to" span="SoundInfluencers" />
+          </div>
 
           <p className="login-client-second">Embrace Your Influence</p>
 

@@ -45,7 +45,7 @@ const ReportCampaigns = () => {
     const [valueForPONumber, setValueForPONumber] = useState("");
     const [poNumber, setPoNumber] = useState("");
     const [isPopup, setIsPopup] = useState(false);
-    
+
     const navigation = useNavigate();
 
     const [headers] = useState([{
@@ -68,7 +68,7 @@ const ReportCampaigns = () => {
         Header: "Likes", accessor: "Likes",
     }
     ]);
-    
+
     const getData = async () => {
         try {
             const {dataFetch} = await UseVerify();
@@ -204,7 +204,13 @@ const ReportCampaigns = () => {
                 <div className='report-po-form'>
                     <button
                         style={{
-                            position: "absolute", top: '22%', left: '18%', width: 50, height: 50, cursor: "pointer",
+                            position: "absolute",
+                            top: '22%',
+                            left: '18%',
+                            display: window.innerWidth > 768 ? '' : "none",
+                            width: 50,
+                            height: 50,
+                            cursor: "pointer",
                         }}
                         onClick={() => {
                             navigator("/account/client/ongoing-promos");
@@ -212,8 +218,8 @@ const ReportCampaigns = () => {
                     >
                         <img src={arrow} style={{transform: "rotate(180deg)"}}/>
                     </button>
-                    <FormContainer style={{padding: '30px 0 20px 0'}}>
-                        <div>
+                    <FormContainer style={{padding: '30px 0 20px 0', marginTop: window.innerWidth > 768 ? '' : '40px'}}>
+                        <div className="report-po-form-title">
                             <TitleSection title='PO' span='request'/>
                         </div>
                         <div className="account-client-payment-po">
@@ -250,7 +256,7 @@ const ReportCampaigns = () => {
                                     <p>ADD PO NUMBER HERE: </p>
                                     <TextInput
                                         placeholder="Enter PO Number"
-                                        style={{marginTop: 10, marginLeft: 16}}
+                                        style={{marginTop: 10}}
                                         value={valueForPONumber}
                                         formError={false}
                                         setValue={setValueForPONumber}
@@ -313,8 +319,8 @@ const ReportCampaigns = () => {
                                 }}
                                 text="Confirm Process Completed"
                                 style={{
-                                    width: 400,
-                                    height: 40,
+                                    width: 300,
+                                    height: 60,
                                     fontFamily: "Geometria",
                                     fontSize: "22px",
                                     fontWeight: "700",
@@ -328,16 +334,18 @@ const ReportCampaigns = () => {
 
             <div style={{position: "relative"}}>
                 <div className="report-campaign-strategy-title">
-                    <button
-                        style={{
-                            position: "absolute", top: '0%', left: '15%', width: 50, height: 50, cursor: "pointer",
-                        }}
-                        onClick={() => {
-                            navigator("/account/client/ongoing-promos");
-                        }}
-                    >
-                        <img src={arrow} style={{transform: "rotate(180deg)"}}/>
-                    </button>
+                    {(dataPromo?.statusPromo !== 'po waiting' && dataPromo?.statusPromo !== 'estimate') && window.innerWidth > 768 && (
+                        <button
+                            style={{
+                                position: "absolute", top: '0%', left: '15%', width: 50, height: 50, cursor: "pointer",
+                            }}
+                            onClick={() => {
+                                navigator("/account/client/ongoing-promos");
+                            }}
+                        >
+                            <img src={arrow} style={{transform: "rotate(180deg)"}}/>
+                        </button>
+                    )}
                     <TitleSection title="Report" span="of the campaign"/>
                     <p>{dataPromo?.campaignName}</p>
                 </div>

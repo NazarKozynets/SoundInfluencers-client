@@ -215,9 +215,11 @@ const AccountClientCampaignStrategy = () => {
 
     const formatCountries = (countries) => {
         if (countries && Array.isArray(countries) && countries.length > 0) {
+            const isMobile = window.innerWidth <= 768; // проверяем ширину экрана
+            const separator = isMobile ? '<br/>' : ' - '; // используем перенос строки для мобильных
             return countries.map(country =>
                 `${country.country} <span style="font-size: 9px;">${country.percentage}%</span>`
-            ).join(' - ');
+            ).join(separator);
         } else {
             return 'No countries available';
         }
@@ -486,77 +488,95 @@ const AccountClientCampaignStrategy = () => {
                                     <p>{influencer.instagramUsername}</p>
                                 </td>
                                 <td className="account-client-campaign-strategy-mobile-table-row-content">
-                                    <div className="account-client-campaign-strategy-mobile-table-row-content-followers">
-                                        <p>{findInsta(influencer)?.followersNumber ?? 0}</p>                                        
+                                    <div
+                                        className="account-client-campaign-strategy-mobile-table-row-content-followers">
+                                        <p>{findInsta(influencer)?.followersNumber ?? 0}</p>
                                         <span>Total Followers</span>
                                     </div>
                                     {showMore && (
-                                        <div>
+                                        <div
+                                            className="account-client-campaign-strategy-mobile-table-row-content-genres">
                                             <p>{getDisplayGenre(findInsta(influencer)?.musicSubStyles, findInsta(influencer)?.musicStyle, findInsta(influencer)?.musicStyleOther)}</p>
                                             <span>Genres</span>
                                         </div>
                                     )}
                                     {showMore && (
-                                        <div>
+                                        <div
+                                            className="account-client-campaign-strategy-mobile-table-row-content-countries mobile-country-list">
                                             <p dangerouslySetInnerHTML={{__html: formatCountries(findInsta(influencer)?.countries)}}/>
                                             <span>Top 5 Countries</span>
                                         </div>
                                     )}
                                     <div className="account-client-campaign-strategy-mobile-table-row-content-date">
-                                        <CustomSelect
-                                            selectedOption={selectedOptionDateRequest[influencer.instagramUsername]}
-                                            setSelectedOption={(selectedOption) => {
-                                                handleDateChange(influencer.instagramUsername, selectedOption);
-                                            }}
-                                            options={optionsForDateRequestColumn}
-                                        />
-                                        {(selectedOptionDateRequest[influencer.instagramUsername]?.value === 'Before' ||
-                                            selectedOptionDateRequest[influencer.instagramUsername]?.value === 'After') && (
-                                            <input
-                                                type="text"
-                                                value={selectedDates[influencer.instagramUsername] || ''}
-                                                onChange={(e) => handleDateInputChange(influencer.instagramUsername, e)}
-                                                placeholder="xx/xx/xx"
-                                                style={{marginLeft: 10, width: 80, textAlign: 'center'}}
+                                        <div
+                                            className="account-client-campaign-strategy-mobile-table-row-content-date-container">
+                                            <CustomSelect
+                                                selectedOption={selectedOptionDateRequest[influencer.instagramUsername]}
+                                                setSelectedOption={(selectedOption) => {
+                                                    handleDateChange(influencer.instagramUsername, selectedOption);
+                                                }}
+                                                options={optionsForDateRequestColumn}
                                             />
-                                        )}
+                                            {(selectedOptionDateRequest[influencer.instagramUsername]?.value === 'Before' ||
+                                                selectedOptionDateRequest[influencer.instagramUsername]?.value === 'After') && (
+                                                <input
+                                                    type="text"
+                                                    value={selectedDates[influencer.instagramUsername] || ''}
+                                                    onChange={(e) => handleDateInputChange(influencer.instagramUsername, e)}
+                                                    placeholder="xx/xx/xx"
+                                                    style={{width: 80, textAlign: 'center'}}
+                                                />
+                                            )}
+                                        </div>
                                         <p>Date Request</p>
                                     </div>
-                                    <div>
-                                        <CustomSelect
-                                            selectedOption={selectedVideos[influencer.instagramUsername]}
-                                            setSelectedOption={(selectedOption) => handleVideoChange(influencer.instagramUsername, selectedOption)}
-                                            options={optionsForVideoColumn}
-                                        />
-                                        {selectedVideos[influencer.instagramUsername] && selectedVideos[influencer.instagramUsername].value && selectedVideos[influencer.instagramUsername].value !== 'Video 1' && (
-                                            <button
-                                                onClick={() => {
-                                                    const video = dataPromo.videos.find(video => video.videoLink === selectedVideos[influencer.instagramUsername].value);
-                                                    setSelectedVideoToEdit(video);
-                                                    setEditCampaign(true);
-                                                }}
-                                                style={{
-                                                    display: 'flex',
-                                                    alignItems: 'center',
-                                                    justifyContent: 'space-between',
-                                                    width: 52,
-                                                    height: 28,
-                                                    borderRadius: "10px",
-                                                    paddingLeft: 3,
-                                                    paddingRight: 3,
-                                                    marginLeft: 8,
-                                                    border: "1.5px solid #3330E4",
-                                                    boxSizing: 'border-box'
-                                                }}>
-                                                <img src={watch} alt="watch"/>
-                                                <img src={edit} alt="edit"/>
-                                            </button>
-                                        )}
+                                    <div className="account-client-campaign-strategy-mobile-table-row-content-video">
+                                        <div
+                                            className="account-client-campaign-strategy-mobile-table-row-content-video-edit">
+                                            <CustomSelect
+                                                selectedOption={selectedVideos[influencer.instagramUsername]}
+                                                setSelectedOption={(selectedOption) => handleVideoChange(influencer.instagramUsername, selectedOption)}
+                                                options={optionsForVideoColumn}
+                                            />
+                                            {selectedVideos[influencer.instagramUsername] && selectedVideos[influencer.instagramUsername].value && selectedVideos[influencer.instagramUsername].value !== 'Video 1' && (
+                                                <button
+                                                    className="account-client-campaign-strategy-mobile-table-row-content-video-edit-button"
+                                                    onClick={() => {
+                                                        const video = dataPromo.videos.find(video => video.videoLink === selectedVideos[influencer.instagramUsername].value);
+                                                        setSelectedVideoToEdit(video);
+                                                        setEditCampaign(true);
+                                                    }}
+                                                    style={{
+                                                        display: 'flex',
+                                                        alignItems: 'center',
+                                                        justifyContent: 'space-between',
+                                                        width: 52,
+                                                        height: 28,
+                                                        borderRadius: "10px",
+                                                        paddingLeft: 3,
+                                                        paddingRight: 3,
+                                                        border: "1.5px solid #3330E4",
+                                                        boxSizing: 'border-box'
+                                                    }}>
+                                                    <img src={watch} alt="watch"/>
+                                                    <img src={edit} alt="edit"/>
+                                                </button>
+                                            )}
+                                        </div>
                                         <p>Video</p>
                                     </div>
                                 </td>
                             </tr>
                         ))}
+                        <tr className="account-client-campaign-strategy-mobile-table-footer">
+                            <td className="account-client-campaign-strategy-mobile-table-footer-price">
+                                <p>Price: {dataPromo.amount}{dataPromo.currency}</p>
+                            </td>
+                            <td className="account-client-campaign-strategy-mobile-table-footer-followers">
+                                <p>{getTotalFollowers()}</p>
+                                <span>Total Followers</span>
+                            </td>
+                        </tr>
                         </tbody>
                     </table>
 
@@ -567,19 +587,22 @@ const AccountClientCampaignStrategy = () => {
                 </div>
             </div>
 
-            {selectedVideoToEdit && (
-                <ModalWindow
-                    header="Edit Campaign"
-                    isOpen={editCampaign}
-                    setClose={() => {
-                        setEditCampaign(false);
-                    }}
-                >
-                    <EditCampaignForm/>
-                </ModalWindow>
-            )}
+            {
+                selectedVideoToEdit && (
+                    <ModalWindow
+                        header="Edit Campaign"
+                        isOpen={editCampaign}
+                        setClose={() => {
+                            setEditCampaign(false);
+                        }}
+                    >
+                        <EditCampaignForm/>
+                    </ModalWindow>
+                )
+            }
         </section>
-    );
+    )
+        ;
 }
 
 export default AccountClientCampaignStrategy;

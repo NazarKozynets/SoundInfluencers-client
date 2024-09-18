@@ -74,23 +74,25 @@ const AccountClientInvoiceDetails = () => {
       <section className="account-influencer-details">
         <div className="container-form">
           <div className="account-influencer-details-block" style={{position: 'relative'}}>
-            <TitleSection title="MY" span="account" />
-
-          <button
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              width: 50,
-              height: 50,
-              cursor: "pointer",
-            }}
-            onClick={() => {
-              navigation("/account/client")
-            }}
-          >
-            <img src={arrow} style={{ transform: "rotate(180deg)" }} />
-          </button>
+            <button
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  width: 50,
+                  height: 50,
+                  cursor: "pointer",
+                }}
+                onClick={() => {
+                  navigation("/account/client")
+                }}
+            >
+              <img src={arrow} style={{transform: "rotate(180deg)"}}/>
+            </button>
+            
+            <div style={{marginTop: window.innerWidth < 768 ? 50 : 0}}>
+              <TitleSection title="MY" span="account"/>
+            </div>
 
             <p className="account-influencer-details-second">
               My Invoice Details
@@ -104,12 +106,12 @@ const AccountClientInvoiceDetails = () => {
                   </p>
 
                   <button
-                    className="account-influencer-details-wrapper-header-edit"
-                    onClick={() => setIsOpenPersonal(true)}
+                      className="account-influencer-details-wrapper-header-edit"
+                      onClick={() => setIsOpenPersonal(true)}
                   >
                     <img
-                      className="account-influencer-details-wrapper-header-edit-icon"
-                      src={edit}
+                        className="account-influencer-details-wrapper-header-edit-icon"
+                        src={edit}
                     />
                   </button>
                 </div>
@@ -172,17 +174,17 @@ const AccountClientInvoiceDetails = () => {
       </section>
 
       <ModalWindow
-        header="Personal Details"
-        isOpen={isOpenPersonal}
-        setClose={setIsOpenPersonal}
+          header="Personal Details"
+          isOpen={isOpenPersonal}
+          setClose={setIsOpenPersonal}
       >
         <div className="account-influencer-details-form">
           <TextInput
-            title="First name"
-            placeholder="John"
-            style={{ marginTop: "80px" }}
-            value={dataInvoice.firstName}
-            setValue={(value) =>
+              title="First name"
+              placeholder="John"
+              style={{marginTop: "80px"}}
+              value={dataInvoice.firstName}
+              setValue={(value) =>
               setDataInvoice({ ...dataInvoice, firstName: value })
             }
           />

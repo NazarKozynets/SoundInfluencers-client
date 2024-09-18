@@ -24,6 +24,7 @@ import {useNavigate} from "react-router-dom";
 import arrow from "../../../../../images/icons/arrow.svg";
 import TextInput from "../../../../form/TextInput";
 import acceptIcon from "../../../../../images/icons/accept.svg";
+import paypalLogo from "../../../../../images/icons/company/paypal-seeklogo.com 1.svg"
 
 const AccountClientPayment = () => {
     const [data, setData] = useState(null);
@@ -39,7 +40,7 @@ const AccountClientPayment = () => {
     const [poNumber, setPoNumber] = useState("");
     const [promoId, setPromoId] = useState(null);
     const [isPopup, setIsPopup] = useState(false);
-    
+
     const navigation = useNavigate();
 
     const dispatch = useDispatch();
@@ -359,7 +360,7 @@ const AccountClientPayment = () => {
             return "Bank card";
         }
     };
-    
+
     const getData = async () => {
         try {
             const {dataFetch} = await UseVerify();
@@ -376,15 +377,33 @@ const AccountClientPayment = () => {
     return (
         <>
             <section className="account-client">
-                <div className="account-client-back-button">
-                    <button style={{
-                        position: "absolute", top: "195px", left: 50, width: 48, height: 48, cursor: "pointer",
-                    }} onClick={() => {
-                        backForm();
-                    }}>
-                        <img src={arrow} style={{transform: "rotate(180deg)"}}/>
-                    </button>
-                </div>
+                {window.innerWidth > 768 ? (
+                    <div className="account-client-back-button">
+                        <button style={{
+                            position: "absolute", top: "195px", left: 50, width: 48, height: 48, cursor: "pointer",
+                        }} onClick={() => {
+                            backForm();
+                        }}>
+                            <img src={arrow} style={{transform: "rotate(180deg)"}}/>
+                        </button>
+                    </div>
+                ) : (
+                    <div>
+                        <button style={{
+                            position: "relative",
+                            width: 35,
+                            height: 35,
+                            cursor: "pointer",
+                            left: "50%",
+                            marginTop: 30,
+                            transform: "translate(-50%)"
+                        }} onClick={() => {
+                            backForm();
+                        }}>
+                            <img src={arrow} style={{transform: "rotate(180deg)"}}/>
+                        </button>
+                    </div>
+                )}
 
                 <div className="container-form" style={{position: "relative"}}>
                     <div className="account-client-block">
@@ -420,7 +439,7 @@ const AccountClientPayment = () => {
                                             onClick={() => setIsOpenTranferPaypal(true)}
                                             className="account-client-payment-content-methods-button"
                                         >
-                                            PayPal
+                                            <img src={paypalLogo} alt={'s'}/>
                                         </button>
                                     </li>
                                     <li className="account-client-payment-content-methods-item">
@@ -590,7 +609,8 @@ const AccountClientPayment = () => {
                                                                     fontSize: "18px",
                                                                     marginTop: '13px',
                                                                     fontWeight: "700",
-                                                                }} text="SEND"/>
+                                                                }} 
+                                                                text="SEND"/>
                                                         </div>
                                                         <div className="account-client-payment-po-container-first">
                                                             <span>#2</span>
@@ -662,7 +682,7 @@ const AccountClientPayment = () => {
                                                         text="Confirm Process Completed"
                                                         style={{
                                                             width: 400,
-                                                            height: 40,
+                                                            height: 60,
                                                             fontFamily: "Geometria",
                                                             fontSize: "22px",
                                                             fontWeight: "700",
@@ -905,7 +925,7 @@ const AccountClientPayment = () => {
 
             <ModalWindow isOpen={isPopup} setClose={setIsPopup}>
                 <div className="signup-client-modal">
-                    <img className="signup-client-modal-icon" src={acceptIcon} />
+                    <img className="signup-client-modal-icon" src={acceptIcon}/>
 
                     <h2 className="signup-client-modal-title">Congratulations!</h2>
 

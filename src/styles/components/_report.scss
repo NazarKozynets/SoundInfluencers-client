@@ -2,6 +2,15 @@
   &-po-form {
     width: 50%;
     margin: 0 auto;
+    
+    @media screen and (max-width: 768px) {
+      width: 85%;
+      
+      &-title {
+        display: flex;
+        justify-content: center;
+      }
+    }
   }
   
   &-campaign-strategy-title {
@@ -11,6 +20,12 @@
       font-family: Geometria;
       font-size: 24px;
       font-weight: 700;
+    }
+    
+    @media screen and (max-width: 768px) {
+      margin-top: 50px;
+      display: flex;
+      flex-direction: column;
     }
   }
   
@@ -56,39 +71,72 @@
     &-third {
       border-radius: 0 40px 40px 0;
     }
-  }
-  
-  &-campaign-strategy-details {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 35px;
-    
+
     @media screen and (max-width: 768px) {
+      padding: 0 20px;
       flex-direction: column;
-    }
-    
-    &-item {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-    
-    &-text {
-      color: var(--text);
-      font-family: Geometria;
-      font-size: 24px;
-      font-style: normal;
-      font-weight: 400;
-      line-height: normal;
-      &-span {
-        font-weight: 700;
-      }
-      
-      @media screen and (max-width: 600px) {
+      margin: 35px 0 0 0;
+
+      p {
         font-size: 20px;
       }
+
+      span {
+        font-size: 20px;
+      }
+
+      &-first, &-second, &-third {
+        padding: 20px 0 20px 20px;
+      }
+
+      &-first {
+        border-radius: 40px 40px 0 0;
+      }
+
+      &-second {
+        border-top: none;
+        border-bottom: none;
+        border-left: 2px solid #3330E4;
+        border-right: 2px solid #3330E4;
+      }
+
+      &-third {
+        border-radius: 0 0 40px 40px;
+      }
     }
   }
+  
+  //&-campaign-strategy-details {
+  //  display: flex;
+  //  justify-content: space-between;
+  //  margin-top: 35px;
+  //
+  //  @media screen and (max-width: 768px) {
+  //    flex-direction: column;
+  //  }
+  //
+  //  &-item {
+  //    display: flex;
+  //    flex-direction: column;
+  //    gap: 16px;
+  //  }
+  //
+  //  &-text {
+  //    color: var(--text);
+  //    font-family: Geometria;
+  //    font-size: 24px;
+  //    font-style: normal;
+  //    font-weight: 400;
+  //    line-height: normal;
+  //    &-span {
+  //      font-weight: 700;
+  //    }
+  //
+  //    @media screen and (max-width: 600px) {
+  //      font-size: 20px;
+  //    }
+  //  }
+  //}
 }
 
 

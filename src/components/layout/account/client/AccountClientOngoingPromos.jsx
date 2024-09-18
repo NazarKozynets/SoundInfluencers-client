@@ -89,8 +89,6 @@ const AcountClientOngoingPromos = () => {
         <section className="account-client-past-promos">
             <div className="container-form">
                 <div className="account-client-past-promos-block" style={{position: 'relative'}}>
-                    <TitleSection title="MY" span="account"/>
-                    <p className="account-client-past-promos-second">Ongoing promos</p>
                     <button
                         style={{
                             position: "absolute",
@@ -106,10 +104,14 @@ const AcountClientOngoingPromos = () => {
                     >
                         <img src={arrow} style={{transform: "rotate(180deg)"}}/>
                     </button>
+                    <div className="account-client-past-promos-block-title">
+                        <TitleSection title="MY" span="account"/>
+                    </div>
+                    <p className="account-client-past-promos-second">Ongoing promos</p>
 
                     <FormContainer
                         style={{
-                            marginTop: "70px",
+                            marginTop: window.innerWidth > 768 ? "70px" : "20px",
                             display: data.length !== 0 ? "block" : "none",
                         }}
                     >

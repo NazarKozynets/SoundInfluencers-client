@@ -80,7 +80,9 @@ const AcountClientPastPromos = () => {
         <section className="account-client-past-promos">
             <div className="container-form">
                 <div className="account-client-past-promos-block" style={{position: "relative"}}>
-                    <TitleSection title="MY" span="account"/>
+                    <div className="account-client-past-promos-block-title">
+                        <TitleSection title="MY" span="account"/>
+                    </div>
 
                     <p className="account-client-past-promos-second">Past promos</p>
 

@@ -60,7 +60,9 @@ const AcountInfluencerOngoingCurrent = () => {
             <section className="account-client-past-promos">
                 <div className="container">
                     <div className="account-client-past-promos-block" style={{position: 'relative'}}>
-                        <TitleSection title="MY" span="account"/>
+                        <div className="account-client-past-promos-block-title">
+                            <TitleSection title="MY" span="account"/>
+                        </div>
 
                         <p className="account-client-past-promos-second">Ongoing promos</p>
 
@@ -175,7 +177,7 @@ const AcountInfluencerOngoingCurrent = () => {
                                 >
                                     <StandardButton
                                         text="Submit Results & Get Paid"
-                                        style={{padding: "9px 70px"}}
+                                        style={{padding: "9px 70px", width: window.innerWidth < 768 ? 300 : ""}}
                                         onClick={() => {
                                             navigation(
                                                 `/account/influencer/update-ongoing-promos/${data._id}/${dataInfluencer[0].influencerId}/${params.instagram}`
