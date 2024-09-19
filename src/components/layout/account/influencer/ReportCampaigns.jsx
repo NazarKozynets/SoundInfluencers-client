@@ -333,7 +333,7 @@ const ReportCampaigns = () => {
             )}
 
             <div style={{position: "relative"}}>
-                <div className="report-campaign-strategy-title">
+                <div className="report-campaign-strategy-title" style={{marginTop: (dataPromo?.statusPromo === 'po waiting' || dataPromo?.statusPromo === 'estimate') ? '100px' : '0'}}>
                     {(dataPromo?.statusPromo !== 'po waiting' && dataPromo?.statusPromo !== 'estimate') && window.innerWidth > 768 && (
                         <button
                             style={{
@@ -378,13 +378,13 @@ const ReportCampaigns = () => {
                             <td className="report-table-body-row-item-first">
                                 {item.instagramUsername ? item.instagramUsername : "N/A"}
                             </td>
-                            <td className="report-table-body-row-item">
+                            <td className="report-table-body-row-item" style={{width: '8%'}}>
                                 {item.followersNumber ? item.followersNumber : "N/A"}
                             </td>
                             <td className="report-table-body-row-item-second">
                                 {item.dateRequest ? item.dateRequest : "N/A"}
                             </td>
-                            <td className="report-table-body-row-item">
+                            <td className="report-table-body-row-item" style={{width: 74}}>
                                 <button
                                     onClick={() => {
                                         window.open(item.video.videoLink, '_blank');
@@ -424,7 +424,7 @@ const ReportCampaigns = () => {
                                     "N/A"
                                 )}
                             </td>
-                            <td className="report-table-body-row-item">
+                            <td className="report-table-body-row-item" style={{width: 74}}>
                                 {item.postLink ? <button
                                     style={{
                                         display: 'flex',
@@ -443,7 +443,7 @@ const ReportCampaigns = () => {
                                     <img src={linkIcon} alt="edit"/>
                                 </button> : "N/A"}
                             </td>
-                            <td className="report-table-body-row-item-second">
+                            <td className="report-table-body-row-item-second" style={{width: 74}}>
                                 {item.screenshot ? <button
                                     style={{
                                         display: 'flex',

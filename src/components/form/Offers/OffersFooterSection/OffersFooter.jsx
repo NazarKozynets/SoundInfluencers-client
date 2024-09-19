@@ -14,12 +14,29 @@ const OffersFooter = () => {
         dispatch(setCurrentWindow(1));
     };
     
+    const calculateActiveInfluencers = () => { 
+        let activeInfluencers = 0;
+        data.selectInfluencers.map((influencer) => {
+            if (influencer.active) activeInfluencers++;
+        });
+        return activeInfluencers;
+    }
+
+    const returnOfferId = () => {
+        return data.selectPrice?.variant && data.selectPrice?.variant !== 0 ? `IG ${data.selectPrice.variant}M` : 'No Offer Selected';
+    }
+    
+    useEffect(() => {
+        calculateActiveInfluencers()
+        returnOfferId()
+    }, [data])
+    
     return (
         <div className="offers-footer">
             <div className="left-side">
-                <p>IG 3M</p>
+                <p>{returnOfferId()}</p>
                 <p>+</p>
-                <p>3 NETWORKS</p>
+                <p>{calculateActiveInfluencers()} NETWORKS</p>
             </div>
             <div className="right-side">
                 <p>TOTAL: {

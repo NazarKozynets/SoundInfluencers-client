@@ -7,7 +7,7 @@ import StandardButton from "../../../../form/StandardButton";
 import {useDispatch, useSelector} from "react-redux";
 import {
     setClearForm,
-    setCurrentWindow, setSelectAmount, setSelectInfluencer, setSelectPrice,
+    setCurrentWindow, setSelectAmount, setSelectInfluencer, setSelectPrice, setSelectPriceInfluencers
 } from "../../../../../redux/slice/create-promo";
 import {useNavigate} from "react-router-dom";
 import OffersMenu from "../../../../form/Offers/OffersMenu/OffersMenu";
@@ -66,7 +66,7 @@ const AccountClientOffers = () => {
     const selectInfluencers = useSelector((state) => state.createPromo.data.selectInfluencers);
 
     const currentCurrency = useSelector((state) => state.createPromo.data.currency);
-
+    
     const checkIsMobile = () => {
         setIsMobile(window.innerWidth <= 768);
     };
@@ -150,9 +150,9 @@ const AccountClientOffers = () => {
                         filterCurrentSelectInfluencer.push(item);
                     }
                 });
-                dispatch(setSelectInfluencer(filterCurrentSelectInfluencer));
+                dispatch(setSelectPriceInfluencers(filterCurrentSelectInfluencer));
             } else {
-                dispatch(setSelectInfluencer(filterInfluencers));
+                dispatch(setSelectPriceInfluencers(filterInfluencers));
             }
             setInfluencers(updateList);
 
@@ -180,7 +180,7 @@ const AccountClientOffers = () => {
                     connect: item.connect,
                     active: item.active
                 }));
-                dispatch(setSelectInfluencer(totalSelectInfluencers));
+                dispatch(setSelectPriceInfluencers(totalSelectInfluencers));
 
                 let newPrice = influencers.reduce((acc, current) => {
                     if (!current.price) return acc;
@@ -291,9 +291,8 @@ const AccountClientOffers = () => {
                 } else {
                     return {
                         ...item,
-                        // Если инфлюенсер не был подключен к офферу, сохраняем предыдущие значения
-                        active: item.active ?? false, // Оставляем значение, если оно уже было
-                        connect: item.connect ?? false, // Оставляем значение, если оно уже было
+                        active: item.active ?? false, 
+                        connect: item.connect ?? false, 
                     };
                 }
             });
@@ -302,8 +301,8 @@ const AccountClientOffers = () => {
                 influencerId: item.influencerId,
                 confirmation: "wait",
                 instagramUsername: item.instagramUsername,
-                connect: true,  // Устанавливаем connect в true для связанных инфлюенсеров
-                active: false,  // Устанавливаем active в false для связанных инфлюенсеров
+                connect: true,  
+                active: false,  
             }));
 
             if (selectInfluencers.length !== 0) {
@@ -311,13 +310,12 @@ const AccountClientOffers = () => {
                     influencerId: item.influencerId,
                     confirmation: "wait",
                     instagramUsername: item.instagramUsername,
-                    connect: item.connect ?? false,  // Проверяем на наличие значения
-                    active: item.active ?? false,    // Проверяем на наличие значения
+                    connect: item.connect ?? false,  
+                    active: item.active ?? false,   
                 }));
 
                 const filterCurrentSelectInfluencer = [];
 
-                // Объединение старых и новых инфлюенсеров
                 [...filterInfluencers].forEach((item) => {
                     const checkUnion = filterCurrentSelectInfluencer.find(
                         (fin) => fin.instagramUsername === item.instagramUsername
@@ -327,9 +325,9 @@ const AccountClientOffers = () => {
                     }
                 });
 
-                dispatch(setSelectInfluencer(filterCurrentSelectInfluencer));
+                dispatch(setSelectPriceInfluencers(filterCurrentSelectInfluencer));
             } else {
-                dispatch(setSelectInfluencer(filterInfluencers));
+                dispatch(setSelectPriceInfluencers(filterInfluencers));
             }
             setInfluencers(updateList);
 
@@ -338,7 +336,7 @@ const AccountClientOffers = () => {
                     if (item.connect) {
                         return {
                             ...item,
-                            connect: false,  // Если инфлюенсер был связан, отключаем его
+                            connect: false, 
                             active: false,
                         };
                     } else {
@@ -360,7 +358,7 @@ const AccountClientOffers = () => {
                     instagramUsername: item.instagramUsername,
                 }));
 
-                dispatch(setSelectInfluencer(totalSelectInfluencers));
+                dispatch(setSelectPriceInfluencers(totalSelectInfluencers));
 
                 let newPrice = influencers.reduce((acc, current) => {
                     if (!current.price) return acc;
@@ -474,11 +472,15 @@ const AccountClientOffers = () => {
                 if (item.instagramUsername === instagramUsername) {
                     if (item.active) {
                         return {
-                            ...item, active: false, connect: false,
+                            ...item,
+                            active: false,
+                            connect: false,
                         };
                     }
                     return {
-                        ...item, active: true, connect: false,
+                        ...item,
+                        active: true,
+                        connect: false,
                     };
                 }
 
@@ -489,11 +491,15 @@ const AccountClientOffers = () => {
                 if (item.instagramUsername === instagramUsername) {
                     if (item.active) {
                         return {
-                            ...item, active: false, connect: false,
+                            ...item,
+                            active: false,
+                            connect: false,
                         };
                     }
                     return {
-                        ...item, active: true, connect: false,
+                        ...item,
+                        active: true,
+                        connect: false,
                     };
                 }
 
@@ -555,7 +561,19 @@ const AccountClientOffers = () => {
             price: totalCustomOffer,
         }));
 
-        dispatch(setSelectInfluencer([...selectInfluencers, ...filterInfluencers]));
+        // Обновление selectInfluencers
+        // Обновление selectInfluencers
+        // const updatedSelectInfluencers = selectInfluencers
+        //     .filter(influencer => !filterInfluencers.some(newInfluencer => newInfluencer.influencerId === influencer.influencerId))
+        //     .concat(
+        //         filterInfluencers
+        //     );
+        //
+        //
+        // dispatch(setSelectInfluencer(updatedSelectInfluencers));
+
+        
+        dispatch(setSelectInfluencer([...filterInfluencers]));
 
         if (filteredInfluencersByBudget.length > 0) {
             setFilteredInfluencersByBudget(updateList);
@@ -563,6 +581,7 @@ const AccountClientOffers = () => {
             setInfluencers(updateList);
         }
     };
+
 
     const getData = async () => {
         const result = await axios(
@@ -690,6 +709,11 @@ const AccountClientOffers = () => {
     //     setIsSelectAll(!isSelectAll)
     // };
 
+    const nextForm = () => {
+        if (customAmount === 0 || selectInfluencers.length === 0) return;
+        dispatch(setCurrentWindow(1));
+    };
+    
     const applyFiltersAndSort = () => {
         let filtered = [...influencers];
         const {sortMethod, checkedGenres, checkedCategories, checkedSubGenres, checkedCountries, budget} = filterParams;
@@ -954,24 +978,28 @@ const AccountClientOffers = () => {
                                                  isSearch={false}/>
                             )}
                         </div>
+                        <OffersFooter/>
                     </div>
                 </div>
 
-                {/*<div>*/}
-                {/*    <p className="account-client-choose-total">*/}
-                {/*        Total{" "}*/}
-                {/*        <span*/}
-                {/*            className="account-client-choose-total-span">{calculatePriceForOffersAndInfluencers(customePrice)} {currentCurrency}</span>*/}
-                {/*    </p>*/}
-                {/*    <div style={{*/}
-                {/*        display: "flex",*/}
-                {/*        justifyContent: "center",*/}
-                {/*        marginTop: 40,*/}
-                {/*    }}>*/}
-                {/*        <StandardButton text="Continue" onClick={nextForm}/>*/}
-                {/*    </div>*/}
-                {/*</div>*/}
-                <OffersFooter/>
+                {window.innerWidth < 768 && (
+                    <div>
+                        <p className="account-client-choose-total">
+                            Total{" "}
+                            <span
+                                className="account-client-choose-total-span">{calculatePriceForOffersAndInfluencers(customePrice)} {currentCurrency}</span>
+                        </p>
+                        <div style={{
+                            display: "flex",
+                            justifyContent: "center",
+                            marginTop: 40,
+                        }}>
+                            <StandardButton text="Continue" onClick={nextForm}
+                            />
+                        </div>
+                    </div>
+                )}
+                {/*<OffersFooter/>*/}
             </div>
         </section>
     );

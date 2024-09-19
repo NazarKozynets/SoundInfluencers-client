@@ -9,8 +9,8 @@ const initialState = {
             variant: 0,
             price: 0,
         },
-        
         selectInfluencers: [],
+        selectPriceInfluencers: [],
         campaignName: "",
         paymentType: "",
         paymentStatus: "wait",
@@ -39,6 +39,9 @@ export const createPromoSlice = createSlice({
         },
         setSelectPrice: (state, action) => {
             state.data.selectPrice = action.payload;
+        },
+        setSelectPriceInfluencers: (state, action) => {
+            state.data.selectPriceInfluencers = action.payload;
         },
         setSelectAmount: (state, action) => {
             state.data.amount = action.payload;
@@ -102,6 +105,7 @@ export const createPromoSlice = createSlice({
                     price: 0,
                 },
                 selectInfluencers: [],
+                selectPriceInfluencers: [],
                 paymentType: "",
                 paymentStatus: "wait",
             };
@@ -124,6 +128,7 @@ export const {
     removeVideo,
     setClearForm,
     setClearCampaignDetails,
+    setSelectPriceInfluencers,
 } = createPromoSlice.actions;
 
 export default createPromoSlice.reducer;

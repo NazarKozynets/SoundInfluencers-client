@@ -2,7 +2,12 @@ import React, {useEffect} from "react";
 import arrow from "../../../../../images/icons/arrow.svg";
 import TitleSection from "../../../../TitleSection";
 import FormContainer from "../../../../form/FormContainer";
-import {setClearCampaignDetails, setCurrentWindow, setSelectAmount} from "../../../../../redux/slice/create-promo";
+import {
+    setClearCampaignDetails,
+    setCurrentWindow,
+    setSelectAmount, setSelectInfluencer,
+    setSelectPrice, setSelectPriceInfluencers
+} from "../../../../../redux/slice/create-promo";
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 
@@ -11,9 +16,14 @@ const AccountClientDetailsQuestion = () => {
     const navigation = useNavigate();
 
     const selectPrice = useSelector((state) => state.createPromo.data.selectPrice);
+    const data = useSelector((state) => state.createPromo.data);
     
     useEffect(() => {
         dispatch(setSelectAmount(selectPrice.price));
+        
+        const newSelectInfluencers = [...data.selectInfluencers, ...data.selectPriceInfluencers];
+        dispatch(setSelectInfluencer(newSelectInfluencers));
+        dispatch(setSelectPriceInfluencers([]));
     }, []);
 
     const nextFormForNoButton = () => {
