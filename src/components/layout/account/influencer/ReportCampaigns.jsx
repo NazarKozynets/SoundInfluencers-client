@@ -69,6 +69,11 @@ const ReportCampaigns = () => {
     }
     ]);
 
+    useEffect(() => {
+        console.log(data,  'datadatadatadatadatadatadatadata')
+        console.log(dataPromo, 'dataPromodataPromodataPromodataPromo')
+    }, [data, dataPromo])
+    
     const getData = async () => {
         try {
             const {dataFetch} = await UseVerify();
@@ -407,13 +412,13 @@ const ReportCampaigns = () => {
                                     <img src={linkIcon} alt="edit"/>
                                 </button>
                             </td>
-                            <td className="report-table-body-row-item-second">
+                            <td className="report-table-body-row-item-second" style={{width: '10%'}}>
                                 {item.video ? item.video.postDescription : "N/A"}
                             </td>
-                            <td className="report-table-body-row-item">
+                            <td className="report-table-body-row-item" style={{width: '10%'}}>
                                 {item.video ? item.video.storyTag : "N/A"}
                             </td>
-                            <td className="report-table-body-row-item-second">
+                            <td className="report-table-body-row-item-second" style={{width: '7%'}}>
                                 {item.video.swipeUpLink ? (
                                     <a href={
                                         'https://' + item.video.swipeUpLink
@@ -424,8 +429,11 @@ const ReportCampaigns = () => {
                                     "N/A"
                                 )}
                             </td>
-                            <td className="report-table-body-row-item" style={{width: 74}}>
+                            <td className="report-table-body-row-item" style={{width: 90}}>
                                 {item.postLink ? <button
+                                    onClick={() => {
+                                        window.open(item.postLink, '_blank');
+                                    }}
                                     style={{
                                         display: 'flex',
                                         alignItems: 'center',
@@ -438,13 +446,17 @@ const ReportCampaigns = () => {
                                         border: "2px solid black",
                                         boxSizing: 'border-box',
                                         margin: '0 auto',
+                                        cursor: 'pointer',
                                     }}>
                                     <img src={instaIcon} alt="watch"/>
                                     <img src={linkIcon} alt="edit"/>
                                 </button> : "N/A"}
                             </td>
-                            <td className="report-table-body-row-item-second" style={{width: 74}}>
+                            <td className="report-table-body-row-item-second" style={{width: 90}}>
                                 {item.screenshot ? <button
+                                    onClick={() => {
+                                        window.open(item.screenshot, '_blank');
+                                    }}
                                     style={{
                                         display: 'flex',
                                         alignItems: 'center',
@@ -457,15 +469,16 @@ const ReportCampaigns = () => {
                                         border: "2px solid black",
                                         boxSizing: 'border-box',
                                         margin: '0 auto',
+                                        cursor: 'pointer',
                                     }}>
                                     <img src={imgIcon} alt="watch"/>
                                     <img src={linkIcon} alt="edit"/>
                                 </button> : "N/A"}
                             </td>
-                            <td className="report-table-body-row-item">
+                            <td className="report-table-body-row-item" style={{width: '8%'}}>
                                 {item.impressions ? item.impressions : "N/A"}
                             </td>
-                            <td className="report-table-body-row-item-second">
+                            <td className="report-table-body-row-item-second" >
                                 {item.like ? item.like : "N/A"}
                             </td>
                         </tr>))}
@@ -537,33 +550,33 @@ const ReportCampaigns = () => {
                                 <div className="report-mobile-item-info-caption">
                                     <p className="report-mobile-item-info-value">
                                         {" "}
-                                        {dataPromo.postDescription ? dataPromo.postDescription : ""}
+                                        {item.video.postDescription ? item.video.postDescription : ""}
                                     </p>
-                                    <p className="report-mobile-item-info-title">Caption</p>
+                                    <p className="report-mobile-item-info-title">Description</p>
                                 </div>
                                 <div className="report-mobile-item-info-video">
-                                    <a
-                                        target="_blank"
-                                        className="report-mobile-item-info-value"
-                                        href={dataPromo.videoLink ? dataPromo.videoLink : ""}
-                                    >
-                                        {" "}
-                                        {dataPromo.videoLink ? dataPromo.videoLink : ""}
-                                    </a>
-
-                                    <p className="report-mobile-item-info-title">Video</p>
+                                    {/*<a*/}
+                                    {/*    target="_blank"*/}
+                                    {/*    className="report-mobile-item-info-value"*/}
+                                    {/*    href={dataPromo.video?.videoLink ? dataPromo.video.videoLink : ""}*/}
+                                    {/*>*/}
+                                    {/*    {" "}*/}
+                                    {/*    {dataPromo.videoLink ? dataPromo.videoLink : ""}*/}
+                                    {/*</a>*/}
+                                    
+                                    {/*<p className="report-mobile-item-info-title">Video</p>*/}
                                 </div>
                                 <div className="report-mobile-item-info-swipe-up-link">
-                                    <a
-                                        target="_blank"
-                                        className="report-mobile-item-info-value"
-                                        href={dataPromo.swipeUpLink ? dataPromo.swipeUpLink : ""}
-                                    >
-                                        {dataPromo.swipeUpLink ? dataPromo.swipeUpLink : ""}
-                                    </a>
-                                    <p className="report-mobile-item-info-title">
-                                        Swipe Up Link
-                                    </p>
+                                    {/*<a*/}
+                                    {/*    target="_blank"*/}
+                                    {/*    className="report-mobile-item-info-value"*/}
+                                    {/*    href={item.swipeUpLink ? item.swipeUpLink : ""}*/}
+                                    {/*>*/}
+                                    {/*    {dataPromo.swipeUpLink ? dataPromo.swipeUpLink : ""}*/}
+                                    {/*</a>*/}
+                                    {/*<p className="report-mobile-item-info-title">*/}
+                                    {/*    Swipe Up Link*/}
+                                    {/*</p>*/}
                                 </div>
                                 <div className="report-mobile-item-info-story-tag">
                                     <p className="report-mobile-item-info-value">

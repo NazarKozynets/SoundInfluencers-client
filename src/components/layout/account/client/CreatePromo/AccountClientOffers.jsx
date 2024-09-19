@@ -978,8 +978,8 @@ const AccountClientOffers = () => {
                                                  isSearch={false}/>
                             )}
                         </div>
-                        <OffersFooter/>
                     </div>
+                    <OffersFooter/>
                 </div>
 
                 {window.innerWidth < 768 && (

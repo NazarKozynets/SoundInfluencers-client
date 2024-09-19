@@ -1,8 +1,8 @@
 .offers-footer {
-    width: 87.5%; 
-    margin-left: 20px;
-    position: sticky; 
-    bottom: 0; 
+    position: fixed;
+    bottom: 0;
+    left: 57%;
+    transform: translateX(-50%);
     display: flex;
     justify-content: space-between;
     padding: 10px;
@@ -11,10 +11,23 @@
     z-index: 1000;
     border-radius: 20px 20px 0 0;
     box-shadow: 0px 4px 20px 0px #3330E480;
-    margin-bottom: -40px;
     
-    @media screen and (max-width: 1200px) {
-        width: 75%;
+    @media screen and (max-width: 1700px) {
+        width: 30%;
+        flex-direction: column;
+        height: 80px;
+        .left-side {
+            margin: 0 auto !important;
+        }
+
+        .right-side {
+            margin: 0 auto !important;
+        }
+    }
+    @media screen and (max-width: 1300px) {
+        width: 40%;
+        left: 0%;
+        transform: translateX(0%);
     }
     @media screen and (max-width: 1000px) {
         height: 100px;
@@ -49,6 +62,7 @@
     font-size: 18px;
     font-weight: 500;
     margin-right: 30px;
+    margin-left: 10px;
 }
 
 @media screen and (max-width: 768px) {

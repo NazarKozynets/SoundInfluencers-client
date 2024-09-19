@@ -11,7 +11,6 @@ const genres = [
     { genre: 'D&B' },
     { genre: 'Bass' },
     { genre: 'Dubstep' },
-    { genre: 'Dancing' },
 ];
 
 const GenreButtonsList = ({ setSelectedOffersGenres }) => {
