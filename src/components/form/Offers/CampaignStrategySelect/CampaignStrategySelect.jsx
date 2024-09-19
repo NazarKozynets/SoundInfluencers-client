@@ -95,6 +95,7 @@ const CustomSelect = ({ selectedOption, setSelectedOption, options }) => {
             maxHeight: 137,
             borderRadius: 30,
             boxShadow: '0px 4px 20px 0px rgba(51, 48, 228, 0.50)',
+            padding: 0, 
         }),
         option: (provided, state) => ({
             ...provided,
@@ -102,14 +103,16 @@ const CustomSelect = ({ selectedOption, setSelectedOption, options }) => {
             fontSize: 18,
             fontWeight: 500,
             color: '#000000',
-            backgroundColor: state.isSelected ? '#FFFFFF' : '#FFFFFF',
-            paddingLeft: state.isSelected ? '20px' : '20px',
-            paddingRight: '20px',
+            backgroundColor: '#FFFFFF', 
+            padding: '10px 20px',
             position: 'relative',
             '&:hover': {
                 backgroundColor: '#3330E4',
                 color: '#FFFFFF'
-            }
+            },
+            minHeight: '40px', 
+            display: 'flex',
+            alignItems: 'center',
         }),
         dropdownIndicator: (provided) => ({
             ...provided,

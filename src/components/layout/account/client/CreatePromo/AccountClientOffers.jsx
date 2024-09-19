@@ -861,7 +861,7 @@ const AccountClientOffers = () => {
     };
 
     return (<section className="account-client">
-            <div className="account-client-block" style={{position: "relative"}}>
+            <div className="account-client-block" style={{position: "relative", marginBottom: '40px'}}>
                 <div className="account-client-back-button">
                     <button style={{
                         position: "absolute", top: 0, left: 50, width: 48, height: 48, cursor: "pointer",

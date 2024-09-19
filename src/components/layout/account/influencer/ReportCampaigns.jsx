@@ -69,10 +69,57 @@ const ReportCampaigns = () => {
     }
     ]);
 
+    const [cpmObj, setCpmObj] = useState({
+        cpm: 0,
+        avgCpm: '',
+        result: '',
+    });
+
     useEffect(() => {
-        console.log(data,  'datadatadatadatadatadatadatadata')
-        console.log(dataPromo, 'dataPromodataPromodataPromodataPromo')
-    }, [data, dataPromo])
+        editCPMO();
+    }, [dataPromo])
+
+    const editCPMO = () => {
+        if (dataPromo?.selectInfluencers?.find(influencer => influencer.impressions > 0)) {
+            const cpm = dataPromo?.selectPrice.price / totalImpressions() * 1000;
+            console.log(cpm, 'cpm');
+            console.log(dataPromo);
+            let avgCpm;
+
+            if (cpm < 3) {
+                avgCpm = '0 to 3€';
+            } else if (cpm < 5) {
+                avgCpm = '3€ to 5€';
+            } else if (cpm < 9) {
+                avgCpm = '5€ to 9€';
+            } else if (cpm < 12) {
+                avgCpm = '9€ to 12€';
+            } else {
+                avgCpm = '>12€';
+            }
+
+            let result;
+            if (avgCpm === '0 to 3€') {
+                result = 'Excellent';
+            } else if (avgCpm === '3€ to 5€') {
+                result = 'Highly Above Average';
+            } else if (avgCpm === '5€ to 9€') {
+                result = 'Above Average';
+            } else if (avgCpm === '9€ to 12€') {
+                result = 'Average';
+            } else if (avgCpm === '> 12€') {
+                result = 'Below Average';
+            } else {
+                result = 'Poor';
+            }
+
+            setCpmObj({
+                cpm,
+                avgCpm,
+                result,
+            });
+        }
+    }
     
     const getData = async () => {
         try {
@@ -338,7 +385,8 @@ const ReportCampaigns = () => {
             )}
 
             <div style={{position: "relative"}}>
-                <div className="report-campaign-strategy-title" style={{marginTop: (dataPromo?.statusPromo === 'po waiting' || dataPromo?.statusPromo === 'estimate') ? '100px' : '0'}}>
+                <div className="report-campaign-strategy-title"
+                     style={{marginTop: (dataPromo?.statusPromo === 'po waiting' || dataPromo?.statusPromo === 'estimate') ? '100px' : '0'}}>
                     {(dataPromo?.statusPromo !== 'po waiting' && dataPromo?.statusPromo !== 'estimate') && window.innerWidth > 768 && (
                         <button
                             style={{
@@ -357,15 +405,19 @@ const ReportCampaigns = () => {
 
                 <div className="report-details">
                     <div className="report-details-first">
-                        <p>Date: <span>{new Date(dataPromo?.createdAt).toLocaleDateString('en-GB')}</span></p>
+                        <p>Date Submitted: <span>{new Date(dataPromo?.createdAt).toLocaleDateString('en-GB')}</span></p>
                         <p>Price: <span>{dataPromo?.amount}{dataPromo?.currency}</span></p>
+                        <p>Posts & Stories: <span>{dataPromo?.selectInfluencers.length}</span></p>
                     </div>
                     <div className="report-details-second">
                         <p>Combined Followers: <span>{totalFollowers()}</span></p>
-                        <p>Posts & Stories: <span>{dataPromo?.selectInfluencers.length}</span></p>
+                        <p>Impressions: <span>{totalImpressions()}</span></p>
+                        <p>Likes: <span>{totalLikes()}</span></p>
                     </div>
                     <div className="report-details-third">
-                        <p>Video Options: <span>{dataPromo?.videos.length}</span></p>
+                        <p>CPM: <span>{cpmObj.cpm.toFixed(3)}€</span></p>
+                        <p>Average Instagram CPM: <span>{cpmObj.avgCpm}</span></p>
+                        <p>Result: <span>{cpmObj.result}</span></p>
                     </div>
                 </div>
 
@@ -478,7 +530,7 @@ const ReportCampaigns = () => {
                             <td className="report-table-body-row-item" style={{width: '8%'}}>
                                 {item.impressions ? item.impressions : "N/A"}
                             </td>
-                            <td className="report-table-body-row-item-second" >
+                            <td className="report-table-body-row-item-second">
                                 {item.like ? item.like : "N/A"}
                             </td>
                         </tr>))}
@@ -563,7 +615,7 @@ const ReportCampaigns = () => {
                                     {/*    {" "}*/}
                                     {/*    {dataPromo.videoLink ? dataPromo.videoLink : ""}*/}
                                     {/*</a>*/}
-                                    
+
                                     {/*<p className="report-mobile-item-info-title">Video</p>*/}
                                 </div>
                                 <div className="report-mobile-item-info-swipe-up-link">

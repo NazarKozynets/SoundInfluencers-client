@@ -19,6 +19,12 @@ const AcountInfluencerOngoingCurrent = () => {
     const [data, setData] = useState({});
     const [dataInfluencer, setDataInfluencer] = useState({});
 
+    useEffect(() => {
+        console.log(params, 'params')
+        console.log(data, 'data')
+        console.log(dataInfluencer, 'dataInfluencer')
+    }, [dataInfluencer,data])
+    
     const getData = async () => {
         try {
             const {dataFetch} = await UseVerify();
@@ -41,9 +47,9 @@ const AcountInfluencerOngoingCurrent = () => {
                     return influencer;
                 });
 
-                console.log(resultInfluencers, 'resultInfluencers')
-                
-                setDataInfluencer(resultInfluencers);
+                const filteredInfluencers = resultInfluencers.filter(influencer => influencer.instagramUsername === params.instagram);
+
+                setDataInfluencer(filteredInfluencers);
             }
 
         } catch (err) {

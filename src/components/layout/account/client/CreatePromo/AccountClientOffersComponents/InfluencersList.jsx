@@ -10,12 +10,16 @@ import {
 import {useSelector} from "react-redux";
 
 const InfluencersList = ({influencers, activeIndices, setActiveIndices, selectInfluencer, isSearch}) => {
-    const [flippedAccountIndex, setFlippedAccountIndex] = useState(null);
-
+    const [flippedAccountIndeces, setFlippedAccountIndeces] = useState([]);
+    
     const currentCurrency = useSelector((state) => state.createPromo.data.currency);
 
     const selectInfluencers = useSelector((state) => state.createPromo.data.selectInfluencers);
-
+    
+    useEffect(() => {
+        setFlippedAccountIndeces([]);
+    }, [influencers])
+    
     const formatFollowersNumber = (number) => {
         if (number >= 1000000) {
             return (number / 1000000).toFixed(1) + 'M';
@@ -57,7 +61,11 @@ const InfluencersList = ({influencers, activeIndices, setActiveIndices, selectIn
         return musicStyle;
     };
     const handleSeeMoreClick = (index) => {
-        setFlippedAccountIndex(index === flippedAccountIndex ? null : index);
+        if (flippedAccountIndeces.includes(index)) {
+            setFlippedAccountIndeces(prevIndices => prevIndices.filter(i => i !== index));
+        } else {
+            setFlippedAccountIndeces(prevIndices => [...prevIndices, index]);
+        }
     };
     
     return (
@@ -66,7 +74,7 @@ const InfluencersList = ({influencers, activeIndices, setActiveIndices, selectIn
                 <ul className="account-client-choose-list">
                     <li
                         key={influencers.index}
-                        className={`account-client-choose-item ${influencers.connect ? "connect" : ""} ${influencers.active && !influencers.connect ? 'active' : ''} ${flippedAccountIndex === influencers.index ? 'flipped' : ''}`}
+                        className={`account-client-choose-item ${influencers.connect ? "connect" : ""} ${influencers.active && !influencers.connect ? 'active' : ''} ${flippedAccountIndeces.includes(influencers.index) ? 'flipped' : ''}`}
                         onClick={() => {
                             if (!influencers.connect) {
                                 setActiveIndices(prevIndices =>
@@ -86,7 +94,7 @@ const InfluencersList = ({influencers, activeIndices, setActiveIndices, selectIn
                             </div>
                         )}
                         <div
-                            className={`account-client-choose-item-content ${influencers.connect ? "connect" : ""} ${activeIndices.includes(influencers.index) && !influencers.connect ? 'active' : ''} ${flippedAccountIndex === influencers.index ? 'flipped' : ''}`}>
+                            className={`account-client-choose-item-content ${influencers.connect ? "connect" : ""} ${activeIndices.includes(influencers.index) && !influencers.connect ? 'active' : ''} ${flippedAccountIndeces.includes(influencers.index) ? 'flipped' : ''}`}>
                             <ImageWithFallback
                                 src={influencers.logo}
                                 fallbackSrc={altLogo}
@@ -119,7 +127,7 @@ const InfluencersList = ({influencers, activeIndices, setActiveIndices, selectIn
                             </div>
                         </div>
                         <div className="account-client-choose-item-content-third-container">
-                            {flippedAccountIndex !== influencers.index && (
+                            {!flippedAccountIndeces.includes(influencers.index) && (
                                 <button
                                     onClick={(e) => {
                                         e.stopPropagation();
@@ -129,8 +137,8 @@ const InfluencersList = ({influencers, activeIndices, setActiveIndices, selectIn
                                 >See More</button>
                             )}
                         </div>
-
-                        {flippedAccountIndex === influencers.index && (
+                    
+                        {flippedAccountIndeces.includes(influencers.index) && (
                             <div
                                 className={`account-client-choose-item-expanded-content ${influencers.connect ? 'connect' : ''} ${activeIndices.includes(influencers.index) ? 'active' : ''}`}>
                                 <div
@@ -191,7 +199,7 @@ const InfluencersList = ({influencers, activeIndices, setActiveIndices, selectIn
                         className={`account-client-choose-item 
         ${item.connect ? 'connect' : ''} 
         ${item.active ? 'active' : ''} 
-        ${flippedAccountIndex === index ? 'flipped' : ''}`}
+        ${flippedAccountIndeces.includes(index) ? 'flipped' : ''}`}
                         onClick={() => {
                             if (!item.connect) {
                                 setActiveIndices(prevIndices =>
@@ -211,7 +219,7 @@ const InfluencersList = ({influencers, activeIndices, setActiveIndices, selectIn
                             </div>
                         )}
                         <div
-                            className={`account-client-choose-item-content ${item.connect ? "connect" : ""} ${item.active && !item.connect ? 'active' : ''} ${flippedAccountIndex === index ? 'flipped' : ''}`}>
+                            className={`account-client-choose-item-content ${item.connect ? "connect" : ""} ${item.active && !item.connect ? 'active' : ''} ${flippedAccountIndeces.includes(index) ? 'flipped' : ''}`}>
                             <ImageWithFallback
                                 src={item.logo}
                                 fallbackSrc={altLogo}
@@ -244,7 +252,7 @@ const InfluencersList = ({influencers, activeIndices, setActiveIndices, selectIn
                             </div>
                         </div>
                         <div className="account-client-choose-item-content-third-container">
-                            {flippedAccountIndex !== index && (
+                            {!flippedAccountIndeces.includes(index) && (
                                 <button
                                     onClick={(e) => {
                                         e.stopPropagation();
@@ -255,7 +263,7 @@ const InfluencersList = ({influencers, activeIndices, setActiveIndices, selectIn
                             )}
                         </div>
 
-                        {flippedAccountIndex === index && (
+                        {flippedAccountIndeces.includes(index) && (
                             <div
                                 className={`account-client-choose-item-expanded-content ${item.connect ? 'connect' : ''} ${activeIndices.includes(index) ? 'active' : ''}`}>
                                 <div
