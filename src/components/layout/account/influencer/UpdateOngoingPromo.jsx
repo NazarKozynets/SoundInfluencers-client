@@ -13,6 +13,7 @@ import useVerify from "../../../../hooks/useVerify";
 const UpdateOngoingPromo = () => {
     const params = useParams();
     const navigation = useNavigate();
+    const [uploadProgress, setUploadProgress] = useState(0);
 
     const [formData, setFormData] = useState({
         brand: "",
@@ -34,15 +35,10 @@ const UpdateOngoingPromo = () => {
             return navigation("/");
         }
         
-        console.log(params, 'params')
-        
         try {
             const result = await axios(
                 `${process.env.REACT_APP_SERVER}/promos/get-ongoing-promo-one?influencerId=${params.influencerId}&promoId=${params.promoId}&instagramUsername=${params.instagram}`
             );
-
-            // console.log(result.data.code, 'result code')
-            // console.log(result.data, 'data')
             
             if (result.data.code === 200) {
                 setFormData(result.data.promo);
@@ -59,7 +55,7 @@ const UpdateOngoingPromo = () => {
 
         try {
             const formDataScreenshot = new FormData();
-            formDataScreenshot.append("file", screenshot); // 'file' is the key expected on the server side
+            formDataScreenshot.append("file", screenshot); 
 
             if (screenshot) {
                 try {
@@ -70,6 +66,10 @@ const UpdateOngoingPromo = () => {
                             headers: {
                                 "Content-Type": "multipart/form-data",
                             },
+                            onUploadProgress: (progressEvent) => {
+                                const progress = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+                                setUploadProgress(progress); 
+                            }
                         }
                     );
                     const result = await axios.put(
@@ -169,7 +169,21 @@ const UpdateOngoingPromo = () => {
                             placeholder="Attach the screenshot of the insights"
                             setValue={(value) => setScreenshot(value)}
                         />
-
+                        {uploadProgress > 0 && (
+                            <div style={{
+                                width: '80%', 
+                                backgroundColor: '#f0f0f0',
+                                borderRadius: '10px',
+                                margin: '20px auto',
+                                fontFamily: 'Geometria',
+                                fontSize: 14,
+                                fontWeight: 400,
+                            }}>
+                                <div style={{ width: `${uploadProgress}%`, backgroundColor: '#4f91ed', height: '10px', borderRadius: '5px' }}></div>
+                                <p style={{textAlign: 'center'}}>{uploadProgress}%</p>
+                            </div>
+                        )}
+                        
                         <div style={{ marginTop: "60px", display: "flex", justifyContent: "center" }}>
                             <StandartButton text="Submit" onClick={updateData} />
                         </div>

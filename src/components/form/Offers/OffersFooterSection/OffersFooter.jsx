@@ -10,8 +10,9 @@ const OffersFooter = () => {
     const dispatch = useDispatch();
     
     const nextForm = () => {
-        if (data.amount === 0 || data.selectInfluencers.length === 0) return;
-        dispatch(setCurrentWindow(1));
+        if (data.amount !== 0 && (data.selectInfluencers.length !== 0 || data.selectPriceInfluencers.length !== 0)) {
+            dispatch(setCurrentWindow(1));
+        }
     };
     
     const calculateActiveInfluencers = () => { 

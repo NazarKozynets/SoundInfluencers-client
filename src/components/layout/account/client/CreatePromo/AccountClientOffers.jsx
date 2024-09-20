@@ -64,7 +64,9 @@ const AccountClientOffers = () => {
     const customePrice = useSelector((state) => state.createPromo.data.selectPrice.price);
 
     const selectInfluencers = useSelector((state) => state.createPromo.data.selectInfluencers);
-
+    
+    const selectPriceInfluencers = useSelector((state) => state.createPromo.data.selectPriceInfluencers);
+    
     const currentCurrency = useSelector((state) => state.createPromo.data.currency);
     
     const checkIsMobile = () => {
@@ -83,6 +85,23 @@ const AccountClientOffers = () => {
         getData();
     }, []);
 
+    useEffect(() => {
+        const updateList = selectPriceInfluencers.forEach((item) => {
+            const influencerIndex = selectInfluencers.findIndex(
+                (inf) => inf.influencerId === item.influencerId && inf.instagramUsername === item.instagramUsername
+            );
+
+            if (influencerIndex !== -1) {
+                const updatedInfluencers = [
+                    ...selectInfluencers.slice(0, influencerIndex),
+                    ...selectInfluencers.slice(influencerIndex + 1)
+                ];
+
+                dispatch(setSelectInfluencer(updatedInfluencers));
+            }
+        });
+    }, [selectInfluencers, selectPriceInfluencers]);
+    
     useEffect(() => {
         setFilteredInfluencers(influencers);
     }, [influencers]);
@@ -291,8 +310,8 @@ const AccountClientOffers = () => {
                 } else {
                     return {
                         ...item,
-                        active: item.active ?? false, 
-                        connect: item.connect ?? false, 
+                        active:  false, 
+                        connect:  false, 
                     };
                 }
             });
@@ -581,7 +600,6 @@ const AccountClientOffers = () => {
             setInfluencers(updateList);
         }
     };
-
 
     const getData = async () => {
         const result = await axios(

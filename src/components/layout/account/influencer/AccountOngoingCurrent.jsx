@@ -18,12 +18,6 @@ const AcountInfluencerOngoingCurrent = () => {
     const navigation = useNavigate();
     const [data, setData] = useState({});
     const [dataInfluencer, setDataInfluencer] = useState({});
-
-    useEffect(() => {
-        console.log(params, 'params')
-        console.log(data, 'data')
-        console.log(dataInfluencer, 'dataInfluencer')
-    }, [dataInfluencer,data])
     
     const getData = async () => {
         try {
@@ -51,7 +45,6 @@ const AcountInfluencerOngoingCurrent = () => {
 
                 setDataInfluencer(filteredInfluencers);
             }
-
         } catch (err) {
             console.log(err);
         }

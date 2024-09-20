@@ -2,17 +2,17 @@
   &-po-form {
     width: 50%;
     margin: 0 auto;
-    
+
     @media screen and (max-width: 768px) {
       width: 85%;
-      
+
       &-title {
         display: flex;
         justify-content: center;
       }
     }
   }
-  
+
   &-campaign-strategy-title {
     p {
       text-align: center;
@@ -20,29 +20,32 @@
       font-size: 24px;
       font-weight: 700;
     }
-    
+
     @media screen and (max-width: 768px) {
       margin-top: 50px;
       display: flex;
       flex-direction: column;
     }
   }
-  
+
   &-details {
     padding: 0 69px;
     margin-top: 60px;
     display: flex;
     justify-content: space-around;
+
     p {
       font-family: Geometria;
       font-size: 24px;
       font-weight: 400;
     }
+
     span {
       font-family: Geometria;
       font-size: 24px;
       font-weight: 700;
     }
+
     &-first,
     &-third {
       flex: 1;
@@ -104,7 +107,7 @@
       }
     }
   }
-  
+
   //&-campaign-strategy-details {
   //  display: flex;
   //  justify-content: space-between;
@@ -139,7 +142,6 @@
 }
 
 
-
 .report-info {
   display: flex;
   justify-content: space-between;
@@ -162,6 +164,7 @@
     font-style: normal;
     font-weight: 400;
     line-height: normal;
+
     &-span {
       font-weight: 700;
     }
@@ -266,11 +269,11 @@
       line-height: normal;
       padding-left: 17px;
     }
-    
+
     &-row-item {
       background: #FF7A0980;
     }
-    
+
     &-row-item-second {
       background: #ebad82;
     }
@@ -278,119 +281,67 @@
 }
 
 .report-mobile {
-  margin-top: 20px;
   border-radius: 30px;
   background: #fff;
   overflow: hidden;
   box-shadow: 0px 4px 20px 0px rgba(51, 48, 228, 0.5);
+  width: 90%;
+  margin: 40px auto;
 
   @media screen and (min-width: 950px) {
     display: none;
   }
-}
 
-.report-mobile-item {
-  display: flex;
-  border-bottom: 1px solid #9694ea;
-
-  &-total {
-    color: var(--Black, #000);
-    font-family: Geometria;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 900;
-    line-height: normal;
-    padding: 11px 23px;
-  }
-  &-influencer {
-    padding: 24px;
-    background: rgba(51, 48, 227, 0.3);
-
-    color: #000;
-    font-family: Geometria;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: normal;
-    width: 20%;
-  }
-
-  &-info {
+  &-item {
     display: flex;
-    flex-direction: column;
-    gap: 2px;
-    padding: 24px 16px 20px 16px;
-    width: 100%;
-    &-followers {
+    border-bottom: 1px solid #9694ea;
+
+    &-first {
       color: #000;
       font-family: Geometria;
-      font-size: 14px;
+      font-size: 16px;
       font-style: normal;
-      font-weight: 400;
-      line-height: normal;
-    }
-
-    &-brand {
-      display: flex;
-      justify-content: space-between;
-    }
-    &-date-post {
-      display: flex;
-      justify-content: space-between;
-    }
-    &-caption {
-      display: flex;
-      justify-content: space-between;
-    }
-    &-video {
-      display: flex;
-      justify-content: space-between;
-    }
-    &-swipe-up-link {
-      display: flex;
-      justify-content: space-between;
-    }
-    &-story-tag {
-      display: flex;
-      justify-content: space-between;
-    }
-    &-post-link {
-      display: flex;
-      justify-content: space-between;
-    }
-    &-screenshot {
-      display: flex;
-      justify-content: space-between;
-    }
-    &-impressions {
-      display: flex;
-      justify-content: space-between;
-    }
-    &-like {
-      display: flex;
-      justify-content: space-between;
-    }
-
-    &-value {
-      color: #000;
-      font-family: Geometria;
-      font-size: 14px;
-      font-style: normal;
-      font-weight: 400;
+      font-weight: 700;
       line-height: normal;
       overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
+      background: #c2c1f7;
+      width: 180px;
+
+      p {
+        margin: 20px 0 0 20px;
+      }
     }
 
-    &-title {
-      color: rgba(0, 0, 0, 0.5);
-      text-align: right;
-      font-family: Geometria;
-      font-size: 10px;
-      font-style: normal;
-      font-weight: 400;
-      line-height: normal;
+    &-second {
+      display: flex;
+      flex-direction: column;
+      width: 100%; 
+
+      &-item {
+        display: flex;
+        padding: 10px;
+        width: 100%;
+        
+        span {
+          font-family: Geometria;
+          font-size: 14px;
+          font-weight: 400;
+          text-align: left;
+          white-space: nowrap; 
+          overflow: hidden;
+          text-overflow: ellipsis; 
+        }
+
+        p {
+          font-family: Geometria;
+          font-size: 12px;
+          font-weight: 400;
+          margin-left: auto; 
+          text-align: right;
+          white-space: nowrap; 
+          padding-right: 20px;
+        }
+      }
     }
   }
 }

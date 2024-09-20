@@ -120,7 +120,7 @@ const ReportCampaigns = () => {
             });
         }
     }
-    
+
     const getData = async () => {
         try {
             const {dataFetch} = await UseVerify();
@@ -572,168 +572,110 @@ const ReportCampaigns = () => {
                 </table>
 
                 <div className="report-mobile">
-                    {dataPromo ? (<>
-                        {" "}
-                        {data.map((item) => (<div className="report-mobile-item">
-                            <div className="report-mobile-item-influencer">
-                                {item.instagramUsername ? item.instagramUsername : ""}
-                            </div>
-                            <div className="report-mobile-item-info">
-                                <p className="report-mobile-item-info-followers">
-                                    {" "}
-                                    {item.followersNumber ? item.followersNumber : ""}
-                                </p>
-                                <div className="report-mobile-item-info-brand">
-                                    <p className="report-mobile-item-info-value">
-                                        {" "}
-                                        {dataPromo.brand ? dataPromo.brand : ""}
-                                    </p>
-                                    <p className="report-mobile-item-info-title">Brand</p>
+                    {dataPromo && (
+                        data.map((item, indexRow) => (
+                            <div className="report-mobile-item">
+                                <div className="report-mobile-item-first">
+                                    <p>{item.instagramUsername}</p>
                                 </div>
-                                <div className="report-mobile-item-info-date-post">
-                                    <p className="report-mobile-item-info-value">
-                                        {" "}
-                                        {dataPromo.createdAt ? formatDateStringReport(dataPromo.createdAt) : ""}
-                                    </p>
-                                    <p className="report-mobile-item-info-title">
-                                        Date Post
-                                    </p>
-                                </div>
-                                <div className="report-mobile-item-info-caption">
-                                    <p className="report-mobile-item-info-value">
-                                        {" "}
-                                        {item.video.postDescription ? item.video.postDescription : ""}
-                                    </p>
-                                    <p className="report-mobile-item-info-title">Description</p>
-                                </div>
-                                <div className="report-mobile-item-info-video">
-                                    {/*<a*/}
-                                    {/*    target="_blank"*/}
-                                    {/*    className="report-mobile-item-info-value"*/}
-                                    {/*    href={dataPromo.video?.videoLink ? dataPromo.video.videoLink : ""}*/}
-                                    {/*>*/}
-                                    {/*    {" "}*/}
-                                    {/*    {dataPromo.videoLink ? dataPromo.videoLink : ""}*/}
-                                    {/*</a>*/}
-
-                                    {/*<p className="report-mobile-item-info-title">Video</p>*/}
-                                </div>
-                                <div className="report-mobile-item-info-swipe-up-link">
-                                    {/*<a*/}
-                                    {/*    target="_blank"*/}
-                                    {/*    className="report-mobile-item-info-value"*/}
-                                    {/*    href={item.swipeUpLink ? item.swipeUpLink : ""}*/}
-                                    {/*>*/}
-                                    {/*    {dataPromo.swipeUpLink ? dataPromo.swipeUpLink : ""}*/}
-                                    {/*</a>*/}
-                                    {/*<p className="report-mobile-item-info-title">*/}
-                                    {/*    Swipe Up Link*/}
-                                    {/*</p>*/}
-                                </div>
-                                <div className="report-mobile-item-info-story-tag">
-                                    <p className="report-mobile-item-info-value">
-                                        {" "}
-                                        {dataPromo.storyTag ? dataPromo.storyTag : ""}
-                                    </p>
-                                    <p className="report-mobile-item-info-title">
-                                        Story Tag
-                                    </p>
-                                </div>
-                                <div className="report-mobile-item-info-post-link">
-                                    <a
-                                        target="_blank"
-                                        className="report-mobile-item-info-value"
-                                        href={item.postLink ? item.postLink : ""}
-                                    >
-                                        {" "}
-                                        {item.postLink ? item.postLink : ""}
-                                    </a>
-                                    <p className="report-mobile-item-info-title">
-                                        Post Link
-                                    </p>
-                                </div>
-                                <div className="report-mobile-item-info-screenshot">
-                                    <a
-                                        target="_blank"
-                                        className="report-mobile-item-info-value"
-                                        href={item.screenshot ? item.screenshot : ""}
-                                    >
-                                        {" "}
-                                        {item.screenshot ? item.screenshot : ""}
-                                    </a>
-                                    <p className="report-mobile-item-info-title">
-                                        Screenshot In
-                                    </p>
-                                </div>
-                                <div className="report-mobile-item-info-impressions">
-                                    <p className="report-mobile-item-info-value">
-                                        {" "}
-                                        {item.impressions ? item.impressions : ""}
-                                    </p>
-                                    <p className="report-mobile-item-info-title">
-                                        Impressions
-                                    </p>
-                                </div>
-                                <div className="report-mobile-item-info-like">
-                                    <p className="report-mobile-item-info-value">
-                                        {" "}
-                                        {item.like ? item.like : ""}
-                                    </p>
-                                    <p className="report-mobile-item-info-title">Likes</p>
+                                <div className="report-mobile-item-second">
+                                    <div className="report-mobile-item-second-item">
+                                        <span>{item.followersNumber}</span>
+                                        <p>Total Followers</p>
+                                    </div>
+                                    <div className="report-mobile-item-second-item">
+                                        <span>{item.dateRequest ? item.dateRequest : "N/A"}</span>
+                                        <p>Date Post</p>
+                                    </div>
+                                    <div className="report-mobile-item-second-item">
+                                        <span>{item.selectedVideo ? item.selectedVideo : 'N/A'}</span>
+                                        <p>Video</p>
+                                    </div>
+                                    <div className="report-mobile-item-second-item">
+                                        <span>{item.video.postDescription ? item.video.postDescription.slice(0, 15) + '...' : 'N/A'}</span>
+                                        <p>Description</p>
+                                    </div>
+                                    <div className="report-mobile-item-second-item">
+                                        <span>{item.video ? item.video.storyTag : "N/A"}</span>
+                                        <p>Story Tag</p>
+                                    </div>
+                                    <div className="report-mobile-item-second-item">
+                                        <span>{item.video.swipeUpLink ? (
+                                            <a href={
+                                                'https://' + item.video.swipeUpLink
+                                            } target="_blank" rel="noopener noreferrer" title={item.video.swipeUpLink}>
+                                                {item.video.swipeUpLink.slice(0, 10) + '...'}
+                                            </a>
+                                        ) : (
+                                            "N/A"
+                                        )}
+                                        </span>
+                                        <p>Story Link</p>
+                                    </div>
+                                    <div className="report-mobile-item-second-item">
+                                        <span>
+                                            {item.postLink ? <button
+                                                onClick={() => {
+                                                    window.open(item.postLink, '_blank');
+                                                }}
+                                                style={{
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    justifyContent: 'space-between',
+                                                    width: 52,
+                                                    height: 28,
+                                                    borderRadius: "10px",
+                                                    paddingLeft: 3,
+                                                    paddingRight: 3,
+                                                    border: "2px solid black",
+                                                    boxSizing: 'border-box',
+                                                    margin: '0 auto',
+                                                    cursor: 'pointer',
+                                                }}>
+                                                <img src={instaIcon} alt="watch"/>
+                                                <img src={linkIcon} alt="edit"/>
+                                            </button> : "N/A"}
+                                        </span>
+                                        <p>Post Link</p>
+                                    </div>
+                                    <div className="report-mobile-item-second-item">
+                                        <span>
+                                            {item.screenshot ? <button
+                                                onClick={() => {
+                                                    window.open(item.screenshot, '_blank');
+                                                }}
+                                                style={{
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    justifyContent: 'space-between',
+                                                    width: 52,
+                                                    height: 28,
+                                                    borderRadius: "10px",
+                                                    paddingLeft: 3,
+                                                    paddingRight: 3,
+                                                    border: "2px solid black",
+                                                    boxSizing: 'border-box',
+                                                    margin: '0 auto',
+                                                    cursor: 'pointer',
+                                                }}>
+                                                <img src={imgIcon} alt="watch"/>
+                                                <img src={linkIcon} alt="edit"/>
+                                            </button> : "N/A"}
+                                        </span>
+                                        <p>Screenshot</p>
+                                    </div>  
+                                    <div className="report-mobile-item-second-item">
+                                        <span>{item.impressions ? item.impressions : 'N/A'}</span>
+                                        <p>Impressions</p>
+                                    </div>  
+                                    <div className="report-mobile-item-second-item">
+                                        <span>{item.like ? item.like : 'N/A'}</span>
+                                        <p>Likes</p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>))}
-                    </>) : null}
-                    <div
-                        className="report-mobile-item"
-                        style={{background: "#FF7A09"}}
-                    >
-                        <p className="report-mobile-item-total">
-                            TOTAL Posts: {data.length}
-                        </p>
-                    </div>
-                    <div
-                        className="report-mobile-item"
-                        style={{background: "#FF7A09"}}
-                    >
-                        <p className="report-mobile-item-total">
-                            TOTAL Stories: {data.length}
-                        </p>
-                    </div>
-                    <div
-                        className="report-mobile-item"
-                        style={{background: "#FF7A09"}}
-                    >
-                        <p className="report-mobile-item-total">
-                            TOTAL Impressions: {totalImpressions()}
-                        </p>
-                    </div>
-                    <div
-                        className="report-mobile-item"
-                        style={{background: "#FF7A09"}}
-                    >
-                        <p className="report-mobile-item-total">
-                            TOTAL Likes: {totalLikes()}
-                        </p>
-                    </div>
-                    {" "}
-                    <div
-                        className="report-mobile-item"
-                        style={{background: "#FF7A09"}}
-                    >
-                        <p className="report-mobile-item-total">
-                            TOTAL Followers: {totalFollowers()}
-                        </p>
-                    </div>
-                    {" "}
-                    <div
-                        className="report-mobile-item"
-                        style={{background: "#FF7A09"}}
-                    >
-                        <p className="report-mobile-item-total">
-                            TOTAL: {dataPromo ? dataPromo.selectPrice.price : 0}€
-                        </p>
-                    </div>
+                        ))
+                    )}
                 </div>
             </div>
             <ModalWindow isOpen={isPopup} setClose={setIsPopup}>
