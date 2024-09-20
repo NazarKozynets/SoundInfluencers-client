@@ -82,8 +82,6 @@ const ReportCampaigns = () => {
     const editCPMO = () => {
         if (dataPromo?.selectInfluencers?.find(influencer => influencer.impressions > 0)) {
             const cpm = dataPromo?.selectPrice.price / totalImpressions() * 1000;
-            console.log(cpm, 'cpm');
-            console.log(dataPromo);
             let avgCpm;
 
             if (cpm < 3) {
@@ -415,8 +413,8 @@ const ReportCampaigns = () => {
                         <p>Likes: <span>{totalLikes()}</span></p>
                     </div>
                     <div className="report-details-third">
-                        <p>CPM: <span>{cpmObj.cpm.toFixed(3)}€</span></p>
-                        <p>Average Instagram CPM: <span>{cpmObj.avgCpm}</span></p>
+                        <p>CPM: <span>{cpmObj.cpm.toFixed(2)}€</span></p>
+                        <p>Average Instagram CPM: <span>9€ to 12€</span></p>
                         <p>Result: <span>{cpmObj.result}</span></p>
                     </div>
                 </div>

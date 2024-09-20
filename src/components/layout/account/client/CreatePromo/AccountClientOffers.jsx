@@ -25,6 +25,7 @@ import {
 import MobileInfluencersList from "./AccountClientOffersComponents/MobileInfluencersList";
 import MobileInfluencersListMenu from "./AccountClientOffersComponents/MobileInfluencersList";
 import OffersFooter from "../../../../form/Offers/OffersFooterSection/OffersFooter";
+import PageLoading from "../../../../form/PageLoading/pageLoading";
 
 const AccountClientOffers = () => {
     const navigation = useNavigate();
@@ -658,75 +659,6 @@ const AccountClientOffers = () => {
         }
     };
 
-    // const createInfList = (score) => {
-    //     const list = [];
-    //     let sum = 0;
-    //     while (sum <= score) {
-    //         sum += 1;
-    //         if (sum > score) break;
-    //         list.push(<li key={sum} className="account-client-offers-text-item">
-    //             Influencer {sum}
-    //         </li>);
-    //     }
-    //     return list;
-    // };
-
-    // const toggleSelectAll = () => {
-    //     let balance = window.sessionStorage.getItem("balance");
-    //
-    //     const updateList = influencers.map((item) => {
-    //         return {
-    //             ...item, active: !isSelectAll, connect: false,
-    //         };
-    //     });
-    //
-    //     let newPrice = updateList.reduce((acc, current) => {
-    //         if (!current.price) return acc;
-    //         let price = current.price.replace(/\D/g, "");
-    //
-    //         if (current.customPrice) {
-    //             price = current.customPrice;
-    //         }
-    //
-    //         if (current.active) {
-    //             if (!current.connect) {
-    //                 if (currentPrice !== 0) {
-    //                     return acc + Number(price) * 2;
-    //                 } else {
-    //                     return acc + Number(price) * 2;
-    //                 }
-    //             } else {
-    //                 return acc;
-    //             }
-    //         } else {
-    //             return acc;
-    //         }
-    //     }, 0);
-    //
-    //     const priceOffer = prices.find((item) => item.id === currentPrice);
-    //
-    //     const filterInfluencers = updateList
-    //         .filter((item) => item.active)
-    //         .map((item) => ({
-    //             influencerId: item._id, instagramUsername: item.instagramUsername, confirmation: "wait",
-    //         }));
-    //
-    //     let totalCustomOffer = priceOffer?.price + newPrice;
-    //
-    //     dispatch(setSelectAmount(priceOffer ? totalCustomOffer : 0 + newPrice));
-    //
-    //     if (totalCustomOffer > balance) totalCustomOffer = totalCustomOffer - balance;
-    //     if (newPrice > balance) newPrice = newPrice - balance;
-    //
-    //     dispatch(setSelectPrice({
-    //         variant: currentPrice, price: priceOffer ? totalCustomOffer : 0 + newPrice,
-    //     }));
-    //
-    //     dispatch(setSelectInfluencer([...filterInfluencers]));
-    //     setInfluencers(updateList);
-    //     setIsSelectAll(!isSelectAll)
-    // };
-
     const nextForm = () => {
         if (customAmount === 0 || selectInfluencers.length === 0) return;
         dispatch(setCurrentWindow(1));
@@ -900,124 +832,131 @@ const AccountClientOffers = () => {
                     <TitleSection title="Our" span="offers"/>
                 </div>
 
-                <OffersList prices={prices}
-                            setFilteredOffersByGenres={setFilteredOffersByGenres}
-                            selectPrice={selectPrice}
-                            filteredOffersByGenres={filteredOffersByGenres}
-                            selectedOffersGenres={selectedOffersGenres}
-                            influencers={influencers}
-                            setSelectedOffersGenres={setSelectedOffersGenres}/>
-                <div className="account-client-influencers-list-title">
-                    <TitleSection title="Pick &" span="choose"/>
-                </div>
+                {influencers.length > 0 ? (
+                    <div>
+                        <OffersList prices={prices}
+                                    setFilteredOffersByGenres={setFilteredOffersByGenres}
+                                    selectPrice={selectPrice}
+                                    filteredOffersByGenres={filteredOffersByGenres}
+                                    selectedOffersGenres={selectedOffersGenres}
+                                    influencers={influencers}
+                                    setSelectedOffersGenres={setSelectedOffersGenres}/>
+                        <div className="account-client-influencers-list-title">
+                            <TitleSection title="Pick &" span="choose"/>
+                        </div>
 
-                <div className="account-client-container"
-                     style={{
-                         display: 'flex',
-                         flexDirection: 'row',
-                         marginTop: 35
-                     }}>
-                    {isMobile ? null : <OffersMenu
-                        influencers={influencers}
-                        setCheckedGenres={handleSetCheckedGenres}
-                        setCheckedCategories={handleSetCheckedCategories}
-                        setCheckedSubGenres={handleSetCheckedSubGenres}
-                        setCheckedCountries={handleSetCheckedCountries}
-                        setFilteredInfluencersByGenres={setFilteredInfluencers}
-                        setFilteredInfluencersByCountries={setFilteredInfluencers}
-                        setFilteredInfluencersByCategories={setFilteredInfluencers}
-                        checkedGenres={checkedGenres}
-                        checkedCategories={checkedCategories}
-                        checkedSubGenres={checkedSubGenres}
-                        updateFilterParams={updateFilterParams}
-                    />}
-                    <div className="account-client-container-right-side">
-                        {isMobile ? <MobileInfluencersListMenu filteredInfluencers={filteredInfluencers}
-                                                               setSearchResult={setSearchResult}
-                                                               setBudget={setBudget}
-                                                               selectedOption={filterParams.sortMethod}
-                                                               onSortChange={handleSortChange}
-                                                               influencers={influencers}
-                                                               setCheckedGenres={handleSetCheckedGenres}
-                                                               setCheckedCategories={handleSetCheckedCategories}
-                                                               setCheckedSubGenres={handleSetCheckedSubGenres}
-                                                               setCheckedCountries={handleSetCheckedCountries}
-                                                               setFilteredInfluencersByGenres={setFilteredInfluencers}
-                                                               setFilteredInfluencersByCountries={setFilteredInfluencers}
-                                                               setFilteredInfluencersByCategories={setFilteredInfluencers}
-                                                               budget={budget}
-                                                               checkedGenres={checkedGenres}
-                                                               checkedCategories={checkedCategories}
-                                                               checkedSubGenres={checkedSubGenres}
-                                                               filterParams={filterParams}
-                                                               updateFilterParams={updateFilterParams}
-                                                               applyFiltersAndSort={applyFiltersAndSort}
-                                                               setFilteredInfluencersByBudget={setFilteredInfluencersByBudget}
-                                                               setActiveIndices={setActiveIndices}/> :
-                            <div className="account-client-container-right-side-upper-side">
-                                <OffersBudgetSelect
-                                    budget={budget}
-                                    setBudget={setBudget}
-                                    applyFiltersAndSort={applyFiltersAndSort}
-                                    updateFilterParams={updateFilterParams}
-                                    setActiveIndices={setActiveIndices}
-                                    setMobileBudget={null}
-                                    setFilteredInfluencersByBudget={setFilteredInfluencersByBudget}
-                                />
-                                <div className="account-client-container-right-side-upper-side-offers-search">
-                                    <OffersSearch
-                                        filteredInfluencers={filteredInfluencers}
-                                        setSearchResult={setSearchResult}
-                                    />
-                                    <OffersSortMenu
-                                        selectedOption={filterParams.sortMethod}
-                                        onSortChange={handleSortChange}
+                        <div className="account-client-container"
+                             style={{
+                                 display: 'flex',
+                                 flexDirection: 'row',
+                                 marginTop: 35
+                             }}>
+                            {isMobile ? null : <OffersMenu
+                                influencers={influencers}
+                                setCheckedGenres={handleSetCheckedGenres}
+                                setCheckedCategories={handleSetCheckedCategories}
+                                setCheckedSubGenres={handleSetCheckedSubGenres}
+                                setCheckedCountries={handleSetCheckedCountries}
+                                setFilteredInfluencersByGenres={setFilteredInfluencers}
+                                setFilteredInfluencersByCountries={setFilteredInfluencers}
+                                setFilteredInfluencersByCategories={setFilteredInfluencers}
+                                checkedGenres={checkedGenres}
+                                checkedCategories={checkedCategories}
+                                checkedSubGenres={checkedSubGenres}
+                                updateFilterParams={updateFilterParams}
+                            />}
+                            <div className="account-client-container-right-side">
+                                {isMobile ? <MobileInfluencersListMenu filteredInfluencers={filteredInfluencers}
+                                                                       setSearchResult={setSearchResult}
+                                                                       setBudget={setBudget}
+                                                                       selectedOption={filterParams.sortMethod}
+                                                                       onSortChange={handleSortChange}
+                                                                       influencers={influencers}
+                                                                       setCheckedGenres={handleSetCheckedGenres}
+                                                                       setCheckedCategories={handleSetCheckedCategories}
+                                                                       setCheckedSubGenres={handleSetCheckedSubGenres}
+                                                                       setCheckedCountries={handleSetCheckedCountries}
+                                                                       setFilteredInfluencersByGenres={setFilteredInfluencers}
+                                                                       setFilteredInfluencersByCountries={setFilteredInfluencers}
+                                                                       setFilteredInfluencersByCategories={setFilteredInfluencers}
+                                                                       budget={budget}
+                                                                       checkedGenres={checkedGenres}
+                                                                       checkedCategories={checkedCategories}
+                                                                       checkedSubGenres={checkedSubGenres}
+                                                                       filterParams={filterParams}
+                                                                       updateFilterParams={updateFilterParams}
+                                                                       applyFiltersAndSort={applyFiltersAndSort}
+                                                                       setFilteredInfluencersByBudget={setFilteredInfluencersByBudget}
+                                                                       setActiveIndices={setActiveIndices}/> :
+                                    <div className="account-client-container-right-side-upper-side">
+                                        <OffersBudgetSelect
+                                            budget={budget}
+                                            setBudget={setBudget}
+                                            applyFiltersAndSort={applyFiltersAndSort}
+                                            updateFilterParams={updateFilterParams}
+                                            setActiveIndices={setActiveIndices}
+                                            setMobileBudget={null}
+                                            setFilteredInfluencersByBudget={setFilteredInfluencersByBudget}
+                                        />
+                                        <div className="account-client-container-right-side-upper-side-offers-search">
+                                            <OffersSearch
+                                                filteredInfluencers={filteredInfluencers}
+                                                setSearchResult={setSearchResult}
+                                            />
+                                            <OffersSortMenu
+                                                selectedOption={filterParams.sortMethod}
+                                                onSortChange={handleSortChange}
+                                            />
+                                        </div>
+                                    </div>}
+                                <div className="account-client-choose" style={{flex: 3, marginLeft: '20px'}}>
+                                    {searchResult ? (
+                                        <InfluencersList influencers={searchResult}
+                                                         activeIndices={activeIndices}
+                                                         setActiveIndices={setActiveIndices}
+                                                         selectInfluencer={selectInfluencer}
+                                                         isSearch={true}/>
+                                    ) : filteredInfluencersByBudget.length > 0 ? (
+                                        <InfluencersList influencers={filteredInfluencersByBudget}
+                                                         activeIndices={activeIndices}
+                                                         setActiveIndices={setActiveIndices}
+                                                         selectInfluencer={selectInfluencer}
+                                                         isSearch={false}/>
+                                    ) : (
+                                        <InfluencersList influencers={filteredInfluencers}
+                                                         activeIndices={activeIndices}
+                                                         setActiveIndices={setActiveIndices}
+                                                         selectInfluencer={selectInfluencer}
+                                                         isSearch={false}/>
+                                    )}
+                                </div>
+                            </div>
+                            <OffersFooter/>
+                        </div>
+
+                        {window.innerWidth < 768 && (
+                            <div>
+                                <p className="account-client-choose-total">
+                                    Total{" "}
+                                    <span
+                                        className="account-client-choose-total-span">{calculatePriceForOffersAndInfluencers(customePrice)} {currentCurrency}</span>
+                                </p>
+                                <div style={{
+                                    display: "flex",
+                                    justifyContent: "center",
+                                    marginTop: 40,
+                                }}>
+                                    <StandardButton text="Continue" onClick={nextForm}
                                     />
                                 </div>
-                            </div>}
-                        <div className="account-client-choose" style={{flex: 3, marginLeft: '20px'}}>
-                            {searchResult ? (
-                                <InfluencersList influencers={searchResult}
-                                                 activeIndices={activeIndices}
-                                                 setActiveIndices={setActiveIndices}
-                                                 selectInfluencer={selectInfluencer}
-                                                 isSearch={true}/>
-                            ) : filteredInfluencersByBudget.length > 0 ? (
-                                <InfluencersList influencers={filteredInfluencersByBudget}
-                                                 activeIndices={activeIndices}
-                                                 setActiveIndices={setActiveIndices}
-                                                 selectInfluencer={selectInfluencer}
-                                                 isSearch={false}/>
-                            ) : (
-                                <InfluencersList influencers={filteredInfluencers}
-                                                 activeIndices={activeIndices}
-                                                 setActiveIndices={setActiveIndices}
-                                                 selectInfluencer={selectInfluencer}
-                                                 isSearch={false}/>
-                            )}
-                        </div>
+                            </div>
+                        )}
                     </div>
-                    <OffersFooter/>
-                </div>
-
-                {window.innerWidth < 768 && (
-                    <div>
-                        <p className="account-client-choose-total">
-                            Total{" "}
-                            <span
-                                className="account-client-choose-total-span">{calculatePriceForOffersAndInfluencers(customePrice)} {currentCurrency}</span>
-                        </p>
-                        <div style={{
-                            display: "flex",
-                            justifyContent: "center",
-                            marginTop: 40,
-                        }}>
-                            <StandardButton text="Continue" onClick={nextForm}
-                            />
-                        </div>
+                ) : (
+                    <div style={{margin: '0 auto'}}>
+                        <PageLoading/>
                     </div>
                 )}
-                {/*<OffersFooter/>*/}
             </div>
         </section>
     );

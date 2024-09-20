@@ -72,6 +72,7 @@ const UpdateOngoingPromo = () => {
                             }
                         }
                     );
+                    console.log(responseURL);
                     const result = await axios.put(
                         `${process.env.REACT_APP_SERVER}/promos/update-ongoing?influencerId=${params.influencerId}&promoId=${params.promoId}&instagramUsername=${params.instagram}`,
                         {

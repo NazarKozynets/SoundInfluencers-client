@@ -383,28 +383,31 @@ const AccountClientCampaignStrategy = () => {
                                         fontFamily: "Geometria",
                                         fontSize: "16px",
                                         fontWeight: "700",
+                                        width: showMore ? '15%' : '30%',
                                     }}>{influencer.instagramUsername}</td>
                                     <td style={{
                                         fontFamily: "Geometria",
                                         fontSize: "16px",
                                         fontWeight: "400",
+                                        width: showMore ? '10%' : '30%',
                                     }}>{findInsta(influencer)?.followersNumber ?? 0}</td>
                                     {showMore && <td style={{
                                         backgroundColor: '#ebebfd',
                                         fontFamily: "Geometria",
                                         fontSize: "16px",
                                         fontWeight: "400",
-                                        width: '10%',
+                                        width: '15%',
                                     }}>{getDisplayGenre(findInsta(influencer)?.musicSubStyles, findInsta(influencer)?.musicStyle, findInsta(influencer)?.musicStyleOther)}</td>}
                                     {showMore && <td style={{
                                         backgroundColor: '#ebebfd',
                                         fontFamily: "Geometria",
                                         fontSize: "15px",
                                         fontWeight: "400",
+                                        width: '30%',
                                     }}
                                                      dangerouslySetInnerHTML={{__html: formatCountries(findInsta(influencer)?.countries)}}/>}
                                     <td>
-                                        <div style={{display: 'flex', alignItems: 'center'}}>
+                                        <div style={{display: 'flex', alignItems: 'center', width: showMore ? '10%' : '30%'}}>
                                             <CustomSelect
                                                 selectedOption={selectedOptionDateRequest[influencer.instagramUsername]}
                                                 setSelectedOption={(selectedOption) => {
@@ -427,7 +430,10 @@ const AccountClientCampaignStrategy = () => {
                                         </div>
                                     </td>
                                     <td>
-                                        <div style={{display: 'flex', alignItems: 'center', width: 100}}>
+                                        <div style={{
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                        }}>
                                             <CustomSelect
                                                 selectedOption={selectedVideos[influencer.instagramUsername]}
                                                 setSelectedOption={(selectedOption) => handleVideoChange(influencer.instagramUsername, selectedOption)}
