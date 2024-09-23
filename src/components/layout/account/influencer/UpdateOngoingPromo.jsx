@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import TitleSection from "../../../TitleSection";
 import FormContainer from "../../../form/FormContainer";
 import TextInput from "../../../form/TextInput";
 import StandartButton from "../../../../components/form/StandardButton/index";
-import { useNavigate, useParams } from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import axios from "axios";
 import ModalWindow from "../../../ModalWindow";
 import InputFile from "../../../form/InputFile";
@@ -25,7 +25,7 @@ const UpdateOngoingPromo = () => {
         postLink: "",
         screenshot: "",
     });
-    
+
     const [screenshot, setScreenshot] = useState(null);
     const [isWindow, setIsWindow] = useState(false);
     const [isWindowTwo, setIsWindowTwo] = useState(false);
@@ -34,12 +34,12 @@ const UpdateOngoingPromo = () => {
         if (!params.influencerId || !params.promoId || !params.instagram) {
             return navigation("/");
         }
-        
+
         try {
             const result = await axios(
                 `${process.env.REACT_APP_SERVER}/promos/get-ongoing-promo-one?influencerId=${params.influencerId}&promoId=${params.promoId}&instagramUsername=${params.instagram}`
             );
-            
+
             if (result.data.code === 200) {
                 setFormData(result.data.promo);
             }
@@ -55,7 +55,7 @@ const UpdateOngoingPromo = () => {
 
         try {
             const formDataScreenshot = new FormData();
-            formDataScreenshot.append("file", screenshot); 
+            formDataScreenshot.append("file", screenshot);
 
             if (screenshot) {
                 try {
@@ -68,7 +68,7 @@ const UpdateOngoingPromo = () => {
                             },
                             onUploadProgress: (progressEvent) => {
                                 const progress = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-                                setUploadProgress(progress); 
+                                setUploadProgress(progress);
                             }
                         }
                     );
@@ -108,6 +108,26 @@ const UpdateOngoingPromo = () => {
         }
     };
 
+    // const updateDataPostLinkAndDatePost = async () => {
+    //     if (!params.influencerId || !params.promoId) {
+    //         return navigation("/");
+    //     }
+    //
+    //     try {
+    //         const result = await axios.put(
+    //             `${process.env.REACT_APP_SERVER}/promos/update-ongoing-test?influencerId=${params.influencerId}&promoId=${params.promoId}&instagramUsername=${params.instagram}`,
+    //             formData
+    //         );
+    //
+    //         if (result.data.code === 200) {
+    //             getData();
+    //             setIsWindowTwo(true);
+    //         }
+    //     } catch (error) {
+    //         console.error("Error updating promo", error);
+    //     }
+    // }
+
     useEffect(() => {
         getData();
     }, []);
@@ -116,19 +136,19 @@ const UpdateOngoingPromo = () => {
         <section className="invoice-result">
             <div className="container-form">
                 <div className="invoice-result-block">
-                    <TitleSection title="campaign result" />
+                    <TitleSection title="campaign result"/>
 
-                    <FormContainer style={{ marginTop: "60px" }}>
+                    <FormContainer style={{marginTop: "60px"}}>
                         <TextInput
-                            style={{ maxWidth: "665px", margin: "60px auto 0 auto" }}
+                            style={{maxWidth: "665px", margin: "60px auto 0 auto"}}
                             title="Instagram link"
                             placeholder="Enter Instagram link"
                             value={formData.postLink}
-                            setValue={(value) => setFormData({ ...formData, postLink: value })}
+                            setValue={(value) => setFormData({...formData, postLink: value})}
                         />
 
                         <TextInput
-                            style={{ maxWidth: "665px", margin: "60px auto 0 auto" }}
+                            style={{maxWidth: "665px", margin: "60px auto 0 auto"}}
                             title="Date Post"
                             placeholder="Enter date post dd/mm/yyyy"
                             value={formData.datePost}
@@ -144,39 +164,39 @@ const UpdateOngoingPromo = () => {
                                     formattedValue = `${numericValue.slice(0, 2)}/${numericValue.slice(2, 4)}/${numericValue.slice(4, 8)}`;
                                 }
 
-                                setFormData({ ...formData, datePost: formattedValue });
+                                setFormData({...formData, datePost: formattedValue});
                             }}
                         />
 
                         <TextInput
-                            style={{ maxWidth: "665px", margin: "60px auto 0 auto" }}
+                            style={{maxWidth: "665px", margin: "60px auto 0 auto"}}
                             title="Impressions"
                             placeholder="Enter impressions"
                             value={formData.impressions}
-                            setValue={(value) => setFormData({ ...formData, impressions: value })}
+                            setValue={(value) => setFormData({...formData, impressions: value})}
                         />
 
                         <TextInput
-                            style={{ maxWidth: "665px", margin: "60px auto 0 auto" }}
+                            style={{maxWidth: "665px", margin: "60px auto 0 auto"}}
                             title="Likes"
                             placeholder="Enter the Likes number here"
                             value={formData.like}
-                            setValue={(value) => setFormData({ ...formData, like: value })}
+                            setValue={(value) => setFormData({...formData, like: value})}
                         />
 
                         <InputFile
-                            style={{ maxWidth: "665px", margin: "60px auto 0 auto" }}
+                            style={{maxWidth: "665px", margin: "60px auto 0 auto"}}
                             title="Screenshot insights"
                             placeholder="Attach the screenshot of the insights"
                             setValue={(value) => {
                                 setScreenshot(value);
-                                setUploadProgress(0); 
+                                setUploadProgress(0);
                             }}
                         />
 
                         {uploadProgress > 0 && (
                             <div style={{
-                                width: '80%', 
+                                width: '80%',
                                 backgroundColor: '#f0f0f0',
                                 borderRadius: '10px',
                                 margin: '20px auto',
@@ -184,21 +204,30 @@ const UpdateOngoingPromo = () => {
                                 fontSize: 14,
                                 fontWeight: 400,
                             }}>
-                                <div style={{ width: `${uploadProgress}%`, backgroundColor: '#4f91ed', height: '10px', borderRadius: '5px' }}></div>
+                                <div style={{
+                                    width: `${uploadProgress}%`,
+                                    backgroundColor: '#4f91ed',
+                                    height: '10px',
+                                    borderRadius: '5px'
+                                }}></div>
                                 <p style={{textAlign: 'center'}}>{uploadProgress}%</p>
                             </div>
                         )}
-                        
-                        <div style={{ marginTop: "60px", display: "flex", justifyContent: "center" }}>
-                            <StandartButton text="Submit" onClick={updateData} />
+
+                        <div style={{marginTop: "60px", display: "flex", justifyContent: "center"}}>
+                            <StandartButton text="Submit" onClick={updateData}/>
                         </div>
+                        {/*<div style={{marginTop: "60px", display: "flex", justifyContent: "center"}}>*/}
+                        {/*    <StandartButton text="Submit" onClick={updateDataPostLinkAndDatePost}/>*/}
+                        {/*</div>*/}
                     </FormContainer>
                 </div>
             </div>
 
             <ModalWindow header="CONGRATULATIONS!" isOpen={isWindowTwo} setClose={setIsWindowTwo}>
                 <div className="account-influencer-details-form">
-                    <div style={{ marginTop: "60px", display: "flex", justifyContent: "center", flexDirection: "column" }}>
+                    <div
+                        style={{marginTop: "60px", display: "flex", justifyContent: "center", flexDirection: "column"}}>
                         <h2
                             style={{
                                 color: "#000",

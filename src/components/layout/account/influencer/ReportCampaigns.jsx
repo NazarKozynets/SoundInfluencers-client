@@ -174,7 +174,7 @@ const ReportCampaigns = () => {
     };
 
     const navigator = useNavigate();
-
+    
     useEffect(() => {
         getData();
     }, []);
