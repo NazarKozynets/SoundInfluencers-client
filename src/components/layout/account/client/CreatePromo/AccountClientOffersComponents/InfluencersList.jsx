@@ -101,13 +101,17 @@ const InfluencersList = ({influencers, activeIndices, setActiveIndices, selectIn
         }
     };
 
+    useEffect(() => {
+        console.log("influencers", influencers);
+    }, [influencers]);
+    
     return (
         <div>
             {isSearch ? (
                 <ul className="account-client-choose-list">
                     <li
                         key={influencers.index}
-                        className={`account-client-choose-item ${influencers.connect ? "connect" : ""} ${influencers.active && !influencers.connect ? 'active' : ''} ${flippedAccountIndeces.includes(influencers.index) ? 'flipped' : ''}`}
+                        className={`account-client-choose-item ${influencers.connect ? "connect" : ""} ${activeIndices.includes(influencers.index) ? 'active' : ''} ${flippedAccountIndeces.includes(influencers.index) ? 'flipped' : ''}`}
                         onClick={() => {
                             if (!influencers.connect) {
                                 setActiveIndices(prevIndices =>

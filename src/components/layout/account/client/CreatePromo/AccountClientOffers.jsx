@@ -581,17 +581,6 @@ const AccountClientOffers = () => {
             price: totalCustomOffer,
         }));
 
-        // Обновление selectInfluencers
-        // Обновление selectInfluencers
-        // const updatedSelectInfluencers = selectInfluencers
-        //     .filter(influencer => !filterInfluencers.some(newInfluencer => newInfluencer.influencerId === influencer.influencerId))
-        //     .concat(
-        //         filterInfluencers
-        //     );
-        //
-        //
-        // dispatch(setSelectInfluencer(updatedSelectInfluencers));
-
         
         dispatch(setSelectInfluencer([...filterInfluencers]));
 
