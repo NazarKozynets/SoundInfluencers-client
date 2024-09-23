@@ -168,8 +168,12 @@ const UpdateOngoingPromo = () => {
                             style={{ maxWidth: "665px", margin: "60px auto 0 auto" }}
                             title="Screenshot insights"
                             placeholder="Attach the screenshot of the insights"
-                            setValue={(value) => setScreenshot(value)}
+                            setValue={(value) => {
+                                setScreenshot(value);
+                                setUploadProgress(0); 
+                            }}
                         />
+
                         {uploadProgress > 0 && (
                             <div style={{
                                 width: '80%', 

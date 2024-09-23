@@ -24,6 +24,7 @@ import ModalWindow from "../../../ModalWindow";
 import StandardButton from "../../../form/StandardButton";
 import acceptIcon from "../../../../images/icons/accept.svg";
 import UseVerify from "../../../../hooks/useVerify";
+import arrow from "../../../../images/icons/arrow.svg";
 
 
 const AccountClientOffer = () => {
@@ -51,15 +52,33 @@ const AccountClientOffer = () => {
   return (
     <section className="account-client">
       <div className="container">
-        <div className="account-client-block">
-          <TitleSection title="MY" span="account" />
+        <div className="account-client-block" style={{position: "relative"}}>
+          <div style={{marginTop: window.innerWidth < 768 ? 50 : 0}}>
+            <TitleSection title="MY" span="account"/>
+          </div>
+
+          <button
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: 50,
+                height: 50,
+                cursor: "pointer",
+              }}
+              onClick={() => {
+                navigation("/account/client")
+              }}
+          >
+            <img src={arrow} style={{transform: "rotate(180deg)"}}/>
+          </button>
 
           <p className="account-influencer-balance-score">
-              Balance:{" "}
-              <span className="account-influencer-balance-score-span">
+            Balance:{" "}
+            <span className="account-influencer-balance-score-span">
                 {data?.balance} €
               </span>
-            </p>
+          </p>
 
 
           <ul className="account-client-menu">
@@ -195,8 +214,8 @@ const AccountClientOffer = () => {
             <button
                 className="signup-client-modal-second"
                 style={{
-                color: "#3330E4",
-                textDecorationLine: "underline",
+                  color: "#3330E4",
+                  textDecorationLine: "underline",
                 cursor: "pointer",
               }}
               onClick={() => navigation("/account/client/ongoing-promos")}

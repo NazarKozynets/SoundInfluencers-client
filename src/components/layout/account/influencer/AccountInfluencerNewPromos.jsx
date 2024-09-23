@@ -161,10 +161,12 @@ const AcountInfluencerNewPromos = () => {
                                             <a
                                                 href={item ? item.video.videoLink : "No Data"}
                                                 className="account-client-past-promos-form-current-content-link-value"
+                                                target="_blank"
                                             >
                                                 {item ? item.video.videoLink : "No Data"}
                                             </a>
                                         </p>
+
                                         <p className="account-client-past-promos-form-current-content-desc">
                                             Description:{" "}
                                             <span

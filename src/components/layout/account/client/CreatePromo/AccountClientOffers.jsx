@@ -759,6 +759,11 @@ const AccountClientOffers = () => {
                 filtered.sort((a, b) => b.followersNumber - a.followersNumber);
                 break;
             case 'Best Match':
+                filtered.sort((a, b) => {
+                    const pricePerFollowerA = parseFloat(a.price.replace(/[^0-9.]/g, '')) / a.followersNumber;
+                    const pricePerFollowerB = parseFloat(b.price.replace(/[^0-9.]/g, '')) / b.followersNumber;
+                    return pricePerFollowerA - pricePerFollowerB; 
+                });
                 break;
             default:
                 break;

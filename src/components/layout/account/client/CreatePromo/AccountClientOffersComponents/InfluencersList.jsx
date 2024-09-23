@@ -8,18 +8,19 @@ import {
     calculatePricePerFollower
 } from "../../../../../../utils/price";
 import {useSelector} from "react-redux";
+import genres from "../../../../../form/Offers/OffersMenu/Genres/Genres";
 
 const InfluencersList = ({influencers, activeIndices, setActiveIndices, selectInfluencer, isSearch}) => {
     const [flippedAccountIndeces, setFlippedAccountIndeces] = useState([]);
-    
+
     const currentCurrency = useSelector((state) => state.createPromo.data.currency);
 
     const selectInfluencers = useSelector((state) => state.createPromo.data.selectInfluencers);
-    
+
     useEffect(() => {
         setFlippedAccountIndeces([]);
     }, [influencers])
-    
+
     const formatFollowersNumber = (number) => {
         if (number >= 1000000) {
             return (number / 1000000).toFixed(1) + 'M';
@@ -30,36 +31,68 @@ const InfluencersList = ({influencers, activeIndices, setActiveIndices, selectIn
         }
     };
     const getDisplayGenre = (musicSubStyles, musicStyle, musicStyleOther) => {
+        let result = [];
+
         const technoSubgenres = ["Hard, Peak", "Melodic, Minimal"];
         const houseSubgenres = ["Tech House", "Melodic, Afro"];
 
-        const isTechnoInStyle = musicStyle === "Techno";
-        const isHouseInStyle = musicStyle === "House";
+        const isMusicStyleTechno = musicStyle === "Techno";
+        const isMusicStyleHouse = musicStyle === "House";
 
-        const isTechnoInOther = musicStyleOther && musicStyleOther.includes("Techno");
-        const isHouseInOther = musicStyleOther && musicStyleOther.includes("House");
-
-        const hasTechnoSubgenres = musicSubStyles && musicSubStyles.some(subgenre => technoSubgenres.includes(subgenre));
-        const hasHouseSubgenres = musicSubStyles && musicSubStyles.some(subgenre => houseSubgenres.includes(subgenre));
-
-        if (musicSubStyles && (isTechnoInStyle || isTechnoInOther)) {
-            if (hasTechnoSubgenres) {
-                const allSubgenresPresent = technoSubgenres.every(subgenre => musicSubStyles.includes(subgenre));
-                return `Techno${allSubgenresPresent ? " (All)" : ""}`;
-            }
-            return "Techno";
+        if (!isMusicStyleTechno && !isMusicStyleHouse) {
+            result.push(musicStyle);
         }
 
-        if (musicSubStyles && (isHouseInStyle || isHouseInOther)) {
-            if (hasHouseSubgenres) {
-                const allSubgenresPresent = houseSubgenres.every(subgenre => musicSubStyles.includes(subgenre));
-                return `House${allSubgenresPresent ? " (All)" : ""}`;
+        if (isMusicStyleTechno && musicSubStyles.length > 0) {
+            const matchedTechnoSubgenres = musicSubStyles.filter(subStyle => technoSubgenres.includes(subStyle));
+
+            if (matchedTechnoSubgenres.length === technoSubgenres.length) {
+                result.push("Techno (All)");
+            } else if (matchedTechnoSubgenres.length === 1) {
+                const subStyle = matchedTechnoSubgenres[0];
+                if (subStyle === "Hard, Peak") {
+                    result.push("Techno (Hard Peak)");
+                }
+                if (subStyle === "Melodic, Minimal") {
+                    result.push("Techno (Melodic Minimal)");
+                }
             }
-            return "House";
         }
 
-        return musicStyle;
+        if (isMusicStyleHouse && musicSubStyles.length > 0) {
+            const matchedHouseSubgenres = musicSubStyles.filter(subStyle => houseSubgenres.includes(subStyle));
+
+            if (matchedHouseSubgenres.length === houseSubgenres.length) {
+                result.push("House (All)");
+            } else if (matchedHouseSubgenres.length === 1) {
+                const subStyle = matchedHouseSubgenres[0];
+                if (subStyle === "Tech House") {
+                    result.push("House (Tech House)");
+                }
+                if (subStyle === "Melodic, Afro") {
+                    result.push("House (Melodic Afro)");
+                }
+            }
+        }
+
+        if (musicStyleOther && musicStyleOther.length > 0) {
+            musicStyleOther.forEach(genre => {
+                    if (genres[genre]) {
+                        result.push(genres[genre]);
+                    } else {
+                        result.push(genre);
+                    }
+                }
+            );
+        }
+        
+        if (result.length > 5) {
+            result = result.slice(0, 5);
+        }
+        return result.length > 0 ? result.map((genre, index) => <li key={index}>{genre}</li>) : <li>N/A</li>;
     };
+
+
     const handleSeeMoreClick = (index) => {
         if (flippedAccountIndeces.includes(index)) {
             setFlippedAccountIndeces(prevIndices => prevIndices.filter(i => i !== index));
@@ -67,7 +100,7 @@ const InfluencersList = ({influencers, activeIndices, setActiveIndices, selectIn
             setFlippedAccountIndeces(prevIndices => [...prevIndices, index]);
         }
     };
-    
+
     return (
         <div>
             {isSearch ? (
@@ -137,7 +170,7 @@ const InfluencersList = ({influencers, activeIndices, setActiveIndices, selectIn
                                 >See More</button>
                             )}
                         </div>
-                    
+
                         {flippedAccountIndeces.includes(influencers.index) && (
                             <div
                                 className={`account-client-choose-item-expanded-content ${influencers.connect ? 'connect' : ''} ${activeIndices.includes(influencers.index) ? 'active' : ''}`}>
@@ -166,16 +199,7 @@ const InfluencersList = ({influencers, activeIndices, setActiveIndices, selectIn
                                         <span
                                             className="account-client-choose-item-back-genres-title">Genres</span>
                                             <ul className="account-client-choose-item-back-right-side-genres">
-                                                {influencers.musicStyle && influencers.musicSubStyles && (
-                                                    <li>{getDisplayGenre(influencers.musicSubStyles, influencers.musicStyle, influencers.musicStyleOther)}</li>
-                                                )}
-                                                {influencers.musicStyleOther && influencers.musicStyleOther.map((genre, index) => (
-                                                    <li key={index}>
-                                                        {influencers.musicSubStyles && (genre === "Techno" || genre === "House") ? (
-                                                            getDisplayGenre(influencers.musicSubStyles, genre, influencers.musicStyleOther)
-                                                        ) : (genre)}
-                                                    </li>
-                                                ))}
+                                                {getDisplayGenre(influencers.musicSubStyles, influencers.musicStyle, influencers.musicStyleOther)}
                                             </ul>
                                         </div>
                                     </div>
@@ -291,16 +315,7 @@ const InfluencersList = ({influencers, activeIndices, setActiveIndices, selectIn
                                         <span
                                             className="account-client-choose-item-back-genres-title">Genres</span>
                                             <ul className="account-client-choose-item-back-right-side-genres">
-                                                {item.musicStyle && item.musicSubStyles && (
-                                                    <li>{getDisplayGenre(item.musicSubStyles, item.musicStyle, item.musicStyleOther)}</li>
-                                                )}
-                                                {item.musicStyleOther && item.musicStyleOther.map((genre, index) => (
-                                                    <li key={index}>
-                                                        {item.musicSubStyles && (genre === "Techno" || genre === "House") ? (
-                                                            getDisplayGenre(item.musicSubStyles, genre, item.musicStyleOther)
-                                                        ) : (genre)}
-                                                    </li>
-                                                ))}
+                                                {getDisplayGenre(item.musicSubStyles, item.musicStyle, item.musicStyleOther)}
                                             </ul>
                                         </div>
                                     </div>
