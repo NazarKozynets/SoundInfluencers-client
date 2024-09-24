@@ -569,7 +569,12 @@ const AccountClientCampaignStrategy = () => {
                                                     className="account-client-campaign-strategy-mobile-table-row-content-video-edit-button"
                                                     onClick={() => {
                                                         const video = dataPromo.videos.find(video => video.videoLink === selectedVideos[influencer.instagramUsername].value);
-                                                        setSelectedVideoToEdit(video);
+                                                        const newSelectedVideo = {
+                                                            ...video,
+                                                            instagramUsername: influencer.instagramUsername
+                                                        };
+
+                                                        setSelectedVideoToEdit(newSelectedVideo);
                                                         setEditCampaign(true);
                                                     }}
                                                     style={{
