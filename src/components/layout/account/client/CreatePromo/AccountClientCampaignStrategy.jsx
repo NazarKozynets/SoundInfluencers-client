@@ -230,10 +230,10 @@ const AccountClientCampaignStrategy = () => {
         setSelectedVideos(newSelectedVideos);
     };
 
-    const EditCampaignForm = () => {
+    const EditCampaignForm = ({instagramUsername}) => {
         const video = selectedVideoToEdit;
         const videoIndex = dataPromo.videos.findIndex(v => v.videoLink === video.videoLink);
-
+        
         const [videoParams, setVideoParams] = useState({
             videoLink: video.videoLink,
             postDescription: video.postDescription,
@@ -255,6 +255,11 @@ const AccountClientCampaignStrategy = () => {
                 videoData: videoParams
             }));
             setEditCampaign(false);
+            //если этот пользователь уже выбрал видео, то обновляем его видео
+            setSelectedVideos((prevSelectedVideos) => ({
+                ...prevSelectedVideos,
+                [instagramUsername]: {value: videoParams.videoLink, label: `Video ${videoIndex + 1}`}
+            }));
         };
 
         return (
@@ -313,11 +318,21 @@ const AccountClientCampaignStrategy = () => {
                     <StandardButton text="Save" style={{
                         width: "100%",
                         marginTop: 20,
-                    }} onClick={handleSave}/>
+                    }} onClick={() => {
+                        handleSave();
+                    }}/>
                 </form>
             </div>
         );
     };
+    
+    useEffect(() => {
+        console.log(selectedVideoToEdit, 'selectedVideoToEdit')
+    },  [selectedVideoToEdit])
+
+    useEffect(() => {
+        console.log(selectedVideos, 'selectedVideos')
+    },  [selectedVideos])
 
     return (
         <section className="account-client">
@@ -443,7 +458,12 @@ const AccountClientCampaignStrategy = () => {
                                                 <button
                                                     onClick={() => {
                                                         const video = dataPromo.videos.find(video => video.videoLink === selectedVideos[influencer.instagramUsername].value);
-                                                        setSelectedVideoToEdit(video);
+                                                        const newSelectedVideo = {
+                                                            ...video,
+                                                            instagramUsername: influencer.instagramUsername 
+                                                        };
+
+                                                        setSelectedVideoToEdit(newSelectedVideo);
                                                         setEditCampaign(true);
                                                     }}
                                                     style={{
@@ -602,7 +622,7 @@ const AccountClientCampaignStrategy = () => {
                             setEditCampaign(false);
                         }}
                     >
-                        <EditCampaignForm/>
+                        <EditCampaignForm instagramUsername={selectedVideoToEdit.instagramUsername}/>
                     </ModalWindow>
                 )
             }

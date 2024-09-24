@@ -159,11 +159,11 @@ const AcountInfluencerNewPromos = () => {
                                         <p className="account-client-past-promos-form-current-content-link">
                                             Videolink:{" "}
                                             <a
-                                                href={item ? item.video.videoLink : "No Data"}
+                                                href={item ? item.video?.videoLink : "No Data"}
                                                 className="account-client-past-promos-form-current-content-link-value"
                                                 target="_blank"
                                             >
-                                                {item ? item.video.videoLink : "No Data"}
+                                                {item ? item.video?.videoLink : "No Data"}
                                             </a>
                                         </p>
 
@@ -171,21 +171,21 @@ const AcountInfluencerNewPromos = () => {
                                             Description:{" "}
                                             <span
                                                 className="account-client-past-promos-form-current-content-desc-value">
-                        {item ? item.video.postDescription : "No Data"}
+                        {item ? item.video?.postDescription : "No Data"}
                       </span>
                                         </p>
                                         <p className="account-client-past-promos-form-current-content-desc">
                                             Story Link:{" "}
                                             <span
                                                 className="account-client-past-promos-form-current-content-desc-value">
-                        {item ? item.video.swipeUpLink : "No Data"}
+                        {item ? item.video?.swipeUpLink : "No Data"}
                       </span>
                                         </p>
                                         <p className="account-client-past-promos-form-current-content-desc">
                                             Story Tag:{" "}
                                             <span
                                                 className="account-client-past-promos-form-current-content-desc-value">
-                        {item ? item.video.storyTag : "No Data"}
+                        {item ? item.video?.storyTag : "No Data"}
                       </span>
                                         </p>
                                         <p className="account-client-past-promos-form-current-content-date">
@@ -199,7 +199,7 @@ const AcountInfluencerNewPromos = () => {
                                             Special Requests:{" "}
                                             <span
                                                 className="account-client-past-promos-form-current-content-wish-value">
-                        {item ? item.video.specialWishes : "No Data"}
+                        {item ? item.video?.specialWishes : "No Data"}
                       </span>
                                         </p>
                                     </div>
