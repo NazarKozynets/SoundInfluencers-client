@@ -255,11 +255,20 @@ const AccountClientCampaignStrategy = () => {
                 videoData: videoParams
             }));
             setEditCampaign(false);
-            //если этот пользователь уже выбрал видео, то обновляем его видео
-            setSelectedVideos((prevSelectedVideos) => ({
-                ...prevSelectedVideos,
-                [instagramUsername]: {value: videoParams.videoLink, label: `Video ${videoIndex + 1}`}
-            }));
+            setSelectedVideos((prevSelectedVideos) => {
+                const updatedSelectedVideos = { ...prevSelectedVideos };
+
+                Object.keys(updatedSelectedVideos).forEach((user) => {
+                    if (updatedSelectedVideos[user].value === video.videoLink) {
+                        updatedSelectedVideos[user] = {
+                            value: videoParams.videoLink,
+                            label: `Video ${videoIndex + 1}`
+                        };
+                    }
+                });
+
+                return updatedSelectedVideos;
+            });
         };
 
         return (
@@ -326,10 +335,6 @@ const AccountClientCampaignStrategy = () => {
         );
     };
     
-    useEffect(() => {
-        console.log(selectedVideoToEdit, 'selectedVideoToEdit')
-    },  [selectedVideoToEdit])
-
     useEffect(() => {
         console.log(selectedVideos, 'selectedVideos')
     },  [selectedVideos])
@@ -458,6 +463,7 @@ const AccountClientCampaignStrategy = () => {
                                                 <button
                                                     onClick={() => {
                                                         const video = dataPromo.videos.find(video => video.videoLink === selectedVideos[influencer.instagramUsername].value);
+                                                        console.log(video, 'video')
                                                         const newSelectedVideo = {
                                                             ...video,
                                                             instagramUsername: influencer.instagramUsername 

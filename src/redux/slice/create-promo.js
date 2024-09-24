@@ -19,9 +19,9 @@ const initialState = {
             {
                 videoLink: "",
                 postDescription: "",
-                storyTag: "",
-                swipeUpLink: "",
-                specialWishes: "",
+                storyTag: " ",
+                swipeUpLink: " ",
+                specialWishes: " ",
             },
         ],
     },

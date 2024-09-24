@@ -24,9 +24,6 @@ const AccountClientPostContent = () => {
         campaignName: false,
         videoLink: false,
         postDescription: false,
-        storyTag: false,
-        swipeUpLink: false,
-        specialWishes: false,
         createdAt: false,
     });
 
@@ -34,7 +31,7 @@ const AccountClientPostContent = () => {
         const today = new Date().toISOString().split("T")[0];
         dispatch(setCreatedAt(today));
     }, [dispatch]);
-    
+
     const handleVideoChange = (index, field, value) => {
         const updatedVideo = {...dataPromo.videos[index], [field]: value};
         dispatch(updateVideo({index, videoData: updatedVideo}));
@@ -66,10 +63,7 @@ const AccountClientPostContent = () => {
         dataPromo.videos.forEach((video, index) => {
             if (
                 video.videoLink === "" ||
-                video.postDescription === "" ||
-                video.storyTag === "" ||
-                video.swipeUpLink === "" ||
-                video.specialWishes === ""
+                video.postDescription === "" 
             ) {
                 haveError = true;
                 setFormError((prev) => ({
@@ -127,17 +121,17 @@ const AccountClientPostContent = () => {
                             </p>
                             <FormContainer style={{marginTop: "40px"}}>
                                 <div style={{position: "relative"}}>
-                                    {index > 0 && (<button 
+                                    {index > 0 && (<button
                                         id="account-client-post-delete-button"
                                         onClick={() => dispatch(removeVideo(index))}
                                         style={{
-                                        position: "absolute",
-                                        top: "-45px",
-                                        right: "20px",
-                                        background: "none",
-                                        border: "none",
-                                        cursor: "pointer",
-                                    }}>
+                                            position: "absolute",
+                                            top: "-45px",
+                                            right: "20px",
+                                            background: "none",
+                                            border: "none",
+                                            cursor: "pointer",
+                                        }}>
                                         <img style={{width: 25, height: 25}} src={close} alt={'close'}/>
                                     </button>)}
                                     <form className="account-client-post">
@@ -182,13 +176,6 @@ const AccountClientPostContent = () => {
                                             setValue={(value) =>
                                                 handleVideoChange(index, "storyTag", value)
                                             }
-                                            error={formError[`video${index}`]?.storyTag}
-                                            onFocus={() =>
-                                                setFormError({
-                                                    ...formError,
-                                                    [`video${index}`]: false,
-                                                })
-                                            }
                                             silverColor={true}
                                         />
                                         <TextInput
@@ -199,13 +186,6 @@ const AccountClientPostContent = () => {
                                             setValue={(value) =>
                                                 handleVideoChange(index, "swipeUpLink", value)
                                             }
-                                            error={formError[`video${index}`]?.swipeUpLink}
-                                            onFocus={() =>
-                                                setFormError({
-                                                    ...formError,
-                                                    [`video${index}`]: false,
-                                                })
-                                            }
                                             silverColor={true}
                                         />
                                         <TextArea
@@ -215,13 +195,6 @@ const AccountClientPostContent = () => {
                                             value={video.specialWishes}
                                             setValue={(value) =>
                                                 handleVideoChange(index, "specialWishes", value)
-                                            }
-                                            error={formError[`video${index}`]?.specialWishes}
-                                            onFocus={() =>
-                                                setFormError({
-                                                    ...formError,
-                                                    [`video${index}`]: false,
-                                                })
                                             }
                                         />
                                     </form>
