@@ -47,6 +47,8 @@ import TermsClient from "./pages/terms-client";
 import TermsInfluencer from "./pages/terms-influencer";
 import JivoChat from "./components/JivoChat";
 import AccountClientListOffers from "./pages/account/client/chooseOffers";
+import PromoShare from "./pages/account/influencer/promo-share";
+import PromoSharePage from "./pages/account/influencer/promo-share";
 
 const App = () => {
     return (
@@ -285,6 +287,7 @@ const App = () => {
                     <Route path="/terms-client" element={<TermsClient/>}/>
                     <Route path="/terms-influencer" element={<TermsInfluencer/>}/>
                     <Route path="/" element={<PublicRoute element={Signup}/>}/>
+                    <Route path="/promo-share/:promoId" element={<PromoSharePage/>} />
                 </Routes>
             </ThemeProvider>
         </>

@@ -117,3 +117,16 @@ export function formatDateStringReport(inputDateString) {
 
   return formattedDate;
 }
+
+export function formatLink(inputLink) {
+  // Убираем пробелы
+  const cleanedLink = inputLink.replace(/\s/g, "");
+
+  // Проверяем, начинается ли строка с http:// или https://
+  const hasProtocol = /^https?:\/\//i.test(cleanedLink);
+
+  // Если протокол отсутствует, добавляем https:// в начало
+  const formattedLink = hasProtocol ? cleanedLink : `https://${cleanedLink}`;
+
+  return formattedLink;
+}

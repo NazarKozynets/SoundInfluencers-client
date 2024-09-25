@@ -13,6 +13,14 @@
     }
   }
 
+  &-campaign-strategy-share {
+    @media screen and (max-width: 768px) {
+      margin-top: 30px !important;
+      display: flex;
+      flex-direction: column;
+    }
+  }
+  
   &-campaign-strategy-title {
     p {
       text-align: center;
@@ -22,7 +30,7 @@
     }
 
     @media screen and (max-width: 768px) {
-      margin-top: 50px;
+      margin-top: 30px !important;
       display: flex;
       flex-direction: column;
     }
@@ -78,7 +86,7 @@
     @media screen and (max-width: 768px) {
       padding: 0 20px;
       flex-direction: column;
-      margin: 35px 0 0 0;
+      margin: -35px 0 0 0;
 
       p {
         font-size: 20px;

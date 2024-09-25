@@ -1,31 +1,23 @@
 import React, {useEffect, useState} from "react";
-import TitleSection from "../../../TitleSection";
-import {useTable} from "react-table";
-import {Form, useParams} from "react-router-dom";
-import axios, {get} from "axios";
 import UseVerify from "../../../../hooks/useVerify";
-import {
-    extractNumber, formatDateString, formatDateStringReport, formatLink
-} from "../../../../utils/validations";
-
-import {useNavigate} from "react-router-dom";
+import axios from "axios";
+import {useNavigate, useParams} from "react-router-dom";
 import arrow from "../../../../images/icons/arrow.svg";
+import FormContainer from "../../../form/FormContainer";
+import TitleSection from "../../../TitleSection";
 import TextInput from "../../../form/TextInput";
 import StandardButton from "../../../form/StandardButton";
-import {setClearCampaignDetails, setClearForm, setCurrentWindow} from "../../../../redux/slice/create-promo";
-import FormContainer from "../../../form/FormContainer";
+import videoIcon from "../../../../images/icons/iconsForCampaignReport/video 1.svg";
+import linkIcon from "../../../../images/icons/iconsForCampaignReport/link 1.svg";
+import {extractNumber, formatLink} from "../../../../utils/validations";
+import instaIcon from "../../../../images/icons/iconsForCampaignReport/instagram 1.svg";
+import imgIcon from "../../../../images/icons/iconsForCampaignReport/image- 1.svg";
 import ModalWindow from "../../../ModalWindow";
 import acceptIcon from "../../../../images/icons/accept.svg";
-import imgIcon from "../../../../images/icons/iconsForCampaignReport/image- 1.svg";
-import instaIcon from "../../../../images/icons/iconsForCampaignReport/instagram 1.svg";
-import linkIcon from "../../../../images/icons/iconsForCampaignReport/link 1.svg";
-import videoIcon from "../../../../images/icons/iconsForCampaignReport/video 1.svg";
-import ShareComponent from "../../../form/SharePromoLink/SharePromoLink";
+import {setClearForm, setCurrentWindow} from "../../../../redux/slice/create-promo";
 
-const ReportCampaigns = () => {
+const PromoShare = () => {
     const params = useParams();
-    const [company, setCompany] = useState({});
-    const [dataPromo, setDataPromo] = useState(null);
     const [data, setData] = useState([{
         name: "Techno TV",
         score: "181000",
@@ -40,14 +32,7 @@ const ReportCampaigns = () => {
         impressions: "5388",
         like: "46",
     },]);
-    const [valueForSendingInvoiceWithoutPONumber, setValueForSendingInvoiceWithoutPONumber] = useState("");
-    const [valueForSendingInvoiceWithPONumber, setValueForSendingInvoiceWithPONumber] = useState("");
-    const [valueForPONumber, setValueForPONumber] = useState("");
-    const [poNumber, setPoNumber] = useState("");
-    const [isPopup, setIsPopup] = useState(false);
-
-    const navigation = useNavigate();
-
+    const [dataPromo, setDataPromo] = useState();
     const [headers] = useState([{
         Header: "Date Post", accessor: "Date Post",
     }, {
@@ -74,12 +59,11 @@ const ReportCampaigns = () => {
         avgCpm: '',
         result: '',
     });
-    const navigate = useNavigate();
-
+    
     useEffect(() => {
         editCPMO();
     }, [dataPromo])
-
+    
     const editCPMO = () => {
         if (dataPromo?.selectInfluencers?.find(influencer => influencer.impressions > 0)) {
             const cpm = dataPromo?.selectPrice.price / totalImpressions() * 1000;
@@ -120,36 +104,6 @@ const ReportCampaigns = () => {
         }
     }
 
-    const getData = async () => {
-        try {
-            const {dataFetch} = await UseVerify();
-            const result = await axios(
-                `${process.env.REACT_APP_SERVER}/promos/ongoing/one?id=${params.id}&userId=${dataFetch._id}`
-            );
-            setCompany(dataFetch);
-
-            if (result.data.code === 200) {
-                setDataPromo(result.data.promo);
-
-                const resultInfluencers = result.data.promo.selectInfluencers.map((influencer) => {
-                    if (result.data.promo.videos && influencer.selectedVideo) {
-                        const video = result.data.promo.videos.find(videoItem => videoItem.videoLink === influencer.selectedVideo);
-
-                        return {
-                            ...influencer,
-                            video: video || null
-                        };
-                    }
-                    return influencer;
-                });
-
-                setData(resultInfluencers);
-            }
-        } catch (err) {
-            console.log(err);
-        }
-    };
-
     const totalFollowers = () => {
         const total = data.reduce((prev, current) => {
             return prev + extractNumber(current.followersNumber);
@@ -173,262 +127,47 @@ const ReportCampaigns = () => {
 
         return total;
     };
+    
+    const getData = async () => {
+        try {
+            const result = await axios(
+                `${process.env.REACT_APP_SERVER}/promos/share-link?promoId=${params.promoId}`
+            );
+            if (result.data.code === 200) {
+                setDataPromo(result.data.promo);
 
-    const navigator = useNavigate();
+                const resultInfluencers = result.data.promo.selectInfluencers.map((influencer) => {
+                    if (result.data.promo.videos && influencer.selectedVideo) {
+                        const video = result.data.promo.videos.find(videoItem => videoItem.videoLink === influencer.selectedVideo);
 
+                        return {
+                            ...influencer,
+                            video: video || null
+                        };
+                    }
+                    return influencer;
+                });
+
+                setData(resultInfluencers);
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    };
+    
     useEffect(() => {
         getData();
     }, []);
-
-    const createTransferForSendingInvoiceWithoutPO = async () => {
-        const promoId = dataPromo?._id;
-        try {
-            const {dataFetch} = await UseVerify();
-            if (!promoId) {
-                console.error('promoId is not set');
-                return;
-            }
-            const result = await axios.put(
-                `${process.env.REACT_APP_SERVER}/promos/update-estimate?isPoNeed=false`,
-                null,
-                {
-                    params: {
-                        promoId: promoId,
-                    }
-                }
-            );
-            if (result.data.status === 200) {
-                const result = await axios.post(
-                    `${process.env.REACT_APP_SERVER}/payment/create-order-tranfer`,
-                    {
-                        nameProduct: `Offers ${dataPromo.selectPrice.variant}`,
-                        userId: dataFetch._id,
-                        amount: dataPromo.selectPrice.price,
-                        emailForSendingInvoice: valueForSendingInvoiceWithoutPONumber,
-                    }
-                );
-                setIsPopup(true);
-            }
-        } catch (err) {
-            console.log(err);
-        }
-    }
-
-    const createTransferForSendingInvoiceWithPO = async () => {
-        try {
-            const promoId = dataPromo?._id;
-            const {dataFetch} = await UseVerify();
-            if (!promoId) {
-                console.error('promoId is not set');
-                return;
-            }
-            const result = await axios.put(
-                `${process.env.REACT_APP_SERVER}/promos/update-estimate?isPoNeed=true`,
-                null,
-                {
-                    params: {
-                        promoId: promoId,
-                    }
-                }
-            );
-            if (result.data.status === 200) {
-                const result = await axios.post(
-                    `${process.env.REACT_APP_SERVER}/payment/create-order-tranfer`,
-                    {
-                        nameProduct: `Offers ${dataPromo.selectPrice.variant}`,
-                        userId: dataFetch._id,
-                        amount: dataPromo.selectPrice.price,
-                        emailForSendingInvoice: valueForSendingInvoiceWithPONumber,
-                        poNumber: valueForPONumber,
-                    }
-                );
-                setIsPopup(true);
-            }
-        } catch (err) {
-            console.log(err);
-        }
-    }
-
-    const createShareLink = () => {
-        try {
-            const promoId = dataPromo?._id;
-            if (!promoId) {
-                console.error('promoId is not set');
-                return '';
-            }
-            return `https://nazar.soundinfluencers.com/promo-share/${promoId}`;
-        } catch (err) {
-            console.log(err);
-            return '';
-        }
-    };
-
+    
     return (
         <section className="report">
-            {dataPromo?.paymentType === "PO request" && (dataPromo?.statusPromo === 'po waiting' || dataPromo?.statusPromo === 'estimate') && (
-                <div className='report-po-form'>
-                    <button
-                        style={{
-                            position: "absolute",
-                            top: '22%',
-                            left: '18%',
-                            display: window.innerWidth > 768 ? '' : "none",
-                            width: 50,
-                            height: 50,
-                            cursor: "pointer",
-                        }}
-                        onClick={() => {
-                            navigator("/account/client/ongoing-promos");
-                        }}
-                    >
-                        <img src={arrow} style={{transform: "rotate(180deg)"}}/>
-                    </button>
-                    <FormContainer style={{padding: '30px 0 20px 0', marginTop: window.innerWidth > 768 ? '' : '40px'}}>
-                        <div className="report-po-form-title">
-                            <TitleSection title='PO' span='request'/>
-                        </div>
-                        <div className="account-client-payment-po">
-                            <div className="account-client-payment-po-container">
-                                <div className="account-client-payment-po-container-first">
-                                    <span>#1</span>
-                                    <p>SEND ORDER DETAILS TO: </p>
-                                    <TextInput
-                                        placeholder="Enter email"
-                                        style={{marginTop: 10}}
-                                        value={valueForSendingInvoiceWithoutPONumber}
-                                        formError={false}
-                                        setValue={setValueForSendingInvoiceWithoutPONumber}
-                                        silverColor={true}
-                                    />
-                                    <StandardButton
-                                        onClick={() => {
-                                            if (valueForSendingInvoiceWithoutPONumber !== "") {
-                                                createTransferForSendingInvoiceWithoutPO();
-                                                getData();
-                                            }
-                                        }}
-                                        style={{
-                                            width: 102,
-                                            height: 48,
-                                            fontFamily: "Geometria",
-                                            fontSize: "18px",
-                                            marginTop: '13px',
-                                            fontWeight: "700",
-                                        }} text="SEND"/>
-                                </div>
-                                <div className="account-client-payment-po-container-first">
-                                    <span>#2</span>
-                                    <p>ADD PO NUMBER HERE: </p>
-                                    <TextInput
-                                        placeholder="Enter PO Number"
-                                        style={{marginTop: 10}}
-                                        value={valueForPONumber}
-                                        formError={false}
-                                        setValue={setValueForPONumber}
-                                        silverColor={true}
-                                    />
-                                    <StandardButton
-                                        onClick={() => {
-                                            setPoNumber(valueForPONumber);
-                                        }}
-                                        style={{
-                                            width: 102,
-                                            height: 48,
-                                            fontFamily: "Geometria",
-                                            fontSize: "18px",
-                                            marginTop: '13px',
-                                            fontWeight: "700",
-                                        }} text="Add"/>
-                                </div>
-                                <div className="account-client-payment-po-container-first">
-                                    <span>#3</span>
-                                    <p>SEND ORDER DETAILS WITH PO TO: </p>
-                                    <TextInput
-                                        placeholder="Enter email"
-                                        style={{marginTop: 10, width: 205}}
-                                        value={valueForSendingInvoiceWithPONumber}
-                                        formError={false}
-                                        setValue={setValueForSendingInvoiceWithPONumber}
-                                        silverColor={true}
-                                    />
-                                    <StandardButton
-                                        onClick={() => {
-                                            if (poNumber !== "" && valueForSendingInvoiceWithPONumber !== "") {
-                                                createTransferForSendingInvoiceWithPO();
-                                                getData();
-                                            }
-                                        }}
-                                        style={{
-                                            width: 102,
-                                            height: 48,
-                                            fontFamily: "Geometria",
-                                            fontSize: "18px",
-                                            fontWeight: "700",
-                                            marginTop: '13px'
-                                        }} text="SEND"/>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="button-container"
-                             style={{
-                                 display: 'flex', justifyContent: 'center', marginTop: '57px'
-                             }}>
-                            <StandardButton
-                                onClick={() => {
-                                    // setIsPoRequestNeed(false);
-                                    // setTranfertCurrent("");
-                                    // dispatch(setClearForm());
-                                    // dispatch(setClearCampaignDetails());
-                                    // dispatch(setCurrentWindow(0));
-                                    // navigation('/');
-                                }}
-                                text="Confirm Process Completed"
-                                style={{
-                                    width: 300,
-                                    height: 60,
-                                    fontFamily: "Geometria",
-                                    fontSize: "22px",
-                                    fontWeight: "700",
-                                    marginBottom: 20,
-                                }}
-                            />
-                        </div>
-                    </FormContainer>
-                </div>
-            )}
-
             <div style={{position: "relative"}}>
                 <div className="report-campaign-strategy-title"
                      style={{marginTop: (dataPromo?.statusPromo === 'po waiting' || dataPromo?.statusPromo === 'estimate') ? '100px' : '0'}}>
-                    {(dataPromo?.statusPromo !== 'po waiting' && dataPromo?.statusPromo !== 'estimate') && window.innerWidth > 768 && (
-                        <button
-                            style={{
-                                position: "absolute", top: '0%', left: '8%', width: 50, height: 50, cursor: "pointer",
-                            }}
-                            onClick={() => {
-                                navigator("/account/client/ongoing-promos");
-                            }}
-                        >
-                            <img src={arrow} style={{transform: "rotate(180deg)"}}/>
-                        </button>
-                    )}
                     <TitleSection title="Report" span="of the campaign"/>
                     <p>{dataPromo?.campaignName}</p>
-
-                    {dataPromo?.statusPromo === 'finally' && window.innerWidth > 768 && (
-                        <div className="report-campaign-strategy-share" style={{
-                            position: "absolute", top: '0%', right: '0%', cursor: "pointer",
-                        }}>
-                            <ShareComponent shareLink={createShareLink()}/>
-                        </div>
-                    )}
                 </div>
 
-                {window.innerWidth < 768 && (
-                    <div className="report-campaign-strategy-share">
-                        <ShareComponent shareLink={createShareLink()}/>
-                    </div>
-                )}
                 <div className="report-details">
                     <div className="report-details-first">
                         <p>Date Submitted: <span>{new Date(dataPromo?.createdAt).toLocaleDateString('en-GB')}</span></p>
@@ -710,47 +449,8 @@ const ReportCampaigns = () => {
                     )}
                 </div>
             </div>
-            <ModalWindow isOpen={isPopup} setClose={setIsPopup}>
-                <div className="signup-client-modal">
-                    <img className="signup-client-modal-icon" src={acceptIcon}/>
-
-                    <h2 className="signup-client-modal-title">Congratulations!</h2>
-
-                    <p className="signup-client-modal-second">
-                        You can now check the status of your Promotion request in the{" "}
-                        <button
-                            className="signup-client-modal-second"
-                            style={{
-                                color: "#3330E4",
-                                textDecorationLine: "underline",
-                                cursor: "pointer",
-                            }}
-                            onClick={() => {
-                                setClearForm();
-                                setCurrentWindow(0);
-                                navigation("/account/client/ongoing-promos")
-                            }}
-                        >
-                            "Ongoing Promo"
-                        </button>
-                    </p>
-
-                    <StandardButton
-                        text="Ok"
-                        style={{
-                            padding: "8px 80px",
-                            marginTop: "30px",
-                            marginLeft: "auto",
-                            marginRight: "auto",
-                        }}
-                        onClick={() => {
-                            setIsPopup(false);
-                        }}
-                    />
-                </div>
-            </ModalWindow>
         </section>
     );
 };
 
-export default ReportCampaigns;
+export default PromoShare;

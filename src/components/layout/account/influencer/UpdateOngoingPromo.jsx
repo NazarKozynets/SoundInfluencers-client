@@ -66,10 +66,6 @@ const UpdateOngoingPromo = () => {
                             headers: {
                                 "Content-Type": "multipart/form-data",
                             },
-                            onUploadProgress: (progressEvent) => {
-                                const progress = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-                                setUploadProgress(progress);
-                            }
                         }
                     );
                     console.log(responseURL);
@@ -190,9 +186,10 @@ const UpdateOngoingPromo = () => {
                             placeholder="Attach the screenshot of the insights"
                             setValue={(value) => {
                                 setScreenshot(value);
-                                setUploadProgress(0);
                             }}
+                            setUploadProgress={setUploadProgress} 
                         />
+
 
                         {uploadProgress > 0 && (
                             <div style={{
