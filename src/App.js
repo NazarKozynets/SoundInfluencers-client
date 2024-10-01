@@ -49,6 +49,12 @@ import JivoChat from "./components/JivoChat";
 import AccountClientListOffers from "./pages/account/client/chooseOffers";
 import PromoShare from "./pages/account/influencer/promo-share";
 import PromoSharePage from "./pages/account/influencer/promo-share";
+import AccountAdminHome from "./pages/account/admin/admin-home";
+import AdminCheckPassword from "./pages/account/admin/admin-check-password";
+import AccountAdminCheckPassword from "./pages/account/admin/admin-check-password";
+import AccountAdminClients from "./pages/account/admin/admin-clients";
+import AccountAdminInfluencers from "./pages/account/admin/admin-influencers";
+import AccountAdminCampaigns from "./pages/account/admin/admin-campaigns";
 
 const App = () => {
     return (
@@ -288,6 +294,22 @@ const App = () => {
                     <Route path="/terms-influencer" element={<TermsInfluencer/>}/>
                     <Route path="/" element={<PublicRoute element={Signup}/>}/>
                     <Route path="/promo-share/:promoId" element={<PromoSharePage/>} />
+                    
+                    <Route path="/admin" element={
+                        <PrivateRoute element={AdminCheckPassword}/>
+                    }/>
+                    <Route path="/admin/home" element={
+                        <PrivateRoute element={AccountAdminHome}/>
+                    }/>
+                    <Route path="/admin/clients" element={
+                        <PrivateRoute element={AccountAdminClients}/>
+                    }/>
+                    <Route path="/admin/influencers" element={
+                        <PrivateRoute element={AccountAdminInfluencers}/>
+                    }/>
+                    <Route path="/admin/campaigns" element={
+                        <PrivateRoute element={AccountAdminCampaigns}/>
+                    }/>
                 </Routes>
             </ThemeProvider>
         </>

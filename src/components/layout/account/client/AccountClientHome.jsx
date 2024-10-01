@@ -23,6 +23,9 @@ const AccountClientHome = () => {
   const getData = async () => {
     try {
       const { dataFetch } = await UseVerify("client");
+      if (dataFetch.isAdmin === true) {
+        navigation("/admin")
+      }
       setData(dataFetch);
       window.sessionStorage.setItem("balance", dataFetch?.balance);
     } catch (err) {

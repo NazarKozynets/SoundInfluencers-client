@@ -15,7 +15,8 @@ const PublicRoute = ({ element: Element, ...rest }) => {
   const [isAuth, setisAuth] = useState(true);
   const [role, setRole] = useState("client");
   const [loading, setLoading] = useState(true);
-
+  
+  
   useEffect(() => {
     UseVerify().then((res) => {
       setisAuth(res.verify);
@@ -27,11 +28,9 @@ const PublicRoute = ({ element: Element, ...rest }) => {
 
   if (loading) return null;
   return !isAuth ? (
-    <Element />
+      <Element />
   ) : (
-    <Navigate
-      to={role === "client" ? "/account/client" : "/account/influencer"}
-    />
+      <Navigate to={role === "client" ? "/account/client" : "/account/influencer"} />
   );
 };
 

@@ -92,7 +92,6 @@ const InfluencersList = ({influencers, activeIndices, setActiveIndices, selectIn
         return result.length > 0 ? result.map((genre, index) => <li key={index}>{genre}</li>) : <li>N/A</li>;
     };
 
-
     const handleSeeMoreClick = (index) => {
         if (flippedAccountIndeces.includes(index)) {
             setFlippedAccountIndeces(prevIndices => prevIndices.filter(i => i !== index));

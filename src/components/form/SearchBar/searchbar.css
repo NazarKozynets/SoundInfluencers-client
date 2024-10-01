@@ -1,0 +1,13 @@
+.search-container.small {
+    width: 200px;
+    height: 10px;
+}
+
+.search-container.medium {
+    width: 400px;
+}
+
+.search-container.large {
+    width: 600px;
+    height: 15px;
+}

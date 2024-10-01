@@ -1,7 +1,7 @@
 import React from "react";
-import "./offersSearchBarResult.css";
+import "./searchbarresult.css";
 
-const OffersSearchBarResult = ({ result, onResultSelect }) => {
+const SearchBarResult = ({ result, onResultSelect }) => {
     const handleClick = () => {
         onResultSelect(result);
     };
@@ -16,4 +16,4 @@ const OffersSearchBarResult = ({ result, onResultSelect }) => {
     );
 };
 
-export default OffersSearchBarResult;
+export default SearchBarResult;
