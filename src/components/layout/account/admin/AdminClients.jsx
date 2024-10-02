@@ -7,6 +7,7 @@ import PageLoading from "../../../form/PageLoading/pageLoading";
 import OffersSearch from "../../../form/Offers/OffersSearchBar/OffersSearch";
 import logoIcon from "../../../../images/icons/rkqZiVo 69.svg";
 import StandardButton from "../../../form/StandardButton";
+import {formatDateStringReport} from "../../../../utils/validations";
 
 const AdminClients = () => {
     const [data, setData] = useState([]);
@@ -25,10 +26,6 @@ const AdminClients = () => {
     const inputRef = useRef(null);
     const containerRef = useRef(null);
     const saveChangesRef = useRef(null);
-
-    useEffect(() => {
-        console.log(fieldsForChange, 'fieldsForChange');
-    }, [fieldsForChange]);
     
     useEffect(() => {
         getData();
@@ -38,7 +35,6 @@ const AdminClients = () => {
         const result = await axios(
             `${process.env.REACT_APP_SERVER}/admin/client/getAll`
         );
-        console.log(result.data.data, 'result.data.data')
         if (result.status === 200) {
             setData(result.data.data);
         }
@@ -136,15 +132,6 @@ const AdminClients = () => {
             setData(updatedClients);
         }
     }
-
-    const formatDate = (dateString) => {
-        const date = new Date(dateString);
-        const day = String(date.getDate()).padStart(2, '0');
-        const month = String(date.getMonth() + 1).padStart(2, '0'); // Месяцы начинаются с 0, поэтому прибавляем 1
-        const year = date.getFullYear();
-
-        return `${day}/${month}/${year}`;
-    };
 
     return (
         <section className="admin">
@@ -336,7 +323,7 @@ const AdminClients = () => {
                                                 fontWeight: 400,
                                                 textAlign: "center",
                                                 paddingLeft: 0
-                                            }}>{searchResult.latestCampaign ? formatDate(searchResult.latestCampaign.createdAt) : 'N/A'}
+                                            }}>{searchResult.latestCampaign ? formatDateStringReport(searchResult.latestCampaign.createdAt) : 'N/A'}
                                             </td>
                                             <td className="admin-table-body-td" style={{
                                                 fontFamily: "Geometria",
@@ -510,7 +497,7 @@ const AdminClients = () => {
                                                     fontWeight: 400,
                                                     textAlign: "center",
                                                     paddingLeft: 0
-                                                }}>{client.latestCampaign ? formatDate(client.latestCampaign.createdAt) : 'N/A'}
+                                                }}>{client.latestCampaign ? formatDateStringReport(client.latestCampaign.createdAt) : 'N/A'}
                                                 </td>
                                                 <td className="admin-table-body-td" style={{
                                                     fontFamily: "Geometria",

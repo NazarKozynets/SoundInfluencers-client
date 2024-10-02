@@ -105,7 +105,7 @@
 
 .admin-influencers-platforms {
   display: grid;
-  place-items: center;  
+  place-items: center;
   margin-top: 26px;
   gap: 25px;
 }
@@ -143,26 +143,27 @@
   }
 
   &.active {
-    background: #f08c44; 
-    box-shadow: 0px 4px 20px 0px #f08c44; 
+    background: #f08c44;
+    box-shadow: 0px 4px 20px 0px #f08c44;
   }
-  
+
   &.future {
     background: grey;
   }
 }
 
 .admin-influencers-table-container {
-  margin-top: 40px;
+  margin-top: 10px;
   margin-bottom: 40px;
   margin-left: 40px;
-  width: 100%;
   overflow-x: auto;
   box-shadow: 0px 4px 20px 0px rgba(51, 48, 228, 0.5);
+  border-radius: 30px;
+  
+  margin-right: 30px;
 }
 
 .admin-influencers-table {
-  width: 500%; 
   margin: 0 auto;
   border-collapse: collapse;
   border-radius: 30px;
@@ -179,6 +180,14 @@
   font-weight: 900;
   text-align: center;
   height: 66px;
+
+  .admin-influencers-table-header-th {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 8px;
+  }
 }
 
 .admin-influencers-table-body-td {
@@ -187,3 +196,20 @@
   padding-left: 10px;
 }
 
+.hidden-columns-list {
+  display: flex;
+  gap: 20px;
+  margin-top: 50px;
+  align-items: center;
+  justify-content: center;
+  
+
+  .hidden-column-item {
+    display: flex;
+    font-family: Geometria;
+    font-size: 14px;
+    font-weight: 900;
+    text-align: center;
+    gap: 7px;
+  }
+}
