@@ -109,26 +109,18 @@ const Genres = ({
     };
 
 
-    const getInfluencerCountForGenre = (musicStyle) => {
-        return influencers.filter(influencer => influencer.musicStyle === musicStyle).length;
+    const getInfluencerCountForGenre = (genre) => {
+        return influencers.filter(influencer =>
+            influencer.musicStyle === genre ||
+            (influencer.musicStyleOther && influencer.musicStyleOther.includes(genre))
+        ).length;
     };
+
 
     const getInfluencerCountForSubGenre = (subGenre) => {
         return influencers.filter(influencer =>
             influencer.musicSubStyles && influencer.musicSubStyles.some(style => style === subGenre)
         ).length;
-    };
-
-    const getTotalInfluencerCountForGenre = (genre) => {
-        let totalCount = getInfluencerCountForGenre(genre); 
-
-        if (groupedGenres[genre] && groupedGenres[genre].length > 0) {
-            groupedGenres[genre].forEach((subText) => {
-                totalCount += getInfluencerCountForSubGenre(subText); 
-            });
-        }
-
-        return totalCount;
     };
 
     const seeAllGenres = () => {
@@ -171,7 +163,7 @@ const Genres = ({
                                     {genre}
                                 </label>
                                 <button className={styles.randomNumberButton}>
-                                    {getTotalInfluencerCountForGenre(genre)}
+                                    {getInfluencerCountForGenre(genre)}
                                 </button>
                             </div>
                             {groupedGenres[genre].length > 0 && (
