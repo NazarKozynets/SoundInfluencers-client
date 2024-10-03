@@ -256,7 +256,7 @@ const ReportCampaigns = () => {
                 console.error('promoId is not set');
                 return '';
             }
-            return `https://nazar.soundinfluencers.com/promo-share/${promoId}`;
+            return `https://go.soundinfluencers.com/promo-share/${promoId}`;
         } catch (err) {
             console.log(err);
             return '';
