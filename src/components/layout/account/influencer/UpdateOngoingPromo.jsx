@@ -15,7 +15,7 @@ const UpdateOngoingPromo = () => {
     const navigation = useNavigate();
     const [uploadProgress, setUploadProgress] = useState(0);
     const [screenshotUrl, setScreenshotUrl] = useState("");
-
+    
     const [formData, setFormData] = useState({
         brand: "",
         caption: "",
@@ -64,7 +64,7 @@ const UpdateOngoingPromo = () => {
                         `${process.env.REACT_APP_SERVER}/promos/update-ongoing?influencerId=${params.influencerId}&promoId=${params.promoId}&instagramUsername=${params.instagram}`,
                         {
                             ...formData,
-                            screenshot: screenshotUrl,  
+                            screenshot: screenshotUrl, 
                         }
                     );
 
@@ -75,22 +75,21 @@ const UpdateOngoingPromo = () => {
                 } catch (error) {
                     console.error("Error updating promo", error);
                 }
-            } 
-            // else {
-            //     try {
-            //         const result = await axios.put(
-            //             `${process.env.REACT_APP_SERVER}/promos/update-ongoing?influencerId=${params.influencerId}&promoId=${params.promoId}&instagramUsername=${params.instagram}`,
-            //             formData
-            //         );
-            //
-            //         if (result.data.code === 200) {
-            //             getData();
-            //             setIsWindowTwo(true);
-            //         }
-            //     } catch (error) {
-            //         console.error("Error updating promo", error);
-            //     }
-            // }
+            } else {
+                try {
+                    const result = await axios.put(
+                        `${process.env.REACT_APP_SERVER}/promos/update-ongoing?influencerId=${params.influencerId}&promoId=${params.promoId}&instagramUsername=${params.instagram}`,
+                        formData
+                    );
+
+                    if (result.data.code === 200) {
+                        getData();
+                        setIsWindowTwo(true);
+                    }
+                } catch (error) {
+                    console.error("Error updating promo", error);
+                }
+            }
         } catch (error) {
             console.log(error);
         }
@@ -116,7 +115,7 @@ const UpdateOngoingPromo = () => {
                         },
                         onUploadProgress: (progressEvent) => {
                             const progress = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-                            setUploadProgress(progress); 
+                            console.log(`File upload progress: ${progress}%`);
                         },
                     }
                 );
@@ -146,16 +145,24 @@ const UpdateOngoingPromo = () => {
                             onChange={handleFileChange}
                         />
 
+
                         {uploadProgress > 0 && (
-                            <div style={{ width: '70%', margin: '20px auto', background: '#3330e4', borderRadius: '15px' }}>
-                                <div
-                                    style={{
-                                        width: `${uploadProgress}%`,
-                                        background: '#6A5ACD',
-                                        height: '20px',
-                                        borderRadius: '15px',
-                                    }}
-                                ></div>
+                            <div style={{
+                                width: '80%',
+                                backgroundColor: '#f0f0f0',
+                                borderRadius: '10px',
+                                margin: '20px auto',
+                                fontFamily: 'Geometria',
+                                fontSize: 14,
+                                fontWeight: 400,
+                            }}>
+                                <div style={{
+                                    width: `${uploadProgress}%`,
+                                    backgroundColor: '#4f91ed',
+                                    height: '10px',
+                                    borderRadius: '5px'
+                                }}></div>
+                                <p style={{textAlign: 'center'}}>{uploadProgress}%</p>
                             </div>
                         )}
                         
