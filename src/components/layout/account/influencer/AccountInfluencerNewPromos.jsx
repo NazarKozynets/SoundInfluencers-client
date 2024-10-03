@@ -44,8 +44,6 @@ const AcountInfluencerNewPromos = () => {
             });
 
             setData(updatedData);
-            console.log(updatedData);
-
         } catch (err) {
             console.log(err);
         }

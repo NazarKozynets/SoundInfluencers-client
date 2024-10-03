@@ -13,8 +13,6 @@ import {
 import InputFile from "../../../form/InputFile";
 
 import {useNavigate} from "react-router-dom";
-
-
 import arrow from "../../../../images/icons/arrow.svg";
 
 const AccountClientDetails = () => {
@@ -46,11 +44,6 @@ const AccountClientDetails = () => {
         acceptPassword: "",
     });
 
-    useEffect(() => {
-        console.log(data, 'data')
-        console.log(dataPersonal, 'dataPersonal')
-    }, [])
-
     const updateClientPersonal = async () => {
 
         if (!dataPersonal.firstName) {
@@ -77,7 +70,6 @@ const AccountClientDetails = () => {
             if (result.data.code === 200) {
                 setIsOpenPersonal(false);
                 setData({...data, ...dataPersonal});
-                console.log(result.data, ' fron t')
             }
         } catch (err) {
             console.log(err);

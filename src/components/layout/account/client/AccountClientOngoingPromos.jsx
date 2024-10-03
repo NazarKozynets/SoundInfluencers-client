@@ -41,8 +41,6 @@ const AcountClientOngoingPromos = () => {
             const result = await axios(
                 `${process.env.REACT_APP_SERVER}/promos/ongoing-promos-client?id=${dataFetch._id}`
             );
-            console.log(result.data);
-            console.log(result.data)
             if (result.data.code === 200) {
                 setData(result.data.promos);
             }

@@ -14,6 +14,7 @@ const UpdateOngoingPromo = () => {
     const params = useParams();
     const navigation = useNavigate();
     const [uploadProgress, setUploadProgress] = useState(0);
+    const [screenshotUrl, setScreenshotUrl] = useState("");
 
     const [formData, setFormData] = useState({
         brand: "",
@@ -57,38 +58,14 @@ const UpdateOngoingPromo = () => {
             const formDataScreenshot = new FormData();
             formDataScreenshot.append("file", screenshot);
 
-            if (screenshot) {
+            if (screenshotUrl) {
                 try {
-                    const responseURL = await axios.post(
-                        `${process.env.REACT_APP_SERVER}/promos/uploadScreenshot`,
-                        formDataScreenshot,
-                        {
-                            headers: {
-                                "Content-Type": "multipart/form-data",
-                            },
-                        }
-                    );
-                    console.log(responseURL);
                     const result = await axios.put(
                         `${process.env.REACT_APP_SERVER}/promos/update-ongoing?influencerId=${params.influencerId}&promoId=${params.promoId}&instagramUsername=${params.instagram}`,
                         {
                             ...formData,
-                            screenshot: responseURL.data.data,
+                            screenshot: screenshotUrl,  
                         }
-                    );
-
-                    if (result.data.code === 200) {
-                        getData();
-                        setIsWindowTwo(true);
-                    }
-                } catch (error) {
-                    console.error("Error uploading file", error);
-                }
-            } else {
-                try {
-                    const result = await axios.put(
-                        `${process.env.REACT_APP_SERVER}/promos/update-ongoing?influencerId=${params.influencerId}&promoId=${params.promoId}&instagramUsername=${params.instagram}`,
-                        formData
                     );
 
                     if (result.data.code === 200) {
@@ -98,36 +75,59 @@ const UpdateOngoingPromo = () => {
                 } catch (error) {
                     console.error("Error updating promo", error);
                 }
-            }
+            } 
+            // else {
+            //     try {
+            //         const result = await axios.put(
+            //             `${process.env.REACT_APP_SERVER}/promos/update-ongoing?influencerId=${params.influencerId}&promoId=${params.promoId}&instagramUsername=${params.instagram}`,
+            //             formData
+            //         );
+            //
+            //         if (result.data.code === 200) {
+            //             getData();
+            //             setIsWindowTwo(true);
+            //         }
+            //     } catch (error) {
+            //         console.error("Error updating promo", error);
+            //     }
+            // }
         } catch (error) {
             console.log(error);
         }
     };
 
-    // const updateDataPostLinkAndDatePost = async () => {
-    //     if (!params.influencerId || !params.promoId) {
-    //         return navigation("/");
-    //     }
-    //
-    //     try {
-    //         const result = await axios.put(
-    //             `${process.env.REACT_APP_SERVER}/promos/update-ongoing-test?influencerId=${params.influencerId}&promoId=${params.promoId}&instagramUsername=${params.instagram}`,
-    //             formData
-    //         );
-    //
-    //         if (result.data.code === 200) {
-    //             getData();
-    //             setIsWindowTwo(true);
-    //         }
-    //     } catch (error) {
-    //         console.error("Error updating promo", error);
-    //     }
-    // }
-
     useEffect(() => {
         getData();
     }, []);
 
+    const handleFileChange = async (event) => {
+        const selectedFile = event.target.files[0];
+        if (selectedFile) {
+            const formDataScreenshot = new FormData();
+            formDataScreenshot.append("file", selectedFile);
+
+            try {
+                const responseURL = await axios.post(
+                    `${process.env.REACT_APP_SERVER}/promos/uploadScreenshot`,
+                    formDataScreenshot,
+                    {
+                        headers: {
+                            "Content-Type": "multipart/form-data",
+                        },
+                        onUploadProgress: (progressEvent) => {
+                            const progress = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+                            setUploadProgress(progress); 
+                        },
+                    }
+                );
+
+                setScreenshotUrl(responseURL.data.data);
+            } catch (error) {
+                console.error("Error uploading file", error);
+            }
+        }
+    };
+    
     return (
         <section className="invoice-result">
             <div className="container-form">
@@ -135,6 +135,30 @@ const UpdateOngoingPromo = () => {
                     <TitleSection title="campaign result"/>
 
                     <FormContainer style={{marginTop: "60px"}}>
+                        <InputFile
+                            style={{maxWidth: "665px", margin: "60px auto 0 auto"}}
+                            title="Screenshot insights"
+                            placeholder="Attach the screenshot of the insights"
+                            setValue={(value) => {
+                                setScreenshot(value);
+                            }}
+                            setUploadProgress={setUploadProgress}
+                            onChange={handleFileChange}
+                        />
+
+                        {uploadProgress > 0 && (
+                            <div style={{ width: '70%', margin: '20px auto', background: '#3330e4', borderRadius: '15px' }}>
+                                <div
+                                    style={{
+                                        width: `${uploadProgress}%`,
+                                        background: '#6A5ACD',
+                                        height: '20px',
+                                        borderRadius: '15px',
+                                    }}
+                                ></div>
+                            </div>
+                        )}
+                        
                         <TextInput
                             style={{maxWidth: "665px", margin: "60px auto 0 auto"}}
                             title="Instagram link"
@@ -180,43 +204,9 @@ const UpdateOngoingPromo = () => {
                             setValue={(value) => setFormData({...formData, like: value})}
                         />
 
-                        <InputFile
-                            style={{maxWidth: "665px", margin: "60px auto 0 auto"}}
-                            title="Screenshot insights"
-                            placeholder="Attach the screenshot of the insights"
-                            setValue={(value) => {
-                                setScreenshot(value);
-                            }}
-                            setUploadProgress={setUploadProgress} 
-                        />
-
-
-                        {uploadProgress > 0 && (
-                            <div style={{
-                                width: '80%',
-                                backgroundColor: '#f0f0f0',
-                                borderRadius: '10px',
-                                margin: '20px auto',
-                                fontFamily: 'Geometria',
-                                fontSize: 14,
-                                fontWeight: 400,
-                            }}>
-                                <div style={{
-                                    width: `${uploadProgress}%`,
-                                    backgroundColor: '#4f91ed',
-                                    height: '10px',
-                                    borderRadius: '5px'
-                                }}></div>
-                                <p style={{textAlign: 'center'}}>{uploadProgress}%</p>
-                            </div>
-                        )}
-
                         <div style={{marginTop: "60px", display: "flex", justifyContent: "center"}}>
                             <StandartButton text="Submit" onClick={updateData}/>
                         </div>
-                        {/*<div style={{marginTop: "60px", display: "flex", justifyContent: "center"}}>*/}
-                        {/*    <StandartButton text="Submit" onClick={updateDataPostLinkAndDatePost}/>*/}
-                        {/*</div>*/}
                     </FormContainer>
                 </div>
             </div>

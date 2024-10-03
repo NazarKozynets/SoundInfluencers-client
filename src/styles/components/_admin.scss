@@ -153,13 +153,12 @@
 }
 
 .admin-influencers-table-container {
-  margin-top: 10px;
+  margin-top: 30px;
   margin-bottom: 40px;
   margin-left: 40px;
   overflow-x: auto;
-  box-shadow: 0px 4px 20px 0px rgba(51, 48, 228, 0.5);
   border-radius: 30px;
-  
+
   margin-right: 30px;
 }
 
@@ -168,32 +167,64 @@
   border-collapse: collapse;
   border-radius: 30px;
   overflow: hidden;
-  box-shadow: 0px 4px 20px 0px rgba(51, 48, 228, 0.5);
-  background: #fff;
 }
 
 .admin-influencers-table-header {
-  background: #3330E4;
-  color: #fff;
   font-family: Geometria;
   font-size: 14px;
   font-weight: 900;
   text-align: center;
-  height: 66px;
+}
 
-  .admin-influencers-table-header-th {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 5px;
-    margin-bottom: 8px;
-  }
+.admin-influencers-table-header-th {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  height: 100%;
+  width: 100%;
+}
+
+.admin-influencers-table-header-button {
+  background: #6A5ACD; 
+  width: 100%;
+  height: 30px; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50px 50px 0 0;
+}
+
+#first {
+  border-radius: 50px 0 0 0; 
+}
+
+#second {
+border-radius: 0 50px 0 0; 
+}
+
+.admin-influencers-table-header-text {
+  background: #3330e4;
+  width: 100%;
+  height: 50px; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white; 
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.admin-influencers-table-header-button img {
+  width: 20px; 
 }
 
 .admin-influencers-table-body-td {
   border-bottom: 1px solid #c8c4f4;
   border-right: 1px solid #c8c4f4;
+  border-left: 1px solid #c8c4f4;
   padding-left: 10px;
+  background: #FFFFFF;
 }
 
 .hidden-columns-list {
@@ -202,7 +233,7 @@
   margin-top: 50px;
   align-items: center;
   justify-content: center;
-  
+
 
   .hidden-column-item {
     display: flex;

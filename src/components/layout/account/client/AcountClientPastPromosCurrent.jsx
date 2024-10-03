@@ -36,7 +36,6 @@ const AcountClientPastPromosCurrent = () => {
                 });
             }
 
-            console.log(promoData, 'promoData');
             setData(promoData);
         } catch (err) {
             console.log(err);

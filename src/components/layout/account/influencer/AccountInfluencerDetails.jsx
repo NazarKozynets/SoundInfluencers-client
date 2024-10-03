@@ -182,21 +182,18 @@ const AccountInfluencerDetails = () => {
     };
 
     const updateClientPassword = async () => {
-        console.log("1");
         if (!dataPassword.currentPassword) {
             setErrorPassword({
                 ...errorPassword,
                 currentPassword: true,
             });
         }
-        console.log("2");
         if (!dataPassword.newPassword) {
             setErrorPassword({
                 ...errorPassword,
                 newPassword: true,
             });
         }
-        console.log("3");
         if (
             !dataPassword.repeatPassword ||
             !dataPassword.currentPassword ||
@@ -204,7 +201,6 @@ const AccountInfluencerDetails = () => {
         ) {
             return;
         }
-        console.log("4");
         if (dataPassword.newPassword !== dataPassword.repeatPassword) {
             setErrorPassword({
                 ...errorPassword,

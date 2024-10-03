@@ -32,10 +32,6 @@ const AccountInfluencerHome = () => {
   useEffect(() => {
     getData();
   }, []);
-
-  useEffect(() => {
-    console.log(data, 'data')
-  }, [data]);
   
   const handleInvoice = () => {
     if(+data.balance === 0 ) return setIsModal(true);

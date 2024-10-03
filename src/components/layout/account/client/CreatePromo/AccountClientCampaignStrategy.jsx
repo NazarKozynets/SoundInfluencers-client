@@ -334,10 +334,6 @@ const AccountClientCampaignStrategy = () => {
             </div>
         );
     };
-    
-    useEffect(() => {
-        console.log(selectedVideos, 'selectedVideos')
-    },  [selectedVideos])
 
     return (
         <section className="account-client">
@@ -463,7 +459,6 @@ const AccountClientCampaignStrategy = () => {
                                                 <button
                                                     onClick={() => {
                                                         const video = dataPromo.videos.find(video => video.videoLink === selectedVideos[influencer.instagramUsername].value);
-                                                        console.log(video, 'video')
                                                         const newSelectedVideo = {
                                                             ...video,
                                                             instagramUsername: influencer.instagramUsername 

@@ -114,7 +114,7 @@ const AdminInfluencers = () => {
                 containerRef.current &&
                 !containerRef.current.contains(event.target) &&
                 saveChangesRef.current &&
-                !saveChangesRef.current.contains(event.target) 
+                !saveChangesRef.current.contains(event.target)
             ) {
                 setFieldsForChange({
                     instagramId: '',
@@ -404,8 +404,7 @@ const AdminInfluencers = () => {
 
     const EditLinkModal = () => {
         return (
-            <div style={{
-            }}>
+            <div style={{}}>
                 <p style={{
                     fontFamily: "Geometria",
                     fontSize: 20,
@@ -423,7 +422,7 @@ const AdminInfluencers = () => {
             </div>
         );
     }
-    
+
     return (
         <section className="admin">
             <div>
@@ -525,284 +524,326 @@ const AdminInfluencers = () => {
                                    style={{width: `${tableWidth}%`}}>
                                 <thead className="admin-influencers-table-header">
                                 <tr>
-                                    <th></th>
-                                    {!isColumnHidden('Networks') && (
-                                        <th>
-                                            <div>
-                                                <button onClick={() => handleHiddenColumns('Networks')}>
-                                                    <img
-                                                        src={hiddenColumns.includes('Networks') ? hiddenIcon : watch}
-                                                        alt="hidden"
-                                                        style={{filter: 'invert(100%)', cursor: 'pointer'}}
-                                                    />
-                                                </button>
+                                    <th>
+                                        <div className="admin-influencers-table-header-th">
+                                            <div className="admin-influencers-table-header-button" id="first"></div>
+                                            <div className="admin-influencers-table-header-text"></div>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div className="admin-influencers-table-header-th">
+                                            <div className="admin-influencers-table-header-button" id="second"></div>
+                                            <div className="admin-influencers-table-header-text">
                                                 <p>Networks</p>
                                             </div>
-                                        </th>
-                                    )}
+                                        </div>
+                                    </th>
                                     {!isColumnHidden('First Name') && (
                                         <th>
-                                            <div>
-                                                <button onClick={() => handleHiddenColumns('First Name')}>
-                                                    <img
-                                                        src={hiddenColumns.includes('First Name') ? hiddenIcon : watch}
-                                                        alt="hidden"
-                                                        style={{filter: 'invert(100%)', cursor: 'pointer'}}
-                                                    />
-                                                </button>
-                                                <p>First Name</p>
+                                            <div className="admin-influencers-table-header-th">
+                                                <div className="admin-influencers-table-header-button">
+                                                    <button onClick={() => handleHiddenColumns('First Name')}>
+                                                        <img
+                                                            src={hiddenColumns.includes('First Name') ? hiddenIcon : watch}
+                                                            alt="hidden"
+                                                        />
+                                                    </button>
+                                                </div>
+                                                <div className="admin-influencers-table-header-text">
+                                                    <p>First Name</p>
+                                                </div>
                                             </div>
                                         </th>
                                     )}
                                     {!isColumnHidden('Email') && (
                                         <th>
-                                            <div>
-                                                <button onClick={() => handleHiddenColumns('Email')}>
-                                                    <img
-                                                        src={hiddenColumns.includes('Email') ? hiddenIcon : watch}
-                                                        alt="hidden"
-                                                        style={{filter: 'invert(100%)', cursor: 'pointer'}}
-                                                    />
-                                                </button>
-                                                <p>Email</p>
+                                            <div className="admin-influencers-table-header-th">
+                                                <div className="admin-influencers-table-header-button">
+                                                    <button onClick={() => handleHiddenColumns('Email')}>
+                                                        <img
+                                                            src={hiddenColumns.includes('Email') ? hiddenIcon : watch}
+                                                            alt="hidden"
+                                                        />
+                                                    </button>
+                                                </div>
+                                                <div className="admin-influencers-table-header-text">
+                                                    <p>Email</p>
+                                                </div>
                                             </div>
                                         </th>
                                     )}
                                     {!isColumnHidden('Phone') && (
                                         <th>
-                                            <div>
-                                                <button onClick={() => handleHiddenColumns('Phone')}>
-                                                    <img
-                                                        src={hiddenColumns.includes('Phone') ? hiddenIcon : watch}
-                                                        alt="hidden"
-                                                        style={{filter: 'invert(100%)', cursor: 'pointer'}}
-                                                    />
-                                                </button>
-                                                <p>Phone</p>
+                                            <div className="admin-influencers-table-header-th">
+                                                <div className="admin-influencers-table-header-button">
+                                                    <button onClick={() => handleHiddenColumns('Phone')}>
+                                                        <img
+                                                            src={hiddenColumns.includes('Phone') ? hiddenIcon : watch}
+                                                            alt="hidden"
+                                                        />
+                                                    </button>
+                                                </div>
+                                                <div className="admin-influencers-table-header-text">
+                                                    <p>Phone</p>
+                                                </div>
                                             </div>
                                         </th>
                                     )}
                                     {!isColumnHidden('Followers Number') && (
                                         <th>
-                                            <div>
-                                                <button onClick={() => handleHiddenColumns('Followers Number')}>
-                                                    <img
-                                                        src={hiddenColumns.includes('Followers Number') ? hiddenIcon : watch}
-                                                        alt="hidden"
-                                                        style={{
-                                                            filter: 'invert(100%)', cursor: 'pointer'
-                                                        }}
-                                                    />
-                                                </button>
-                                                <p>Followers</p>
+                                            <div className="admin-influencers-table-header-th">
+                                                <div className="admin-influencers-table-header-button">
+                                                    <button onClick={() => handleHiddenColumns('Followers Number')}>
+                                                        <img
+                                                            src={hiddenColumns.includes('Followers Number') ? hiddenIcon : watch}
+                                                            alt="hidden"
+                                                        />
+                                                    </button>
+                                                </div>
+                                                <div className="admin-influencers-table-header-text">
+                                                    <p>Followers</p>
+                                                </div>
                                             </div>
                                         </th>
                                     )}
                                     {!isColumnHidden('Instagram Link') && (
                                         <th>
-                                            <div>
-                                                <button onClick={() => handleHiddenColumns('Instagram Link')}>
-                                                    <img
-                                                        src={hiddenColumns.includes('Instagram Link') ? hiddenIcon : watch}
-                                                        alt="hidden"
-                                                        style={{
-                                                            filter: 'invert(100%)', cursor: 'pointer'
-                                                        }}
-                                                    />
-                                                </button>
-                                                <p>{getSecondNameForActivePlatform()} Link</p>
+                                            <div className="admin-influencers-table-header-th">
+                                                <div className="admin-influencers-table-header-button">
+                                                    <button onClick={() => handleHiddenColumns('Instagram Link')}>
+                                                        <img
+                                                            src={hiddenColumns.includes('Instagram Link') ? hiddenIcon : watch}
+                                                            alt="hidden"
+                                                        />
+                                                    </button>
+                                                </div>
+                                                <div className="admin-influencers-table-header-text">
+                                                    <p>{getSecondNameForActivePlatform()} Link</p>
+                                                </div>
                                             </div>
                                         </th>
                                     )}
                                     {!isColumnHidden('Public Price') && (
                                         <th>
-                                            <div>
-                                                <button onClick={() => handleHiddenColumns('Public Price')}>
-                                                    <img
-                                                        src={hiddenColumns.includes('Public Price') ? hiddenIcon : watch}
-                                                        alt="hidden"
-                                                        style={{
-                                                            filter: 'invert(100%)', cursor: 'pointer'
-                                                        }}
-                                                    />
-                                                </button>
-                                                <p>Price Public</p>
+                                            <div className="admin-influencers-table-header-th">
+                                                <div className="admin-influencers-table-header-button">
+                                                    <button onClick={() => handleHiddenColumns('Public Price')}>
+                                                        <img
+                                                            src={hiddenColumns.includes('Public Price') ? hiddenIcon : watch}
+                                                            alt="hidden"
+                                                        />
+                                                    </button>
+                                                </div>
+                                                <div className="admin-influencers-table-header-text">
+                                                    <p>Public Price</p>
+                                                </div>
                                             </div>
                                         </th>
                                     )}
                                     {!isColumnHidden('Internal Price') && (
                                         <th>
-                                            <div>
-                                                <button onClick={() => handleHiddenColumns('Internal Price')}>
-                                                    <img
-                                                        src={hiddenColumns.includes('Internal Price') ? hiddenIcon : watch}
-                                                        alt="hidden"
-                                                        style={{
-                                                            filter: 'invert(100%)', cursor: 'pointer'
-                                                        }}
-                                                    />
-                                                </button>
-                                                <p>Internal Price</p>
+                                            <div className="admin-influencers-table-header-th">
+                                                <div className="admin-influencers-table-header-button">
+                                                    <button onClick={() => handleHiddenColumns('Internal Price')}>
+                                                        <img
+                                                            src={hiddenColumns.includes('Internal Price') ? hiddenIcon : watch}
+                                                            alt="hidden"
+                                                        />
+                                                    </button>
+                                                </div>
+                                                <div className="admin-influencers-table-header-text">
+                                                    <p>Internal Price</p>
+                                                </div>
                                             </div>
                                         </th>
                                     )}
                                     {!isColumnHidden('Price per Follower') && (
                                         <th>
-                                            <div>
-                                                <button onClick={() => handleHiddenColumns('Price per Follower')}>
-                                                    <img
-                                                        src={hiddenColumns.includes('Price per Follower') ? hiddenIcon : watch}
-                                                        alt="hidden"
-                                                        style={{
-                                                            filter: 'invert(100%)', cursor: 'pointer'
-                                                        }}
-                                                    />
-                                                </button>
-                                                <p>Price per Follower</p>
+                                            <div className="admin-influencers-table-header-th">
+                                                <div className="admin-influencers-table-header-button">
+                                                    <button onClick={() => handleHiddenColumns('Price per Follower')}>
+                                                        <img
+                                                            src={hiddenColumns.includes('Price per Follower') ? hiddenIcon : watch}
+                                                            alt="hidden"
+                                                        />
+                                                    </button>
+                                                </div>
+                                                <div className="admin-influencers-table-header-text">
+                                                    <p>Price per Follower</p>
+                                                </div>
                                             </div>
                                         </th>
                                     )}
-                                    <th>
-                                        <div style={{
-                                            display: 'flex',
-                                            flexDirection: 'column',
-                                            alignItems: 'center',
-                                            padding: '0 10px',
-                                            gap: 5,
-                                            marginBottom: 8
-                                        }}>
-                                            <p>ID</p>
-                                            <SearchBarComponent data={data} setSearchResult={setSearchResult}
-                                                                searchFunction={searchById} className="small"/>
-                                        </div>
-                                    </th>
+                                    {!isColumnHidden('Id') && (
+                                        <th>
+                                            <div className="admin-influencers-table-header-th">
+                                                <div className="admin-influencers-table-header-button">
+                                                    <button onClick={() => handleHiddenColumns('Id')}>
+                                                        <img
+                                                            src={hiddenColumns.includes('Id') ? hiddenIcon : watch}
+                                                            alt="hidden"
+                                                        />
+                                                    </button>
+                                                </div>
+                                                <div style={{
+                                                    display: 'flex',
+                                                    flexDirection: 'column',
+                                                    alignItems: 'center',
+                                                }} className="admin-influencers-table-header-text">
+                                                    <p style={{marginTop: '-12px'}}>ID</p>
+                                                    <SearchBarComponent data={data} setSearchResult={setSearchResult}
+                                                                        searchFunction={searchById} className="small"/>
+                                                </div>
+                                            </div>
+                                        </th>
+                                    )}
                                     {!isColumnHidden('Balance') && (
                                         <th>
-                                            <div>
-                                                <button onClick={() => handleHiddenColumns('Balance')}>
-                                                    <img
-                                                        src={hiddenColumns.includes('Balance') ? hiddenIcon : watch}
-                                                        alt="hidden"
-                                                        style={{
-                                                            filter: 'invert(100%)', cursor: 'pointer'
-                                                        }}
-                                                    />
-                                                </button>
-                                                <p>Balance</p>
+                                            <div className="admin-influencers-table-header-th">
+                                                <div className="admin-influencers-table-header-button">
+                                                    <button onClick={() => handleHiddenColumns('Balance')}>
+                                                        <img
+                                                            src={hiddenColumns.includes('Balance') ? hiddenIcon : watch}
+                                                            alt="hidden"
+                                                        />
+                                                    </button>
+                                                </div>
+                                                <div className="admin-influencers-table-header-text">
+                                                    <p>Balance</p>
+                                                </div>
                                             </div>
                                         </th>
                                     )}
                                     {!isColumnHidden('Campaigns Completed') && (
                                         <th>
-                                            <div>
-                                                <button onClick={() => handleHiddenColumns('Campaigns Completed')}>
-                                                    <img
-                                                        src={hiddenColumns.includes('Campaigns Completed') ? hiddenIcon : watch}
-                                                        alt="hidden"
-                                                        style={{
-                                                            filter: 'invert(100%)', cursor: 'pointer'
-                                                        }}
-                                                    />
-                                                </button>
-                                                <p>Campaigns Completed</p>
+                                            <div className="admin-influencers-table-header-th">
+                                                <div className="admin-influencers-table-header-button">
+                                                    <button onClick={() => handleHiddenColumns('Campaigns Completed')}>
+                                                        <img
+                                                            src={hiddenColumns.includes('Campaigns Completed') ? hiddenIcon : watch}
+                                                            alt="hidden"
+                                                        />
+                                                    </button>
+                                                </div>
+                                                <div className="admin-influencers-table-header-text">
+                                                    <p>Campaigns Completed</p>
+                                                </div>
                                             </div>
                                         </th>
                                     )}
                                     {!isColumnHidden('Campaigns Denied') && (
                                         <th>
-                                            <div>
-                                                <button onClick={() => handleHiddenColumns('Campaigns Denied')}>
-                                                    <img
-                                                        src={hiddenColumns.includes('Campaigns Denied') ? hiddenIcon : watch}
-                                                        alt="hidden"
-                                                        style={{
-                                                            filter: 'invert(100%)', cursor: 'pointer'
-                                                        }}
-                                                    />
-                                                </button>
-                                                <p>Campaigns Denied</p>
+                                            <div className="admin-influencers-table-header-th">
+                                                <div className="admin-influencers-table-header-button">
+                                                    <button onClick={() => handleHiddenColumns('Campaigns Denied')}>
+                                                        <img
+                                                            src={hiddenColumns.includes('Campaigns Denied') ? hiddenIcon : watch}
+                                                            alt="hidden"
+                                                        />
+                                                    </button>
+                                                </div>
+                                                <div className="admin-influencers-table-header-text">
+                                                    <p>Campaigns Denied</p>
+                                                </div>
                                             </div>
                                         </th>
                                     )}
                                     {!isColumnHidden('Latest Invoice') && (
                                         <th>
-                                            <div>
-                                                <button onClick={() => handleHiddenColumns('Latest Invoice')}>
-                                                    <img
-                                                        src={hiddenColumns.includes('Latest Invoice') ? hiddenIcon : watch}
-                                                        alt="hidden"
-                                                        style={{
-                                                            filter: 'invert(100%)', cursor: 'pointer'
-                                                        }}
-                                                    />
-                                                </button>
-                                                <p>Latest Invoice</p>
+                                            <div className="admin-influencers-table-header-th">
+                                                <div className="admin-influencers-table-header-button">
+                                                    <button onClick={() => handleHiddenColumns('Latest Invoice')}>
+                                                        <img
+                                                            src={hiddenColumns.includes('Latest Invoice') ? hiddenIcon : watch}
+                                                            alt="hidden"
+                                                        />
+                                                    </button>
+                                                </div>
+                                                <div className="admin-influencers-table-header-text">
+                                                    <p>Latest Invoice</p>
+                                                </div>
                                             </div>
                                         </th>
                                     )}
                                     {!isColumnHidden('Internal Note') && (
                                         <th>
-                                            <div>
-                                                <button onClick={() => handleHiddenColumns('Internal Note')}>
-                                                    <img
-                                                        src={hiddenColumns.includes('Internal Note') ? hiddenIcon : watch}
-                                                        alt="hidden"
-                                                        style={{
-                                                            filter: 'invert(100%)', cursor: 'pointer'
-                                                        }}
-                                                    />
-                                                </button>
-                                                <p>Internal Note</p>
+                                            <div className="admin-influencers-table-header-th">
+                                                <div className="admin-influencers-table-header-button">
+                                                    <button onClick={() => handleHiddenColumns('Internal Note')}>
+                                                        <img
+                                                            src={hiddenColumns.includes('Internal Note') ? hiddenIcon : watch}
+                                                            alt="hidden"
+                                                        />
+                                                    </button>
+                                                </div>
+                                                <div className="admin-influencers-table-header-text">
+                                                    <p>Internal Note</p>
+                                                </div>
                                             </div>
                                         </th>
                                     )}
                                     {!hiddenGenres && genres.map((genre, index) => (
                                         <th key={index}>
-                                            <div>
-                                                {index === 0 && (
-                                                    <button onClick={toggleHiddenGenres}>
-                                                        <img
-                                                            src={hiddenGenres ? hiddenIcon : watch}
-                                                            alt="toggle"
-                                                            style={{filter: 'invert(100%)'}}
-                                                        />
-                                                    </button>
+                                            <div className="admin-influencers-table-header-th">
+                                                {index === 0 ? (
+                                                    <div className="admin-influencers-table-header-button">
+                                                        <button onClick={toggleHiddenGenres}>
+                                                            <img
+                                                                src={hiddenGenres ? hiddenIcon : watch}
+                                                                alt="toggle"
+                                                            />
+                                                        </button>
+                                                    </div>
+                                                ) : (
+                                                    <div className="admin-influencers-table-header-button"></div>
                                                 )}
-                                                <p style={{display: hiddenGenres && index > 0 ? 'none' : 'block'}}>{genre}</p>
+                                                <div className="admin-influencers-table-header-text">
+                                                    <p style={{display: hiddenGenres && index > 0 ? 'none' : 'block'}}>{genre}</p>
+                                                </div>
                                             </div>
                                         </th>
                                     ))}
 
                                     {!hiddenCategories && categories.map((category, index) => (
                                         <th key={index}>
-                                            <div>
-                                                {index === 0 && (
-                                                    <button onClick={toggleHiddenCategories}>
-                                                        <img
-                                                            src={hiddenCategories ? hiddenIcon : watch}
-                                                            alt="toggle"
-                                                            style={{filter: 'invert(100%)'}}
-                                                        />
-                                                    </button>
+                                            <div className="admin-influencers-table-header-th">
+                                                {index === 0 ? (
+                                                    <div className="admin-influencers-table-header-button">
+                                                        <button onClick={toggleHiddenCategories}>
+                                                            <img
+                                                                src={hiddenCategories ? hiddenIcon : watch}
+                                                                alt="toggle"
+                                                            />
+                                                        </button>
+                                                    </div>
+                                                ) : (
+                                                    <div className="admin-influencers-table-header-button"></div>
                                                 )}
-                                                <p style={{display: hiddenCategories && index > 0 ? 'none' : 'block'}}>{category}</p>
+                                                <div className="admin-influencers-table-header-text">
+                                                    <p style={{display: hiddenCategories && index > 0 ? 'none' : 'block'}}>{category}</p>
+                                                </div>
                                             </div>
                                         </th>
                                     ))}
 
                                     {!hiddenCountries && countries.map((country, index) => (
                                         <th key={index}>
-                                            <div>
-                                                {index === 0 && (
-                                                    <button onClick={toggleHiddenCountries}>
-                                                        <img
-                                                            src={hiddenCountries ? hiddenIcon : watch}
-                                                            alt="toggle"
-                                                            style={{filter: 'invert(100%)'}}
-                                                        />
-                                                    </button>
+                                            <div className="admin-influencers-table-header-th">
+                                                {index === 0 ? (
+                                                    <div className="admin-influencers-table-header-button">
+                                                        <button onClick={toggleHiddenCountries}>
+                                                            <img
+                                                                src={hiddenCountries ? hiddenIcon : watch}
+                                                                alt="toggle"
+                                                            />
+                                                        </button>
+                                                    </div>
+                                                ) : (
+                                                    <div className="admin-influencers-table-header-button"></div>
                                                 )}
-                                                <p style={{display: hiddenCountries && index > 0 ? 'none' : 'block'}}>{country}</p>
+                                                <div className="admin-influencers-table-header-text">
+                                                    <p style={{display: hiddenCountries && index > 0 ? 'none' : 'block'}}>{country}</p>
+                                                </div>
                                             </div>
                                         </th>
                                     ))}
@@ -1421,7 +1462,7 @@ const AdminInfluencers = () => {
                                                 fontWeight: 400,
                                                 width: 190,
                                                 paddingLeft: 0,
-                                                display: hiddenColumns.includes('Influencer Id') ? 'none' : 'table-cell'
+                                                display: hiddenColumns.includes('Id') ? 'none' : 'table-cell'
                                             }}>
                                                 <input
                                                     style={{

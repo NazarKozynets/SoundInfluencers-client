@@ -13,16 +13,13 @@ import instagram from "../../../../images/icons/socialMedias/instagram.png";
 function formatDate(inputDate) {
   const date = new Date(inputDate);
 
-  // Получаем компоненты даты
   const day = date.getDate();
-  const month = date.getMonth() + 1; // Месяцы начинаются с 0
+  const month = date.getMonth() + 1; 
   const year = date.getFullYear();
 
-  // Добавляем ведущий ноль, если компонент даты меньше 10
   const formattedDay = day < 10 ? `0${day}` : day;
   const formattedMonth = month < 10 ? `0${month}` : month;
 
-  // Собираем дату в нужном формате
   const formattedDate = `${formattedDay}.${formattedMonth}.${year}`;
 
   return formattedDate;
@@ -39,7 +36,6 @@ const AccountInfluencerOngoingPromos = () => {
         `${process.env.REACT_APP_SERVER}/promos/get-ongoing-promos?influencerId=${dataFetch._id}`
       );
       if (result.data.code === 200) {
-        console.log(result.data.promos);
         setData(result.data.promos);
       }
     } catch (err) {

@@ -27,7 +27,6 @@ const AccountInfluencerInvoices = () => {
       const result = await axios(
         `${process.env.REACT_APP_SERVER}/invoice?influencerId=${dataFetch._id}`
       );
-      console.log(result.data.invoices);
       if (result.data.code === 200) {
         setData(result.data.invoices);
       }

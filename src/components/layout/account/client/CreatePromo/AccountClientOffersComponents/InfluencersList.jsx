@@ -19,6 +19,7 @@ const InfluencersList = ({influencers, activeIndices, setActiveIndices, selectIn
 
     useEffect(() => {
         setFlippedAccountIndeces([]);
+        setActiveIndices([]);
     }, [influencers])
 
     const formatFollowersNumber = (number) => {

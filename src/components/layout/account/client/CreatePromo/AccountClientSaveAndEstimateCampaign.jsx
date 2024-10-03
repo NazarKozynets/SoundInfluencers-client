@@ -16,20 +16,6 @@ const AccountClientSaveAndEstimateCampaign = () => {
     const dispatch = useDispatch();
 
     const dataPromo = useSelector((state) => state.createPromo.data);
-
-    // const getData = async () => {
-    //     try {
-    //         const { dataFetch } = await UseVerify();
-    //
-    //         setData(dataFetch);
-    //     } catch (err) {
-    //         console.log(err);
-    //     }
-    // };
-    //
-    // useEffect(() => {
-    //     getData();
-    // }, []);
     
     const createPromoEstimate = async () => {
         try {
