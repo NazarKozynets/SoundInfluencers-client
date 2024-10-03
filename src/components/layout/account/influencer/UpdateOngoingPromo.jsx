@@ -14,7 +14,7 @@ const UpdateOngoingPromo = () => {
     const params = useParams();
     const navigation = useNavigate();
     const [uploadProgress, setUploadProgress] = useState(0);
-    const [screenshotUrl, setScreenshotUrl] = useState("");
+    const [screenshotUrl, setScreenshotUrl] = useState(null);
     
     const [formData, setFormData] = useState({
         brand: "",
@@ -66,20 +66,6 @@ const UpdateOngoingPromo = () => {
                             ...formData,
                             screenshot: screenshotUrl, 
                         }
-                    );
-
-                    if (result.data.code === 200) {
-                        getData();
-                        setIsWindowTwo(true);
-                    }
-                } catch (error) {
-                    console.error("Error updating promo", error);
-                }
-            } else {
-                try {
-                    const result = await axios.put(
-                        `${process.env.REACT_APP_SERVER}/promos/update-ongoing?influencerId=${params.influencerId}&promoId=${params.promoId}&instagramUsername=${params.instagram}`,
-                        formData
                     );
 
                     if (result.data.code === 200) {
@@ -211,15 +197,17 @@ const UpdateOngoingPromo = () => {
                             setValue={(value) => setFormData({...formData, like: value})}
                         />
 
-                        <div style={{marginTop: "60px", display: "flex", justifyContent: "center"}}>
-                            <StandartButton text="Submit" onClick={updateData}/>
-                        </div>
+                        {screenshotUrl && (
+                            <div style={{marginTop: "60px", display: "flex", justifyContent: "center"}}>
+                                <StandartButton text="Submit" onClick={updateData}/>
+                            </div>
+                        )}
                     </FormContainer>
                 </div>
             </div>
 
             <ModalWindow header="CONGRATULATIONS!" isOpen={isWindowTwo} setClose={setIsWindowTwo}>
-                <div className="account-influencer-details-form">
+            <div className="account-influencer-details-form">
                     <div
                         style={{marginTop: "60px", display: "flex", justifyContent: "center", flexDirection: "column"}}>
                         <h2
