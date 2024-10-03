@@ -9,13 +9,15 @@ import ModalWindow from "../../../ModalWindow";
 import InputFile from "../../../form/InputFile";
 import UseVerify from "../../../../hooks/useVerify";
 import useVerify from "../../../../hooks/useVerify";
+import PageLoading from "../../../form/PageLoading/pageLoading";
+import {BarLoader, PuffLoader} from "react-spinners";
 
 const UpdateOngoingPromo = () => {
     const params = useParams();
     const navigation = useNavigate();
-    const [uploadProgress, setUploadProgress] = useState(0);
+    const [uploadProgress, setUploadProgress] = useState(false);
     const [screenshotUrl, setScreenshotUrl] = useState(null);
-    
+
     const [formData, setFormData] = useState({
         brand: "",
         caption: "",
@@ -64,7 +66,7 @@ const UpdateOngoingPromo = () => {
                         `${process.env.REACT_APP_SERVER}/promos/update-ongoing?influencerId=${params.influencerId}&promoId=${params.promoId}&instagramUsername=${params.instagram}`,
                         {
                             ...formData,
-                            screenshot: screenshotUrl, 
+                            screenshot: screenshotUrl,
                         }
                     );
 
@@ -100,19 +102,19 @@ const UpdateOngoingPromo = () => {
                             "Content-Type": "multipart/form-data",
                         },
                         onUploadProgress: (progressEvent) => {
-                            const progress = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-                            console.log(`File upload progress: ${progress}%`);
+                            setUploadProgress(true);
                         },
                     }
                 );
 
                 setScreenshotUrl(responseURL.data.data);
+                setUploadProgress(false);
             } catch (error) {
                 console.error("Error uploading file", error);
             }
         }
     };
-    
+
     return (
         <section className="invoice-result">
             <div className="container-form">
@@ -132,26 +134,31 @@ const UpdateOngoingPromo = () => {
                         />
 
 
-                        {uploadProgress > 0 && (
+                        {uploadProgress === true && (
                             <div style={{
-                                width: '80%',
-                                backgroundColor: '#f0f0f0',
-                                borderRadius: '10px',
+                                width: '70%',
                                 margin: '20px auto',
                                 fontFamily: 'Geometria',
-                                fontSize: 14,
+                                fontSize: 18,
                                 fontWeight: 400,
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center',
                             }}>
+                                <p style={{
+                                    textAlign: 'center',
+                                }}>Please wait. Screenshot is loading</p>
                                 <div style={{
-                                    width: `${uploadProgress}%`,
-                                    backgroundColor: '#4f91ed',
-                                    height: '10px',
-                                    borderRadius: '5px'
-                                }}></div>
-                                <p style={{textAlign: 'center'}}>{uploadProgress}%</p>
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    paddingBottom: 8,
+                                    paddingLeft: 9
+                                }}>
+                                    <PuffLoader color={"#3330e4"} loading={true} size={10}/>
+                                </div>
                             </div>
                         )}
-                        
+
                         <TextInput
                             style={{maxWidth: "665px", margin: "60px auto 0 auto"}}
                             title="Instagram link"
@@ -197,17 +204,15 @@ const UpdateOngoingPromo = () => {
                             setValue={(value) => setFormData({...formData, like: value})}
                         />
 
-                        {screenshotUrl && (
-                            <div style={{marginTop: "60px", display: "flex", justifyContent: "center"}}>
-                                <StandartButton text="Submit" onClick={updateData}/>
-                            </div>
-                        )}
+                        <div style={{marginTop: "60px", display: "flex", justifyContent: "center"}}>
+                            <StandartButton text="Submit" onClick={updateData}/>
+                        </div>
                     </FormContainer>
                 </div>
             </div>
 
             <ModalWindow header="CONGRATULATIONS!" isOpen={isWindowTwo} setClose={setIsWindowTwo}>
-            <div className="account-influencer-details-form">
+                <div className="account-influencer-details-form">
                     <div
                         style={{marginTop: "60px", display: "flex", justifyContent: "center", flexDirection: "column"}}>
                         <h2
