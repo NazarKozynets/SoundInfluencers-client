@@ -3,7 +3,7 @@ import SearchBarInput from "./SearchBarInput/SearchBarInput";
 import SearchBarResultsList from "./SearchBarResultsList/SearchBarResultsList";
 import "./searchbar.css";
 
-const SearchBarComponent = ({ data, searchFunction, setSearchResult, className }) => {
+const SearchBarComponent = ({ data, searchFunction, setSearchResult, className, typeOfSearch }) => {
     const [searchInput, setSearchInput] = useState("");
     const [showResults, setShowResults] = useState(false);
     const [results, setResults] = useState([]);
@@ -37,6 +37,7 @@ const SearchBarComponent = ({ data, searchFunction, setSearchResult, className }
                 <SearchBarResultsList
                     results={results}
                     onResultSelect={handleResultSelect}
+                    typeOfSearch={typeOfSearch}
                 />
             )}
         </div>

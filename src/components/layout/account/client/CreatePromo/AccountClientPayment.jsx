@@ -93,7 +93,8 @@ const AccountClientPayment = () => {
                         userId: dataFetch._id,
                         amount: dataPromo.selectPrice.price,
                         country: transferCurrent,
-                        paymentType: checkWhatTypeOfPayment(),
+                        paymentMethod: checkWhatTypeOfPayment(),
+                        campaignName: dataPromo.campaignName,
                     }
                 );
                 if (result.data.code === 201) {

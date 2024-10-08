@@ -55,6 +55,10 @@ import AccountAdminCheckPassword from "./pages/account/admin/admin-check-passwor
 import AccountAdminClients from "./pages/account/admin/admin-clients";
 import AccountAdminInfluencers from "./pages/account/admin/admin-influencers";
 import AccountAdminCampaigns from "./pages/account/admin/admin-campaigns";
+import AccountAdminInvoicesClients from "./pages/account/admin/admin-invoices-clients";
+import AccountAdminInvoicesInfluencers from "./pages/account/admin/admin-invoices-influencers";
+import AccountAdminOffers from "./pages/account/admin/admin-offers";
+import PaymentInvoiceDownload from "./pages/account/client/payment-invoice-download";
 
 const App = () => {
     return (
@@ -294,6 +298,7 @@ const App = () => {
                     <Route path="/terms-influencer" element={<TermsInfluencer/>}/>
                     <Route path="/" element={<PublicRoute element={Signup}/>}/>
                     <Route path="/promo-share/:promoId" element={<PromoSharePage/>} />
+                    <Route path="/invoice-download/:invoiceId" element={<PaymentInvoiceDownload/>} />
                     
                     <Route path="/admin" element={
                         <PrivateRoute element={AdminCheckPassword}/>
@@ -309,6 +314,15 @@ const App = () => {
                     }/>
                     <Route path="/admin/campaigns" element={
                         <PrivateRoute element={AccountAdminCampaigns}/>
+                    }/>
+                    <Route path="/admin/invoices-clients" element={
+                        <PrivateRoute element={AccountAdminInvoicesClients}/>
+                    }/>
+                    <Route path="/admin/invoices-influencers" element={
+                        <PrivateRoute element={AccountAdminInvoicesInfluencers}/>
+                    }/>
+                    <Route path="/admin/offers" element={
+                        <PrivateRoute element={AccountAdminOffers}/>
                     }/>
                 </Routes>
             </ThemeProvider>

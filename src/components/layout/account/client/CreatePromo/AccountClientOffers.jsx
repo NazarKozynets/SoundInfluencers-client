@@ -65,11 +65,11 @@ const AccountClientOffers = () => {
     const customePrice = useSelector((state) => state.createPromo.data.selectPrice.price);
 
     const selectInfluencers = useSelector((state) => state.createPromo.data.selectInfluencers);
-    
+
     const selectPriceInfluencers = useSelector((state) => state.createPromo.data.selectPriceInfluencers);
-    
+
     const currentCurrency = useSelector((state) => state.createPromo.data.currency);
-    
+
     const checkIsMobile = () => {
         setIsMobile(window.innerWidth <= 768);
     };
@@ -102,7 +102,7 @@ const AccountClientOffers = () => {
             }
         });
     }, [selectInfluencers, selectPriceInfluencers]);
-    
+
     useEffect(() => {
         setFilteredInfluencers(influencers);
     }, [influencers]);
@@ -311,8 +311,8 @@ const AccountClientOffers = () => {
                 } else {
                     return {
                         ...item,
-                        active:  false, 
-                        connect:  false, 
+                        active:  false,
+                        connect:  false,
                     };
                 }
             });
@@ -321,8 +321,8 @@ const AccountClientOffers = () => {
                 influencerId: item.influencerId,
                 confirmation: "wait",
                 instagramUsername: item.instagramUsername,
-                connect: true,  
-                active: false,  
+                connect: true,
+                active: false,
             }));
 
             if (selectInfluencers.length !== 0) {
@@ -330,8 +330,8 @@ const AccountClientOffers = () => {
                     influencerId: item.influencerId,
                     confirmation: "wait",
                     instagramUsername: item.instagramUsername,
-                    connect: item.connect ?? false,  
-                    active: item.active ?? false,   
+                    connect: item.connect ?? false,
+                    active: item.active ?? false,
                 }));
 
                 const filterCurrentSelectInfluencer = [];
@@ -356,7 +356,7 @@ const AccountClientOffers = () => {
                     if (item.connect) {
                         return {
                             ...item,
-                            connect: false, 
+                            connect: false,
                             active: false,
                         };
                     } else {
@@ -581,7 +581,7 @@ const AccountClientOffers = () => {
             price: totalCustomOffer,
         }));
 
-        
+
         dispatch(setSelectInfluencer([...filterInfluencers]));
 
         if (filteredInfluencersByBudget.length > 0) {
@@ -652,7 +652,7 @@ const AccountClientOffers = () => {
         if (customAmount === 0 || selectInfluencers.length === 0) return;
         dispatch(setCurrentWindow(1));
     };
-    
+
     const applyFiltersAndSort = () => {
         let filtered = [...influencers];
         const {sortMethod, checkedGenres, checkedCategories, checkedSubGenres, checkedCountries, budget} = filterParams;
@@ -751,7 +751,7 @@ const AccountClientOffers = () => {
                 filtered.sort((a, b) => {
                     const pricePerFollowerA = parseFloat(a.price.replace(/[^0-9.]/g, '')) / a.followersNumber;
                     const pricePerFollowerB = parseFloat(b.price.replace(/[^0-9.]/g, '')) / b.followersNumber;
-                    return pricePerFollowerA - pricePerFollowerB; 
+                    return pricePerFollowerA - pricePerFollowerB;
                 });
                 break;
             default:

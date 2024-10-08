@@ -23,6 +23,7 @@ import SubmitButton from "./form/Influencers/SubmitFooter/SubmitButton";
 import {formatDateString, formatDateStringReport} from "../../../../utils/validations";
 import ModalWindow from "../../../ModalWindow";
 import TextInput from "../../../form/TextInput";
+import StandardButton from "../../../form/StandardButton";
 
 const AdminInfluencers = () => {
     const [data, setData] = useState([]);
@@ -30,6 +31,7 @@ const AdminInfluencers = () => {
     const [activePlatform, setActivePlatform] = useState("Instagram");
     const [hiddenColumns, setHiddenColumns] = useState([]);
     const [tableWidth, setTableWidth] = useState(500);
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
     const platforms = [{
         name: 'Instagram',
@@ -77,9 +79,10 @@ const AdminInfluencers = () => {
         categories: [],
         countries: []
     })
-
+    
     const containerRef = useRef(null);
     const saveChangesRef = useRef(null);
+    const modalWindowRef = useRef(null);
 
     const genres = ['Techno (Melodic, Minimal)', 'Techno (Hard, Peak)', 'House (Tech House)', 'House (Melodic, Afro)', 'EDM', 'D&B', 'BASS', 'PSY']
     const categories = ['Dancing', 'Meme', 'Ibiza']
@@ -88,6 +91,9 @@ const AdminInfluencers = () => {
     const [hiddenCategories, setHiddenCategories] = useState(false);
     const [hiddenCountries, setHiddenCountries] = useState(false);
 
+    const closeEditModal = () => {
+        setIsEditModalOpen(false);
+    };
 
     const toggleHiddenGenres = () => {
         setHiddenGenres(!hiddenGenres);
@@ -403,25 +409,83 @@ const AdminInfluencers = () => {
     }, [hiddenColumns, hiddenGenres, hiddenCategories, hiddenCountries]);
 
     const EditLinkModal = () => {
+        const [newLink, setNewLink] = useState('');
+
+        const handleInputLinkChange = (e) => {
+            setNewLink(e.target.value);
+        };
+        
+        const saveNewLinkToFieldsForChange = () => {
+            setFieldsForChange({
+                ...fieldsForChange,
+                instagramLink: newLink,
+            });
+        };
+
         return (
-            <div style={{}}>
+            <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                width: '100%',
+                height: '100%',
+            }}>
                 <p style={{
                     fontFamily: "Geometria",
                     fontSize: 20,
                     fontWeight: 700,
-                    paddingLeft: 20,
-                }}>Current {getSecondNameForActivePlatform()} Link:</p>
+                    paddingLeft: 40,
+                    paddingTop: 20,
+                }}>
+                    Current {getSecondNameForActivePlatform()} Link:
+                </p>
                 <p style={{
                     fontFamily: "Geometria",
                     fontSize: 18,
                     fontWeight: 500,
-                    paddingLeft: 20,
-                }}>
+                    paddingLeft: 40,
+                    cursor: "pointer"
+                }}
+                   onClick={() => {
+                       window.open(fieldsForChange.instagramLink, '_blank');
+                   }}>
                     {fieldsForChange.instagramLink}
                 </p>
+                <div>
+                    <p style={{
+                        fontFamily: "Geometria",
+                        fontSize: 20,
+                        fontWeight: 700,
+                        paddingLeft: 40,
+                        paddingTop: 20,
+                    }}>
+                        New {getSecondNameForActivePlatform()} Link:
+                    </p>
+                    <TextInput
+                        style={{
+                            fontFamily: "Geometria",
+                            fontSize: 20,
+                            fontWeight: 700,
+                            margin: '10px 30px 30px 30px',
+                            width: '70%',
+                        }}
+                        name='instagramLink'
+                        value={newLink}
+                        onChange={handleInputLinkChange} 
+                    />
+                </div>
+                
+                <StandardButton style={{
+                    width: '70%',
+                    marginBottom: 30,
+                    marginLeft: 35,
+                }} text={'Save New Link'} onClick={() => saveNewLinkToFieldsForChange()}/>
             </div>
         );
-    }
+    };
+
+    useEffect(() => {
+        console.log({fieldsForChange})
+    }, [fieldsForChange])
 
     return (
         <section className="admin">
@@ -481,6 +545,7 @@ const AdminInfluencers = () => {
                                 setSearchResult={setSearchResult}
                                 searchFunction={searchByUsername}
                                 className="large"
+                                typeOfSearch="influencers"
                             />
                         </div>
 
@@ -692,7 +757,7 @@ const AdminInfluencers = () => {
                                                 }} className="admin-influencers-table-header-text">
                                                     <p style={{marginTop: '-12px'}}>ID</p>
                                                     <SearchBarComponent data={data} setSearchResult={setSearchResult}
-                                                                        searchFunction={searchById} className="small"/>
+                                                                        searchFunction={searchById} className="small" typeOfSearch="influencers"/>
                                                 </div>
                                             </div>
                                         </th>
@@ -1390,6 +1455,25 @@ const AdminInfluencers = () => {
                                                         <img src={instaRefLogo} alt="watch"/>
                                                         <img src={linkIcon} alt="edit"/>
                                                     </button>
+                                                    <button
+                                                        onClick={() => {
+                                                            setIsEditModalOpen(true);
+                                                        }}
+                                                        style={{
+                                                            display: 'flex',
+                                                            alignItems: 'center',
+                                                            justifyContent: 'space-between',
+                                                            height: 28,
+                                                            borderRadius: "10px",
+                                                            paddingLeft: 3,
+                                                            paddingRight: 3,
+                                                            border: "1.5px solid black",
+                                                            boxSizing: 'border-box',
+                                                            margin: '0 auto',
+                                                            cursor: 'pointer'
+                                                        }}>
+                                                        <img src={edit} alt="watch"/>
+                                                    </button>
                                                 </div>
                                             </td>
                                             <td className="admin-influencers-table-body-td" style={{
@@ -1600,7 +1684,7 @@ const AdminInfluencers = () => {
                                                             width: '100%',
                                                             margin: '0 auto'
                                                         }}
-                                                        value={checkGenre(genre, influencer.instagram) ? 'Yes' : 'No'}
+                                                        value={checkGenre(genre, influencer.instagram) ? 'Yes' : ''}
                                                     />
                                                 </td>
                                             ))}
@@ -1622,7 +1706,7 @@ const AdminInfluencers = () => {
                                                             width: '100%',
                                                             margin: '0 auto'
                                                         }}
-                                                        value={checkCategory(category, influencer.instagram) ? 'Yes' : 'No'}
+                                                        value={checkCategory(category, influencer.instagram) ? 'Yes' : ''}
                                                     />
                                                 </td>
                                             ))}
@@ -1647,7 +1731,7 @@ const AdminInfluencers = () => {
                                                                 width: '100%',
                                                                 margin: '0 auto'
                                                             }}
-                                                            value={result.found ? `Yes (${result.percentage}%)` : 'No'}
+                                                            value={result.found ? `Yes (${result.percentage}%)` : ''}
                                                         />
                                                     </td>
                                                 );
@@ -1657,6 +1741,12 @@ const AdminInfluencers = () => {
                                 )}
                                 </tbody>
                             </table>
+
+                            {isEditModalOpen && (
+                                <ModalWindow isOpen={isEditModalOpen} title="Edit Influencer" setClose={closeEditModal}>
+                                    <EditLinkModal/>
+                                </ModalWindow>
+                            )}
                         </div>
                     </div>
                 ) : (

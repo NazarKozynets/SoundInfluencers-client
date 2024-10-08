@@ -2,7 +2,7 @@ import React from "react";
 import "./searchbarresultslist.css";
 import SearchBarResult from "../SearchBarResult/SearchBarResult";
 
-const SearchBarResultsList = ({ results, onResultSelect }) => {
+const SearchBarResultsList = ({ results, onResultSelect, typeOfSearch }) => {
     return (
         <div className="results-list">
             {results.map((result, id) => (
@@ -10,6 +10,7 @@ const SearchBarResultsList = ({ results, onResultSelect }) => {
                     result={result}
                     key={id}
                     onResultSelect={onResultSelect}
+                    typeOfSearch={typeOfSearch}
                 />
             ))}
         </div>

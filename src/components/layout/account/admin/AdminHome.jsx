@@ -49,6 +49,7 @@ const AdminHome = () => {
                             <li className="admin-home-menu-item">
                                 <button
                                     className="admin-home-menu-button"
+                                    onClick={() => navigate('/admin/invoices-clients')}
                                 >
                                     <img
                                         src={invoicesClients}
@@ -72,6 +73,7 @@ const AdminHome = () => {
                             <li className="admin-home-menu-item">
                                 <button
                                     className="admin-home-menu-button"
+                                    onClick={() => navigate('/admin/offers')}
                                 >
                                     <img
                                         src={offers}
@@ -83,6 +85,7 @@ const AdminHome = () => {
                             <li className="admin-home-menu-item">
                                 <button
                                     className="admin-home-menu-button"
+                                    onClick={() => navigate('/admin/invoices-influencers')}
                                 >
                                     <img
                                         src={invoicesInfluencers}

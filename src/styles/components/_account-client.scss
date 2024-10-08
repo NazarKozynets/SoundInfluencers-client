@@ -1019,7 +1019,7 @@ body {
     padding: 40px 0;
     margin-left: 20px;
   }
-  
+
   &-list {
     display: flex;
     justify-content: flex-start;
@@ -1062,7 +1062,7 @@ body {
           font-size: 14px;
           font-weight: 500;
           color: #3330E4;
-          
+
           @media screen and (max-width: 768px) {
             font-size: 12px;
           }
@@ -1091,7 +1091,7 @@ body {
 
     @media screen and (max-width: 768px) {
       width: calc((100% - (20px * 3)) / 3) !important;
-      
+
     }
   }
 
@@ -1131,10 +1131,10 @@ body {
 
   @media screen and (max-width: 768px) {
     .account-client-past-promos-block-title {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-top: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 50px;
     }
   }
 }
@@ -1362,7 +1362,7 @@ body {
     justify-content: space-around;
     width: 90%;
     margin: 60px auto;
-    
+
     p {
       font-family: Geometria;
       font-size: 24px;
@@ -2200,7 +2200,7 @@ body {
     align-content: space-between;
     display: none !important;
   }
-  //Influencers List  
+  //Influencers List
   .account-client-influencers-list-title {
     margin: -50px 0 0 0 !important;
   }

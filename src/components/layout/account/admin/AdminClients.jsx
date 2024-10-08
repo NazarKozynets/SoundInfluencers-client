@@ -23,6 +23,7 @@ const AdminClients = () => {
         internalNote: '',
     });
     const navigate = useNavigate();
+    
     const inputRef = useRef(null);
     const containerRef = useRef(null);
     const saveChangesRef = useRef(null);
