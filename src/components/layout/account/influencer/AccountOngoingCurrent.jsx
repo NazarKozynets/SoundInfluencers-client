@@ -54,6 +54,10 @@ const AcountInfluencerOngoingCurrent = () => {
         getData();
     }, []);
 
+    useEffect(() => {
+        console.log(dataInfluencer)
+    }, [dataInfluencer]);
+
     return (
         <>
             <section className="account-client-past-promos">
@@ -156,6 +160,20 @@ const AcountInfluencerOngoingCurrent = () => {
                                             <span
                                                 className="account-client-past-promos-form-current-content-date-value">
                         {data ? data.dateRequest : "No Data"}
+                      </span>
+                                        </p>
+                                        <p className="account-client-past-promos-form-current-content-date">
+                                            Story Tag:{" "}
+                                            <span
+                                                className="account-client-past-promos-form-current-content-date-value">
+                        {dataInfluencer.length > 0 && dataInfluencer[0].video ? dataInfluencer[0].video.storyTag : "No Data"}
+                      </span>
+                                        </p>
+                                        <p className="account-client-past-promos-form-current-content-date">
+                                            Story Link:{" "}
+                                            <span
+                                                className="account-client-past-promos-form-current-content-date-value">
+                        {dataInfluencer.length > 0 && dataInfluencer[0].video ? dataInfluencer[0].video.swipeUpLink : "No Data"}
                       </span>
                                         </p>
                                         <p className="account-client-past-promos-form-current-content-wish">
