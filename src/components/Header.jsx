@@ -94,50 +94,50 @@ const Header = ({userType = "client", page = "login", path = ""}) => {
                             {/*  */}
                             {/*</button>*/}
 
-                            {!isAuth && page === "signup" && (
-                                <div className="header-mobile">
-                                    <button
-                                        className="header-login"
-                                        type="button"
-                                        onClick={() => {
-                                            navigation("/login/client");
-                                        }}
-                                    >
-                                        Log in client
-                                    </button>
-                                    <button
-                                        className="header-login"
-                                        type="button"
-                                        onClick={() => {
-                                            navigation("/login/influencer");
-                                        }}
-                                    >
-                                        Log in influencer
-                                    </button>
-                                </div>
-                            )}
-                            {!isAuth && page === "login" && (
-                                <div className="header-mobile">
-                                    <button
-                                        className="header-login"
-                                        type="button"
-                                        onClick={() => {
-                                            navigation("/signup/client");
-                                        }}
-                                    >
-                                        Signup in client
-                                    </button>
-                                    <button
-                                        className="header-login"
-                                        type="button"
-                                        onClick={() => {
-                                            navigation("/signup/influencer");
-                                        }}
-                                    >
-                                        Signup in influencer
-                                    </button>
-                                </div>
-                            )}
+                            {/*{!isAuth && page === "signup" && (*/}
+                            {/*    <div className="header-mobile">*/}
+                            {/*        <button*/}
+                            {/*            className="header-login"*/}
+                            {/*            type="button"*/}
+                            {/*            onClick={() => {*/}
+                            {/*                navigation("/login/client");*/}
+                            {/*            }}*/}
+                            {/*        >*/}
+                            {/*            Log in client*/}
+                            {/*        </button>*/}
+                            {/*        <button*/}
+                            {/*            className="header-login"*/}
+                            {/*            type="button"*/}
+                            {/*            onClick={() => {*/}
+                            {/*                navigation("/login/influencer");*/}
+                            {/*            }}*/}
+                            {/*        >*/}
+                            {/*            Log in influencer*/}
+                            {/*        </button>*/}
+                            {/*    </div>*/}
+                            {/*)}*/}
+                            {/*{!isAuth && page === "login" && (*/}
+                            {/*    <div className="header-mobile">*/}
+                            {/*        <button*/}
+                            {/*            className="header-login"*/}
+                            {/*            type="button"*/}
+                            {/*            onClick={() => {*/}
+                            {/*                navigation("/signup/client");*/}
+                            {/*            }}*/}
+                            {/*        >*/}
+                            {/*            Signup in client*/}
+                            {/*        </button>*/}
+                            {/*        <button*/}
+                            {/*            className="header-login"*/}
+                            {/*            type="button"*/}
+                            {/*            onClick={() => {*/}
+                            {/*                navigation("/signup/influencer");*/}
+                            {/*            }}*/}
+                            {/*        >*/}
+                            {/*            Signup in influencer*/}
+                            {/*        </button>*/}
+                            {/*    </div>*/}
+                            {/*)}*/}
                             {isAuth && (
                                 <button
                                     className="header-profile"

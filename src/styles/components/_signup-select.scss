@@ -93,3 +93,12 @@
     line-height: normal;
     margin-top: 40px;
 }
+
+.signup-select-buttons {
+    display: flex;
+    gap: 18px;
+    
+    @media screen and (max-width: 768px) {
+        flex-direction: column;
+    }
+}
