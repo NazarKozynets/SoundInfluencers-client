@@ -14,13 +14,13 @@ const AdminCampaigns = () => {
     const [data, setData] = useState([]);
     const [searchResult, setSearchResult] = useState();
     const [isShowModalPublicLink, setIsShowModalPublicLink] = useState(false);
-    
+
     const navigate = useNavigate();
 
     const inputRef = useRef(null);
     const containerRef = useRef(null);
     const saveChangesRef = useRef(null);
-    
+
     useEffect(() => {
         getData();
     }, []);
@@ -46,12 +46,38 @@ const AdminCampaigns = () => {
         if (!campaign.statusPromo) {
             return 'N/A';
         }
-        
+
         if (campaign.statusPromo === 'finally') {
             return 'Completed';
         }
+        
+        if (campaign.verifyPromo === 'cancel') {
+            return 'Campaign Canceled';
+        }
+        
+        if (campaign.verifyPromo === 'wait') {
+            return 'Campaign Waiting For Agreement';
+        }
+        
+        const influencersResponses = campaign.selectInfluencers.map((influencer) => influencer.confirmation);
+        const influencersIsPromoClosed = campaign.selectInfluencers.map((influencer) => influencer.closePromo);
+        
+        if (campaign.verifyPromo === 'accept') {
+            if (influencersResponses.includes('refusing')) {
+                const numOfRefuses = influencersResponses.filter((response) => response === 'refusing').length;
+                return `${numOfRefuses} refuses`;
+            }
+        
+            if (influencersResponses.includes('wait')) {
+                return 'Awaiting Confirmation';
+            }
+        }
+        
+        if (campaign.statusPromo === 'work') {
+            return 'Awaiting Content';
+        }
     }
-    
+
     return (
         <section className="admin">
             <div>
@@ -69,7 +95,7 @@ const AdminCampaigns = () => {
                         </div>
 
                         <div ref={containerRef}>
-                            <div className="admin-table-container">
+                            <div className="admin-table-container" style={{width: '80%', margin: '30px auto'}}>
                                 <table className="admin-table">
                                     <thead className="admin-table-header">
                                     <tr>
@@ -82,7 +108,23 @@ const AdminCampaigns = () => {
                                         <td>Profit</td>
                                         <td>Paid</td>
                                         <td>Status</td>
-                                        <td>Influencers</td>
+                                        <td style={{width: '7%'}}>
+                                            <div style={{display: 'flex', flexDirection: 'column'}}>
+                                                Influencers
+                                                <div style={{
+                                                    display: 'flex',
+                                                    flexDirection: 'row',
+                                                    justifyContent: 'space-between',
+                                                    width: '100%',
+                                                    padding: 0,
+                                                    margin: 0
+                                                }}>
+                                                    <p style={{width: 40, textAlign: 'center'}}>Tot</p>
+                                                    <p style={{width: 40, textAlign: 'center'}}>App</p>
+                                                    <p style={{width: 40, textAlign: 'center'}}>Den</p>
+                                                </div>
+                                            </div>
+                                        </td>
                                         <td>Replacements</td>
                                         <td>Partial Refund</td>
                                     </tr>
@@ -109,7 +151,7 @@ const AdminCampaigns = () => {
                                                         readOnly={true}
                                                     />
                                                 </td>
-                                                <td className="admin-table-body-td" style={{width: 60}}>
+                                                <td className="admin-table-body-td" style={{width: '5%'}}>
                                                     <div style={{
                                                         display: 'flex',
                                                         justifyContent: 'center',
@@ -140,7 +182,7 @@ const AdminCampaigns = () => {
                                                         </button>
                                                     </div>
                                                 </td>
-                                                <td className="admin-table-body-td" style={{width: 73}}>
+                                                <td className="admin-table-body-td" style={{width: '5.3%'}}>
                                                     <div style={{display: 'flex'}}>
                                                         <button
                                                             style={{
@@ -176,7 +218,7 @@ const AdminCampaigns = () => {
                                                     </div>
                                                 </td>
                                                 <td className="admin-table-body-td"
-                                                    style={{width: 90, margin: 0, padding: 0}}>
+                                                    style={{width: '6%', margin: 0, padding: 0}}>
                                                     <input
                                                         style={{
                                                             fontFamily: "Geometria",
@@ -192,7 +234,7 @@ const AdminCampaigns = () => {
                                                     />
                                                 </td>
                                                 <td className="admin-table-body-td"
-                                                    style={{width: 90, margin: 0, padding: 0}}>
+                                                    style={{width: '6%', margin: 0, padding: 0}}>
                                                     <input
                                                         style={{
                                                             fontFamily: "Geometria",
@@ -208,7 +250,7 @@ const AdminCampaigns = () => {
                                                     />
                                                 </td>
                                                 <td className="admin-table-body-td"
-                                                    style={{width: 90, margin: 0, padding: 0}}>
+                                                    style={{width: '5%', margin: 0, padding: 0}}>
                                                     <input
                                                         style={{
                                                             fontFamily: "Geometria",
@@ -226,7 +268,7 @@ const AdminCampaigns = () => {
                                                     />
                                                 </td>
                                                 <td className="admin-table-body-td"
-                                                    style={{width: 90, margin: 0, padding: 0}}>
+                                                    style={{width: '6%', margin: 0, padding: 0}}>
                                                     <input
                                                         style={{
                                                             fontFamily: "Geometria",
@@ -242,7 +284,7 @@ const AdminCampaigns = () => {
                                                     />
                                                 </td>
                                                 <td className="admin-table-body-td"
-                                                    style={{width: 90, margin: 0, padding: 0}}>
+                                                    style={{width: '5%', margin: 0, padding: 0}}>
                                                     <input
                                                         style={{
                                                             fontFamily: "Geometria",
@@ -258,13 +300,13 @@ const AdminCampaigns = () => {
                                                     />
                                                 </td>
                                                 <td className="admin-table-body-td"
-                                                    style={{width: 90, margin: 0, padding: 0}}>
+                                                    style={{width: '18%', margin: 0}}>
                                                     <input
                                                         style={{
                                                             fontFamily: "Geometria",
                                                             fontSize: 15,
                                                             fontWeight: 400,
-                                                            textAlign: "center",
+                                                            textAlign: "left",
                                                             width: '100%',
                                                             margin: 0,
                                                             padding: 0
@@ -274,7 +316,26 @@ const AdminCampaigns = () => {
                                                     />
                                                 </td>
                                                 <td className="admin-table-body-td"
-                                                    style={{width: 90, margin: 0, padding: 0}}>
+                                                    style={{margin: 0, padding: 0}}>
+                                                    <div style={{
+                                                        display: 'flex',
+                                                        fontFamily: "Geometria",
+                                                        fontSize: 15,
+                                                        fontWeight: 400,
+                                                        textAlign: "center",
+                                                        width: '100%',
+                                                        justifyContent: 'space-between',
+                                                        margin: 0,
+                                                        padding: 0
+                                                    }}>
+                                                        <p style={{margin: '0 10px'}}>{item.selectInfluencers ? item.selectInfluencers.length : 'N/A'}</p>
+                                                        <p style={{margin: '0 10px'}}>{item.selectInfluencers ? item.selectInfluencers.filter((influencer) => influencer.confirmation === 'accept').length : 'N/A'}</p>
+                                                        <p style={{margin: '0 10px'}}>{item.selectInfluencers ? item.selectInfluencers.filter((influencer) => influencer.confirmation === 'refusing').length : 'N/A'}</p>
+                                                    </div>
+
+                                                </td>
+                                                <td className="admin-table-body-td"
+                                                    style={{width: 30, margin: 0, padding: 0}}>
                                                     <input
                                                         style={{
                                                             fontFamily: "Geometria",
@@ -290,23 +351,7 @@ const AdminCampaigns = () => {
                                                     />
                                                 </td>
                                                 <td className="admin-table-body-td"
-                                                    style={{width: 90, margin: 0, padding: 0}}>
-                                                    <input
-                                                        style={{
-                                                            fontFamily: "Geometria",
-                                                            fontSize: 15,
-                                                            fontWeight: 400,
-                                                            textAlign: "center",
-                                                            width: '100%',
-                                                            margin: 0,
-                                                            padding: 0
-                                                        }}
-                                                        value={'ASK'}
-                                                        readOnly={true}
-                                                    />
-                                                </td>
-                                                <td className="admin-table-body-td"
-                                                    style={{width: 90, margin: 0, padding: 0}}>
+                                                    style={{width: 30, margin: 0, padding: 0}}>
                                                     <input
                                                         style={{
                                                             fontFamily: "Geometria",
@@ -337,5 +382,4 @@ const AdminCampaigns = () => {
         </section>
     );
 }
-
 export default AdminCampaigns;

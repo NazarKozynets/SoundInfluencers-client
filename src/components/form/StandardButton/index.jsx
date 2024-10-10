@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./style.module.css";
 
-const StandardButton = ({ onClick, text = "", style = {}, isBlue = false }) => {
+const StandardButton = ({ onClick, text = "", style = {}, isBlue = false, isDisabled = false}) => {
   const buttonClass = isBlue ? styles.buttonBlue : styles.button;
 
   return (
@@ -10,6 +10,7 @@ const StandardButton = ({ onClick, text = "", style = {}, isBlue = false }) => {
           style={style}
           className={buttonClass}
           onClick={onClick}
+          disabled={isDisabled}
       >
         {text}
       </button>
