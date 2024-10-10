@@ -15,6 +15,8 @@ import shareImg from "../../../../images/icons/Share.svg";
 import mailImg from "../../../../images/icons/mail (1) 1.svg";
 import StandardButton from "../../../form/StandardButton";
 import AdminShowClientInvoice from "./AdminShowClientInvoice";
+import {resetFields, updateMultipleFields} from "../../../../redux/slice/admin-edit-invoice";
+import {useDispatch, useSelector} from "react-redux";
 
 const AdminInvoicesClients = () => {
     const [data, setData] = useState([]);
@@ -39,6 +41,10 @@ const AdminInvoicesClients = () => {
     const showInvoiceRef = useRef(null);
 
     const navigate = useNavigate();
+    
+    const dispatch = useDispatch();
+
+    const invoiceDataForSending = useSelector((state) => state.adminEditInvoice);
 
     useEffect(() => {
         getData();
@@ -62,6 +68,7 @@ const AdminInvoicesClients = () => {
                     createdAt: '',
                     companyName: '',
                 });
+                dispatch(resetFields());
             }
         };
 
@@ -83,6 +90,16 @@ const AdminInvoicesClients = () => {
                 createdAt: invoice.createdAt,
                 campaignName: invoice.campaignName,
             });
+            
+            dispatch(updateMultipleFields([
+                { field: 'invoiceNo', value: invoice._id },
+                { field: 'date', value: formatDateStringReport(invoice.createdAt) },
+                { field: 'companyName', value: invoice.companyName },
+                { field: 'total', value: invoice.amount },
+                { field: 'subtotal', value: invoice.amount },
+                { field: 'balanceDue', value: invoice.amount },
+                { field: 'userId', value: invoice.userId },
+            ]));
         }
     };
 
@@ -181,6 +198,19 @@ const AdminInvoicesClients = () => {
         }
     };
 
+    const sendInvoiceToClient = async () => {
+        try {
+            const result = await axios.post(
+                `${process.env.REACT_APP_SERVER}/admin/send-invoice-client`,
+                {
+                    ...invoiceDataForSending
+                }
+            );
+        } catch (error) {
+            console.error(error);
+        }
+    }
+    
     return (
         <section className="admin">
             <div>
@@ -284,7 +314,8 @@ const AdminInvoicesClients = () => {
                                                     }}
                                                     value={fieldsForChange._id === searchResut._id ? fieldsForChange.companyName : (searchResut.companyName ? searchResut.companyName : 'N/A')}
                                                     name="companyName"
-                                                    onChange={(e) => updateInvoiceFieldsInput(e)}
+                                                    // onChange={(e) => updateInvoiceFieldsInput(e)}
+                                                    readOnly={true}
                                                 />
                                             </td>
                                             <td className="admin-table-body-td" style={{width: 200}}>
@@ -297,8 +328,9 @@ const AdminInvoicesClients = () => {
                                                         margin: 0,
                                                         width: '100%',
                                                     }}
-                                                    value={formatDateStringReport(searchResut.createdAt)}
-                                                    readOnly={true}
+                                                    value={fieldsForChange._id === searchResut._id ? fieldsForChange.campaignName : (searchResut.campaignName ? searchResut.campaignName : 'N/A')}
+                                                    name="campaignName"
+                                                    onChange={(e) => updateInvoiceFieldsInput(e)}
                                                 />
                                             </td>
                                             <td className="admin-table-body-td" style={{width: 111}}>
@@ -341,9 +373,6 @@ const AdminInvoicesClients = () => {
                                                     marginLeft: -6,
                                                 }}>
                                                     <button
-                                                        onClick={() => {
-                                                            setIsShowModal(true);
-                                                        }}
                                                         style={{
                                                             display: 'flex',
                                                             alignItems: 'center',
@@ -358,8 +387,18 @@ const AdminInvoicesClients = () => {
                                                             cursor: 'pointer',
                                                             margin: 0
                                                         }}>
-                                                        <img src={watch} alt="watch"/>
-                                                        <img src={editImg} alt="watch"/>
+                                                        <img onClick={() => {
+                                                            setIsShowModal(true);
+                                                        }}
+                                                             src={watch}
+                                                             alt="watch"
+                                                        />
+                                                        <img onClick={() => {
+                                                            setIsShowModalEdit(true);
+                                                        }}
+                                                             src={editImg}
+                                                             alt="watch"
+                                                        />
                                                     </button>
                                                     <button
                                                         onClick={() => downloadInvoice(searchResut._id)}
@@ -380,7 +419,7 @@ const AdminInvoicesClients = () => {
                                                         <img src={download} alt="download"/>
                                                     </button>
                                                     <button
-                                                        onClick={() => downloadInvoice(searchResut._id)}
+                                                        onClick={() => setIsShowModalPublicLink(true)}
                                                         style={{
                                                             display: 'flex',
                                                             alignItems: 'center',
@@ -395,37 +434,40 @@ const AdminInvoicesClients = () => {
                                                         }}>
                                                         <img style={{width: 17}} src={shareImg} alt="share"/>
                                                     </button>
-                                                    <button
-                                                        onClick={() => downloadInvoice(searchResut._id)}
-                                                        style={{
-                                                            display: 'flex',
-                                                            alignItems: 'center',
-                                                            justifyContent: 'space-between',
-                                                            paddingLeft: 5,
-                                                            paddingRight: 5,
-                                                            borderRadius: "10px",
-                                                            border: "1.5px solid black",
-                                                            boxSizing: 'border-box',
-                                                            cursor: 'pointer',
-                                                            marginLeft: 0
-                                                        }}>
-                                                        <img style={{width: 17}} src={mailImg} alt="mail"/>
-                                                    </button>
+                                                    {fieldsForChange._id !== '' && (
+                                                        <button
+                                                            onClick={() => sendInvoiceToClient()}
+                                                            style={{
+                                                                display: 'flex',
+                                                                alignItems: 'center',
+                                                                justifyContent: 'space-between',
+                                                                paddingLeft: 5,
+                                                                paddingRight: 5,
+                                                                borderRadius: "10px",
+                                                                border: "1.5px solid black",
+                                                                boxSizing: 'border-box',
+                                                                cursor: 'pointer',
+                                                                marginLeft: 0
+                                                            }}>
+                                                            <img style={{width: 17}} src={mailImg} alt="mail"/>
+                                                        </button>
+                                                    )}
                                                 </div>
                                             </td>
                                             <td className="admin-table-body-td"
-                                                style={{width: 120, margin: 0, padding: 0}}>
+                                                style={{width: 90, margin: 0, padding: 0}}>
                                                 <input
                                                     style={{
                                                         fontFamily: "Geometria",
                                                         fontSize: 15,
                                                         fontWeight: 400,
                                                         textAlign: "center",
+                                                        margin: 0,
+                                                        padding: 0,
                                                         width: '100%',
-                                                        margin: '0',
                                                     }}
-                                                    value={fieldsForChange._id === searchResut._id ? fieldsForChange.statusOrder : searchResut.statusOrder}
-                                                    name="status"
+                                                    value={fieldsForChange._id === searchResut._id ? fieldsForChange.statusOrder : (searchResut.statusOrder ? searchResut.statusOrder : 'N/A')}
+                                                    name="statusOrder"
                                                     onChange={(e) => updateInvoiceFieldsInput(e)}
                                                 />
                                             </td>
@@ -539,7 +581,6 @@ const AdminInvoicesClients = () => {
                                                             />
                                                             <img onClick={() => {
                                                                 setIsShowModalEdit(true);
-                                                                console.log('edit');
                                                             }}
                                                                  src={editImg}
                                                                  alt="watch"
@@ -579,22 +620,24 @@ const AdminInvoicesClients = () => {
                                                             }}>
                                                             <img style={{width: 17}} src={shareImg} alt="share"/>
                                                         </button>
-                                                        <button
-                                                            onClick={() => downloadInvoice(invoice._id)}
-                                                            style={{
-                                                                display: 'flex',
-                                                                alignItems: 'center',
-                                                                justifyContent: 'space-between',
-                                                                paddingLeft: 5,
-                                                                paddingRight: 5,
-                                                                borderRadius: "10px",
-                                                                border: "1.5px solid black",
-                                                                boxSizing: 'border-box',
-                                                                cursor: 'pointer',
-                                                                marginLeft: 0
-                                                            }}>
-                                                            <img style={{width: 17}} src={mailImg} alt="mail"/>
-                                                        </button>
+                                                        {fieldsForChange._id !== '' && (
+                                                            <button
+                                                                onClick={() => sendInvoiceToClient()}
+                                                                style={{
+                                                                    display: 'flex',
+                                                                    alignItems: 'center',
+                                                                    justifyContent: 'space-between',
+                                                                    paddingLeft: 5,
+                                                                    paddingRight: 5,
+                                                                    borderRadius: "10px",
+                                                                    border: "1.5px solid black",
+                                                                    boxSizing: 'border-box',
+                                                                    cursor: 'pointer',
+                                                                    marginLeft: 0
+                                                                }}>
+                                                                <img style={{width: 17}} src={mailImg} alt="mail"/>
+                                                            </button>
+                                                        )}
                                                     </div>
                                                 </td>
                                                 <td className="admin-table-body-td"

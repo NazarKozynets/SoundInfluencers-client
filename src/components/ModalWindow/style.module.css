@@ -6,7 +6,7 @@
   width: 100vw;
   height: 100vh;
   background: rgba(0, 0, 0, 0.7);
-  z-index: 5;
+  z-index: 11111;
   transition: opacity 250ms linear;
   overflow-y: scroll;
   display: flex;

@@ -34,7 +34,7 @@ const AccountInfluencerHome = () => {
   }, []);
   
   const handleInvoice = () => {
-    if(+data.balance === 0 ) return setIsModal(true);
+    if(+data.balance < 1) return setIsModal(true);
     navigation("/account/influencer/create-invoice")
   }
 

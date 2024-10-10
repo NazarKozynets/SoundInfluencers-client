@@ -7,11 +7,14 @@ import axios from "axios";
 import SearchBar from "../../../form/SearchBar/SearchBar";
 import watch from "../../../../images/icons/view 1.svg";
 import editImg from "../../../../images/icons/edit 1.svg";
+import shareImg from "../../../../images/icons/Share.svg";
+import mailImg from "../../../../images/icons/mail (1) 1.svg";
 
 const AdminCampaigns = () => {
     const [data, setData] = useState([]);
     const [searchResult, setSearchResult] = useState();
-
+    const [isShowModalPublicLink, setIsShowModalPublicLink] = useState(false);
+    
     const navigate = useNavigate();
 
     const inputRef = useRef(null);
@@ -39,6 +42,16 @@ const AdminCampaigns = () => {
         console.log(data);
     }, [data]);
 
+    const getStatusOfCampaign = (campaign) => {
+        if (!campaign.statusPromo) {
+            return 'N/A';
+        }
+        
+        if (campaign.statusPromo === 'finally') {
+            return 'Completed';
+        }
+    }
+    
     return (
         <section className="admin">
             <div>
@@ -83,7 +96,7 @@ const AdminCampaigns = () => {
                                     ) : (
                                         data.map((item, index) => (
                                             <tr key={index}>
-                                                <td className="admin-table-body-td" style={{width: 250}}>
+                                                <td className="admin-table-body-td" style={{width: 150}}>
                                                     <input
                                                         style={{
                                                             fontFamily: "Geometria",
@@ -92,10 +105,8 @@ const AdminCampaigns = () => {
                                                             textAlign: "left",
                                                             width: '100%',
                                                         }}
-                                                        value={item.campaignName ? item.campaignName.slice(0, 25) : 'N/A'}
-                                                        // value={fieldsForChange._id === client._id ? fieldsForChange.email : (client.email ? client.email : 'N/A')}
-                                                        // name="email"
-                                                        // onChange={(e) => updateClientFieldsInput(e)}
+                                                        value={item.campaignName ? item.campaignName.slice(0, 25) : 'Old Campaign'}
+                                                        readOnly={true}
                                                     />
                                                 </td>
                                                 <td className="admin-table-body-td" style={{width: 60}}>
@@ -108,7 +119,7 @@ const AdminCampaigns = () => {
                                                     }}>
                                                         <button
                                                             onClick={() => {
-                                                                console.log(item)
+                                                                navigate(`/admin/campaigns/campaign-management/${item._id}`);
                                                             }}
                                                             style={{
                                                                 display: 'flex',
@@ -129,8 +140,41 @@ const AdminCampaigns = () => {
                                                         </button>
                                                     </div>
                                                 </td>
-                                                <td className="admin-table-body-td">s</td>
-                                                <td className="admin-table-body-td">s</td>
+                                                <td className="admin-table-body-td" style={{width: 73}}>
+                                                    <div style={{display: 'flex'}}>
+                                                        <button
+                                                            style={{
+                                                                display: 'flex',
+                                                                alignItems: 'center',
+                                                                justifyContent: 'space-between',
+                                                                paddingLeft: 5.1,
+                                                                paddingRight: 5,
+                                                                borderRadius: "10px",
+                                                                border: "1.5px solid black",
+                                                                boxSizing: 'border-box',
+                                                                cursor: 'pointer',
+                                                                width: 28,
+                                                                height: 28,
+                                                            }}>
+                                                            <img style={{width: 17}} src={shareImg} alt="share"/>
+                                                        </button>
+                                                        <button
+                                                            style={{
+                                                                display: 'flex',
+                                                                alignItems: 'center',
+                                                                justifyContent: 'space-between',
+                                                                paddingLeft: 5,
+                                                                paddingRight: 5,
+                                                                borderRadius: "10px",
+                                                                border: "1.5px solid black",
+                                                                boxSizing: 'border-box',
+                                                                cursor: 'pointer',
+                                                                marginLeft: 6
+                                                            }}>
+                                                            <img style={{width: 17}} src={mailImg} alt="mail"/>
+                                                        </button>
+                                                    </div>
+                                                </td>
                                                 <td className="admin-table-body-td"
                                                     style={{width: 90, margin: 0, padding: 0}}>
                                                     <input
@@ -143,10 +187,24 @@ const AdminCampaigns = () => {
                                                             margin: 0,
                                                             padding: 0
                                                         }}
-                                                        value={item.selectPrice.price ? item.selectPrice.price + '€' : 'N/A'}
-                                                        // value={fieldsForChange._id === client._id ? fieldsForChange.email : (client.email ? client.email : 'N/A')}
-                                                        // name="email"
-                                                        // onChange={(e) => updateClientFieldsInput(e)}
+                                                        value={item.totalFollowers ? item.totalFollowers : 'N/A'}
+                                                        readOnly={true}
+                                                    />
+                                                </td>
+                                                <td className="admin-table-body-td"
+                                                    style={{width: 90, margin: 0, padding: 0}}>
+                                                    <input
+                                                        style={{
+                                                            fontFamily: "Geometria",
+                                                            fontSize: 15,
+                                                            fontWeight: 400,
+                                                            textAlign: "center",
+                                                            width: '100%',
+                                                            margin: 0,
+                                                            padding: 0
+                                                        }}
+                                                        value={item.selectPrice.price ? item.selectPrice.price.toLocaleString('en-US') + '€' : 'N/A'}
+                                                        readOnly={true}
                                                     />
                                                 </td>
                                                 <td className="admin-table-body-td"
@@ -164,9 +222,103 @@ const AdminCampaigns = () => {
                                                         value={item.verifyPromo ?
                                                             (item.verifyPromo === 'accept' ? 'Yes' : item.verifyPromo === 'wait' ? 'Waiting' : 'No')
                                                             : 'N/A'}
-                                                        // value={fieldsForChange._id === client._id ? fieldsForChange.email : (client.email ? client.email : 'N/A')}
-                                                        // name="email"
-                                                        // onChange={(e) => updateClientFieldsInput(e)}
+                                                        readOnly={true}
+                                                    />
+                                                </td>
+                                                <td className="admin-table-body-td"
+                                                    style={{width: 90, margin: 0, padding: 0}}>
+                                                    <input
+                                                        style={{
+                                                            fontFamily: "Geometria",
+                                                            fontSize: 15,
+                                                            fontWeight: 400,
+                                                            textAlign: "center",
+                                                            width: '100%',
+                                                            margin: 0,
+                                                            padding: 0
+                                                        }}
+                                                        value={'Do this after public price logic'}
+                                                        readOnly={true}
+                                                    />
+                                                </td>
+                                                <td className="admin-table-body-td"
+                                                    style={{width: 90, margin: 0, padding: 0}}>
+                                                    <input
+                                                        style={{
+                                                            fontFamily: "Geometria",
+                                                            fontSize: 15,
+                                                            fontWeight: 400,
+                                                            textAlign: "center",
+                                                            width: '100%',
+                                                            margin: 0,
+                                                            padding: 0
+                                                        }}
+                                                        value={item.statusPromo && (item.statusPromo === 'wait' || item.statusPromo === 'work' || item.statusPromo === 'finally') ? 'Yes' : 'No'}
+                                                        readOnly={true}
+                                                    />
+                                                </td>
+                                                <td className="admin-table-body-td"
+                                                    style={{width: 90, margin: 0, padding: 0}}>
+                                                    <input
+                                                        style={{
+                                                            fontFamily: "Geometria",
+                                                            fontSize: 15,
+                                                            fontWeight: 400,
+                                                            textAlign: "center",
+                                                            width: '100%',
+                                                            margin: 0,
+                                                            padding: 0
+                                                        }}
+                                                        value={item ? getStatusOfCampaign(item) : 'N/A'}
+                                                        readOnly={true}
+                                                    />
+                                                </td>
+                                                <td className="admin-table-body-td"
+                                                    style={{width: 90, margin: 0, padding: 0}}>
+                                                    <input
+                                                        style={{
+                                                            fontFamily: "Geometria",
+                                                            fontSize: 15,
+                                                            fontWeight: 400,
+                                                            textAlign: "center",
+                                                            width: '100%',
+                                                            margin: 0,
+                                                            padding: 0
+                                                        }}
+                                                        value={'ASK'}
+                                                        readOnly={true}
+                                                    />
+                                                </td>
+                                                <td className="admin-table-body-td"
+                                                    style={{width: 90, margin: 0, padding: 0}}>
+                                                    <input
+                                                        style={{
+                                                            fontFamily: "Geometria",
+                                                            fontSize: 15,
+                                                            fontWeight: 400,
+                                                            textAlign: "center",
+                                                            width: '100%',
+                                                            margin: 0,
+                                                            padding: 0
+                                                        }}
+                                                        value={'ASK'}
+                                                        readOnly={true}
+                                                    />
+                                                </td>
+                                                <td className="admin-table-body-td"
+                                                    style={{width: 90, margin: 0, padding: 0}}>
+                                                    <input
+                                                        style={{
+                                                            fontFamily: "Geometria",
+                                                            fontSize: 15,
+                                                            fontWeight: 400,
+                                                            textAlign: "center",
+                                                            width: '100%',
+                                                            margin: 0,
+                                                            padding: 0
+                                                        }}
+                                                        value={'ASK'}
+                                                        readOnly={true}
                                                     />
                                                 </td>
                                             </tr>

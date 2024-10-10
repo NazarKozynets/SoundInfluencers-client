@@ -59,6 +59,7 @@ import AccountAdminInvoicesClients from "./pages/account/admin/admin-invoices-cl
 import AccountAdminInvoicesInfluencers from "./pages/account/admin/admin-invoices-influencers";
 import AccountAdminOffers from "./pages/account/admin/admin-offers";
 import PaymentInvoiceDownload from "./pages/account/client/payment-invoice-download";
+import AccountAdminCampaignManagement from "./pages/account/admin/admin-campaign-management";
 
 const App = () => {
     return (
@@ -314,6 +315,9 @@ const App = () => {
                     }/>
                     <Route path="/admin/campaigns" element={
                         <PrivateRoute element={AccountAdminCampaigns}/>
+                    }/>
+                    <Route path="/admin/campaigns/campaign-management/:campaignId" element={
+                        <PrivateRoute element={AccountAdminCampaignManagement}/>
                     }/>
                     <Route path="/admin/invoices-clients" element={
                         <PrivateRoute element={AccountAdminInvoicesClients}/>
