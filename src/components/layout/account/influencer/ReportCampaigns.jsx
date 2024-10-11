@@ -432,7 +432,7 @@ const ReportCampaigns = () => {
                 <div className="report-details">
                     <div className="report-details-first">
                         <p>Date Submitted: <span>{new Date(dataPromo?.createdAt).toLocaleDateString('en-GB')}</span></p>
-                        <p>Price: <span>{dataPromo?.amount}{dataPromo?.currency}</span></p>
+                        <p>Price: <span>{dataPromo?.selectPrice.price}{dataPromo?.currency}</span></p>
                         <p>Posts & Stories: <span>{dataPromo?.selectInfluencers.length}</span></p>
                     </div>
                     <div className="report-details-second">

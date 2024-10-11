@@ -2,19 +2,23 @@ import React, {useEffect, useRef, useState} from "react";
 import TitleSection from "../../../TitleSection";
 import Loading from "../../../form/PageLoading/pageLoading";
 import backBtn from "../../../../images/icons/arrow.svg";
-import {useNavigate} from "react-router-dom";
+import {Await, useNavigate} from "react-router-dom";
 import axios from "axios";
 import SearchBar from "../../../form/SearchBar/SearchBar";
 import watch from "../../../../images/icons/view 1.svg";
 import editImg from "../../../../images/icons/edit 1.svg";
 import shareImg from "../../../../images/icons/Share.svg";
 import mailImg from "../../../../images/icons/mail (1) 1.svg";
+import refundImg from "../../../../images/icons/refund 1.svg";
+import ModalWindow from "../../../ModalWindow";
+import StandardButton from "../../../form/StandardButton";
 
 const AdminCampaigns = () => {
     const [data, setData] = useState([]);
     const [searchResult, setSearchResult] = useState();
     const [isShowModalPublicLink, setIsShowModalPublicLink] = useState(false);
-
+    const [selectedCampaignId, setSelectedCampaignId] = useState('');
+    
     const navigate = useNavigate();
 
     const inputRef = useRef(null);
@@ -38,10 +42,6 @@ const AdminCampaigns = () => {
         }
     }
 
-    useEffect(() => {
-        console.log(data);
-    }, [data]);
-
     const getStatusOfCampaign = (campaign) => {
         if (!campaign.statusPromo) {
             return 'N/A';
@@ -50,33 +50,75 @@ const AdminCampaigns = () => {
         if (campaign.statusPromo === 'finally') {
             return 'Completed';
         }
-        
+
         if (campaign.verifyPromo === 'cancel') {
             return 'Campaign Canceled';
         }
-        
+
         if (campaign.verifyPromo === 'wait') {
             return 'Campaign Waiting For Agreement';
         }
-        
+
         const influencersResponses = campaign.selectInfluencers.map((influencer) => influencer.confirmation);
         const influencersIsPromoClosed = campaign.selectInfluencers.map((influencer) => influencer.closePromo);
-        
+
         if (campaign.verifyPromo === 'accept') {
             if (influencersResponses.includes('refusing')) {
                 const numOfRefuses = influencersResponses.filter((response) => response === 'refusing').length;
                 return `${numOfRefuses} refuses`;
             }
-        
+
             if (influencersResponses.includes('wait')) {
                 return 'Awaiting Confirmation';
             }
         }
-        
+
         if (campaign.statusPromo === 'work') {
             return 'Awaiting Content';
         }
     }
+
+    const createShareLink = (campaignId) => {
+        try {
+            let promoId;
+            
+            if (!campaignId) {
+                promoId = selectedCampaignId;
+            } else {
+                promoId = campaignId;
+            }
+            
+            if (!promoId) {
+                console.error('promoId is not set');
+                return '';
+            }
+            return `https://go.soundinfluencers.com/promo-share/${promoId}`;
+        } catch (err) {
+            console.log(err);
+            return '';
+        }
+    };
+
+    const handleSendPublicLinkClick = (campaign) => {
+        const userId = campaign.userId;
+        const campaignId = campaign._id;
+
+        const publicLink = createShareLink(campaignId);
+        
+        sendPublicLink(userId, publicLink);  
+    };
+    
+    const sendPublicLink = async (userId, publicLink) => {
+        try {
+            const encodedPublicLink = encodeURIComponent(publicLink);
+            
+            const result = await axios.post(
+                `${process.env.REACT_APP_SERVER}/admin/promos/send-public-link/${userId}/${encodedPublicLink}`
+            );
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     return (
         <section className="admin">
@@ -95,7 +137,35 @@ const AdminCampaigns = () => {
                         </div>
 
                         <div ref={containerRef}>
-                            <div className="admin-table-container" style={{width: '80%', margin: '30px auto'}}>
+                            {isShowModalPublicLink && (
+                                <ModalWindow isOpen={isShowModalPublicLink} setClose={() => {
+                                    setSelectedCampaignId('');
+                                    setIsShowModalPublicLink(false);
+                                }}>
+                                    <div style={{padding: '20px', maxWidth: '1000px', fontFamily: 'Geometria',}}>
+                                        <h1 style={{textAlign: 'center'}}>PUBLIC LINK</h1>
+                                        <p style={{
+                                            textAlign: "center",
+                                            marginTop: 10,
+                                            width: '100%'
+                                        }}>{createShareLink()}</p>
+                                        <StandardButton style={{
+                                            margin: '0 auto',
+                                            marginTop: '20px',
+                                            width: '100%',
+                                        }} text='Copy Link' isBlue={true} onClick={() => {
+                                            navigator.clipboard.writeText(createShareLink())
+                                                .then(() => {
+                                                })
+                                                .catch(err => {
+                                                    console.error('Failed to copy the link: ', err);
+                                                });
+                                        }}/>
+                                    </div>
+                                </ModalWindow>
+                            )}
+
+                            <div className="admin-table-container" style={{width: '85%', margin: '30px auto'}}>
                                 <table className="admin-table">
                                     <thead className="admin-table-header">
                                     <tr>
@@ -138,7 +208,7 @@ const AdminCampaigns = () => {
                                     ) : (
                                         data.map((item, index) => (
                                             <tr key={index}>
-                                                <td className="admin-table-body-td" style={{width: 150}}>
+                                                <td className="admin-table-body-td" style={{width: '15%'}}>
                                                     <input
                                                         style={{
                                                             fontFamily: "Geometria",
@@ -185,6 +255,10 @@ const AdminCampaigns = () => {
                                                 <td className="admin-table-body-td" style={{width: '5.3%'}}>
                                                     <div style={{display: 'flex'}}>
                                                         <button
+                                                            onClick={() => {
+                                                                setSelectedCampaignId(item._id);
+                                                                setIsShowModalPublicLink(true);
+                                                            }}
                                                             style={{
                                                                 display: 'flex',
                                                                 alignItems: 'center',
@@ -201,6 +275,7 @@ const AdminCampaigns = () => {
                                                             <img style={{width: 17}} src={shareImg} alt="share"/>
                                                         </button>
                                                         <button
+                                                            onClick={() => handleSendPublicLinkClick(item)}
                                                             style={{
                                                                 display: 'flex',
                                                                 alignItems: 'center',
@@ -335,36 +410,64 @@ const AdminCampaigns = () => {
 
                                                 </td>
                                                 <td className="admin-table-body-td"
-                                                    style={{width: 30, margin: 0, padding: 0}}>
+                                                    style={{width: 30}}>
                                                     <input
                                                         style={{
                                                             fontFamily: "Geometria",
                                                             fontSize: 15,
                                                             fontWeight: 400,
-                                                            textAlign: "center",
+                                                            textAlign: "left",
                                                             width: '100%',
                                                             margin: 0,
                                                             padding: 0
                                                         }}
-                                                        value={'ASK'}
+                                                        value={item.replacementsNotes ? item.replacementsNotes : ''}
                                                         readOnly={true}
                                                     />
                                                 </td>
                                                 <td className="admin-table-body-td"
-                                                    style={{width: 30, margin: 0, padding: 0}}>
-                                                    <input
-                                                        style={{
-                                                            fontFamily: "Geometria",
-                                                            fontSize: 15,
-                                                            fontWeight: 400,
-                                                            textAlign: "center",
-                                                            width: '100%',
-                                                            margin: 0,
-                                                            padding: 0
-                                                        }}
-                                                        value={'ASK'}
-                                                        readOnly={true}
-                                                    />
+                                                    style={{width: 30}}>
+                                                    <div style={{
+                                                        display: 'flex',
+                                                        alignItems: 'center',
+                                                        gap: 0,
+                                                        textAlign: 'center'
+                                                    }}>
+                                                        <input
+                                                            style={{
+                                                                fontFamily: "Geometria",
+                                                                fontSize: 15,
+                                                                fontWeight: 400,
+                                                                textAlign: "left",
+                                                                width: '50%',
+                                                                margin: 0,
+                                                                padding: 0,
+                                                                height: '28px',
+                                                                lineHeight: '28px',
+                                                                boxSizing: 'border-box',
+                                                            }}
+                                                            value={item.partialRefund ? item.partialRefund : '0'}
+                                                            readOnly={true}
+                                                        />
+                                                        <button
+                                                            style={{
+                                                                display: 'flex',
+                                                                alignItems: 'center',
+                                                                justifyContent: 'space-between',
+                                                                paddingLeft: 5,
+                                                                paddingRight: 5,
+                                                                borderRadius: "10px",
+                                                                border: "1.5px solid black",
+                                                                boxSizing: 'border-box',
+                                                                cursor: 'pointer',
+                                                                marginRight: 15,
+                                                                marginLeft: 0,
+                                                                width: 28,
+                                                                height: 28,
+                                                            }}>
+                                                            <img src={refundImg} alt="refund"/>
+                                                        </button>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         ))
