@@ -12,22 +12,72 @@ import mailImg from "../../../../images/icons/mail (1) 1.svg";
 import refundImg from "../../../../images/icons/refund 1.svg";
 import ModalWindow from "../../../ModalWindow";
 import StandardButton from "../../../form/StandardButton";
+import {resetFields, updateMultipleFields} from "../../../../redux/slice/admin-edit-invoice";
+import {formatDateStringReport} from "../../../../utils/validations";
+import SubmitButton from "./form/Influencers/SubmitFooter/SubmitButton";
 
 const AdminCampaigns = () => {
     const [data, setData] = useState([]);
     const [searchResult, setSearchResult] = useState();
     const [isShowModalPublicLink, setIsShowModalPublicLink] = useState(false);
     const [selectedCampaignId, setSelectedCampaignId] = useState('');
-    
+
+    const [fieldsForChange, setFieldsForChange] = useState({
+        _id: '',
+        userId: '',
+        replacementsNotes: '',
+        partialRefund: 0,
+    });
+
     const navigate = useNavigate();
 
-    const inputRef = useRef(null);
     const containerRef = useRef(null);
     const saveChangesRef = useRef(null);
 
     useEffect(() => {
         getData();
     }, []);
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (
+                containerRef.current &&
+                !containerRef.current.contains(event.target) &&
+                saveChangesRef.current &&
+                !saveChangesRef.current.contains(event.target)
+            ) {
+                setFieldsForChange({
+                    _id: '',
+                    userId: '',
+                    replacementsNotes: '',
+                    partialRefund: '',
+                });
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
+
+    const selectCampaign = (campaign) => {
+        if (fieldsForChange._id !== campaign._id) {
+            setFieldsForChange({
+                _id: campaign._id,
+                userId: campaign.userId,
+                replacementsNotes: campaign.replacementsNotes,
+                partialRefund: campaign.partialRefund,
+            });
+        }
+    };
+
+    const updateCampaignFieldsInput = (e) => {
+        setFieldsForChange({
+            ...fieldsForChange,
+            [e.target.name]: e.target.value,
+        });
+    };
 
     const getData = async () => {
         try {
@@ -41,6 +91,52 @@ const AdminCampaigns = () => {
             console.log(error);
         }
     }
+
+    const updateCampaignOnServer = async () => {
+        try {
+            const result = await axios.put(
+                `${process.env.REACT_APP_SERVER}/admin/promos/update`,
+                {
+                    _id: fieldsForChange._id,
+                    replacementsNotes: fieldsForChange.replacementsNotes,
+                    partialRefund: fieldsForChange.partialRefund,
+                }
+            );
+
+            if (result.status === 200) {
+                await updateCampaignData(fieldsForChange._id);
+                setFieldsForChange({
+                    _id: '',
+                    userId: '',
+                    replacementsNotes: '',
+                    partialRefund: '',
+                })
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const updateCampaignData = async (campaignId) => {
+        try {
+            const result = await axios.get(
+                `${process.env.REACT_APP_SERVER}/admin/promos/getOne/${campaignId}`,
+            );
+
+            if (result.status === 200) {
+                const updatedCampaign = result.data.data;
+                const updatedCampaigns = data.map((campaign) => {
+                    if (campaign._id === updatedCampaign._id) {
+                        return updatedCampaign;
+                    }
+                    return campaign;
+                });
+                setData(updatedCampaigns);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     const getStatusOfCampaign = (campaign) => {
         if (!campaign.statusPromo) {
@@ -81,13 +177,13 @@ const AdminCampaigns = () => {
     const createShareLink = (campaignId) => {
         try {
             let promoId;
-            
+
             if (!campaignId) {
                 promoId = selectedCampaignId;
             } else {
                 promoId = campaignId;
             }
-            
+
             if (!promoId) {
                 console.error('promoId is not set');
                 return '';
@@ -104,14 +200,14 @@ const AdminCampaigns = () => {
         const campaignId = campaign._id;
 
         const publicLink = createShareLink(campaignId);
-        
-        sendPublicLink(userId, publicLink);  
+
+        sendPublicLink(userId, publicLink);
     };
-    
+
     const sendPublicLink = async (userId, publicLink) => {
         try {
             const encodedPublicLink = encodeURIComponent(publicLink);
-            
+
             const result = await axios.post(
                 `${process.env.REACT_APP_SERVER}/admin/promos/send-public-link/${userId}/${encodedPublicLink}`
             );
@@ -132,6 +228,10 @@ const AdminCampaigns = () => {
 
                 {data.length > 0 ? (
                     <div>
+                        {fieldsForChange._id && (
+                            <SubmitButton ref={saveChangesRef} onSubmit={updateCampaignOnServer}/>
+                        )}
+
                         <div className="admin-clients-searchbar">
                             <SearchBar data={data} setSearchResult={setSearchResult}/>
                         </div>
@@ -207,7 +307,7 @@ const AdminCampaigns = () => {
                                         </tr>
                                     ) : (
                                         data.map((item, index) => (
-                                            <tr key={index}>
+                                            <tr key={index} onClick={() => selectCampaign(item)}>
                                                 <td className="admin-table-body-td" style={{width: '15%'}}>
                                                     <input
                                                         style={{
@@ -421,8 +521,9 @@ const AdminCampaigns = () => {
                                                             margin: 0,
                                                             padding: 0
                                                         }}
-                                                        value={item.replacementsNotes ? item.replacementsNotes : ''}
-                                                        readOnly={true}
+                                                        value={fieldsForChange._id === item._id ? fieldsForChange.replacementsNotes : item.replacementsNotes}
+                                                        name='replacementsNotes'
+                                                        onChange={updateCampaignFieldsInput}
                                                     />
                                                 </td>
                                                 <td className="admin-table-body-td"
@@ -446,8 +547,9 @@ const AdminCampaigns = () => {
                                                                 lineHeight: '28px',
                                                                 boxSizing: 'border-box',
                                                             }}
-                                                            value={item.partialRefund ? item.partialRefund : '0'}
-                                                            readOnly={true}
+                                                            value={fieldsForChange._id === item._id ? fieldsForChange.partialRefund : item.partialRefund}
+                                                            name='partialRefund'
+                                                            onChange={updateCampaignFieldsInput}
                                                         />
                                                         <button
                                                             style={{
