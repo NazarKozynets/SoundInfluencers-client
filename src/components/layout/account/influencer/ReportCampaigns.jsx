@@ -127,7 +127,6 @@ const ReportCampaigns = () => {
                 `${process.env.REACT_APP_SERVER}/promos/ongoing/one?id=${params.id}&userId=${dataFetch._id}`
             );
             setCompany(dataFetch);
-
             if (result.data.code === 200) {
                 setDataPromo(result.data.promo);
 
@@ -256,6 +255,7 @@ const ReportCampaigns = () => {
                 console.error('promoId is not set');
                 return '';
             }
+            // return `http://localhost:3000/promo-share/${promoId}`;
             return `https://go.soundinfluencers.com/promo-share/${promoId}`;
         } catch (err) {
             console.log(err);
@@ -415,7 +415,7 @@ const ReportCampaigns = () => {
                     <TitleSection title="Report" span="of the campaign"/>
                     <p>{dataPromo?.campaignName}</p>
 
-                    {dataPromo?.statusPromo === 'finally' && window.innerWidth > 768 && (
+                    {window.innerWidth > 768 && (
                         <div className="report-campaign-strategy-share" style={{
                             position: "absolute", top: '0%', right: '0%', cursor: "pointer",
                         }}>

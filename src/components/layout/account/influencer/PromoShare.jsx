@@ -135,7 +135,6 @@ const PromoShare = () => {
             );
             if (result.data.code === 200) {
                 setDataPromo(result.data.promo);
-
                 const resultInfluencers = result.data.promo.selectInfluencers.map((influencer) => {
                     if (result.data.promo.videos && influencer.selectedVideo) {
                         const video = result.data.promo.videos.find(videoItem => videoItem.videoLink === influencer.selectedVideo);
@@ -147,7 +146,6 @@ const PromoShare = () => {
                     }
                     return influencer;
                 });
-
                 setData(resultInfluencers);
             }
         } catch (err) {
