@@ -917,7 +917,7 @@ const AdminInfluencers = () => {
                                 </thead>
                                 <tbody className="admin-influencers-table-body">
                                 {searchResult ? (
-                                    <tr onClick={() => selectInfluencer(searchResult)}>
+                                    <tr key={searchResult.index} onClick={() => selectInfluencer(searchResult)}>
                                         <td className="admin-influencers-table-body-td"
                                             style={{width: '70px', paddingLeft: 0}}>
                                             <img src={searchResult.avatar} alt={altAvatar}
@@ -1054,6 +1054,25 @@ const AdminInfluencers = () => {
                                                     <img src={instaRefLogo} alt="watch"/>
                                                     <img src={linkIcon} alt="edit"/>
                                                 </button>
+                                                <button
+                                                    onClick={() => {
+                                                        setIsEditModalOpen(true);
+                                                    }}
+                                                    style={{
+                                                        display: 'flex',
+                                                        alignItems: 'center',
+                                                        justifyContent: 'space-between',
+                                                        height: 28,
+                                                        borderRadius: "10px",
+                                                        paddingLeft: 3,
+                                                        paddingRight: 3,
+                                                        border: "1.5px solid black",
+                                                        boxSizing: 'border-box',
+                                                        margin: '0 auto',
+                                                        cursor: 'pointer'
+                                                    }}>
+                                                    <img src={edit} alt="watch"/>
+                                                </button>
                                             </div>
                                         </td>
                                         <td className="admin-influencers-table-body-td" style={{
@@ -1073,8 +1092,9 @@ const AdminInfluencers = () => {
                                                     width: '100%',
                                                     margin: '0 auto'
                                                 }}
-                                                value={calculatePublicPrice(searchResult.instagram.price) + '€'}
-                                                readOnly={true}
+                                                value={fieldsForChange.instagramId === searchResult.instagram._id ? fieldsForChange.publicPrice : searchResult.instagram.publicPrice}
+                                                name='publicPrice'
+                                                onChange={(e) => updateInfluencerFieldsInput(e)}
                                             />
                                         </td>
                                         <td className="admin-influencers-table-body-td" style={{
@@ -1126,7 +1146,7 @@ const AdminInfluencers = () => {
                                             fontWeight: 400,
                                             width: 190,
                                             paddingLeft: 0,
-                                            display: hiddenColumns.includes('Influencer Id') ? 'none' : 'table-cell'
+                                            display: hiddenColumns.includes('Id') ? 'none' : 'table-cell'
                                         }}>
                                             <input
                                                 style={{
@@ -1264,7 +1284,7 @@ const AdminInfluencers = () => {
                                                         width: '100%',
                                                         margin: '0 auto'
                                                     }}
-                                                    value={checkGenre(genre, searchResult.instagram) ? 'Yes' : 'No'}
+                                                    value={checkGenre(genre, searchResult.instagram) ? 'Yes' : ''}
                                                 />
                                             </td>
                                         ))}
@@ -1286,7 +1306,7 @@ const AdminInfluencers = () => {
                                                         width: '100%',
                                                         margin: '0 auto'
                                                     }}
-                                                    value={checkCategory(category, searchResult.instagram) ? 'Yes' : 'No'}
+                                                    value={checkCategory(category, searchResult.instagram) ? 'Yes' : ''}
                                                 />
                                             </td>
                                         ))}
@@ -1311,7 +1331,7 @@ const AdminInfluencers = () => {
                                                             width: '100%',
                                                             margin: '0 auto'
                                                         }}
-                                                        value={result.found ? `Yes (${result.percentage}%)` : 'No'}
+                                                        value={result.found ? `Yes (${result.percentage}%)` : ''}
                                                     />
                                                 </td>
                                             );

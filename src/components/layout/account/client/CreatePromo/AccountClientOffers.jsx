@@ -203,8 +203,8 @@ const AccountClientOffers = () => {
                 dispatch(setSelectPriceInfluencers(totalSelectInfluencers));
 
                 let newPrice = influencers.reduce((acc, current) => {
-                    if (!current.price) return acc;
-                    let price = current.price.replace(/\D/g, "");
+                    if (!current.publicPrice) return acc;
+                    let price = current.publicPrice.replace(/\D/g, "");
 
                     if (current.customePrice) {
                         price = current.customePrice;
@@ -212,7 +212,7 @@ const AccountClientOffers = () => {
 
                     if (current.active) {
                         if (!current.connect) {
-                            const influencerPrice = calculatePrice(price) * 2;
+                            const influencerPrice = calculatePrice(price);
                             return acc + influencerPrice;
                         } else {
                             return acc;
@@ -230,8 +230,8 @@ const AccountClientOffers = () => {
 
             if (customePrice !== 0) {
                 const newPrice = influencers.reduce((acc, current) => {
-                    if (!current.price) return acc;
-                    let price = current.price.replace(/\D/g, "");
+                    if (!current.publicPrice) return acc;
+                    let price = current.publicPrice.replace(/\D/g, "");
 
                     if (current.customPrice) {
                         price = current.customPrice;
@@ -243,7 +243,7 @@ const AccountClientOffers = () => {
 
                     if (current.active) {
                         if (!current.connect) {
-                            const influencerPrice = calculatePrice(price) * 2;
+                            const influencerPrice = calculatePrice(price);
                             return acc + influencerPrice;
                         } else {
                             return acc;
@@ -260,8 +260,8 @@ const AccountClientOffers = () => {
             }
 
             let newPrice = influencers.reduce((acc, current) => {
-                if (!current.price) return acc;
-                let price = current.price.replace(/\D/g, "");
+                if (!current.publicPrice) return acc;
+                let price = current.publicPrice.replace(/\D/g, "");
 
                 if (current.customPrice) {
                     price = current.customPrice;
@@ -270,9 +270,9 @@ const AccountClientOffers = () => {
                 if (current.active) {
                     if (!current.connect) {
                         if (currentPrice !== 0) {
-                            return acc + calculatePrice(price) * 2;
+                            return acc + calculatePrice(price);
                         } else {
-                            return acc + calculatePrice(price) * 2;
+                            return acc + calculatePrice(price);
                         }
                     } else {
                         return acc;
@@ -381,15 +381,15 @@ const AccountClientOffers = () => {
                 dispatch(setSelectPriceInfluencers(totalSelectInfluencers));
 
                 let newPrice = influencers.reduce((acc, current) => {
-                    if (!current.price) return acc;
-                    let price = current.price.replace(/\D/g, "");
+                    if (!current.publicPrice) return acc;
+                    let price = current.publicPrice.replace(/\D/g, "");
 
                     if (current.customPrice) {
                         price = current.customPrice;
                     }
 
                     if (current.active && !current.connect) {
-                        return acc + calculatePrice(price) * 2;
+                        return acc + calculatePrice(price);
                     } else {
                         return acc;
                     }
@@ -404,8 +404,8 @@ const AccountClientOffers = () => {
 
             if (customePrice !== 0) {
                 const newPrice = influencers.reduce((acc, current) => {
-                    if (!current.price) return acc;
-                    let price = current.price.replace(/\D/g, "");
+                    if (!current.publicPrice) return acc;
+                    let price = current.publicPrice.replace(/\D/g, "");
 
                     if (current.customPrice) {
                         price = current.customPrice;
@@ -421,7 +421,7 @@ const AccountClientOffers = () => {
 
                     if (current.active) {
                         if (!current.connect) {
-                            return acc + calculatePrice(price) * 2;
+                            return acc + calculatePrice(price);
                         } else {
                             return acc;
                         }
@@ -439,8 +439,8 @@ const AccountClientOffers = () => {
             }
 
             let newPrice = influencers.reduce((acc, current) => {
-                if (!current.price) return acc;
-                let price = current.price.replace(/\D/g, "");
+                if (!current.publicPrice) return acc;
+                let price = current.publicPrice.replace(/\D/g, "");
 
                 if (current.customPrice) {
                     price = current.customPrice;
@@ -449,9 +449,9 @@ const AccountClientOffers = () => {
                 if (current.active) {
                     if (!current.connect) {
                         if (currentPrice !== 0) {
-                            return acc + calculatePrice(price) * 2;
+                            return acc + calculatePrice(price);
                         } else {
-                            return acc + calculatePrice(price) * 2;
+                            return acc + calculatePrice(price);
                         }
                     } else {
                         return acc;
@@ -528,15 +528,15 @@ const AccountClientOffers = () => {
         }
 
         let newPrice = updateList.reduce((acc, current) => {
-            if (!current.price) return acc;
-            let price = current.price.replace(/\D/g, "");
+            if (!current.publicPrice) return acc;
+            let price = current.publicPrice.replace(/\D/g, "");
             if (current.customPrice) {
                 price = current.customPrice;
             }
 
             if (current.active) {
                 if (!current.connect) {
-                    return acc + calculatePriceForOffersAndInfluencers(price, currentCurrency) * 2;
+                    return acc + calculatePriceForOffersAndInfluencers(price, currentCurrency);
                 } else {
                     return acc;
                 }

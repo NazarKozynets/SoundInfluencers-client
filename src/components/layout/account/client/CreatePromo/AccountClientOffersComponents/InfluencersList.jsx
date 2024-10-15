@@ -158,7 +158,7 @@ const InfluencersList = ({influencers, activeIndices, setActiveIndices, selectIn
                                     </p>
                                 </div>
                                 <div className="account-client-choose-item-content-price">
-                                    <p>PRICE<span>{calculatePriceForOffersAndInfluencers(doublePrice(influencers.price), currentCurrency)}{currentCurrency}</span>
+                                    <p>PRICE<span>{calculatePriceForOffersAndInfluencers(influencers.publicPrice, currentCurrency)}{currentCurrency}</span>
                                     </p>
                                 </div>
                             </div>
@@ -274,7 +274,7 @@ const InfluencersList = ({influencers, activeIndices, setActiveIndices, selectIn
                                     </p>
                                 </div>
                                 <div className="account-client-choose-item-content-price">
-                                    <p>PRICE<span>{calculatePriceForOffersAndInfluencers(doublePrice(item.price), currentCurrency)}{currentCurrency}</span>
+                                    <p>PRICE<span>{calculatePriceForOffersAndInfluencers(item.publicPrice, currentCurrency)}{currentCurrency}</span>
                                     </p>
                                 </div>
                             </div>
