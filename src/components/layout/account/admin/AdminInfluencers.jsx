@@ -73,6 +73,7 @@ const AdminInfluencers = () => {
         followersNumber: '',
         instagramLink: '',
         price: '',
+        publicPrice: '',
         balance: '',
         internalNote: '',
         genres: [],
@@ -132,6 +133,7 @@ const AdminInfluencers = () => {
                     followersNumber: '',
                     instagramLink: '',
                     price: '',
+                    publicPrice: '',
                     balance: '',
                     internalNote: '',
                 });
@@ -156,6 +158,7 @@ const AdminInfluencers = () => {
                 followersNumber: influencer.instagram.followersNumber,
                 instagramLink: influencer.instagram.instagramLink,
                 price: influencer.instagram.price,
+                publicPrice: influencer.instagram.publicPrice,
                 balance: influencer.balance,
                 internalNote: influencer.internalNote,
             });
@@ -192,9 +195,9 @@ const AdminInfluencers = () => {
                     followersNumber: fieldsForChange.followersNumber,
                     instagramLink: fieldsForChange.instagramLink,
                     price: fieldsForChange.price,
+                    publicPrice: fieldsForChange.publicPrice,
                 }
             );
-
             if (result.status === 200) {
                 await updateInfluencerData(fieldsForChange);
                 setFieldsForChange({
@@ -207,6 +210,7 @@ const AdminInfluencers = () => {
                     followersNumber: '',
                     instagramLink: '',
                     price: '',
+                    publicPrice: '',
                     balance: '',
                     internalNote: '',
                 });
@@ -255,6 +259,7 @@ const AdminInfluencers = () => {
         const result = await axios(
             `${process.env.REACT_APP_SERVER}/admin/influencer/getAll`
         );
+        console.log(result);
         if (result.status === 200) {
             setData(result.data.data);
         }
@@ -482,10 +487,6 @@ const AdminInfluencers = () => {
             </div>
         );
     };
-
-    useEffect(() => {
-        console.log({fieldsForChange})
-    }, [fieldsForChange])
 
     return (
         <section className="admin">
@@ -1493,8 +1494,9 @@ const AdminInfluencers = () => {
                                                         width: '100%',
                                                         margin: '0 auto'
                                                     }}
-                                                    value={calculatePublicPrice(influencer.instagram.price) + '€'}
-                                                    readOnly={true}
+                                                    value={fieldsForChange.instagramId === influencer.instagram._id ? fieldsForChange.publicPrice : influencer.instagram.publicPrice}
+                                                    name='publicPrice'
+                                                    onChange={(e) => updateInfluencerFieldsInput(e)}
                                                 />
                                             </td>
                                             <td className="admin-influencers-table-body-td" style={{

@@ -9,6 +9,7 @@ import influencer from "../../../../images/icons/adminPanel/homePage/influencer 
 import offers from "../../../../images/icons/adminPanel/homePage/best-price 1.svg"
 import invoicesInfluencers from "../../../../images/icons/adminPanel/homePage/money 1.svg"
 import '../../../../styles/components/_admin.scss';
+import axios from "axios";
 
 const AdminHome = () => {
     const navigate = useNavigate();
@@ -73,7 +74,7 @@ const AdminHome = () => {
                             <li className="admin-home-menu-item">
                                 <button
                                     className="admin-home-menu-button"
-                                    onClick={() => navigate('/admin/offers')}
+                                    // onClick={() => navigate('/admin/offers')}
                                 >
                                     <img
                                         src={offers}
