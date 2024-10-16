@@ -74,7 +74,7 @@ const AdminHome = () => {
                             <li className="admin-home-menu-item">
                                 <button
                                     className="admin-home-menu-button"
-                                    // onClick={() => navigate('/admin/offers')}
+                                    onClick={() => navigate('/admin/offers')}
                                 >
                                     <img
                                         src={offers}

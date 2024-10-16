@@ -736,10 +736,10 @@ const AccountClientOffers = () => {
 
         switch (sortMethod) {
             case 'Lowest Price':
-                filtered.sort((a, b) => parseFloat(a.price.replace(/[^0-9.]/g, '')) - parseFloat(b.price.replace(/[^0-9.]/g, '')));
+                filtered.sort((a, b) => parseFloat(a.publicPrice.replace(/[^0-9.]/g, '')) - parseFloat(b.publicPrice.replace(/[^0-9.]/g, '')));
                 break;
             case 'Highest Price':
-                filtered.sort((a, b) => parseFloat(b.price.replace(/[^0-9.]/g, '')) - parseFloat(a.price.replace(/[^0-9.]/g, '')));
+                filtered.sort((a, b) => parseFloat(b.publicPrice.replace(/[^0-9.]/g, '')) - parseFloat(a.publicPrice.replace(/[^0-9.]/g, '')));
                 break;
             case 'Lowest Followers':
                 filtered.sort((a, b) => a.followersNumber - b.followersNumber);
