@@ -86,7 +86,7 @@ const AdminCampaignManagement = () => {
         invoice: '',
         followersCount: '',
     });
-    
+
     const navigate = useNavigate();
     const params = useParams();
     const getData = async () => {
@@ -459,23 +459,23 @@ const AdminCampaignManagement = () => {
             const result = await axios.put(
                 `${process.env.REACT_APP_SERVER}/admin/promos/update/add-influencer-to-temp-list/${data._id}/${newInfluenceInput}`
             );
-            
+
             if (result.data.status === 200) {
                 setNewInfluencersList((prev) => [...prev, result.data.data]);
                 setNewInfluenceInput('');
                 setIsAddInfluencerModaolOpen(false);
-                setIsErrorAfterAddingInfluencer(false);  
+                setIsErrorAfterAddingInfluencer(false);
             }
             if (result.data.status === 404 || result.data.status === 500) {
-                setIsErrorAfterAddingInfluencer(true); 
+                setIsErrorAfterAddingInfluencer(true);
             }
         } catch (error) {
             console.error("Error while adding influencer:", error);
 
             if (error.response && error.response.status === 404) {
-                setIsErrorAfterAddingInfluencer(true); 
+                setIsErrorAfterAddingInfluencer(true);
             } else {
-                setIsErrorAfterAddingInfluencer(true); 
+                setIsErrorAfterAddingInfluencer(true);
             }
         }
     };
@@ -519,14 +519,14 @@ const AdminCampaignManagement = () => {
             });
         }
     }
-    
+
     const updateNewInfluencerInput = (e) => {
         setSelectedNewInfluencer({
             ...selectedNewInfluencer,
             [e.target.name]: e.target.value,
         });
     }
-    
+
     const removeNewInfluencerFromList = (instagramUsername) => {
         const newInfluencers = newInfluencersList.filter(influencer => influencer.instagramUsername !== instagramUsername);
         setNewInfluencersList(newInfluencers);
@@ -535,7 +535,7 @@ const AdminCampaignManagement = () => {
     const addInfleuncerToCampaign = async (instagramUsername) => {
         try {
             const instaObj = newInfluencersList.find(influencer => influencer.instagramUsername === instagramUsername);
-            
+
             const result = await axios.put(
                 `${process.env.REACT_APP_SERVER}/admin/promos/update/add-influencer-to-promo/`,
                 instaObj
@@ -549,7 +549,30 @@ const AdminCampaignManagement = () => {
             console.log(error);
         }
     }
-    
+
+    const sendMailToInfluencer = async (instagramUsername, influencerId, videoLink, postDescription, dateRequest, storyTag, storyLink) => {
+        try {
+            const result = await axios.post(
+                `${process.env.REACT_APP_SERVER}/admin/promos/send-mail-influencer`,
+                {
+                    influencerId: influencerId,
+                    instagramUsername: instagramUsername,
+                    videoLink: videoLink,
+                    postDescription: postDescription,
+                    dateRequest: dateRequest,
+                    storyTag: storyTag,
+                    storyLink: storyLink,
+                }
+            );
+
+            if (result.status === 200) {
+console.log('Mail sent');
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     return (
         <section className="admin">
             <div>
@@ -744,7 +767,13 @@ const AdminCampaignManagement = () => {
                                         <TextInput style={{marginTop: 15}} value={newInfluenceInput}
                                                    setValue={setNewInfluenceInput}/>
                                         {isErrorAfterAddingInfluencer && (
-                                            <p style={{color: 'red', textAlign: 'center', fontSize: 18, fontWeight: 600, marginTop: 10}}>Influencer not found</p>
+                                            <p style={{
+                                                color: 'red',
+                                                textAlign: 'center',
+                                                fontSize: 18,
+                                                fontWeight: 600,
+                                                marginTop: 10
+                                            }}>Influencer not found</p>
                                         )}
                                         <StandardButton style={{margin: '0 auto', marginTop: 20, width: '100%'}}
                                                         text='Add New Influencer' isBlue={true}
@@ -956,6 +985,7 @@ const AdminCampaignManagement = () => {
                                                         <img src={addImg} alt="addInfluencer"/>
                                                     </button>
                                                     <button
+                                                        onClick={() => sendMailToInfluencer(influencer.instagramUsername, influencer.influencerId, influencer.videoDetails.videoLink, influencer.videoDetails.postDescription, influencer.dateRequest, influencer.videoDetails.storyTag, influencer.videoDetails.swipeUpLink)}
                                                         style={{
                                                             display: 'flex',
                                                             alignItems: 'center',
@@ -1326,6 +1356,7 @@ const AdminCampaignManagement = () => {
                                                         <img src={addSecondImg} alt="addInfluencer"/>
                                                     </button>
                                                     <button
+                                                        onClick={() => sendMailToInfluencer(influencer.instagramUsername, influencer.influencerId, influencer.videoDetails.videoLink, influencer.videoDetails.postDescription, influencer.dateRequest, influencer.videoDetails.storyTag, influencer.videoDetails.swipeUpLink)}
                                                         style={{
                                                             display: 'flex',
                                                             alignItems: 'center',

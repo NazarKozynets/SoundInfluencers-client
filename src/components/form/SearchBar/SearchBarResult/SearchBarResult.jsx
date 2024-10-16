@@ -1,7 +1,7 @@
 import React from "react";
 import "./searchbarresult.css";
 
-const SearchBarResult = ({ result, onResultSelect, typeOfSearch}) => {
+const SearchBarResult = ({result, onResultSelect, typeOfSearch}) => {
     const handleClick = () => {
         onResultSelect(result);
     };
@@ -12,11 +12,13 @@ const SearchBarResult = ({ result, onResultSelect, typeOfSearch}) => {
                 return result.companyName + "   " + result.amount + "€";
             case "influencers":
                 return result.instagram.instagramUsername || result.instagramUsername;
+            case "campaigns":
+                return result.campaignName;
             default:
                 break;
         }
     };
-    
+
     return (
         <div
             className="search-result"

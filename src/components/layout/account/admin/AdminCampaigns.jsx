@@ -50,7 +50,7 @@ const AdminCampaigns = () => {
                     _id: '',
                     userId: '',
                     replacementsNotes: '',
-                    partialRefund: '',
+                    partialRefund: 0,
                 });
             }
         };
@@ -61,6 +61,10 @@ const AdminCampaigns = () => {
         };
     }, []);
 
+    useEffect(() => {
+        console.log(data, 'data')
+    }, [data])
+    
     const selectCampaign = (campaign) => {
         if (fieldsForChange._id !== campaign._id) {
             setFieldsForChange({
@@ -109,7 +113,7 @@ const AdminCampaigns = () => {
                     _id: '',
                     userId: '',
                     replacementsNotes: '',
-                    partialRefund: '',
+                    partialRefund: 0,
                 })
             }
         } catch (error) {
@@ -215,7 +219,34 @@ const AdminCampaigns = () => {
             console.log(error);
         }
     };
+    
+    const givePartialRefund = async (userId, amount, campaignId) => {
+        try {
+            const result = await axios.put(
+                `${process.env.REACT_APP_SERVER}/admin/promos/give-partial-refund/${userId}/${amount}/${campaignId}`
+            );
 
+            if (result.status === 200) {
+                await updateCampaignData(campaignId);
+                
+                setFieldsForChange({
+                    _id: '',
+                    userId: '',
+                    replacementsNotes: '',
+                    partialRefund: 0,
+                });
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const searchFunction = (data, searchInput) => {
+        return data.filter((item) => {
+            return item?.campaignName?.toLowerCase().includes(searchInput.toLowerCase());
+        });
+    };
+    
     return (
         <section className="admin">
             <div>
@@ -233,7 +264,7 @@ const AdminCampaigns = () => {
                         )}
 
                         <div className="admin-clients-searchbar">
-                            <SearchBar data={data} setSearchResult={setSearchResult}/>
+                            <SearchBar data={data} setSearchResult={setSearchResult} className="large" searchFunction={searchFunction} typeOfSearch='campaigns'/>
                         </div>
 
                         <div ref={containerRef}>
@@ -302,9 +333,273 @@ const AdminCampaigns = () => {
 
                                     <tbody className="admin-table-body">
                                     {searchResult ? (
-                                        <tr>
-                                            <p>sadsa</p>
+                                        <tr onClick={() => selectCampaign(searchResult)}>
+                                            <td className="admin-table-body-td" style={{width: '15%'}}>
+                                                <input
+                                                    style={{
+                                                        fontFamily: "Geometria",
+                                                        fontSize: 15,
+                                                        fontWeight: 700,
+                                                        textAlign: "left",
+                                                        width: '100%',
+                                                    }}
+                                                    value={searchResult.campaignName ? searchResult.campaignName.slice(0, 25) : 'Old Campaign'}
+                                                    readOnly={true}
+                                                />
+                                            </td>
+                                            <td className="admin-table-body-td" style={{width: '5%'}}>
+                                                <div style={{
+                                                    display: 'flex',
+                                                    justifyContent: 'center',
+                                                    padding: '3px 0 3px 0',
+                                                    gap: '8px',
+                                                    marginLeft: -6,
+                                                }}>
+                                                    <button
+                                                        onClick={() => {
+                                                            navigate(`/admin/campaigns/campaign-management/${searchResult._id}`);
+                                                        }}
+                                                        style={{
+                                                            display: 'flex',
+                                                            alignItems: 'center',
+                                                            justifyContent: 'space-between',
+                                                            width: 52,
+                                                            height: 28,
+                                                            borderRadius: "10px",
+                                                            paddingLeft: 3,
+                                                            paddingRight: 3,
+                                                            border: "1.5px solid black",
+                                                            boxSizing: 'border-box',
+                                                            cursor: 'pointer',
+                                                            margin: 0
+                                                        }}>
+                                                        <img src={watch} alt="watch"/>
+                                                        <img src={editImg} alt="watch"/>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                            <td className="admin-table-body-td" style={{width: '5.3%'}}>
+                                                <div style={{display: 'flex'}}>
+                                                    <button
+                                                        onClick={() => {
+                                                            setSelectedCampaignId(searchResult._id);
+                                                            setIsShowModalPublicLink(true);
+                                                        }}
+                                                        style={{
+                                                            display: 'flex',
+                                                            alignItems: 'center',
+                                                            justifyContent: 'space-between',
+                                                            paddingLeft: 5.1,
+                                                            paddingRight: 5,
+                                                            borderRadius: "10px",
+                                                            border: "1.5px solid black",
+                                                            boxSizing: 'border-box',
+                                                            cursor: 'pointer',
+                                                            width: 28,
+                                                            height: 28,
+                                                        }}>
+                                                        <img style={{width: 17}} src={shareImg} alt="share"/>
+                                                    </button>
+                                                    <button
+                                                        onClick={() => handleSendPublicLinkClick(searchResult)}
+                                                        style={{
+                                                            display: 'flex',
+                                                            alignItems: 'center',
+                                                            justifyContent: 'space-between',
+                                                            paddingLeft: 5,
+                                                            paddingRight: 5,
+                                                            borderRadius: "10px",
+                                                            border: "1.5px solid black",
+                                                            boxSizing: 'border-box',
+                                                            cursor: 'pointer',
+                                                            marginLeft: 6
+                                                        }}>
+                                                        <img style={{width: 17}} src={mailImg} alt="mail"/>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                            <td className="admin-table-body-td"
+                                                style={{width: '6%', margin: 0, padding: 0}}>
+                                                <input
+                                                    style={{
+                                                        fontFamily: "Geometria",
+                                                        fontSize: 15,
+                                                        fontWeight: 400,
+                                                        textAlign: "center",
+                                                        width: '100%',
+                                                        margin: 0,
+                                                        padding: 0
+                                                    }}
+                                                    value={searchResult.totalFollowers ? searchResult.totalFollowers : 'N/A'}
+                                                    readOnly={true}
+                                                />
+                                            </td>
+                                            <td className="admin-table-body-td"
+                                                style={{width: '6%', margin: 0, padding: 0}}>
+                                                <input
+                                                    style={{
+                                                        fontFamily: "Geometria",
+                                                        fontSize: 15,
+                                                        fontWeight: 400,
+                                                        textAlign: "center",
+                                                        width: '100%',
+                                                        margin: 0,
+                                                        padding: 0
+                                                    }}
+                                                    value={searchResult.selectPrice.price ? searchResult.selectPrice.price.toLocaleString('en-US') + '€' : 'N/A'}
+                                                    readOnly={true}
+                                                />
+                                            </td>
+                                            <td className="admin-table-body-td"
+                                                style={{width: '5%', margin: 0, padding: 0}}>
+                                                <input
+                                                    style={{
+                                                        fontFamily: "Geometria",
+                                                        fontSize: 15,
+                                                        fontWeight: 400,
+                                                        textAlign: "center",
+                                                        width: '100%',
+                                                        margin: 0,
+                                                        padding: 0
+                                                    }}
+                                                    value={searchResult.verifyPromo ?
+                                                        (searchResult.verifyPromo === 'accept' ? 'Yes' : searchResult.verifyPromo === 'wait' ? 'Waiting' : 'No')
+                                                        : 'N/A'}
+                                                    readOnly={true}
+                                                />
+                                            </td>
+                                            <td className="admin-table-body-td"
+                                                style={{width: '6%', margin: 0, padding: 0}}>
+                                                <input
+                                                    style={{
+                                                        fontFamily: "Geometria",
+                                                        fontSize: 15,
+                                                        fontWeight: 400,
+                                                        textAlign: "center",
+                                                        width: '100%',
+                                                        margin: 0,
+                                                        padding: 0
+                                                    }}
+                                                    value={'Do this after public price logic'}
+                                                    readOnly={true}
+                                                />
+                                            </td>
+                                            <td className="admin-table-body-td"
+                                                style={{width: '5%', margin: 0, padding: 0}}>
+                                                <input
+                                                    style={{
+                                                        fontFamily: "Geometria",
+                                                        fontSize: 15,
+                                                        fontWeight: 400,
+                                                        textAlign: "center",
+                                                        width: '100%',
+                                                        margin: 0,
+                                                        padding: 0
+                                                    }}
+                                                    value={searchResult.statusPromo && (searchResult.statusPromo === 'wait' || searchResult.statusPromo === 'work' || searchResult.statusPromo === 'finally') ? 'Yes' : 'No'}
+                                                    readOnly={true}
+                                                />
+                                            </td>
+                                            <td className="admin-table-body-td"
+                                                style={{width: '18%', margin: 0}}>
+                                                <input
+                                                    style={{
+                                                        fontFamily: "Geometria",
+                                                        fontSize: 15,
+                                                        fontWeight: 400,
+                                                        textAlign: "left",
+                                                        width: '100%',
+                                                        margin: 0,
+                                                        padding: 0
+                                                    }}
+                                                    value={searchResult ? getStatusOfCampaign(searchResult) : 'N/A'}
+                                                    readOnly={true}
+                                                />
+                                            </td>
+                                            <td className="admin-table-body-td"
+                                                style={{margin: 0, padding: 0}}>
+                                                <div style={{
+                                                    display: 'flex',
+                                                    fontFamily: "Geometria",
+                                                    fontSize: 15,
+                                                    fontWeight: 400,
+                                                    textAlign: "center",
+                                                    width: '100%',
+                                                    justifyContent: 'space-between',
+                                                    margin: 0,
+                                                    padding: 0
+                                                }}>
+                                                    <p style={{margin: '0 10px'}}>{searchResult.selectInfluencers ? searchResult.selectInfluencers.length : 'N/A'}</p>
+                                                    <p style={{margin: '0 10px'}}>{searchResult.selectInfluencers ? searchResult.selectInfluencers.filter((influencer) => influencer.confirmation === 'accept').length : 'N/A'}</p>
+                                                    <p style={{margin: '0 10px'}}>{searchResult.selectInfluencers ? searchResult.selectInfluencers.filter((influencer) => influencer.confirmation === 'refusing').length : 'N/A'}</p>
+                                                </div>
+
+                                            </td>
+                                            <td className="admin-table-body-td"
+                                                style={{width: 30}}>
+                                                <input
+                                                    style={{
+                                                        fontFamily: "Geometria",
+                                                        fontSize: 15,
+                                                        fontWeight: 400,
+                                                        textAlign: "left",
+                                                        width: '100%',
+                                                        margin: 0,
+                                                        padding: 0
+                                                    }}
+                                                    value={fieldsForChange._id === searchResult._id ? fieldsForChange.replacementsNotes : searchResult.replacementsNotes}
+                                                    name='replacementsNotes'
+                                                    onChange={updateCampaignFieldsInput}
+                                                />
+                                            </td>
+                                            <td className="admin-table-body-td"
+                                                style={{width: 30}}>
+                                                <div style={{
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    gap: 0,
+                                                    textAlign: 'center'
+                                                }}>
+                                                    <input
+                                                        style={{
+                                                            fontFamily: "Geometria",
+                                                            fontSize: 15,
+                                                            fontWeight: 400,
+                                                            textAlign: "left",
+                                                            width: '50%',
+                                                            margin: 0,
+                                                            padding: 0,
+                                                            height: '28px',
+                                                            lineHeight: '28px',
+                                                            boxSizing: 'border-box',
+                                                        }}
+                                                        value={fieldsForChange._id === searchResult._id ? fieldsForChange.partialRefund : searchResult.partialRefund}
+                                                        name='partialRefund'
+                                                        onChange={updateCampaignFieldsInput}
+                                                    />
+                                                    <button
+                                                        onClick={() => givePartialRefund(searchResult.userId, fieldsForChange.partialRefund, searchResult._id)}
+                                                        style={{
+                                                            display: 'flex',
+                                                            alignItems: 'center',
+                                                            justifyContent: 'space-between',
+                                                            paddingLeft: 5,
+                                                            paddingRight: 5,
+                                                            borderRadius: "10px",
+                                                            border: "1.5px solid black",
+                                                            boxSizing: 'border-box',
+                                                            cursor: 'pointer',
+                                                            marginRight: 15,
+                                                            marginLeft: 0,
+                                                            width: 28,
+                                                            height: 28,
+                                                        }}>
+                                                        <img src={refundImg} alt="refund"/>
+                                                    </button>
+                                                </div>
+                                            </td>
                                         </tr>
+
                                     ) : (
                                         data.map((item, index) => (
                                             <tr key={index} onClick={() => selectCampaign(item)}>
@@ -552,6 +847,7 @@ const AdminCampaigns = () => {
                                                             onChange={updateCampaignFieldsInput}
                                                         />
                                                         <button
+                                                            onClick={() => givePartialRefund(item.userId, fieldsForChange.partialRefund, item._id)}
                                                             style={{
                                                                 display: 'flex',
                                                                 alignItems: 'center',
