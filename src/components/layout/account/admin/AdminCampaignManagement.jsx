@@ -566,7 +566,7 @@ const AdminCampaignManagement = () => {
             );
 
             if (result.status === 200) {
-console.log('Mail sent');
+                console.log('Mail sent');
             }
         } catch (error) {
             console.log(error);
@@ -1049,19 +1049,24 @@ console.log('Mail sent');
                                                         </button>
                                                     </div>
                                                 ) : (
-                                                    <p style={{
-                                                        fontFamily: 'Geometria',
-                                                        fontSize: '16px',
-                                                        fontWeight: 400,
-                                                        textAlign: 'left',
-                                                        marginLeft: 8,
-                                                    }}>N/A</p>
+                                                    <input
+                                                        style={{
+                                                            fontFamily: "Geometria",
+                                                            fontSize: '16px',
+                                                            fontWeight: 400,
+                                                            textAlign: "left",
+                                                            width: '100%',
+                                                        }}
+                                                        value={fieldsForChangeInfluencer.instagramUsername === influencer.instagramUsername ? fieldsForChangeInfluencer.postLink : influencer.postLink}
+                                                        name='postLink'
+                                                        onChange={updateInfluencerFieldsInput}
+                                                    />
                                                 )}
                                             </td>
                                             {/*insights screenshots*/}
                                             <td className="admin-table-body-td"
                                                 style={{width: 105, margin: 0, padding: 0}}>
-                                                {influencer.postLink ? (
+                                                {influencer.screenshot ? (
                                                     <div style={{display: 'flex', padding: '5px 0 5px 0'}}>
                                                         <button
                                                             onClick={() => {
@@ -1105,13 +1110,18 @@ console.log('Mail sent');
                                                         </button>
                                                     </div>
                                                 ) : (
-                                                    <p style={{
-                                                        fontFamily: 'Geometria',
-                                                        fontSize: '16px',
-                                                        fontWeight: 400,
-                                                        textAlign: 'left',
-                                                        marginLeft: 8,
-                                                    }}>N/A</p>
+                                                    <input
+                                                        style={{
+                                                            fontFamily: "Geometria",
+                                                            fontSize: '16px',
+                                                            fontWeight: 400,
+                                                            textAlign: "left",
+                                                            width: '100%',
+                                                        }}
+                                                        value={fieldsForChangeInfluencer.instagramUsername === influencer.instagramUsername ? fieldsForChangeInfluencer.screenshot : influencer.screenshot}
+                                                        name='screenshot'
+                                                        onChange={updateInfluencerFieldsInput}
+                                                    />
                                                 )}
                                             </td>
                                             {/*impressions*/}

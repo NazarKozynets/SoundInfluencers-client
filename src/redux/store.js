@@ -5,6 +5,7 @@ import authenticatedReducer from "./slice/authenticated";
 import createInvoiceReducer from "./slice/create-invoice";
 import createPromoReducer from "./slice/create-promo";
 import adminEditInvoiceReducer from "./slice/admin-edit-invoice";
+import adminOffersReducer from "./slice/admin-offers"
 
 export const store = configureStore({
   reducer: {
@@ -14,5 +15,6 @@ export const store = configureStore({
     createInvoice: createInvoiceReducer,
     createPromo: createPromoReducer,
     adminEditInvoice: adminEditInvoiceReducer,
+    adminOffers: adminOffersReducer,
   },
 });

@@ -295,7 +295,7 @@ const AccountClientOffers = () => {
             }));
         } else {
             const searchPrice = prices.find((item) => item.id === id);
-
+            
             const updateList = influencers.map((item) => {
                 const isInfluencerConnected = searchPrice.connectInfluencer.find(
                     (fin) => fin.influencerId === item._id && fin.instagramUsername === item.instagramUsername

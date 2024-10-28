@@ -11,7 +11,11 @@ const SearchBarResult = ({result, onResultSelect, typeOfSearch}) => {
             case "companyNameForInvoices":
                 return result.companyName + "   " + result.amount + "€";
             case "influencers":
-                return result.instagram.instagramUsername || result.instagramUsername;
+                if (result.instagram !== undefined) {
+                    return result.instagram.instagramUsername;
+                } else {
+                    return result.instagramUsername;
+                }
             case "campaigns":
                 return result.campaignName;
             default:

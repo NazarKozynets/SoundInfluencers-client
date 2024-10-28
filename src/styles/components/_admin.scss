@@ -4,6 +4,66 @@
   align-items: center;
   justify-content: center;
   position: relative;
+
+  #first-button {
+    position: absolute;
+    left: 77%;
+    font-family: Geometria;
+    font-size: 20px;
+    font-weight: 700;
+    text-align: center;
+    border-radius: 10px;
+    border: 2px solid #000000;
+    width: 89px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1px 4px 1px 4px;
+
+    img {
+      width: 17px;
+    }
+  }
+
+  #second-button {
+    position: absolute;
+    left: 83%;
+    font-family: Geometria;
+    font-size: 20px;
+    font-weight: 700;
+    text-align: center;
+    border-radius: 10px;
+    border: 2px solid #000000;
+    width: 126px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1px 4px 1px 4px;
+
+    img {
+      width: 20px;
+    }
+  }
+
+  #third-button {
+    position: absolute;
+    left: 84.5%;
+    font-family: Geometria;
+    font-size: 20px;
+    font-weight: 700;
+    text-align: center;
+    border-radius: 10px;
+    border: 2px solid #000000;
+    width: 89px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1px 4px 1px 4px;
+
+    img {
+      width: 17px;
+    }
+  }
 }
 
 .admin-title-section button {
@@ -186,9 +246,9 @@
 }
 
 .admin-influencers-table-header-button {
-  background: #6A5ACD; 
+  background: #6A5ACD;
   width: 100%;
-  height: 30px; 
+  height: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -196,27 +256,27 @@
 }
 
 #first {
-  border-radius: 50px 0 0 0; 
+  border-radius: 50px 0 0 0;
 }
 
 #second {
-border-radius: 0 50px 0 0; 
+  border-radius: 0 50px 0 0;
 }
 
 .admin-influencers-table-header-text {
   background: #3330e4;
   width: 100%;
-  height: 50px; 
+  height: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white; 
+  color: white;
   font-weight: bold;
   font-size: 14px;
 }
 
 .admin-influencers-table-header-button img {
-  width: 20px; 
+  width: 20px;
 }
 
 .admin-influencers-table-body-td {
@@ -244,3 +304,316 @@ border-radius: 0 50px 0 0;
     gap: 7px;
   }
 }
+
+.admin-offers-add-offer {
+  margin: 44px auto 20px auto;
+  width: fit-content;
+
+  button {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    border: 3px solid #000000;
+    border-radius: 10px;
+    font-family: Geometria;
+    font-size: 15px;
+    font-weight: 800;
+    text-align: center;
+    padding: 2px 7px 2px 3px;
+    transition: box-shadow 0.3s ease;
+
+    &:hover {
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    img {
+      margin-bottom: 1px;
+    }
+  }
+}
+
+.admin-offers-list {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
+
+  .admin-offers-list-left-button {
+    cursor: pointer;
+  }
+
+  .admin-offers-list-right-button {
+    cursor: pointer;
+  }
+}
+
+.admin-offers-pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+
+  .dot {
+    height: 10px;
+    width: 10px;
+    margin: 0 5px;
+    background-color: #b1b0f5;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  .dot.active {
+    background-color: blue;
+  }
+}
+
+.admin-offers-deleted-offers {
+  margin-bottom: 40px;
+
+  #open-deleted-offers {
+    cursor: pointer;
+    font-family: Geometria;
+    font-size: 20px;
+    font-weight: 700;
+    text-align: center;
+    border-radius: 10px;
+    border: 2px solid #000000;
+    width: 220px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 30px auto 30px auto;
+    padding: 0 10px 0 10px;
+  }
+
+  .admin-deleted-offers {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
+.admin-container-offer {
+  .admin-delete-offer-modal {
+    #buttons {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      margin-top: 20px;
+      margin-bottom: 30px;
+    }
+
+    h3 {
+      font-family: Geometria;
+      font-size: 23px;
+      font-weight: 900;
+      text-align: center;
+      margin-top: 55px;
+      margin-bottom: 21px;
+    }
+  }
+
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 40px;
+
+  .admin-container-offer-buttons {
+    display: flex;
+    gap: 8px;
+    margin: 0 auto 26px auto;
+    width: fit-content;
+
+    button {
+      border: 2px solid #000000;
+      width: 28px;
+      height: 28px;
+      border-radius: 10px;
+      cursor: pointer;
+
+      img {
+        margin: 0 auto;
+      }
+    }
+  }
+
+  .admin-offer {
+    box-shadow: 0px 4px 20px 0px #3330E480;
+    border-radius: 30px;
+    overflow: hidden;
+    width: 303px;
+    height: 682px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    .admin-offer-body {
+      display: flex;
+      flex-direction: column;
+      background: white;
+      height: 598px;
+
+      h3 {
+        font-family: Geometria;
+        font-size: 26px;
+        font-weight: 900;
+        text-align: center;
+        color: #3330e4;
+        margin-top: 37px;
+        margin-bottom: 21px;
+      }
+
+      p {
+        font-family: Geometria;
+        font-size: 14px;
+        font-weight: 400;
+        text-align: center;
+      }
+
+      .admin-offer-body-influencers {
+        margin-top: 25px;
+        overflow-y: auto !important;
+        max-height: 400px;
+
+        .admin-offer-body-influencer {
+          display: flex;
+          align-items: center;
+
+          p {
+            font-family: Geometria;
+            font-size: 16px;
+            font-weight: 500;
+            line-height: 20.13px;
+            text-align: left;
+          }
+
+          img {
+            width: 38px;
+            margin-right: 10px;
+            margin-left: 13px;
+          }
+        }
+      }
+    }
+
+    .admin-offer-footer {
+      background: #3330e4;
+      color: white;
+      height: 84px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      h3 {
+        font-family: Geometria;
+        font-size: 26px;
+        font-weight: 900;
+        text-align: center;
+      }
+    }
+  }
+}
+
+.admin-offers-publish-modal {
+  height: 100px;
+  width: 100%;
+  padding-top: 50px;
+  font-family: Geometria;
+  font-size: 26px;
+  font-weight: 900;
+  text-align: center;
+  color: #3330e4;
+}
+
+.admin-offer-body-influencers::-webkit-scrollbar {
+  width: 11px;
+}
+
+.admin-offer-body-influencers::-webkit-scrollbar-thumb {
+  background: #D6D6FA;
+  border-radius: 10px;
+}
+
+.admin-offer-body-influencers::-webkit-scrollbar-track {
+  background: #EBEAFC;
+  border-radius: 10px;
+}
+
+.admin-offer-edit-container {
+  display: flex;
+  margin-top: 78px;
+
+  .admin-offer-edit-filters {
+    width: 20%;
+  }
+
+  .admin-offer-edit-container-offer-container {
+    width: 80%;
+
+    .report-details {
+      margin: 0 auto;
+      padding: 0;
+      width: 888px;
+      height: 130px;
+
+      #offer-name-price {
+        width: 50px;
+        height: 30px;
+        font-family: Geometria;
+        font-size: 26px;
+        font-weight: 900;
+        text-align: center;
+        color: #3330e4;
+      }
+
+      #offer-description {
+        font-family: Geometria;
+        font-size: 14px;
+        font-weight: 400;
+        text-align: center;
+      }
+
+      p {
+        font-family: Geometria;
+        font-size: 24px;
+        font-weight: 400;
+        text-align: center;
+      }
+
+      .report-details-first, .report-details-second, .report-details-third {
+        padding: 0;
+        margin: 0;
+      }
+
+      .report-details-first, .report-details-third {
+        padding-top: 25px;
+      }
+    }
+
+    .admin-offer-edit-table-container {
+      margin-top: 79px;
+
+      .admin-table {
+        width: 70%;
+        margin: 0 auto;
+
+        .admin-table-header {
+          #imgChooseHeader {
+            padding: 2px;
+            border: 2px solid white;
+            border-radius: 5px;
+            width: 15px;
+            height: 15px;
+            margin: 0 auto;
+          }
+        }
+      }
+    }
+  }
+
+}
+

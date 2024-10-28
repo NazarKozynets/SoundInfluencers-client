@@ -101,10 +101,6 @@ const InfluencersList = ({influencers, activeIndices, setActiveIndices, selectIn
         }
     };
 
-    useEffect(() => {
-        console.log("influencers", influencers);
-    }, [influencers]);
-    
     return (
         <div>
             {isSearch ? (

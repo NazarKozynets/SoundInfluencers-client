@@ -1,0 +1,59 @@
+.admin-offers-table-filters {
+  padding-left: 100px;
+  padding-top: 300px;
+  
+  p {
+    font-family: Geometria;
+    font-size: 28px;
+    font-weight: 800;
+    text-align: left;
+    color: #3330E4;
+  }
+
+  .list {
+    width: 350px;
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+
+    .list-item {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 15px;
+
+      p {
+        font-family: Geometria;
+        font-size: 23px;
+        font-weight: 500;
+        text-align: left;
+        color: black;
+        width: 200px;
+      }
+
+      input {
+        margin-right: 10px;
+        margin-top: 6px;
+        width: 20px;
+      }
+
+      .list-item-num-of-networks {
+        border-radius: 18.5px;
+        background: #f0ecfc;
+        width: 36px; 
+        padding: 5px 10px;
+        font-family: Geometria;
+        font-size: 18px;
+        font-weight: 300;
+        text-align: center;
+        display: flex; 
+        justify-content: center; 
+        align-items: center; 
+      }
+    }
+
+    .sub-list {
+      margin-left: 35px;
+    }
+  }
+
+}

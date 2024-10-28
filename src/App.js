@@ -57,7 +57,7 @@ import AccountAdminInfluencers from "./pages/account/admin/admin-influencers";
 import AccountAdminCampaigns from "./pages/account/admin/admin-campaigns";
 import AccountAdminInvoicesClients from "./pages/account/admin/admin-invoices-clients";
 import AccountAdminInvoicesInfluencers from "./pages/account/admin/admin-invoices-influencers";
-import AccountAdminOffers from "./pages/account/admin/admin-offers";
+import AccountAdminOffers from "./pages/account/admin/admin-offers-navigation";
 import PaymentInvoiceDownload from "./pages/account/client/payment-invoice-download";
 import AccountAdminCampaignManagement from "./pages/account/admin/admin-campaign-management";
 

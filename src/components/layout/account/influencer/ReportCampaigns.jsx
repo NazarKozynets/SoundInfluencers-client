@@ -126,6 +126,7 @@ const ReportCampaigns = () => {
             const result = await axios(
                 `${process.env.REACT_APP_SERVER}/promos/ongoing/one?id=${params.id}&userId=${dataFetch._id}`
             );
+            console.log(result)
             setCompany(dataFetch);
             if (result.data.code === 200) {
                 setDataPromo(result.data.promo);
