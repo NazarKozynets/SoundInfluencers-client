@@ -7,6 +7,7 @@ import AdminEditOfferTable from "./AdminEditOfferTable";
 import saveImg from "../../../../../../images/icons/save 1.svg";
 import OffersTableFilters from "../../form/offers/filters-table/OffersTableFilters";
 import GenreButtonList from "../../../../../form/GenreButton/GenreButtonList";
+import axios from "axios";
 
 const AdminEditOldOffer = ({influencers}) => {
     const offer = useSelector((state) => state.adminOffers.newOffer);
@@ -25,7 +26,34 @@ const AdminEditOldOffer = ({influencers}) => {
     }, [selectedOffersGenres]);
 
     useEffect(() => {
-        console.log(selectedInfluencers, 'selectedInfluencers')
+        if (selectedOffersGenres.length === 0) {
+            if (selectedInfluencers !== offer.connectInfluencer) {
+                const updatedOffer = {
+                    ...offer,
+                    connectInfluencer: selectedInfluencers,
+                };
+                dispatch(setNewOffer(updatedOffer));
+            }
+        } else {
+            const musicStyle = offer.musicStyles.find((item) => item.genres[0] === selectedOffersGenres[0]);
+            if (musicStyle) {
+                if (selectedInfluencers !== musicStyle.connectInfluencer) {
+                    const updatedOffer = {
+                        ...offer,
+                        musicStyles: offer.musicStyles.map((item) => {
+                            if (item === musicStyle) {
+                                return {
+                                    ...musicStyle,
+                                    connectInfluencer: selectedInfluencers,
+                                };
+                            }
+                            return item;
+                        }),
+                    };
+                    dispatch(setNewOffer(updatedOffer));
+                }
+            }
+        }
     }, [selectedInfluencers]);
 
     const handleFieldChange = (field, value) => {
@@ -68,6 +96,34 @@ const AdminEditOldOffer = ({influencers}) => {
             dispatch(setNewOffer(updatedOffer));
         }
     };
+    
+    const updateOffer = async () => {
+        try {
+            const result = await axios.put(`${process.env.REACT_APP_SERVER}/admin/offers/update`, {
+                _id: offer._id,
+                id: offer.id,
+                price: offer.price,
+                followers: offer.followers,
+                network: offer.network,
+                story: offer.story,
+                maxInfluencer: offer.maxInfluencer,
+                connectInfluencer: selectedInfluencers,
+                musicStyles: offer.musicStyles,
+                isDeleted: false,
+                isNew: true,
+                isUpdated: true,
+            })
+            
+            console.log(result);
+            
+            if (result.status === 200) {
+                dispatch(setIsNew(false));
+                dispatch(setCurrentWindow(0));
+            }
+        } catch (e) {
+            console.log(e);   
+        }
+    }
 
     return (
         <section className="admin">
@@ -80,7 +136,7 @@ const AdminEditOldOffer = ({influencers}) => {
                         <img src={backBtn} style={{transform: "rotate(180deg)"}}/>
                     </button>
                     <TitleSection title='Offers' span='design'/>
-                    <button id='third-button'>
+                    <button id='third-button' onClick={() => updateOffer()}>
                         <img src={saveImg} alt='save'/>
                         <span>SAVE</span>
                     </button>

@@ -176,11 +176,12 @@ const AdminClients = () => {
                                     {searchResult ? (
                                         <tr onClick={() => selectClient(searchResult)}>
                                             <td className="admin-table-body-td" style={{
-                                                paddingLeft: 0
+                                                paddingLeft: 0,
+                                                background: '#f0ecfc'
                                             }}>
                                                 <img style={{margin: '0 auto'}} src={logoIcon} alt="logo"/>
                                             </td>
-                                            <td className="admin-table-body-td">
+                                            <td className="admin-table-body-td" style={{background: '#f0ecfc'}}>
                                                 <input
                                                     ref={inputRef}
                                                     style={{
@@ -220,6 +221,7 @@ const AdminClients = () => {
                                                 fontWeight: 400,
                                                 textAlign: "left",
                                                 paddingRight: 6,
+                                                background: '#f0ecfc'
                                             }}>
                                                 <input
                                                     style={{
@@ -258,6 +260,7 @@ const AdminClients = () => {
                                                 fontSize: 12,
                                                 fontWeight: 400,
                                                 textAlign: "left",
+                                                background: '#f0ecfc'
                                             }}>
                                                 <input
                                                     style={{
@@ -299,7 +302,8 @@ const AdminClients = () => {
                                                 fontSize: 12,
                                                 fontWeight: 400,
                                                 textAlign: "center",
-                                                paddingLeft: 0
+                                                paddingLeft: 0,
+                                                background: '#f0ecfc'
                                             }}>{searchResult.campaignsCompleted && searchResult.campaignsCompleted}
                                             </td>
                                             <td className="admin-table-body-td" style={{
@@ -315,7 +319,8 @@ const AdminClients = () => {
                                                 fontSize: 12,
                                                 fontWeight: 400,
                                                 textAlign: "center",
-                                                paddingLeft: 0
+                                                paddingLeft: 0,
+                                                background: '#f0ecfc'
                                             }}>{searchResult.campaignsOngoing && searchResult.campaignsOngoing}
                                             </td>
                                             <td className="admin-table-body-td" style={{
@@ -331,6 +336,7 @@ const AdminClients = () => {
                                                 fontSize: 12,
                                                 fontWeight: 400,
                                                 textAlign: "left",
+                                                background: '#f0ecfc'
                                             }}>
                                                 <input
                                                     style={{
@@ -350,11 +356,12 @@ const AdminClients = () => {
                                         data.map((client, index) => (
                                             <tr key={index} onClick={() => selectClient(client)}>
                                                 <td className="admin-table-body-td" style={{
-                                                    paddingLeft: 0
+                                                    paddingLeft: 0,
+                                                    background: '#f0ecfc'
                                                 }}>
                                                     <img style={{margin: '0 auto'}} src={logoIcon} alt="logo"/>
                                                 </td>
-                                                <td className="admin-table-body-td">
+                                                <td className="admin-table-body-td" style={{background: '#f0ecfc'}}>
                                                     <input
                                                         ref={inputRef}
                                                         style={{
@@ -394,6 +401,7 @@ const AdminClients = () => {
                                                     fontWeight: 400,
                                                     textAlign: "left",
                                                     paddingRight: 6,
+                                                    background: '#f0ecfc'
                                                 }}>
                                                     <input
                                                         style={{
@@ -432,6 +440,7 @@ const AdminClients = () => {
                                                     fontSize: 12,
                                                     fontWeight: 400,
                                                     textAlign: "left",
+                                                    background: '#f0ecfc'
                                                 }}>
                                                     <input
                                                         style={{
@@ -473,7 +482,8 @@ const AdminClients = () => {
                                                     fontSize: 12,
                                                     fontWeight: 400,
                                                     textAlign: "center",
-                                                    paddingLeft: 0
+                                                    paddingLeft: 0,
+                                                    background: '#f0ecfc'
                                                 }}>{client.campaignsCompleted && client.campaignsCompleted}
                                                 </td>
                                                 <td className="admin-table-body-td" style={{
@@ -489,7 +499,8 @@ const AdminClients = () => {
                                                     fontSize: 12,
                                                     fontWeight: 400,
                                                     textAlign: "center",
-                                                    paddingLeft: 0
+                                                    paddingLeft: 0,
+                                                    background: '#f0ecfc'
                                                 }}>{client.campaignsOngoing && client.campaignsOngoing}
                                                 </td>
                                                 <td className="admin-table-body-td" style={{
@@ -505,6 +516,7 @@ const AdminClients = () => {
                                                     fontSize: 12,
                                                     fontWeight: 400,
                                                     textAlign: "left",
+                                                    background: '#f0ecfc'
                                                 }}>
                                                     <input
                                                         style={{

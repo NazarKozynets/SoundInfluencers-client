@@ -597,7 +597,7 @@ const AccountClientOffers = () => {
         );
 
         const offers = await axios(`${process.env.REACT_APP_SERVER}/promos/offers`);
-
+        
         if (offers.data.code === 200) {
             setPrices(offers.data.offers.sort((a, b) => a.id - a.b));
         }

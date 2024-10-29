@@ -334,7 +334,7 @@ const AdminCampaigns = () => {
                                     <tbody className="admin-table-body">
                                     {searchResult ? (
                                         <tr onClick={() => selectCampaign(searchResult)}>
-                                            <td className="admin-table-body-td" style={{width: '15%'}}>
+                                            <td className="admin-table-body-td" style={{width: '15%', background: '#f0ecfc'}}>
                                                 <input
                                                     style={{
                                                         fontFamily: "Geometria",
@@ -378,7 +378,7 @@ const AdminCampaigns = () => {
                                                     </button>
                                                 </div>
                                             </td>
-                                            <td className="admin-table-body-td" style={{width: '5.3%'}}>
+                                            <td className="admin-table-body-td" style={{width: '5.3%', background: '#f0ecfc'}}>
                                                 <div style={{display: 'flex'}}>
                                                     <button
                                                         onClick={() => {
@@ -435,7 +435,7 @@ const AdminCampaigns = () => {
                                                 />
                                             </td>
                                             <td className="admin-table-body-td"
-                                                style={{width: '6%', margin: 0, padding: 0}}>
+                                                style={{width: '6%', margin: 0, padding: 0, background: '#f0ecfc'}}>
                                                 <input
                                                     style={{
                                                         fontFamily: "Geometria",
@@ -469,7 +469,7 @@ const AdminCampaigns = () => {
                                                 />
                                             </td>
                                             <td className="admin-table-body-td"
-                                                style={{width: '6%', margin: 0, padding: 0}}>
+                                                style={{width: '6%', margin: 0, padding: 0, background: '#f0ecfc'}}>
                                                 <input
                                                     style={{
                                                         fontFamily: "Geometria",
@@ -501,7 +501,7 @@ const AdminCampaigns = () => {
                                                 />
                                             </td>
                                             <td className="admin-table-body-td"
-                                                style={{width: '18%', margin: 0}}>
+                                                style={{width: '18%', margin: 0, background: '#f0ecfc'}}>
                                                 <input
                                                     style={{
                                                         fontFamily: "Geometria",
@@ -536,7 +536,7 @@ const AdminCampaigns = () => {
 
                                             </td>
                                             <td className="admin-table-body-td"
-                                                style={{width: 30}}>
+                                                style={{width: 30, background: '#f0ecfc'}}>
                                                 <input
                                                     style={{
                                                         fontFamily: "Geometria",
@@ -599,11 +599,10 @@ const AdminCampaigns = () => {
                                                 </div>
                                             </td>
                                         </tr>
-
                                     ) : (
                                         data.map((item, index) => (
                                             <tr key={index} onClick={() => selectCampaign(item)}>
-                                                <td className="admin-table-body-td" style={{width: '15%'}}>
+                                                <td className="admin-table-body-td" style={{width: '15%', background: '#f0ecfc'}}>
                                                     <input
                                                         style={{
                                                             fontFamily: "Geometria",
@@ -647,7 +646,7 @@ const AdminCampaigns = () => {
                                                         </button>
                                                     </div>
                                                 </td>
-                                                <td className="admin-table-body-td" style={{width: '5.3%'}}>
+                                                <td className="admin-table-body-td" style={{width: '5.3%', background: '#f0ecfc'}}>
                                                     <div style={{display: 'flex'}}>
                                                         <button
                                                             onClick={() => {
@@ -704,7 +703,7 @@ const AdminCampaigns = () => {
                                                     />
                                                 </td>
                                                 <td className="admin-table-body-td"
-                                                    style={{width: '6%', margin: 0, padding: 0}}>
+                                                    style={{width: '6%', margin: 0, padding: 0, background: '#f0ecfc'}}>
                                                     <input
                                                         style={{
                                                             fontFamily: "Geometria",
@@ -738,7 +737,7 @@ const AdminCampaigns = () => {
                                                     />
                                                 </td>
                                                 <td className="admin-table-body-td"
-                                                    style={{width: '6%', margin: 0, padding: 0}}>
+                                                    style={{width: '6%', margin: 0, padding: 0, background: '#f0ecfc'}}>
                                                     <input
                                                         style={{
                                                             fontFamily: "Geometria",
@@ -770,7 +769,7 @@ const AdminCampaigns = () => {
                                                     />
                                                 </td>
                                                 <td className="admin-table-body-td"
-                                                    style={{width: '18%', margin: 0}}>
+                                                    style={{width: '18%', margin: 0, background: '#f0ecfc'}}>
                                                     <input
                                                         style={{
                                                             fontFamily: "Geometria",
@@ -805,7 +804,7 @@ const AdminCampaigns = () => {
 
                                                 </td>
                                                 <td className="admin-table-body-td"
-                                                    style={{width: 30}}>
+                                                    style={{width: 30, background: '#f0ecfc'}}>
                                                     <input
                                                         style={{
                                                             fontFamily: "Geometria",

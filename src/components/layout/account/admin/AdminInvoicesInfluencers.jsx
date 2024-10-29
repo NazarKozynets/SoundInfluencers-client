@@ -276,7 +276,7 @@ const AdminInvoicesInfluencers = () => {
                                     <tbody>
                                     {searchResut ? (
                                         <tr onClick={() => selectInvoice(searchResut)}>
-                                            <td className="admin-table-body-td" style={{width: 250}}>
+                                            <td className="admin-table-body-td" style={{width: 250, background: '#f0ecfc'}}>
                                                 <input
                                                     style={{
                                                         fontFamily: "Geometria",
@@ -305,7 +305,7 @@ const AdminInvoicesInfluencers = () => {
                                                     onChange={(e) => updateInvoiceFieldsInput(e)}
                                                 />
                                             </td>
-                                            <td className="admin-table-body-td" style={{width: 111}}>
+                                            <td className="admin-table-body-td" style={{width: 111, background: '#f0ecfc'}}>
                                                 <input
                                                     style={{
                                                         fontFamily: "Geometria",
@@ -336,7 +336,7 @@ const AdminInvoicesInfluencers = () => {
                                                     onChange={(e) => updateInvoiceFieldsInput(e)}
                                                 />
                                             </td>
-                                            <td className="admin-table-body-td" style={{width: 90}}>
+                                            <td className="admin-table-body-td" style={{width: 90, background: '#f0ecfc'}}>
                                                 <input
                                                     style={{
                                                         fontFamily: "Geometria",
@@ -399,7 +399,7 @@ const AdminInvoicesInfluencers = () => {
                                                     </button>
                                                 </div>
                                             </td>
-                                            <td className="admin-table-body-td">
+                                            <td className="admin-table-body-td" style={{background: '#f0ecfc'}}>
                                                 <input
                                                     style={{
                                                         fontFamily: "Geometria",
@@ -428,7 +428,7 @@ const AdminInvoicesInfluencers = () => {
                                                 />
                                             </td>
                                             <td className="admin-table-body-td"
-                                                style={{width: 120, margin: 0, padding: 0}}>
+                                                style={{width: 120, margin: 0, padding: 0, background: '#f0ecfc'}}>
                                                 <input
                                                     style={{
                                                         fontFamily: "Geometria",
@@ -447,7 +447,7 @@ const AdminInvoicesInfluencers = () => {
                                     ) : (
                                         data.map((invoice, index) => (
                                             <tr onClick={() => selectInvoice(invoice)}>
-                                                <td className="admin-table-body-td" style={{width: 250}}>
+                                                <td className="admin-table-body-td" style={{width: 250, background: '#f0ecfc'}}>
                                                     <input
                                                         style={{
                                                             fontFamily: "Geometria",
@@ -475,7 +475,7 @@ const AdminInvoicesInfluencers = () => {
                                                         onChange={(e) => updateInvoiceFieldsInput(e)}
                                                     />
                                                 </td>
-                                                <td className="admin-table-body-td" style={{width: 111}}>
+                                                <td className="admin-table-body-td" style={{width: 111, background: '#f0ecfc'}}>
                                                     <input
                                                         style={{
                                                             fontFamily: "Geometria",
@@ -506,7 +506,7 @@ const AdminInvoicesInfluencers = () => {
                                                         onChange={(e) => updateInvoiceFieldsInput(e)}
                                                     />
                                                 </td>
-                                                <td className="admin-table-body-td" style={{width: 90}}>
+                                                <td className="admin-table-body-td" style={{width: 90, background: '#f0ecfc'}}>
                                                     <input
                                                         style={{
                                                             fontFamily: "Geometria",
@@ -569,7 +569,7 @@ const AdminInvoicesInfluencers = () => {
                                                         </button>
                                                     </div>
                                                 </td>
-                                                <td className="admin-table-body-td">
+                                                <td className="admin-table-body-td" style={{background: '#f0ecfc'}}>
                                                     <input
                                                         style={{
                                                             fontFamily: "Geometria",
@@ -598,7 +598,7 @@ const AdminInvoicesInfluencers = () => {
                                                     />
                                                 </td>
                                                 <td className="admin-table-body-td"
-                                                    style={{width: 120, margin: 0, padding: 0}}>
+                                                    style={{width: 120, margin: 0, padding: 0, background: '#f0ecfc'}}>
                                                     <input
                                                         style={{
                                                             fontFamily: "Geometria",

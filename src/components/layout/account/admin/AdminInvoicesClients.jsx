@@ -289,7 +289,7 @@ const AdminInvoicesClients = () => {
                                     <tbody>
                                     {searchResut ? (
                                         <tr onClick={() => selectInvoice(searchResut)}>
-                                            <td className="admin-table-body-td" style={{width: 250}}>
+                                            <td className="admin-table-body-td" style={{width: 250, background: '#f0ecfc'}}>
                                                 <input
                                                     style={{
                                                         fontFamily: "Geometria",
@@ -318,7 +318,7 @@ const AdminInvoicesClients = () => {
                                                     readOnly={true}
                                                 />
                                             </td>
-                                            <td className="admin-table-body-td" style={{width: 200}}>
+                                            <td className="admin-table-body-td" style={{width: 200, background: '#f0ecfc'}}>
                                                 <input
                                                     style={{
                                                         fontFamily: "Geometria",
@@ -348,7 +348,7 @@ const AdminInvoicesClients = () => {
                                                 />
                                             </td>
                                             <td className="admin-table-body-td"
-                                                style={{width: 90, margin: 0, padding: 0}}>
+                                                style={{width: 90, margin: 0, padding: 0, background: '#f0ecfc'}}>
                                                 <input
                                                     style={{
                                                         fontFamily: "Geometria",
@@ -455,7 +455,7 @@ const AdminInvoicesClients = () => {
                                                 </div>
                                             </td>
                                             <td className="admin-table-body-td"
-                                                style={{width: 90, margin: 0, padding: 0}}>
+                                                style={{width: 90, margin: 0, padding: 0, background: '#f0ecfc'}}>
                                                 <input
                                                     style={{
                                                         fontFamily: "Geometria",
@@ -475,7 +475,7 @@ const AdminInvoicesClients = () => {
                                     ) : (
                                         data.map((invoice, index) => (
                                             <tr onClick={() => selectInvoice(invoice)}>
-                                                <td className="admin-table-body-td" style={{width: 250}}>
+                                                <td className="admin-table-body-td" style={{width: 250, background: '#f0ecfc'}}>
                                                     <input
                                                         style={{
                                                             fontFamily: "Geometria",
@@ -504,7 +504,7 @@ const AdminInvoicesClients = () => {
                                                         readOnly={true}
                                                     />
                                                 </td>
-                                                <td className="admin-table-body-td" style={{width: 200}}>
+                                                <td className="admin-table-body-td" style={{width: 200, background: '#f0ecfc'}}>
                                                     <input
                                                         style={{
                                                             fontFamily: "Geometria",
@@ -534,7 +534,7 @@ const AdminInvoicesClients = () => {
                                                     />
                                                 </td>
                                                 <td className="admin-table-body-td"
-                                                    style={{width: 90, margin: 0, padding: 0}}>
+                                                    style={{width: 90, margin: 0, padding: 0, background: '#f0ecfc'}}>
                                                     <input
                                                         style={{
                                                             fontFamily: "Geometria",
@@ -641,7 +641,7 @@ const AdminInvoicesClients = () => {
                                                     </div>
                                                 </td>
                                                 <td className="admin-table-body-td"
-                                                    style={{width: 90, margin: 0, padding: 0}}>
+                                                    style={{width: 90, margin: 0, padding: 0, background: '#f0ecfc'}}>
                                                     <input
                                                         style={{
                                                             fontFamily: "Geometria",

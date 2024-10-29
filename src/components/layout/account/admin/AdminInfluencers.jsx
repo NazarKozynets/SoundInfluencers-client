@@ -225,7 +225,6 @@ const AdminInfluencers = () => {
             );
             if (result.status === 200) {
                 const updatedInfluencer = result.data.data;
-
                 const updatedInfluencers = data.map((item) => {
                     if (item.influencerId === updatedInfluencer.influencerId) {
                         return {
@@ -247,6 +246,10 @@ const AdminInfluencers = () => {
                 });
 
                 setData(updatedInfluencers);
+                
+                if (searchResult) {
+                    setSearchResult(updatedInfluencers.find(item => item.influencerId === searchResult.influencerId && item.instagram.instagramUsername === searchResult.instagram.instagramUsername));
+                }
             } else {
                 console.warn("Сервер вернул некорректный статус:", result.status);
             }
@@ -488,6 +491,20 @@ const AdminInfluencers = () => {
         );
     };
 
+    const hideInfluencerOnServer = async (influencer) => {
+        try {             
+            const result = await axios.put(
+                `${process.env.REACT_APP_SERVER}/admin/influencer/hide-instagram/${influencer.influencerId}/${influencer.instagram.instagramUsername}`
+            );
+            console.log(result);
+            if (result.status === 200) {
+                await updateInfluencerData({influencerId: influencer.influencerId, instagramUsername: influencer.instagram.instagramUsername});
+            }
+        } catch (err) {
+            console.error("Ошибка при скрытии инфлюенсера:", err);
+        }
+    }
+    
     return (
         <section className="admin">
             <div>
@@ -593,6 +610,12 @@ const AdminInfluencers = () => {
                                     <th>
                                         <div className="admin-influencers-table-header-th">
                                             <div className="admin-influencers-table-header-button" id="first"></div>
+                                            <div className="admin-influencers-table-header-text"></div>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div className="admin-influencers-table-header-th">
+                                            <div className="admin-influencers-table-header-button" style={{borderRadius: 0}}></div>
                                             <div className="admin-influencers-table-header-text"></div>
                                         </div>
                                     </th>
@@ -758,7 +781,8 @@ const AdminInfluencers = () => {
                                                 }} className="admin-influencers-table-header-text">
                                                     <p style={{marginTop: '-12px'}}>ID</p>
                                                     <SearchBarComponent data={data} setSearchResult={setSearchResult}
-                                                                        searchFunction={searchById} className="small" typeOfSearch="influencers"/>
+                                                                        searchFunction={searchById} className="small"
+                                                                        typeOfSearch="influencers"/>
                                                 </div>
                                             </div>
                                         </th>
@@ -918,6 +942,12 @@ const AdminInfluencers = () => {
                                 <tbody className="admin-influencers-table-body">
                                 {searchResult ? (
                                     <tr key={searchResult.index} onClick={() => selectInfluencer(searchResult)}>
+                                        <td className="admin-influencers-table-body-td"
+                                            onClick={() => hideInfluencerOnServer(searchResult)}
+                                            style={{width: '20px', paddingLeft: 0}}>
+                                            <img src={searchResult.instagram.isHidden ? hiddenIcon : watch} alt='hide'
+                                                 style={{cursor: 'pointer'}}/>
+                                        </td>
                                         <td className="admin-influencers-table-body-td"
                                             style={{width: '70px', paddingLeft: 0}}>
                                             <img src={searchResult.avatar} alt={altAvatar}
@@ -1340,6 +1370,11 @@ const AdminInfluencers = () => {
                                 ) : (
                                     data.map((influencer, index) =>
                                         <tr key={index} onClick={() => selectInfluencer(influencer)}>
+                                            <td className="admin-influencers-table-body-td"
+                                                onClick={() => hideInfluencerOnServer(influencer)}
+                                                style={{width: '20px', paddingLeft: 0}}>
+                                                <img src={influencer.instagram.isHidden ? hiddenIcon : watch} alt='hide' style={{cursor: 'pointer'}}/>
+                                            </td>
                                             <td className="admin-influencers-table-body-td"
                                                 style={{width: '70px', paddingLeft: 0}}>
                                                 <img src={influencer.avatar} alt={altAvatar}
