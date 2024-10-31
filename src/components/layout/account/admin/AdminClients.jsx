@@ -164,6 +164,7 @@ const AdminClients = () => {
                                         <td>Email</td>
                                         <td>Phone</td>
                                         <td>Company Type</td>
+                                        <td>Id</td>
                                         <td>Balance</td>
                                         <td>Campaigns Completed</td>
                                         <td>Campaigns Denied</td>
@@ -440,7 +441,8 @@ const AdminClients = () => {
                                                     fontSize: 12,
                                                     fontWeight: 400,
                                                     textAlign: "left",
-                                                    background: '#f0ecfc'
+                                                    background: '#f0ecfc',
+                                                    width: 120
                                                 }}>
                                                     <input
                                                         style={{
@@ -459,9 +461,27 @@ const AdminClients = () => {
                                                     fontFamily: "Geometria",
                                                     fontSize: 12,
                                                     fontWeight: 400,
+                                                    textAlign: "left",
+                                                }}>
+                                                    <input
+                                                        style={{
+                                                            fontFamily: "Geometria",
+                                                            fontSize: 12,
+                                                            fontWeight: 400,
+                                                            textAlign: "left",
+                                                            width: '100%',
+                                                        }}
+                                                        value={client._id}
+                                                    />
+                                                </td>
+                                                <td className="admin-table-body-td" style={{
+                                                    fontFamily: "Geometria",
+                                                    fontSize: 12,
+                                                    fontWeight: 400,
                                                     textAlign: "center",
                                                     paddingLeft: 0,
-                                                    width: '5%'
+                                                    width: '5%',
+                                                    background: '#f0ecfc'
                                                 }}>
                                                     <input
                                                         style={{
@@ -483,16 +503,7 @@ const AdminClients = () => {
                                                     fontWeight: 400,
                                                     textAlign: "center",
                                                     paddingLeft: 0,
-                                                    background: '#f0ecfc'
                                                 }}>{client.campaignsCompleted && client.campaignsCompleted}
-                                                </td>
-                                                <td className="admin-table-body-td" style={{
-                                                    fontFamily: "Geometria",
-                                                    fontSize: 12,
-                                                    fontWeight: 400,
-                                                    textAlign: "center",
-                                                    paddingLeft: 0
-                                                }}>{client.campaignsDenied && client.campaignsDenied}
                                                 </td>
                                                 <td className="admin-table-body-td" style={{
                                                     fontFamily: "Geometria",
@@ -501,6 +512,14 @@ const AdminClients = () => {
                                                     textAlign: "center",
                                                     paddingLeft: 0,
                                                     background: '#f0ecfc'
+                                                }}>{client.campaignsDenied && client.campaignsDenied}
+                                                </td>
+                                                <td className="admin-table-body-td" style={{
+                                                    fontFamily: "Geometria",
+                                                    fontSize: 12,
+                                                    fontWeight: 400,
+                                                    textAlign: "center",
+                                                    paddingLeft: 0,
                                                 }}>{client.campaignsOngoing && client.campaignsOngoing}
                                                 </td>
                                                 <td className="admin-table-body-td" style={{
@@ -508,7 +527,8 @@ const AdminClients = () => {
                                                     fontSize: 12,
                                                     fontWeight: 400,
                                                     textAlign: "center",
-                                                    paddingLeft: 0
+                                                    paddingLeft: 0,
+                                                    background: '#f0ecfc'
                                                 }}>{client.latestCampaign ? formatDateStringReport(client.latestCampaign.createdAt) : 'N/A'}
                                                 </td>
                                                 <td className="admin-table-body-td" style={{
@@ -516,7 +536,6 @@ const AdminClients = () => {
                                                     fontSize: 12,
                                                     fontWeight: 400,
                                                     textAlign: "left",
-                                                    background: '#f0ecfc'
                                                 }}>
                                                     <input
                                                         style={{
@@ -544,7 +563,8 @@ const AdminClients = () => {
                                                     justifyContent: 'center',
                                                     padding: '10px 0 10px 0'
                                                 }}>
-                                                    <StandardButton ref={saveChangesRef} onClick={() => updateClientOnServer()}
+                                                    <StandardButton ref={saveChangesRef}
+                                                                    onClick={() => updateClientOnServer()}
                                                                     text={'Save Changes'}/>
                                                 </div>
                                             </td>

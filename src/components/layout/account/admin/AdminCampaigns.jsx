@@ -61,6 +61,11 @@ const AdminCampaigns = () => {
         };
     }, []);
 
+    useEffect(() => {
+        console.log(data, 'data');
+    }, [data]);
+    
+    
     const selectCampaign = (campaign) => {
         if (fieldsForChange._id !== campaign._id) {
             setFieldsForChange({
@@ -98,6 +103,7 @@ const AdminCampaigns = () => {
                 `${process.env.REACT_APP_SERVER}/admin/promos/update`,
                 {
                     _id: fieldsForChange._id,
+                    userId: fieldsForChange.userId,
                     replacementsNotes: fieldsForChange.replacementsNotes,
                     partialRefund: fieldsForChange.partialRefund,
                 }
@@ -245,16 +251,17 @@ const AdminCampaigns = () => {
     
     const calculateProfit = (campaign) => {
         let priceForInfluencers = 0;
-        let publicPriceForInfluencers = 0;
+        let publicPrice = 0;
+        
+        campaign.amount ? publicPrice = campaign.amount : publicPrice = campaign.selectPrice.price;
         
         if (campaign.selectInfluencers) {
             campaign.selectInfluencers.forEach((influencer) => {
                 priceForInfluencers += influencer.price;
-                publicPriceForInfluencers += influencer.publicPrice;
             });
         }
         
-        return (publicPriceForInfluencers - priceForInfluencers).toLocaleString('en-US') + '€';
+        return (publicPrice - priceForInfluencers).toLocaleString('en-US') + '€';
     }
     
     return (
@@ -306,7 +313,7 @@ const AdminCampaigns = () => {
                                 </ModalWindow>
                             )}
 
-                            <div className="admin-table-container" style={{width: '85%', margin: '30px auto'}}>
+                            <div className="admin-table-container" style={{width: '90%', margin: '30px auto'}}>
                                 <table className="admin-table">
                                     <thead className="admin-table-header">
                                     <tr>
@@ -337,6 +344,7 @@ const AdminCampaigns = () => {
                                             </div>
                                         </td>
                                         <td>Replacements</td>
+                                        <td>Client</td>
                                         <td>Partial Refund</td>
                                     </tr>
                                     </thead>
@@ -814,7 +822,7 @@ const AdminCampaigns = () => {
 
                                                 </td>
                                                 <td className="admin-table-body-td"
-                                                    style={{width: 30, background: '#f0ecfc'}}>
+                                                    style={{width: 20, background: '#f0ecfc'}}>
                                                     <input
                                                         style={{
                                                             fontFamily: "Geometria",
@@ -830,8 +838,24 @@ const AdminCampaigns = () => {
                                                         onChange={updateCampaignFieldsInput}
                                                     />
                                                 </td>
+                                                <td className='admin-table-body-td' style={{width: 80}}>
+                                                    <input
+                                                        style={{
+                                                            fontFamily: "Geometria",
+                                                            fontSize: 15,
+                                                            fontWeight: 400,
+                                                            textAlign: "left",
+                                                            width: '100%',
+                                                            margin: 0,
+                                                            padding: 0
+                                                        }}
+                                                        value={fieldsForChange._id === item._id ? fieldsForChange.userId : item.userId}
+                                                        name='userId'
+                                                        onChange={updateCampaignFieldsInput}
+                                                    />
+                                                </td>
                                                 <td className="admin-table-body-td"
-                                                    style={{width: 30}}>
+                                                    style={{width: '6%', background: '#f0ecfc'}}>
                                                     <div style={{
                                                         display: 'flex',
                                                         alignItems: 'center',
