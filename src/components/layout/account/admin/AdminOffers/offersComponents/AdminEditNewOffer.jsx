@@ -165,7 +165,7 @@ const AdminEditNewOffer = ({influencers}) => {
                                         <input
                                             id="offer-name-price"
                                             value={offer.id}
-                                            onChange={(e) => handleFieldChange('id', e.target.value.replace(/\D/g, ''))}
+                                            onChange={(e) => handleFieldChange('id', e.target.value.replace(/[^0-9.]/g, ''))}
                                         />
                                         <span id='offer-name-price'>M</span>
                                     </div>

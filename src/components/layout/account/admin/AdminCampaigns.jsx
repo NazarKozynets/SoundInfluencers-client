@@ -61,10 +61,6 @@ const AdminCampaigns = () => {
         };
     }, []);
 
-    useEffect(() => {
-        console.log(data, 'data')
-    }, [data])
-    
     const selectCampaign = (campaign) => {
         if (fieldsForChange._id !== campaign._id) {
             setFieldsForChange({
@@ -246,6 +242,20 @@ const AdminCampaigns = () => {
             return item?.campaignName?.toLowerCase().includes(searchInput.toLowerCase());
         });
     };
+    
+    const calculateProfit = (campaign) => {
+        let priceForInfluencers = 0;
+        let publicPriceForInfluencers = 0;
+        
+        if (campaign.selectInfluencers) {
+            campaign.selectInfluencers.forEach((influencer) => {
+                priceForInfluencers += influencer.price;
+                publicPriceForInfluencers += influencer.publicPrice;
+            });
+        }
+        
+        return (publicPriceForInfluencers - priceForInfluencers).toLocaleString('en-US') + '€';
+    }
     
     return (
         <section className="admin">
@@ -446,7 +456,7 @@ const AdminCampaigns = () => {
                                                         margin: 0,
                                                         padding: 0
                                                     }}
-                                                    value={searchResult.selectPrice.price ? searchResult.selectPrice.price.toLocaleString('en-US') + '€' : 'N/A'}
+                                                    value={searchResult.amount ? searchResult.amount.toLocaleString('en-US') + '€' : searchResult.selectPrice.price.toLocaleString('en-US') + '€'}
                                                     readOnly={true}
                                                 />
                                             </td>
@@ -480,7 +490,7 @@ const AdminCampaigns = () => {
                                                         margin: 0,
                                                         padding: 0
                                                     }}
-                                                    value={'Do this after public price logic'}
+                                                    value={calculateProfit(searchResult)}
                                                     readOnly={true}
                                                 />
                                             </td>
@@ -714,7 +724,7 @@ const AdminCampaigns = () => {
                                                             margin: 0,
                                                             padding: 0
                                                         }}
-                                                        value={item.selectPrice.price ? item.selectPrice.price.toLocaleString('en-US') + '€' : 'N/A'}
+                                                        value={item.amount ? item.amount.toLocaleString('en-US') + '€' : item.selectPrice.price.toLocaleString('en-US') + '€'}
                                                         readOnly={true}
                                                     />
                                                 </td>
@@ -748,7 +758,7 @@ const AdminCampaigns = () => {
                                                             margin: 0,
                                                             padding: 0
                                                         }}
-                                                        value={'Do this after public price logic'}
+                                                        value={calculateProfit(item)}
                                                         readOnly={true}
                                                     />
                                                 </td>

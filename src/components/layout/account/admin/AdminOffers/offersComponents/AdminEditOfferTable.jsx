@@ -33,25 +33,49 @@ const AdminEditOfferTable = ({influencers, selectedInfluencers, setSelectedInflu
     const getTotalFollowers = () => {
         if (selectedInfluencers.length === 0) return 0;
 
-        return selectedInfluencers.reduce((acc, influencer) => {
-            return acc + extractNumber(influencer.followersNumber);
-        }, 0);
+        if (selectedInfluencers[0].followers) {
+            return selectedInfluencers.reduce((acc, influencer) => {
+                return acc + extractNumber(influencer.followersNumber);
+            }, 0); 
+        } else {
+            let tempArr = influencers.filter(influencer => selectedInfluencers.some(selected => selected.instagramUsername === influencer.instagramUsername));
+            
+            return tempArr.reduce((acc, influencer) => {
+                return acc + extractNumber(influencer.followersNumber);
+            }, 0);
+        }
     };
 
     const getTotalPublicPrice = () => {
         if (selectedInfluencers.length === 0) return 0;
 
-        return selectedInfluencers.reduce((acc, influencer) => {
-            return acc + parseFloat(influencer.publicPrice);
-        }, 0);
+        if (selectedInfluencers[0].publicPrice) {
+            return selectedInfluencers.reduce((acc, influencer) => {
+                return acc + parseFloat(influencer.publicPrice);
+            }, 0);
+        } else {
+            let tempArr = influencers.filter(influencer => selectedInfluencers.some(selected => selected.instagramUsername === influencer.instagramUsername));
+            
+            return tempArr.reduce((acc, influencer) => {
+                return acc + parseFloat(influencer.publicPrice);
+            }, 0);
+        }
     };
 
     const getTotalInternalPrice = () => {
         if (selectedInfluencers.length === 0) return 0;
-
-        return selectedInfluencers.reduce((acc, influencer) => {
-            return acc + parseFloat(influencer?.price?.replace(/\D/g, ''));
-        }, 0);
+        
+        if (selectedInfluencers[0].price) {
+            return selectedInfluencers.reduce((acc, influencer) => {
+                return acc + parseFloat(influencer?.price?.replace(/\D/g, ''));
+            }, 0);
+        } else {
+            let tempArr = influencers.filter(influencer => selectedInfluencers.some(selected => selected.instagramUsername === influencer.instagramUsername));
+            
+            return tempArr.reduce((acc, influencer) => {
+                return acc + parseFloat(influencer?.price?.replace(/\D/g, ''));
+            }, 0);
+        }
     };
 
     const handleCheckboxChange = (influencer) => {
