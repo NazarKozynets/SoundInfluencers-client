@@ -37,8 +37,9 @@ const TextInput = ({
               placeholder={disabled ? "" : placeholder}
               value={value}
               onChange={({ target }) => setValue(target.value)}
-              onBeforeInput={handleBeforeInput}  // Use onBeforeInput here
+              onBeforeInput={handleBeforeInput} 
               disabled={disabled}
+              autoComplete="off"
               {...args}
           />
           {disabled ? (

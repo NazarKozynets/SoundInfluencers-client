@@ -198,7 +198,6 @@ const SignupInfluencer = () => {
     }
 
     try {
-
       const getLinkToAvatar = async (socialName) => {
         return await Promise.all(
           dataFormNew[socialName].map(async (item, index) => {

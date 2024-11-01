@@ -492,13 +492,13 @@ const ReportCampaigns = () => {
                                 </button>
                             </td>
                             <td className="report-table-body-row-item-second">
-                                {item.video ? item.video.postDescription : "N/A"}
+                                {item.video ? item.video?.postDescription : "N/A"}
                             </td>
                             <td className="report-table-body-row-item" style={{width: '10%'}}>
                                 {item.video ? item.video.storyTag : "N/A"}
                             </td>
                             <td className="report-table-body-row-item-second" style={{width: '7%'}}>
-                                {item.video.swipeUpLink ? (
+                                {item.video?.swipeUpLink ? (
                                     <a
                                         href={formatLink(item.video.swipeUpLink)}
                                         target="_blank"
@@ -622,7 +622,7 @@ const ReportCampaigns = () => {
                                         <p>Video</p>
                                     </div>
                                     <div className="report-mobile-item-second-item">
-                                        <span>{item.video.postDescription ? item.video.postDescription.slice(0, 15) + '...' : 'N/A'}</span>
+                                        <span>{item.video?.postDescription ? item.video.postDescription.slice(0, 15) + '...' : 'N/A'}</span>
                                         <p>Description</p>
                                     </div>
                                     <div className="report-mobile-item-second-item">
@@ -630,7 +630,7 @@ const ReportCampaigns = () => {
                                         <p>Story Tag</p>
                                     </div>
                                     <div className="report-mobile-item-second-item">
-                                        <span>{item.video.swipeUpLink ? (
+                                        <span>{item.video?.swipeUpLink ? (
                                             <a
                                                 href={formatLink(item.video.swipeUpLink)}
                                                 target="_blank"
