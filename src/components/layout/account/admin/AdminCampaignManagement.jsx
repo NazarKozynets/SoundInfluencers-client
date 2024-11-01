@@ -194,7 +194,8 @@ const AdminCampaignManagement = () => {
 
     const editCPMO = () => {
         if (data?.selectInfluencers?.find(influencer => influencer.impressions > 0)) {
-            const cpm = data?.selectPrice.price / totalImpressions() * 1000;
+            const price = data.amount ? data.amount : data.selectPrice.price;
+            const cpm = price / totalImpressions() * 1000;
             let avgCpm;
 
             if (cpm < 3) {
