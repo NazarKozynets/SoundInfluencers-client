@@ -12,6 +12,7 @@ import acceptIcon from "../../../../images/icons/accept.svg";
 import instagram from "../../../../images/icons/socialMedias/instagram.png";
 
 import arrow from "../../../../images/icons/arrow.svg";
+import Loading from "../../../form/PageLoading/pageLoading";
 
 function formatDate(inputDate) {
     const date = new Date(inputDate);
@@ -107,70 +108,71 @@ const AcountClientOngoingPromos = () => {
                     </div>
                     <p className="account-client-past-promos-second">Ongoing promos</p>
 
-                    <FormContainer
-                        style={{
-                            marginTop: window.innerWidth > 768 ? "70px" : "20px",
-                            display: data.length !== 0 ? "block" : "none",
-                        }}
-                    >
-                        <div className="account-client-past-promos-form">
-                            <ul className="account-client-past-promos-form-list">
-                                {data.map((item, index) => (
-                                    <li
-                                        className="account-client-past-promos-form-item"
-                                        key={item._id}
-                                    >
-                                        {/*<button*/}
-                                        {/*    className="account-client-past-promos-form-item-button"*/}
-                                        {/*    onClick={() =>*/}
-                                        {/*        navigation(`/account/client/ongoing-promos/${item._id}`)*/}
-                                        {/*    }*/}
-                                        {/*>*/}
-                                        {/*  <div*/}
-                                        {/*      className="account-client-past-promos-form-image"*/}
-                                        {/*      style={{*/}
-                                        {/*        display: "flex",*/}
-                                        {/*        flexDirection: "column",*/}
-                                        {/*        background:*/}
-                                        {/*            item.statusPromo === "wait"*/}
-                                        {/*                ? "rgb(46 46 63 / 50%)"*/}
-                                        {/*                : "rgba(51, 48, 228, 0.5)",*/}
-                                        {/*      }}*/}
-                                        {/*  >*/}
-                                        {/*    <p>{returnStatus(item.statusPromo)}</p>*/}
-                                        {/*  </div>*/}
-                                        {/*  <p>{formatDate(item.createdAt)}</p>*/}
-                                        {/*  <p className="account-client-past-promos-form-text">*/}
-                                        {/*    Promo {index + 1}*/}
-                                        {/*  </p>*/}
-                                        {/*</button>*/}
-                                        <div>
-                                            <button
-                                                onClick={() => navigation(`/account/client/ongoing-promos/${item._id}`)}
-                                                className="account-client-past-promos-form-item-button">
-                                                <div
-                                                    className="account-client-past-promos-form-item-button-inner-content">
-                                                    <img src={instagram} alt={"inst"}/>
-                                                    <p>{item?.campaignName?.length > 10 ? `${item.campaignName.slice(0, 10)}...` : item.campaignName}</p>
-                                                </div>
-                                                <span
-                                                    style={{background: getBackgroundColor(item.statusPromo)}}>{returnStatus(item.statusPromo)}</span>
-                                            </button>
-                                        </div>
-                                        <p style={{
-                                            fontFamily: "Geometria",
-                                            fontSize: "12px",
-                                            fontWeight: "400",
-                                            color: "#00000080",
-                                        }}>{formatDate(item.createdAt)}</p>
-                                        <p className="account-client-past-promos-form-text">
-                                            Promo {index + 1}
-                                        </p>
-                                    </li>
-                                ))}
-                            </ul>
+                    {data.length > 0 ? (
+                        <FormContainer
+                            style={{
+                                marginTop: window.innerWidth > 768 ? "70px" : "20px",
+                                display: data.length !== 0 ? "block" : "none",
+                            }}
+                        >
+                            <div className="account-client-past-promos-form">
+                                <ul className="account-client-past-promos-form-list">
+                                    {data.map((item, index) => (
+                                        <li
+                                            className="account-client-past-promos-form-item"
+                                            key={item._id}
+                                        >
+                                            {/*<button*/}
+                                            {/*    className="account-client-past-promos-form-item-button"*/}
+                                            {/*    onClick={() =>*/}
+                                            {/*        navigation(`/account/client/ongoing-promos/${item._id}`)*/}
+                                            {/*    }*/}
+                                            {/*>*/}
+                                            {/*  <div*/}
+                                            {/*      className="account-client-past-promos-form-image"*/}
+                                            {/*      style={{*/}
+                                            {/*        display: "flex",*/}
+                                            {/*        flexDirection: "column",*/}
+                                            {/*        background:*/}
+                                            {/*            item.statusPromo === "wait"*/}
+                                            {/*                ? "rgb(46 46 63 / 50%)"*/}
+                                            {/*                : "rgba(51, 48, 228, 0.5)",*/}
+                                            {/*      }}*/}
+                                            {/*  >*/}
+                                            {/*    <p>{returnStatus(item.statusPromo)}</p>*/}
+                                            {/*  </div>*/}
+                                            {/*  <p>{formatDate(item.createdAt)}</p>*/}
+                                            {/*  <p className="account-client-past-promos-form-text">*/}
+                                            {/*    Promo {index + 1}*/}
+                                            {/*  </p>*/}
+                                            {/*</button>*/}
+                                            <div>
+                                                <button
+                                                    onClick={() => navigation(`/account/client/ongoing-promos/${item._id}`)}
+                                                    className="account-client-past-promos-form-item-button">
+                                                    <div
+                                                        className="account-client-past-promos-form-item-button-inner-content">
+                                                        <img src={instagram} alt={"inst"}/>
+                                                        <p>{item?.campaignName?.length > 10 ? `${item.campaignName.slice(0, 10)}...` : item.campaignName}</p>
+                                                    </div>
+                                                    <span
+                                                        style={{background: getBackgroundColor(item.statusPromo)}}>{returnStatus(item.statusPromo)}</span>
+                                                </button>
+                                            </div>
+                                            <p style={{
+                                                fontFamily: "Geometria",
+                                                fontSize: "12px",
+                                                fontWeight: "400",
+                                                color: "#00000080",
+                                            }}>{formatDate(item.createdAt)}</p>
+                                            <p className="account-client-past-promos-form-text">
+                                                Promo {index + 1}
+                                            </p>
+                                        </li>
+                                    ))}
+                                </ul>
 
-                            {/* {data.length > 20 && (
+                                {/* {data.length > 20 && (
                 <div
                   style={{
                     display: "flex",
@@ -181,8 +183,9 @@ const AcountClientOngoingPromos = () => {
                   <AltButton text="See more" />
                 </div>
               )} */}
-                        </div>
-                    </FormContainer>
+                            </div>
+                        </FormContainer>
+                    ) : <Loading/>}
                 </div>
             </div>
 

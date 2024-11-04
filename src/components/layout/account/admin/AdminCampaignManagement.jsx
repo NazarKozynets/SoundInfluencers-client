@@ -243,7 +243,7 @@ const AdminCampaignManagement = () => {
     };
 
     const totalLikes = () => {
-        if (!data?.selectInfluencers) return 0; // Проверяем, что selectInfluencers существует
+        if (!data?.selectInfluencers) return 0; 
         const total = data.selectInfluencers.reduce((prev, current) => {
             return prev + extractNumber(current.like);
         }, 0);
@@ -536,12 +536,11 @@ const AdminCampaignManagement = () => {
     const addInfleuncerToCampaign = async (instagramUsername) => {
         try {
             const instaObj = newInfluencersList.find(influencer => influencer.instagramUsername === instagramUsername);
-
             const result = await axios.put(
-                `${process.env.REACT_APP_SERVER}/admin/promos/update/add-influencer-to-promo/`,
+                `${process.env.REACT_APP_SERVER}/admin/promos/update/add-influencer-to-promo`,
                 instaObj
             );
-
+            
             if (result.status === 200) {
                 await updateCampaignData(data._id);
                 removeNewInfluencerFromList(instagramUsername);

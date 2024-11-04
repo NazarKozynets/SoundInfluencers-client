@@ -82,7 +82,12 @@ const ReportCampaigns = () => {
 
     const editCPMO = () => {
         if (dataPromo?.selectInfluencers?.find(influencer => influencer.impressions > 0)) {
-            const price = data.amount ? data.amount : data.selectPrice.price;
+            const price = dataPromo?.amount ?? dataPromo?.selectPrice?.price ?? 0;
+
+            if (price === 0) {
+                return;
+            }
+
             const cpm = price / totalImpressions() * 1000;
             let avgCpm;
 
@@ -107,7 +112,7 @@ const ReportCampaigns = () => {
                 result = 'Above Average';
             } else if (avgCpm === '9€ to 12€') {
                 result = 'Average';
-            } else if (avgCpm === '> 12€') {
+            } else if (avgCpm === '>12€') {
                 result = 'Below Average';
             } else {
                 result = 'Poor';
@@ -121,13 +126,13 @@ const ReportCampaigns = () => {
         }
     }
 
+
     const getData = async () => {
         try {
             const {dataFetch} = await UseVerify();
             const result = await axios(
                 `${process.env.REACT_APP_SERVER}/promos/ongoing/one?id=${params.id}&userId=${dataFetch._id}`
             );
-            console.log(result)
             setCompany(dataFetch);
             if (result.data.code === 200) {
                 setDataPromo(result.data.promo);
