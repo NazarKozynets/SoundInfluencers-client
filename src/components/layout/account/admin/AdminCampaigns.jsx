@@ -12,9 +12,8 @@ import mailImg from "../../../../images/icons/mail (1) 1.svg";
 import refundImg from "../../../../images/icons/refund 1.svg";
 import ModalWindow from "../../../ModalWindow";
 import StandardButton from "../../../form/StandardButton";
-import {resetFields, updateMultipleFields} from "../../../../redux/slice/admin-edit-invoice";
-import {formatDateStringReport} from "../../../../utils/validations";
 import SubmitButton from "./form/Influencers/SubmitFooter/SubmitButton";
+import closeImg from "../../../../images/icons/close.svg";
 
 const AdminCampaigns = () => {
     const [data, setData] = useState([]);
@@ -64,8 +63,8 @@ const AdminCampaigns = () => {
     useEffect(() => {
         console.log(data, 'data');
     }, [data]);
-    
-    
+
+
     const selectCampaign = (campaign) => {
         if (fieldsForChange._id !== campaign._id) {
             setFieldsForChange({
@@ -221,7 +220,7 @@ const AdminCampaigns = () => {
             console.log(error);
         }
     };
-    
+
     const givePartialRefund = async (userId, amount, campaignId) => {
         try {
             const result = await axios.put(
@@ -230,7 +229,7 @@ const AdminCampaigns = () => {
 
             if (result.status === 200) {
                 await updateCampaignData(campaignId);
-                
+
                 setFieldsForChange({
                     _id: '',
                     userId: '',
@@ -248,22 +247,39 @@ const AdminCampaigns = () => {
             return item?.campaignName?.toLowerCase().includes(searchInput.toLowerCase());
         });
     };
-    
+
     const calculateProfit = (campaign) => {
         let priceForInfluencers = 0;
         let publicPrice = 0;
-        
+
         campaign.amount ? publicPrice = campaign.amount : publicPrice = campaign.selectPrice.price;
-        
+
         if (campaign.selectInfluencers) {
             campaign.selectInfluencers.forEach((influencer) => {
                 priceForInfluencers += influencer.price;
             });
         }
-        
+
         return (publicPrice - priceForInfluencers).toLocaleString('en-US') + '€';
     }
-    
+
+    const deleteCampaign = async (campaignId) => {
+        try {
+            const result = await axios.delete(
+                `${process.env.REACT_APP_SERVER}/admin/promos/delete/${campaignId}`
+            );
+
+            console.log(result);
+
+            if (result.status === 200) {
+                const updatedCampaigns = data.filter((campaign) => campaign._id !== campaignId);
+                setData(updatedCampaigns);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     return (
         <section className="admin">
             <div>
@@ -281,7 +297,8 @@ const AdminCampaigns = () => {
                         )}
 
                         <div className="admin-clients-searchbar">
-                            <SearchBar data={data} setSearchResult={setSearchResult} className="large" searchFunction={searchFunction} typeOfSearch='campaigns'/>
+                            <SearchBar data={data} setSearchResult={setSearchResult} className="large"
+                                       searchFunction={searchFunction} typeOfSearch='campaigns'/>
                         </div>
 
                         <div ref={containerRef}>
@@ -352,7 +369,8 @@ const AdminCampaigns = () => {
                                     <tbody className="admin-table-body">
                                     {searchResult ? (
                                         <tr onClick={() => selectCampaign(searchResult)}>
-                                            <td className="admin-table-body-td" style={{width: '15%', background: '#f0ecfc'}}>
+                                            <td className="admin-table-body-td"
+                                                style={{width: '15%', background: '#f0ecfc'}}>
                                                 <input
                                                     style={{
                                                         fontFamily: "Geometria",
@@ -396,7 +414,8 @@ const AdminCampaigns = () => {
                                                     </button>
                                                 </div>
                                             </td>
-                                            <td className="admin-table-body-td" style={{width: '5.3%', background: '#f0ecfc'}}>
+                                            <td className="admin-table-body-td"
+                                                style={{width: '5.3%', background: '#f0ecfc'}}>
                                                 <div style={{display: 'flex'}}>
                                                     <button
                                                         onClick={() => {
@@ -620,18 +639,24 @@ const AdminCampaigns = () => {
                                     ) : (
                                         data.map((item, index) => (
                                             <tr key={index} onClick={() => selectCampaign(item)}>
-                                                <td className="admin-table-body-td" style={{width: '15%', background: '#f0ecfc'}}>
-                                                    <input
-                                                        style={{
-                                                            fontFamily: "Geometria",
-                                                            fontSize: 15,
-                                                            fontWeight: 700,
-                                                            textAlign: "left",
-                                                            width: '100%',
-                                                        }}
-                                                        value={item.campaignName ? item.campaignName.slice(0, 25) : 'Old Campaign'}
-                                                        readOnly={true}
-                                                    />
+                                                <td className="admin-table-body-td"
+                                                    style={{width: '15%', background: '#f0ecfc'}}>
+                                                    <div style={{display: 'flex', gap: 10}}>
+                                                        <img src={closeImg} alt="close"
+                                                             onClick={() => deleteCampaign(item._id)}
+                                                             style={{width: 15, cursor: 'pointer'}}/>
+                                                        <input
+                                                            style={{
+                                                                fontFamily: "Geometria",
+                                                                fontSize: 15,
+                                                                fontWeight: 700,
+                                                                textAlign: "left",
+                                                                width: '100%',
+                                                            }}
+                                                            value={item.campaignName ? item.campaignName.slice(0, 25) : 'Old Campaign'}
+                                                            readOnly={true}
+                                                        />
+                                                    </div>
                                                 </td>
                                                 <td className="admin-table-body-td" style={{width: '5%'}}>
                                                     <div style={{
@@ -664,7 +689,8 @@ const AdminCampaigns = () => {
                                                         </button>
                                                     </div>
                                                 </td>
-                                                <td className="admin-table-body-td" style={{width: '5.3%', background: '#f0ecfc'}}>
+                                                <td className="admin-table-body-td"
+                                                    style={{width: '5.3%', background: '#f0ecfc'}}>
                                                     <div style={{display: 'flex'}}>
                                                         <button
                                                             onClick={() => {

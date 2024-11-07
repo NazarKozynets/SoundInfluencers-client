@@ -18,6 +18,7 @@ import ModalWindow from "../../../ModalWindow";
 import StandardButton from "../../../form/StandardButton";
 import TextInput from "../../../form/TextInput";
 import SubmitButton from "./form/Influencers/SubmitFooter/SubmitButton";
+import checkImg from "../../../../images/vector.png";
 
 const AdminCampaignManagement = () => {
     const [data, setData] = useState();
@@ -480,8 +481,7 @@ const AdminCampaignManagement = () => {
             }
         }
     };
-
-
+    
     useEffect(() => {
         if (selectedNewInfluencer.selectedVideo !== '') {
             const influencerIndex = newInfluencersList.findIndex(influencer => influencer.instagramUsername === selectedNewInfluencer.instagramUsername);
@@ -573,6 +573,23 @@ const AdminCampaignManagement = () => {
         }
     }
 
+    const closeCampaignForInfluencer = async (instagramUsername, campaignId) => {
+        try {
+            const result = await axios.put(
+                `${process.env.REACT_APP_SERVER}/admin/promos/close-for-influencer/${campaignId}/${instagramUsername}`,
+            );
+            
+            console.log(result);
+            
+            if (result.status === 200) {
+                await updateCampaignData(campaignId);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+        
+    
     return (
         <section className="admin">
             <div>
@@ -945,7 +962,14 @@ const AdminCampaignManagement = () => {
                                                     fontWeight: 400,
                                                     textAlign: 'left',
                                                 }}>
-                                                    {getStatusForInfluencer(influencer)}
+                                                    {getStatusForInfluencer(influencer) !== 'Closed' ? (
+                                                        <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+                                                            {getStatusForInfluencer(influencer)}
+                                                            <img onClick={() => closeCampaignForInfluencer(influencer.instagramUsername, params.campaignId)} src={checkImg} alt='closePromo' style={{filter: 'invert(1)', width: 15, height: 15, paddingRight: 5}}/>
+                                                        </div>
+                                                    ) : (
+                                                        getStatusForInfluencer(influencer)
+                                                    )}
                                                 </p>
                                             </td>
                                             {/*actions*/}
