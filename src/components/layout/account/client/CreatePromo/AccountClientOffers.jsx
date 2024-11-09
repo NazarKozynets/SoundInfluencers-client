@@ -9,7 +9,7 @@ import {
     setClearForm,
     setCurrentWindow, setSelectAmount, setSelectInfluencer, setSelectPrice, setSelectPriceInfluencers
 } from "../../../../../redux/slice/create-promo";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import OffersMenu from "../../../../form/Offers/OffersMenu/OffersMenu";
 import OffersSortMenu from "../../../../form/Offers/OffersSortMenu/OffersSortMenu";
 import OffersBudgetSelect from "../../../../form/Offers/OffersBudgetSelect/OffersBudgetSelect";
@@ -69,6 +69,8 @@ const AccountClientOffers = () => {
     const selectPriceInfluencers = useSelector((state) => state.createPromo.data.selectPriceInfluencers);
 
     const currentCurrency = useSelector((state) => state.createPromo.data.currency);
+
+    const { socialMedia} = useParams();
 
     const checkIsMobile = () => {
         setIsMobile(window.innerWidth <= 768);
@@ -593,7 +595,7 @@ const AccountClientOffers = () => {
 
     const getData = async () => {
         const result = await axios(
-            `${process.env.REACT_APP_SERVER}/auth/influencers`
+            `${process.env.REACT_APP_SERVER}/auth/influencers/${socialMedia}`
         );
 
         const offers = await axios(`${process.env.REACT_APP_SERVER}/promos/offers`);
@@ -823,18 +825,22 @@ const AccountClientOffers = () => {
                 </div>
 
                 <div className="account-client-title-offers">
-                    <TitleSection title="Our" span="offers"/>
+                    {socialMedia === "instagram" && (
+                        <TitleSection title="Our" span="offers"/>
+                    )}
                 </div>
 
                 {influencers.length > 0 ? (
                     <div>
-                        <OffersList prices={prices}
-                                    setFilteredOffersByGenres={setFilteredOffersByGenres}
-                                    selectPrice={selectPrice}
-                                    filteredOffersByGenres={filteredOffersByGenres}
-                                    selectedOffersGenres={selectedOffersGenres}
-                                    influencers={influencers}
-                                    setSelectedOffersGenres={setSelectedOffersGenres}/>
+                        {socialMedia === "instagram" && (
+                            <OffersList prices={prices}
+                                        setFilteredOffersByGenres={setFilteredOffersByGenres}
+                                        selectPrice={selectPrice}
+                                        filteredOffersByGenres={filteredOffersByGenres}
+                                        selectedOffersGenres={selectedOffersGenres}
+                                        influencers={influencers}
+                                        setSelectedOffersGenres={setSelectedOffersGenres}/>
+                        )}
                         <div className="account-client-influencers-list-title">
                             <TitleSection title="Pick &" span="choose"/>
                         </div>

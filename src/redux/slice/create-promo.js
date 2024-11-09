@@ -24,6 +24,7 @@ const initialState = {
                 specialWishes: " ",
             },
         ],
+        socialMedia: "",
     },
 };
 
@@ -110,6 +111,9 @@ export const createPromoSlice = createSlice({
                 paymentStatus: "wait",
             };
         },
+        setSocialMedia: (state, action) => {
+            state.data.socialMedia = action.payload;
+        },
     },
 });
 
@@ -129,6 +133,7 @@ export const {
     setClearForm,
     setClearCampaignDetails,
     setSelectPriceInfluencers,
+    setSocialMedia,
 } = createPromoSlice.actions;
 
 export default createPromoSlice.reducer;

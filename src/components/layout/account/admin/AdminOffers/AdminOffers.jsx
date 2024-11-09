@@ -13,6 +13,13 @@ import saveImg from "../../../../../images/icons/save 1.svg";
 import publishImg from "../../../../../images/icons/share 1.svg";
 import AdminDeletedOffers from "./offersComponents/AdminDeletedOffers";
 import ModalWindow from "../../../../ModalWindow";
+import instaIcon from "../../../../../images/icons/socialMedias/instagram.png";
+import tiktokIcon from "../../../../../images/icons/socialMedias/tiktok.png";
+import facebookIcon from "../../../../../images/icons/socialMedias/facebook.png";
+import youtubeIcon from "../../../../../images/icons/socialMedias/youtube.png";
+import spotifyIcon from "../../../../../images/icons/socialMedias/spotify.png";
+import soundcloudIcon from "../../../../../images/icons/socialMedias/soundcloud.png";
+import tabletIcon from "../../../../../images/icons/socialMedias/tablet.png";
 
 const AdminOffers = () => {
     const [data, setData] = useState(null);
@@ -23,6 +30,7 @@ const AdminOffers = () => {
     const [isDeletedOffersOpen, setIsDeletedOffersOpen] = useState(false);
     const [isPublishedSuccessfullyModalOpen, setIsPublishedSuccessfullyModalOpen] = useState(false);
     const [isPublishedWerentSuccessfulModalOpen, setIsPublishedWerentSuccessfulModalOpen] = useState(false);
+    const [selectedSocialMedia, setSelectedSocialMedia] = useState('Instagram');
     
     const deletedOffers = useSelector(state => state.adminOffers.deletedOffers);
     const newOffers = useSelector(state => state.adminOffers.newOffers);
@@ -30,12 +38,46 @@ const AdminOffers = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
+    const platforms = [{
+        name: 'Instagram',
+        secondName: 'IG',
+        icon: instaIcon
+    }, {
+        name: 'TikTok',
+        secondName: 'TT',
+        icon: tiktokIcon
+    }, {
+        name: 'Facebook',
+        secondName: 'FB',
+        icon: facebookIcon
+    }, {
+        name: 'YouTube',
+        secondName: 'YT',
+        icon: youtubeIcon
+    }, {
+        name: 'Spotify',
+        secondName: 'SP',
+        icon: spotifyIcon
+    }, {
+        name: 'SoundCloud',
+        secondName: 'SC',
+        icon: soundcloudIcon
+    }, {
+        name: 'Press',
+        secondName: 'PR',
+        icon: tabletIcon
+    }]
+
+    useEffect(() => {
+        getData();
+    }, [selectedSocialMedia]);
+
     const getData = async () => {
         try {
             const [offers, offersTemp, result] = await Promise.all([
                 axios.get(`${process.env.REACT_APP_SERVER}/promos/offers`),
                 axios.get(`${process.env.REACT_APP_SERVER}/admin/offers/getAll`),
-                axios.get(`${process.env.REACT_APP_SERVER}/auth/influencers`)
+                axios.get(`${process.env.REACT_APP_SERVER}/auth/influencers/` + selectedSocialMedia)
             ]);
 
             let offersArray = [];
@@ -186,6 +228,18 @@ const AdminOffers = () => {
             console.error('Error occurred while publishing offers:', error);
         }
     }
+
+    const handlePlatformClick = (platform) => {
+        if (platform === 'Instagram') {
+            setSelectedSocialMedia('Instagram');
+        } else {
+            if (selectedSocialMedia === platform) {
+                setSelectedSocialMedia('Instagram');
+            } else {
+                setSelectedSocialMedia(platform);
+            }
+        }
+    }
     
     return (
         <section className="admin">
@@ -205,8 +259,36 @@ const AdminOffers = () => {
                     </button>
                 </div>
 
+                <div className="admin-influencers-platforms">
+                            <span style={{
+                                fontFamily: "Geometria",
+                                fontSize: '25px',
+                                fontWeight: 800,
+                                textAlign: 'center',
+                                color: "#3330E4",
+                            }}>
+                                PLATFORMS
+                            </span>
+                    <div>
+                        <ul className="admin-influencers-platforms-container">
+                            {platforms.map((platform, index) => (
+                                <li key={index}
+                                    className={`admin-influencers-platforms-container-item ${selectedSocialMedia === platform.name ? 'active' : ''}`}>
+                                    <button onClick={() => {
+                                        handlePlatformClick(platform.name)
+                                    }}>
+                                        <img src={platform.icon} alt={'icon'} style={{width: 35}}/>
+                                        {platform.name}
+                                    </button>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                </div>
+
                 {isPublishedSuccessfullyModalOpen && (
-                    <ModalWindow isOpen={isPublishedSuccessfullyModalOpen} setClose={() => setIsPublishedSuccessfullyModalOpen(false)}> 
+                    <ModalWindow isOpen={isPublishedSuccessfullyModalOpen}
+                                 setClose={() => setIsPublishedSuccessfullyModalOpen(false)}>
                         <div className="admin-offers-publish-modal">
                             <h2>Changes published successfully</h2>
                         </div>
@@ -214,7 +296,8 @@ const AdminOffers = () => {
                 )}
 
                 {isPublishedWerentSuccessfulModalOpen && (
-                    <ModalWindow isOpen={isPublishedWerentSuccessfulModalOpen} setClose={() => setIsPublishedWerentSuccessfulModalOpen(false)}>
+                    <ModalWindow isOpen={isPublishedWerentSuccessfulModalOpen}
+                                 setClose={() => setIsPublishedWerentSuccessfulModalOpen(false)}>
                         <div className="admin-offers-publish-modal">
                             <h2>Changes were not published</h2>
                         </div>
@@ -235,15 +318,19 @@ const AdminOffers = () => {
                         </div>
                         <AdminOffersList influencers={influencers} offers={filteredOffersByGenres}
                                          selectedOffersGenres={selectedOffersGenres}/>
-                                         
+
                         <div className="admin-offers-deleted-offers">
-                            <button id='open-deleted-offers' onClick={() => setIsDeletedOffersOpen(!isDeletedOffersOpen)}>
+                            <button id='open-deleted-offers'
+                                    onClick={() => setIsDeletedOffersOpen(!isDeletedOffersOpen)}>
                                 <span>DELETED OFFERS</span>
                                 <span>{deletedOffersList.length}</span>
                             </button>
-                            
+
                             {isDeletedOffersOpen && (
-                                <AdminDeletedOffers setOffers={setDeletedOffersList} setIsDeletedOffersOpen={setIsDeletedOffersOpen} setData={setData} offers={deletedOffersList} influencers={influencers} selectedOffersGenres={selectedOffersGenres}/>
+                                <AdminDeletedOffers setOffers={setDeletedOffersList}
+                                                    setIsDeletedOffersOpen={setIsDeletedOffersOpen} setData={setData}
+                                                    offers={deletedOffersList} influencers={influencers}
+                                                    selectedOffersGenres={selectedOffersGenres}/>
                             )}
                         </div>
                     </div>

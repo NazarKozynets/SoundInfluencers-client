@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import TitleSection from "../../../../TitleSection";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import axios from "axios";
 import StandardButton from "../../../../form/StandardButton";
 import {
-    setCurrentWindow,
+    setCurrentWindow, setSocialMedia,
     updateSelectInfluencer, updateVideo
 } from "../../../../../redux/slice/create-promo";
 import checkImg from "../../../../../images/icons/check.svg";
@@ -21,7 +21,7 @@ import TextArea from "../../../../form/TextArea";
 
 
 const AccountClientCampaignStrategy = () => {
-    const [instagramAccounts, setInstagramAccounts] = useState([]);
+    const [accounts, setAccounts] = useState([]);
     const [selectedDates, setSelectedDates] = useState({});
     const [selectedOptionDateRequest, setSelectedOptionDateRequest] = useState({});
     const [selectedVideos, setSelectedVideos] = useState({});
@@ -33,7 +33,9 @@ const AccountClientCampaignStrategy = () => {
     const dispatch = useDispatch();
     const dataPromo = useSelector((state) => state.createPromo.data);
 
-    const getInstagramAccounts = async () => {
+    const {socialMedia} = useParams();
+
+    const getSocialMediaAccounts = async () => {
         const selectInfluencers = dataPromo.selectInfluencers;
 
         try {
@@ -45,26 +47,50 @@ const AccountClientCampaignStrategy = () => {
                 if (result.data.code === 200) {
                     const fetchedInfluencer = result.data.influencer;
 
-                    if (fetchedInfluencer && fetchedInfluencer.instagram) {
-                        const instagramAccount = fetchedInfluencer.instagram.find(account =>
-                            account.instagramUsername === influencer.instagramUsername
-                        );
-
-                        if (instagramAccount) {
+                    switch (socialMedia) {
+                        case 'instagram':
+                            const instagramAccount = fetchedInfluencer.instagram.find(account => account.instagramUsername === influencer.instagramUsername);
                             accountsList.push(instagramAccount);
-                        }
+                            break;
+                        case 'tiktok':
+                            const tiktokAccount = fetchedInfluencer.tiktok.find(account => account.instagramUsername === influencer.instagramUsername);
+                            accountsList.push(tiktokAccount);
+                            break;
+                        case 'spotify':
+                            const spotifyAccount = fetchedInfluencer.spotify.find(account => account.instagramUsername === influencer.instagramUsername);
+                            accountsList.push(spotifyAccount);
+                            break;
+                        case 'facebook':
+                            const facebookAccount = fetchedInfluencer.facebook.find(account => account.instagramUsername === influencer.instagramUsername);
+                            accountsList.push(facebookAccount);
+                            break;
+                        case 'soundcloud':
+                            const soundcloudAccount = fetchedInfluencer.soundcloud.find(account => account.instagramUsername === influencer.instagramUsername);
+                            accountsList.push(soundcloudAccount);
+                            break;
+                        case 'youtube':
+                            const youtubeAccount = fetchedInfluencer.youtube.find(account => account.instagramUsername === influencer.instagramUsername);
+                            accountsList.push(youtubeAccount);
+                            break;
+                        case 'press':
+                            const pressAccount = fetchedInfluencer.press.find(account => account.instagramUsername === influencer.instagramUsername);
+                            accountsList.push(pressAccount);
+                            break;
+                        default:
+                            break;
                     }
                 }
             }
 
-            setInstagramAccounts(accountsList);
-        } catch (error) {
+            setAccounts(accountsList);
+        } catch
+            (error) {
             console.error("Error fetching Instagram accounts: ", error);
         }
     };
 
     useEffect(() => {
-        getInstagramAccounts();
+        getSocialMediaAccounts();
     }, [dataPromo.selectInfluencers]);
 
     useEffect(() => {
@@ -84,7 +110,7 @@ const AccountClientCampaignStrategy = () => {
     const getTotalFollowers = () => {
         let totalFollowers = 0;
 
-        instagramAccounts.forEach(account => {
+        accounts.forEach(account => {
             totalFollowers += Number(account?.followersNumber ?? 0);
         });
 
@@ -123,6 +149,7 @@ const AccountClientCampaignStrategy = () => {
             };
         });
 
+        dispatch(setSocialMedia(socialMedia));
         dispatch(updateSelectInfluencer(updatedSelectInfluencersData));
         dispatch(setCurrentWindow(5));
     };
@@ -178,7 +205,7 @@ const AccountClientCampaignStrategy = () => {
     }
 
     const findInsta = (influencer) => {
-        return instagramAccounts.find(account => account.instagramUsername === influencer.instagramUsername);
+        return accounts.find(account => account.instagramUsername === influencer.instagramUsername);
     };
 
     const getDisplayGenre = (musicSubStyles, musicStyle, musicStyleOther) => {
@@ -233,7 +260,7 @@ const AccountClientCampaignStrategy = () => {
     const EditCampaignForm = ({instagramUsername}) => {
         const video = selectedVideoToEdit;
         const videoIndex = dataPromo.videos.findIndex(v => v.videoLink === video.videoLink);
-        
+
         const [videoParams, setVideoParams] = useState({
             videoLink: video.videoLink,
             postDescription: video.postDescription,
@@ -256,7 +283,7 @@ const AccountClientCampaignStrategy = () => {
             }));
             setEditCampaign(false);
             setSelectedVideos((prevSelectedVideos) => {
-                const updatedSelectedVideos = { ...prevSelectedVideos };
+                const updatedSelectedVideos = {...prevSelectedVideos};
 
                 Object.keys(updatedSelectedVideos).forEach((user) => {
                     if (updatedSelectedVideos[user].value === video.videoLink) {
@@ -353,7 +380,8 @@ const AccountClientCampaignStrategy = () => {
                 </div>
                 <div className="account-client-campaign-strategy-details">
                     <div className="account-client-campaign-strategy-details-first">
-                        <p>Date Submitted: <span>{new Date(dataPromo?.createdAt).toLocaleDateString('en-GB')}</span></p>
+                        <p>Date Submitted: <span>{new Date(dataPromo?.createdAt).toLocaleDateString('en-GB')}</span>
+                        </p>
                         <p>Price: <span>{dataPromo.amount}{dataPromo.currency}</span></p>
                     </div>
                     <div className="account-client-campaign-strategy-details-second">
@@ -423,7 +451,11 @@ const AccountClientCampaignStrategy = () => {
                                     }}
                                                      dangerouslySetInnerHTML={{__html: formatCountries(findInsta(influencer)?.countries)}}/>}
                                     <td>
-                                        <div style={{display: 'flex', alignItems: 'center', width: showMore ? '10%' : '30%'}}>
+                                        <div style={{
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            width: showMore ? '10%' : '30%'
+                                        }}>
                                             <CustomSelect
                                                 selectedOption={selectedOptionDateRequest[influencer.instagramUsername]}
                                                 setSelectedOption={(selectedOption) => {
@@ -461,7 +493,7 @@ const AccountClientCampaignStrategy = () => {
                                                         const video = dataPromo.videos.find(video => video.videoLink === selectedVideos[influencer.instagramUsername].value);
                                                         const newSelectedVideo = {
                                                             ...video,
-                                                            instagramUsername: influencer.instagramUsername 
+                                                            instagramUsername: influencer.instagramUsername
                                                         };
 
                                                         setSelectedVideoToEdit(newSelectedVideo);
@@ -557,7 +589,8 @@ const AccountClientCampaignStrategy = () => {
                                         </div>
                                         <p>Date Request</p>
                                     </div>
-                                    <div className="account-client-campaign-strategy-mobile-table-row-content-video">
+                                    <div
+                                        className="account-client-campaign-strategy-mobile-table-row-content-video">
                                         <div
                                             className="account-client-campaign-strategy-mobile-table-row-content-video-edit">
                                             <CustomSelect

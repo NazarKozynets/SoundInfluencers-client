@@ -144,7 +144,7 @@ const App = () => {
                         }
                     />
                     <Route
-                        path="/account/client/instagram-promo"
+                        path="/account/client/promo/:socialMedia"
                         element={
                             <PrivateRoute
                                 role="client"

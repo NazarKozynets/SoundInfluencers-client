@@ -55,7 +55,7 @@ const AcountInfluencerOngoingCurrent = () => {
     }, []);
 
     useEffect(() => {
-        console.log(dataInfluencer)
+        console.log(dataInfluencer, 'dataInfluencer');
     }, [dataInfluencer]);
 
     return (

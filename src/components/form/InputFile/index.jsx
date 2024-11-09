@@ -4,7 +4,7 @@ import timeIcon from "../../../images/icons/time.svg";
 
 const InputFile = ({
                      setValue,
-                     setUploadProgress, // Пропс для обновления прогресса
+                     setUploadProgress, 
                      title = "",
                      error = false,
                      style = {},
@@ -26,47 +26,55 @@ const InputFile = ({
     }
   };
 
-  return (
-      <div className={styles.block} style={style}>
-        <label className={styles.label}>
-          <p className={styles.title}>{title}</p>
+    const fileInputRef = React.useRef(null);
 
-          <input
-              type={disabled ? "text" : "file"}
-              style={{
-                borderColor: error ? "#FB1E1E" : "transparent",
-                height: "50px",
-              }}
-              className={
-                className
-                    ? `${className} ${styles.inputSilver}`
-                    : silverColor
-                        ? styles.inputSilver
-                        : styles.input
-              }
-              onChange={handleFileChange}
-              disabled={disabled}
-              accept="image/*" 
-              {...args}
-              placeholder={disabled ? "" : args.placeholder}
-          />
+    const handleClick = () => {
+        if (fileInputRef.current) {
+            fileInputRef.current.click();
+        }
+    };
 
-          {disabled ? (
-              <div className={styles.disabled}>
-                <img
-                    className={styles.disabledIcon}
-                    src={timeIcon}
-                    alt="Time Icon"
+    return (
+        <div className={styles.block} style={style}>
+            <label className={styles.label}>
+                <p className={styles.title}>{title}</p>
+
+                <input
+                    type="file"
+                    ref={fileInputRef}
+                    style={{ display: "none" }}
+                    onChange={handleFileChange}
+                    disabled={disabled}
+                    accept="image/*"
+                    {...args}
                 />
-                <p className={styles.disabledText}>
-                  {disabledTime} hours to unlock
-                </p>
-              </div>
-          ) : null}
-          {error ? <p className={styles.error}>!</p> : null}
-        </label>
-      </div>
-  );
+
+                <button
+                    type="button"
+                    onClick={handleClick}
+                    className={
+                        className
+                            ? `${className} ${styles.inputSilver}`
+                            : silverColor
+                                ? styles.inputSilver
+                                : styles.input
+                    }
+                    disabled={disabled}
+                >
+                    Выберите файл
+                </button>
+
+                {disabled ? (
+                    <div className={styles.disabled}>
+                        <img className={styles.disabledIcon} src={timeIcon} alt="Time Icon" />
+                        <p className={styles.disabledText}>{disabledTime} hours to unlock</p>
+                    </div>
+                ) : null}
+                {error ? <p className={styles.error}>!</p> : null}
+            </label>
+        </div>
+    );
+
 };
 
 export default InputFile;
