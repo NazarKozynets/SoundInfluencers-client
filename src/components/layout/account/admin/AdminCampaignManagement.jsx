@@ -87,6 +87,7 @@ const AdminCampaignManagement = () => {
         invoice: '',
         followersCount: '',
     });
+    const [isDeleteInfluencerModalOpen, setIsDeleteInfluencerModalOpen] = useState(false);
 
     const navigate = useNavigate();
     const params = useParams();
@@ -321,6 +322,7 @@ const AdminCampaignManagement = () => {
         try {
             let result;
             if (fieldsForChangeVideo.newVideoLink !== '') {
+                const isNewVideo = data?.videos.findIndex(video => video.videoLink === fieldsForChangeVideo.newVideoLink) === -1;
                 result = await axios.put(
                     `${process.env.REACT_APP_SERVER}/admin/promos/update/video`,
                     {
@@ -332,6 +334,8 @@ const AdminCampaignManagement = () => {
                         storyTag: fieldsForChangeVideo.storyTag,
                         swipeUpLink: fieldsForChangeVideo.swipeUpLink,
                         specialWishes: fieldsForChangeVideo.specialWishes,
+                        isNewVideo: isNewVideo,
+                        selectedInstagramUsername: fieldsForChangeVideo.selectedInstagramUsername,
                     }
                 );
             } else {
@@ -345,6 +349,8 @@ const AdminCampaignManagement = () => {
                         storyTag: fieldsForChangeVideo.storyTag,
                         swipeUpLink: fieldsForChangeVideo.swipeUpLink,
                         specialWishes: fieldsForChangeVideo.specialWishes,
+                        isNewVideo: false,
+                        selectedInstagramUsername: fieldsForChangeVideo.selectedInstagramUsername,
                     }
                 );
             }
@@ -579,8 +585,6 @@ const AdminCampaignManagement = () => {
                 `${process.env.REACT_APP_SERVER}/admin/promos/close-for-influencer/${campaignId}/${instagramUsername}`,
             );
             
-            console.log(result);
-            
             if (result.status === 200) {
                 await updateCampaignData(campaignId);
             }
@@ -588,7 +592,10 @@ const AdminCampaignManagement = () => {
             console.log(error);
         }
     }
-        
+    
+    useEffect(() => {
+        console.log(fieldsForChangeCampaign, fieldsForChangeVideo, fieldsForChangeInfluencer);
+    }, [fieldsForChangeCampaign, fieldsForChangeVideo, fieldsForChangeInfluencer]);
     
     return (
         <section className="admin">
@@ -671,6 +678,29 @@ const AdminCampaignManagement = () => {
                 {data ? (
                     <div>
                         <div ref={containerRef}>
+                            {isDeleteInfluencerModalOpen && (
+                                <ModalWindow isOpen={isDeleteInfluencerModalOpen}
+                                             setClose={() => setIsDeleteInfluencerModalOpen(false)}>
+                                    <div style={{padding: '25px 40px', maxWidth: '1000px', fontFamily: 'Geometria'}}>
+                                        <h1 style={{textAlign: 'center'}}>You want to
+                                            delete {fieldsForChangeInfluencer.instagramUsername} from this
+                                            campaign?</h1>
+                                        <div style={{
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'space-between',
+                                            padding: '20px 60px 0 60px'
+                                        }}>
+                                            <StandardButton onClick={() => {
+                                                removeInfluencer(fieldsForChangeInfluencer.instagramUsername);
+                                                setIsDeleteInfluencerModalOpen(false)
+                                            }} text='Yes' isBlue={true}/>
+                                            <StandardButton onClick={() => setIsDeleteInfluencerModalOpen(false)}
+                                                            text='No' isBlue={true}/>
+                                        </div>
+                                    </div>
+                                </ModalWindow>
+                            )}
                             {(fieldsForChangeVideo.selectedInstagramUsername || fieldsForChangeInfluencer.instagramUsername) && (
                                 <SubmitButton ref={saveChangesRef} onSubmit={updateCampaignVideoOnServer}/>
                             )}
@@ -679,14 +709,48 @@ const AdminCampaignManagement = () => {
                                 <ModalWindow isOpen={isVideoLinkEdit} setClose={() => setIsVideoLinkEdit(false)}>
                                     <div style={{padding: '20px', maxWidth: '1000px', fontFamily: 'Geometria',}}>
                                         <h1 style={{textAlign: 'center'}}>VIDEO LINK</h1>
-                                        <p onClick={() => {
-                                            window.open(fieldsForChangeVideo?.oldVideoLink, '_blank');
-                                        }} style={{
+                                        <p style={{
                                             textAlign: "center",
                                             marginTop: 10,
                                             width: '100%',
-                                            cursor: 'pointer',
                                         }}>{fieldsForChangeVideo?.oldVideoLink}</p>
+                                        
+                                        <h1 style={{textAlign: 'center', marginTop: '30px'}}>SELECT FROM EXISTING</h1>
+                                        <div style={{marginTop: 10, display: 'flex', justifyContent: 'center'}}>
+                                            {data?.videos.map((video, index) => (
+                                                <button
+                                                    onClick={() => {
+                                                        setFieldsForChangeVideo((prev) => ({
+                                                            ...prev,
+                                                            newVideoLink: video.videoLink,
+                                                        }));
+                                                    }}
+                                                    style={{
+                                                        display: 'flex',
+                                                        alignItems: 'center',
+                                                        justifyContent: 'space-between',
+                                                        paddingLeft: 5.1,
+                                                        paddingRight: 5,
+                                                        borderRadius: "10px",
+                                                        border: "1.5px solid black",
+                                                        boxSizing: 'border-box',
+                                                        cursor: 'pointer',
+                                                        padding: '0 5px 0 5px',
+                                                        width: 70,
+                                                        height: 28,
+                                                        marginLeft: 8,
+                                                    }}>
+                                                    <img src={videoImg} alt="video"/>
+                                                    <span style={{
+                                                        fontWeight: 700,
+                                                        fontFamily: 'Geometria',
+                                                        marginBottom: 2
+                                                    }}>#{index + 1}</span>
+                                                    <img src={linkImg} alt="link"/>
+                                                </button>
+                                            ))}
+                                        </div>
+
                                         <h1 style={{textAlign: 'center', marginTop: '30px'}}>NEW VIDEO LINK</h1>
                                         <TextInput style={{marginTop: '10px'}} name='videoLink'
                                                    value={fieldsForChangeVideo.newVideoLink} setValue={(newValue) =>
@@ -714,6 +778,38 @@ const AdminCampaignManagement = () => {
                                         <h1 style={{textAlign: 'center'}}>VIDEO LINK</h1>
                                         <TextInput style={{marginTop: '10px'}} value={newInfluencerVideoLink}
                                                    setValue={setNewInfluencerVideoLink}/>
+                                        <h1 style={{textAlign: 'center', marginTop: '30px'}}>SELECT FROM EXISTING</h1>
+                                        <div style={{marginTop: 10, display: 'flex', justifyContent: 'center'}}>
+                                            {data?.videos.map((video, index) => (
+                                                <button
+                                                    onClick={() => {
+                                                        setNewInfluencerVideoLink(video.videoLink);
+                                                    }}
+                                                    style={{
+                                                        display: 'flex',
+                                                        alignItems: 'center',
+                                                        justifyContent: 'space-between',
+                                                        paddingLeft: 5.1,
+                                                        paddingRight: 5,
+                                                        borderRadius: "10px",
+                                                        border: "1.5px solid black",
+                                                        boxSizing: 'border-box',
+                                                        cursor: 'pointer',
+                                                        padding: '0 5px 0 5px',
+                                                        width: 70,
+                                                        height: 28,
+                                                        marginLeft: 8,
+                                                    }}>
+                                                    <img src={videoImg} alt="video"/>
+                                                    <span style={{
+                                                        fontWeight: 700,
+                                                        fontFamily: 'Geometria',
+                                                        marginBottom: 2
+                                                    }}>#{index + 1}</span>
+                                                    <img src={linkImg} alt="link"/>
+                                                </button>
+                                            ))}
+                                        </div>
                                         <StandardButton style={{margin: '0 auto', marginTop: 20, width: '100%'}}
                                                         text='Save' isBlue={true}
                                                         onClick={() => {
@@ -977,7 +1073,9 @@ const AdminCampaignManagement = () => {
                                                 style={{width: 120, margin: 0, padding: 0}}>
                                                 <div style={{display: 'flex'}}>
                                                     <button
-                                                        onClick={() => removeInfluencer(influencer.instagramUsername)}
+                                                        onClick={() => {
+                                                            setIsDeleteInfluencerModalOpen(true)
+                                                        }}
                                                         style={{
                                                             display: 'flex',
                                                             alignItems: 'center',
