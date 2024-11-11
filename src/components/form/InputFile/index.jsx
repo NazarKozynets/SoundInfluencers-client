@@ -1,30 +1,29 @@
 import React from "react";
-import styles from "./style.module.css";
-import timeIcon from "../../../images/icons/time.svg";
+import styles from "./styles.module.css";
 
 const InputFile = ({
-                     setValue,
-                     setUploadProgress, 
-                     title = "",
-                     error = false,
-                     style = {},
-                     disabled = false,
-                     disabledTime = "24",
-                     silverColor = false,
-                     className,
-                     ...args
+                       setValue,
+                       value,
+                       setUploadProgress,
+                       title = "",
+                       error = false,
+                       style = {},
+                       silverColor = false,
+                       className,
+                       placeholder,
+                       ...args
                    }) => {
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
+    const handleFileChange = (event) => {
+        const file = event.target.files[0];
 
-    if (file && file.type.startsWith("image/")) {
-      setValue(file);
-      setUploadProgress(100); 
-    } else {
-      console.log("Selected file is not an image");
-      setUploadProgress(0); 
-    }
-  };
+        if (file && file.type.startsWith("image/")) {
+            setValue(file);
+            setUploadProgress(100);
+        } else {
+            console.log("Selected file is not an image");
+            setUploadProgress(0);
+        }
+    };
 
     const fileInputRef = React.useRef(null);
 
@@ -36,42 +35,28 @@ const InputFile = ({
 
     return (
         <div className={styles.block} style={style}>
-            <label className={styles.label}>
-                <p className={styles.title}>{title}</p>
-
+            <p className={styles.title}>{title}</p>
+            <div className={styles.fileUploadBlock}>
                 <input
+                    className={styles.input}
                     type="file"
                     ref={fileInputRef}
-                    style={{ display: "none" }}
                     onChange={handleFileChange}
-                    disabled={disabled}
                     accept="image/*"
+                    placeholder={placeholder}
                     {...args}
                 />
 
-                <button
-                    type="button"
-                    onClick={handleClick}
-                    className={
-                        className
-                            ? `${className} ${styles.inputSilver}`
-                            : silverColor
-                                ? styles.inputSilver
-                                : styles.input
-                    }
-                    disabled={disabled}
-                >
-                    Выберите файл
+
+                <button className={styles.uploadButton} onClick={handleClick}>
+                    Upload
                 </button>
 
-                {disabled ? (
-                    <div className={styles.disabled}>
-                        <img className={styles.disabledIcon} src={timeIcon} alt="Time Icon" />
-                        <p className={styles.disabledText}>{disabledTime} hours to unlock</p>
-                    </div>
-                ) : null}
-                {error ? <p className={styles.error}>!</p> : null}
-            </label>
+                <p className={styles.placeholderAfterButton}>
+                    {value ? value.name : placeholder}
+                </p>
+            </div>
+            {error ? <p className={styles.error}>!</p> : null}
         </div>
     );
 

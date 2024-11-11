@@ -6,10 +6,82 @@
   padding-bottom: 80px;
 }
 
-.apply-button {
+.price-input-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 62px;
+
+  #price-input-title {
+    font-family: Geometria;
+    font-size: 18px;
+    font-weight: 500;
+    text-align: center;
+  }
+
+  #price-input-field {
+    max-width: 75%;
+    height: 48px;
+    border-radius: 30px;
+    background: #EEF0F2;
+    margin: 17px auto 0 auto;
+    align-items: center;
     display: flex;
-    justify-content: center;
-    margin-top: 80px;
+    
+    input {
+      padding-left: 20px;
+    }
+    
+    input::placeholder {
+      font-family: Geometria;
+      font-size: 18px;
+      font-weight: 300;
+      text-align: left;
+    }
+    
+    button {
+      background: #3330E4;
+        width: 50%;
+        height: 100%;
+        border-radius: 30px;
+        font-family: Geometria;
+        font-size: 18px;
+        font-weight: 700;
+        text-align: center;
+        color: #FFFFFF;
+        cursor: pointer;
+    }
+  }
+}
+
+.apply-button {
+  display: flex;
+  justify-content: center;
+  margin-top: 80px;
+}
+
+.instagram-select-item-file {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  padding: 0;
+  height: 48px;
+  cursor: pointer;
+
+  span {
+    font-family: Geometria;
+    width: 90px;
+    font-size: 18px;
+    font-weight: 700;
+    text-align: center;
+    color: white;
+    background: #3330e4;
+    border-radius: 30px;
+    padding: 5px 10px;
+    align-items: center;
+    margin-left: -25px;
+  }
 }
 
 .select-social-media {
@@ -27,7 +99,7 @@
     gap: 20px;
 
     li {
-      width: calc((100% - (20px * 3)) / 3) !important;
+      width: calc((100% - (40px * 3)) / 3) !important;
       height: 84px;
       display: flex;
       align-items: center;
@@ -64,7 +136,7 @@
       display: flex;
       align-items: center;
       border-radius: 30px;
-      position: relative; 
+      position: relative;
 
       li {
         width: 100% !important;
@@ -72,7 +144,7 @@
         cursor: default !important;
         background-color: transparent !important;
         box-shadow: none !important;
-        position: relative; 
+        position: relative;
       }
 
       .length {
@@ -86,9 +158,9 @@
         height: 32px;
         padding: 5px;
         margin-left: 0;
-        position: absolute; 
-        top: -8px; 
-        right: -8px; 
+        position: absolute;
+        top: -8px;
+        right: -8px;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -115,6 +187,26 @@
       height: 150px;
       border-radius: 50%;
       box-shadow: grey 0px 0px 10px;
+    }
+  }
+
+  .cancel-avatar-btn {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+
+    button {
+      background: #3330E4;
+      width: 122px;
+      height: 36px;
+      border-radius: 30px;
+      font-family: Geometria;
+      font-size: 18px;
+      font-weight: 700;
+      text-align: center;
+      color: #FFFFFF;
+      cursor: pointer;
+      box-shadow: 0px 2px 5px 0px grey;
     }
   }
 
@@ -156,16 +248,42 @@
         font-size: 18px;
         font-weight: 400;
         margin-bottom: 7px;
-
-        input {
-          width: 17px;
-        }
-
-        label {
-          margin-left: 10px;
-          padding-top: 2px;
-        }
+        position: relative;
       }
+
+      .checkbox input[type="checkbox"] {
+        appearance: none;
+        width: 17px;
+        height: 17px;
+        border: 2px solid #ccc;
+        border-radius: 4px;
+        cursor: pointer;
+        position: relative;
+      }
+
+      .checkbox input[type="checkbox"]:checked {
+        background-color: blue;
+        border-color: blue;
+      }
+
+      .checkbox input[type="checkbox"]:checked::after {
+        content: '';
+        background-image: url("../../images/vector.png");
+        background-size: contain;
+        background-repeat: no-repeat;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 80%;
+        height: 80%;
+        transform: translate(-50%, -50%);
+      }
+
+      .checkbox label {
+        margin-left: 10px;
+        padding-top: 2px;
+      }
+
 
       .countries-container {
         width: 100%;

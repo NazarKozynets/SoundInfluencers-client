@@ -26,6 +26,7 @@ import StandardButton from "../../form/StandardButton";
 import ModalWindow from "../../ModalWindow";
 import acceptImg from "../../../images/icons/accept.svg";
 import {useNavigate} from "react-router-dom";
+import seePasswordImg from "../../../images/icons/view 1.svg";
 
 const SignupInfluencer = () => {
     const dispatch = useDispatch();
@@ -39,6 +40,10 @@ const SignupInfluencer = () => {
     useEffect(() => {
         setIsReadyToApply(checkIfReadyToApply());
     }, [data]);
+
+    useEffect(() => {
+        console.log(data.password);
+    }, [data.password]);
 
     const getSocialMediaIcon = (typeOfSocialMedia) => {
         switch (typeOfSocialMedia) {
@@ -108,14 +113,15 @@ const SignupInfluencer = () => {
         <section className="signup-influencer">
             <div className="container-form">
                 <div className="signup-influencer-block">
-                    <TitleSection
-                        title="Add Your details here
-                          to get approved as"
-                        span="an influencer"
-                    />
+                    <div>
+                        <TitleSection
+                            title="Add Your details here"
+                        />
+                        <TitleSection title="to get approved as" span="an influencer"/>
+                    </div>
 
                     <FormContainer style={{marginTop: "60px"}}>
-                        <TitleSection title='Add your' span='personal details'/>
+                        <TitleSection span='personal details'/>
                         <TextInput title='First name' placeholder='Enter name'
                                    style={{maxWidth: '665px', margin: '77px auto 60px auto'}} value={data.firstName}
                                    setValue={(value) => dispatch(setFirstName(value))}/>
@@ -126,13 +132,15 @@ const SignupInfluencer = () => {
                                    style={{maxWidth: '665px', margin: '0 auto 60px auto'}} value={data.phone}
                                    setValue={(value) => dispatch(setPhone(value))}/>
                         <TextInput title='Password' placeholder='Enter password'
-                                   style={{maxWidth: '665px', margin: '0 auto -20px auto'}} value={data.password}
-                                   setValue={(value) => dispatch(setPassword(value))}/>
+                                   style={{maxWidth: '665px', margin: '0 auto -20px auto'}}
+                                   value={data.password}
+                                   setValue={(value) => dispatch(setPassword(value))}
+                                   type="password"/>
                     </FormContainer>
 
                     <FormContainer style={{marginTop: "100px"}}>
                         <div className='select-social-media'>
-                            <TitleSection title='add your' span='brand account details'/>
+                            <TitleSection span='brand account details'/>
                             <p>Add at least one platform to submit your application</p>
 
                             <ul className="social-medias-container">
