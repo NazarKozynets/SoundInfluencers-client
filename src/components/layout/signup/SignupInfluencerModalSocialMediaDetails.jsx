@@ -12,8 +12,8 @@ import TextInput from "../../form/TextInput";
 import InputFile from "../../form/InputFile";
 import StandardButton from "../../form/StandardButton";
 import axios from "axios";
-import FileInput from "../../form/FileInput";
 import SelectCurrency from "../../form/SelectCurrency/selectCurrency";
+import deleteImg from "../../../images/icons/close.svg";
 
 const SignupInfluencerModalSocialMediaDetails = () => {
     const data = useSelector((state) => state.signupInfluencer);
@@ -42,6 +42,12 @@ const SignupInfluencerModalSocialMediaDetails = () => {
         "Dubstep"
     ];
 
+    useEffect(() => {
+        if (accountDetails.logo) {
+            setImageUrl(accountDetails.logo);
+        }
+    }, []);
+
     const handleFieldChangeAccountDetails = (field, value) => {
         setAccountDetails({
             ...accountDetails,
@@ -50,12 +56,7 @@ const SignupInfluencerModalSocialMediaDetails = () => {
     };
 
     const handleAvatarChange = (file) => {
-        console.log(file, 'file');
-        console.log(accountDetails.logo, 'accountDetails.logo');
-
         if (file && file.type.startsWith("image/")) {
-            console.log('1')
-
             setAccountDetails({
                 ...accountDetails,
                 logo: file,
@@ -74,10 +75,6 @@ const SignupInfluencerModalSocialMediaDetails = () => {
             setImageUrl(null);
         }
     };
-
-    useEffect(() => {
-        console.log(accountDetails, 'accountDetails');
-    }, [accountDetails]);
 
     const handleCountryChange = (index, field, value) => {
         if (field === 'percentage' && !/^[0-9]*\.?[0-9]*$/.test(value)) return;
@@ -173,7 +170,7 @@ const SignupInfluencerModalSocialMediaDetails = () => {
         }
     }
 
-    const addAccountToAttached = async () => {
+    const filterMusicGenres = () => {
         let musicStyle;
         let musicSubStyles = [];
         let musicStyleOther = [];
@@ -212,6 +209,12 @@ const SignupInfluencerModalSocialMediaDetails = () => {
             }
         }
 
+        return {musicStyle, musicSubStyles, musicStyleOther};
+    };
+
+    const addAccountToAttached = async () => {
+        const {musicStyle, musicSubStyles, musicStyleOther} = filterMusicGenres();
+
         const formData = new FormData();
         formData.append('file', accountDetails.logo);
         const response = await axios.post(
@@ -238,13 +241,58 @@ const SignupInfluencerModalSocialMediaDetails = () => {
         }
     };
 
+    const saveAccount = async () => {
+        const {musicStyle, musicSubStyles, musicStyleOther} = filterMusicGenres();
+        let logoUrl = null;
+
+        if (imageUrl) {
+            try {
+                const formData = new FormData();
+                formData.append('file', accountDetails.logo);
+                const response = await axios.post(
+                    `${process.env.REACT_APP_SERVER}/promos/uploadScreenshot`,
+                    formData,
+                    {headers: {"Content-Type": "multipart/form-data"}}
+                );
+
+                if (response.data.code === 200) {
+                    logoUrl = response.data.data;
+                }
+            } catch (error) {
+                console.log("Error uploading logo");
+            }
+        }
+        if (accountDetails.price && selectedCurrency) convertToEuro();
+
+        dispatch(updateCurrentAccountId({
+            ...accountDetails,
+            logo: logoUrl ? logoUrl : accountDetails.logo,
+            countries: selectedCountries ? selectedCountries : [],
+            musicStyle: musicStyle,
+            musicSubStyles: musicSubStyles,
+            musicStyleOther: musicStyleOther,
+            instagramLink: accountDetails.instagramLink ? accountDetails.instagramLink : "",
+            instagramUsername: accountDetails.instagramUsername ? accountDetails.instagramUsername : "",
+            followersNumber: accountDetails.followersNumber ? accountDetails.followersNumber : 0,
+            price: accountDetails.price ? accountDetails.price : "",
+            currency: selectedCurrency ? selectedCurrency : "",
+        }));
+        dispatch(setCurrentWindow(0));
+    };
+
+    const prevPage = () => {
+        if (accountDetails.instagramUsername === '' && accountDetails.instagramLink === '' && accountDetails.followersNumber === '' && accountDetails.logo === '' && selectedGenres.length === 0 && selectedCountries.length === 0 && accountDetails.price === '') {
+            dispatch(deleteSocialMediaAccount(data.currentAccountId));
+            dispatch(setCurrentWindow(0));
+        } else {
+            saveAccount();
+        }
+    };
+
     return (
         <section className="signup-influencer">
             <div className="admin-title-section">
-                <button onClick={() => {
-                    dispatch(deleteSocialMediaAccount(data.currentAccountId));
-                    dispatch(setCurrentWindow(0))
-                }}>
+                <button onClick={() => prevPage()}>
                     <img src={backBtn} style={{transform: "rotate(180deg)"}}/>
                 </button>
                 <TitleSection title='Add your' span={data.selectedSocialMedia + ' account details'}/>
@@ -264,11 +312,12 @@ const SignupInfluencerModalSocialMediaDetails = () => {
                                            style={{maxWidth: '665px', margin: '0 auto 60px auto'}}
                                            value={accountDetails.instagramLink}
                                            setValue={(value) => handleFieldChangeAccountDetails('instagramLink', value)}/>
-                                <TextInput title={accountDetails.typeOfSocialMedia !== "Press" ? "Followers Number" : "Average Monthly Traffic"} 
-                                           placeholder={accountDetails.typeOfSocialMedia !== "Press" ? "Enter followers number" : "Enter average monthly traffic number"}
-                                           style={{maxWidth: '665px', margin: '0 auto 60px auto'}}
-                                           value={accountDetails.followersNumber}
-                                           setValue={(value) => handleFieldChangeAccountDetails('followersNumber', value)}/>
+                                <TextInput
+                                    title={accountDetails.typeOfSocialMedia !== "Press" ? "Followers Number" : "Average Monthly Traffic"}
+                                    placeholder={accountDetails.typeOfSocialMedia !== "Press" ? "Enter followers number" : "Enter average monthly traffic number"}
+                                    style={{maxWidth: '665px', margin: '0 auto 60px auto'}}
+                                    value={accountDetails.followersNumber}
+                                    setValue={(value) => handleFieldChangeAccountDetails('followersNumber', value)}/>
                                 <InputFile
                                     title="Logo"
                                     placeholder="Attach the logo for your brand here"
@@ -292,7 +341,8 @@ const SignupInfluencerModalSocialMediaDetails = () => {
                             </div>
 
                             <div className="genres-countries">
-                                <div className="block" style={{width: accountDetails.typeOfSocialMedia === "Spotify" && '100%'}}>
+                                <div className="block"
+                                     style={{width: accountDetails.typeOfSocialMedia === "Spotify" && '100%'}}>
                                     <p id='title'>MUSIC GENRES</p>
                                     <p>Select <b>ALL</b> the applicable</p>
                                     {genres.map((genre, index) => (
@@ -406,9 +456,16 @@ const SignupInfluencerModalSocialMediaDetails = () => {
                                 </div>
                             ) : (
                                 <div className="save-account-button">
-                                    <StandardButton text="Save Account" />
+                                    <StandardButton text="Save Account" onClick={() => saveAccount()}/>
                                 </div>
                             )}
+
+                            <div className="delete-account-button">
+                                <StandardButton isBlue={true} text="Delete Account" onClick={() => {
+                                    dispatch(deleteSocialMediaAccount(data.currentAccountId));
+                                    dispatch(setCurrentWindow(0));
+                                }}/>
+                            </div>
 
                             {isErrorAfterSubmit && (
                                 <div className="error-message">

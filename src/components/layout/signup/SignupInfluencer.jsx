@@ -36,14 +36,11 @@ const SignupInfluencer = () => {
     const [isReadyToApply, setIsReadyToApply] = useState(false);
     const [isErrorAfterSubmit, setIsErrorAfterSubmit] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isSocialAccountsModalOpen, setIsSocialAccountsModalOpen] = useState(false);
 
     useEffect(() => {
         setIsReadyToApply(checkIfReadyToApply());
     }, [data]);
-
-    useEffect(() => {
-        console.log(data.password);
-    }, [data.password]);
 
     const getSocialMediaIcon = (typeOfSocialMedia) => {
         switch (typeOfSocialMedia) {
@@ -109,6 +106,11 @@ const SignupInfluencer = () => {
         }
     }
 
+    const openSavedAccount = (account) => {
+        dispatch(setCurrentAccountId(account._id));
+        dispatch(setCurrentWindow(1));
+    };
+    
     return (
         <section className="signup-influencer">
             <div className="container-form">
@@ -290,7 +292,10 @@ const SignupInfluencer = () => {
                                             const count = data.attachedSocialMediaAccounts.filter((account) => account.typeOfSocialMedia === type).length;
 
                                             return (
-                                                <div className='ready-account' key={type}>
+                                                <div className='ready-account' key={type} onClick={() => {
+                                                    dispatch(setSelectedSocialMedia(type));
+                                                    setIsSocialAccountsModalOpen(true);
+                                                }}>
           <span className='length'>
             {count}
           </span>
@@ -343,6 +348,21 @@ const SignupInfluencer = () => {
                                 }}
                                 onClick={() => navigation("/account/influencer")}
                             />
+                        </div>
+                    </ModalWindow>
+
+                    <ModalWindow isOpen={isSocialAccountsModalOpen}
+                                 setClose={() => setIsSocialAccountsModalOpen(false)}>
+                        <div className="accounts-list-modal">
+                            {data.attachedSocialMediaAccounts.filter((account) => account.typeOfSocialMedia === data.selectedSocialMedia).map((account, index) => {
+                                return (
+                                    <div className="account-block" onClick={() => openSavedAccount(account)}>
+                                        <img src={getSocialMediaIcon(account.typeOfSocialMedia)}
+                                             alt={account.typeOfSocialMedia}/>
+                                        <p>{account.instagramUsername ? account.instagramUsername : 'Account ' + ++index}</p>
+                                    </div>
+                                )
+                            })}
                         </div>
                     </ModalWindow>
                 </div>
