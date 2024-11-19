@@ -18,6 +18,8 @@ const AdminEditNewOffer = ({influencers}) => {
     const [selectedOffersGenres, setSelectedOffersGenres] = useState([]);
     const [priceForOfferWithGenre, setPriceForOfferWithGenre] = useState(0);
     
+    const selectedSocialMedia = useSelector((state) => state.adminOffers.selectedSocialMedia);
+    
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -69,10 +71,6 @@ const AdminEditNewOffer = ({influencers}) => {
             dispatch(setNewOffer(updatedOffer));
         }
     }, [selectedInfluencers, selectedOffersGenres, priceForOfferWithGenre]);
-
-    useEffect(() => {
-        console.log('offer', offer);
-    }, [offer]);
     
     const handleFieldChange = (field, value) => {
         const updatedOffer = {
@@ -93,10 +91,9 @@ const AdminEditNewOffer = ({influencers}) => {
                     isNew: true,
                     isDeleted: false,
                     isUpdated: false,
+                    socialMedia: selectedSocialMedia.toLowerCase(),
                 }
             ); 
-            
-            console.log(result);
             
             if (result.data.status === 200 || result.data.status === 201) {
                 dispatch(setNewOffer({

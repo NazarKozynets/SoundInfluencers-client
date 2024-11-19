@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import styles from "./styles.module.css";
 
 const InputFile = ({
@@ -13,6 +13,8 @@ const InputFile = ({
                        placeholder,
                        ...args
                    }) => {
+    const fileInputRef = useRef(null);
+
     const handleFileChange = (event) => {
         const file = event.target.files[0];
 
@@ -25,13 +27,17 @@ const InputFile = ({
         }
     };
 
-    const fileInputRef = React.useRef(null);
-
     const handleClick = () => {
         if (fileInputRef.current) {
             fileInputRef.current.click();
         }
     };
+
+    useEffect(() => {
+        if (!value && fileInputRef.current) {
+            fileInputRef.current.value = null; 
+        }
+    }, [value]);
 
     return (
         <div className={styles.block} style={style}>
@@ -47,7 +53,6 @@ const InputFile = ({
                     {...args}
                 />
 
-
                 <button className={styles.uploadButton} onClick={handleClick}>
                     Upload
                 </button>
@@ -59,7 +64,6 @@ const InputFile = ({
             {error ? <p className={styles.error}>!</p> : null}
         </div>
     );
-
 };
 
 export default InputFile;

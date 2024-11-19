@@ -59,7 +59,6 @@ const AdminOffer = ({key, offer, influencers, selectedOffersGenres}) => {
                         <div className="admin-offer-body-influencers">
                             {offer?.influencersForOffer.map((influencer, index) => {
                                 const avatarUrl = getInfluencerAvatar(influencers, influencer?.instagramUsername);
-
                                 return (
                                     <div key={index} className="admin-offer-body-influencer">
                                         <img src={avatarUrl} alt=''/>

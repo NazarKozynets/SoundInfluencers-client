@@ -6,13 +6,15 @@ import axios from "axios";
 
 const AdminEditOfferNavigation = () => {
     const [influencers, setInfluencers] = useState(null);
+    
     const isNew = useSelector((state) => state.adminOffers.isNew);
+    const selectedSocialMedia = useSelector((state) => state.adminOffers.selectedSocialMedia);
     
     const getData = async () => {
         const result = await axios(
-            `${process.env.REACT_APP_SERVER}/auth/influencers`
+            `${process.env.REACT_APP_SERVER}/auth/influencers/${selectedSocialMedia.toLowerCase()}`
         );
-
+console.log(result);
         if (result.status === 200) {
             setInfluencers(result.data.influencers);
         }

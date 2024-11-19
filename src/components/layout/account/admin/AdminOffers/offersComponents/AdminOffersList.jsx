@@ -11,6 +11,12 @@ const AdminOffersList = ({offers, selectedOffersGenres, influencers}) => {
     const offersPerPage = 4;
     const [tempOffers, setTempOffers] = useState([]);
 
+    const selectedSocialMedia = useSelector((state) => state.adminOffers.selectedSocialMedia);
+
+    useEffect(() => {
+        setCurrentSlide(0);
+    }, [selectedSocialMedia]);
+    
     useEffect(() => {
         setTempOffers(
             offers

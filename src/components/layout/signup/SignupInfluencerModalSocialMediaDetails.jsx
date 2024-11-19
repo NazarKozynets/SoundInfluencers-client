@@ -13,7 +13,6 @@ import InputFile from "../../form/InputFile";
 import StandardButton from "../../form/StandardButton";
 import axios from "axios";
 import SelectCurrency from "../../form/SelectCurrency/selectCurrency";
-import deleteImg from "../../../images/icons/close.svg";
 
 const SignupInfluencerModalSocialMediaDetails = () => {
     const data = useSelector((state) => state.signupInfluencer);
@@ -43,20 +42,60 @@ const SignupInfluencerModalSocialMediaDetails = () => {
     ];
 
     useEffect(() => {
+        const genresSet = new Set();
+
         if (accountDetails.logo) {
             setImageUrl(accountDetails.logo);
+        }
+
+        if (accountDetails.musicStyle || accountDetails.musicSubStyles || accountDetails.musicStyleOther) {
+            if (accountDetails.musicSubStyles.length > 0) {
+                for (let i = 0; i < accountDetails.musicSubStyles.length; i++) {
+                    if (accountDetails.musicSubStyles[i] === "Melodic, Minimal") {
+                        genresSet.add("Techno (Melodic, Minimal)");
+                    }
+                    if (accountDetails.musicSubStyles[i] === "Hard, Peak") {
+                        genresSet.add("Techno (Hard, Peak)");
+                    }
+                    if (accountDetails.musicSubStyles[i] === "Tech House") {
+                        genresSet.add("House (Tech House)");
+                    }
+                    if (accountDetails.musicSubStyles[i] === "Melodic, Afro") {
+                        genresSet.add("House (Melodic, Afro)");
+                    }
+                }
+            } else {
+                genresSet.add(accountDetails.musicStyle);
+            }
+
+            for (let i = 0; i < accountDetails.musicStyleOther.length; i++) {
+                if (accountDetails.musicStyleOther[i] !== "House") { 
+                    genresSet.add(accountDetails.musicStyleOther[i]);
+                }
+            }
+        }
+
+        setSelectedGenres(Array.from(genresSet));
+        
+        if (accountDetails.countries && accountDetails.countries.length > 0) {
+            setSelectedCountries(accountDetails.countries);
         }
     }, []);
 
     const handleFieldChangeAccountDetails = (field, value) => {
-        setAccountDetails({
-            ...accountDetails,
-            [field]: (field === 'followersNumber' || field === 'price') && /^[0-9]+$/.test(value) ? Number(value) : (field === 'followersNumber' || field === 'price' ? '' : value),
+        setAccountDetails((prevDetails) => {
+            if ((field === 'followersNumber' || field === 'price') && !/^[0-9]*$/.test(value)) {
+                return prevDetails;
+            }
+            return {
+                ...prevDetails,
+                [field]: field === 'followersNumber' || field === 'price' ? (value === '' ? '' : Number(value)) : value,
+            };
         });
     };
 
     const handleAvatarChange = (file) => {
-        if (file && file.type.startsWith("image/")) {
+        if (file && file.type && file.type.startsWith("image/")) {
             setAccountDetails({
                 ...accountDetails,
                 logo: file,
@@ -334,7 +373,7 @@ const SignupInfluencerModalSocialMediaDetails = () => {
                                             <img src={imageUrl} alt="Uploaded Logo"/>
                                         </div>
                                         <div className="cancel-avatar-btn">
-                                            <button onClick={(value) => handleAvatarChange(value)}>CANCEL</button>
+                                            <button onClick={() => handleAvatarChange(null)}>CANCEL</button>
                                         </div>
                                     </div>
                                 )}

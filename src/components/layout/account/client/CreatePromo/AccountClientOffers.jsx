@@ -70,7 +70,7 @@ const AccountClientOffers = () => {
 
     const currentCurrency = useSelector((state) => state.createPromo.data.currency);
 
-    const { socialMedia} = useParams();
+    const {socialMedia} = useParams();
 
     const checkIsMobile = () => {
         setIsMobile(window.innerWidth <= 768);
@@ -297,7 +297,7 @@ const AccountClientOffers = () => {
             }));
         } else {
             const searchPrice = prices.find((item) => item.id === id);
-            
+
             const updateList = influencers.map((item) => {
                 const isInfluencerConnected = searchPrice.connectInfluencer.find(
                     (fin) => fin.influencerId === item._id && fin.instagramUsername === item.instagramUsername
@@ -313,8 +313,8 @@ const AccountClientOffers = () => {
                 } else {
                     return {
                         ...item,
-                        active:  false,
-                        connect:  false,
+                        active: false,
+                        connect: false,
                     };
                 }
             });
@@ -598,8 +598,8 @@ const AccountClientOffers = () => {
             `${process.env.REACT_APP_SERVER}/auth/influencers/${socialMedia}`
         );
 
-        const offers = await axios(`${process.env.REACT_APP_SERVER}/promos/offers`);
-        
+        const offers = await axios(`${process.env.REACT_APP_SERVER}/promos/offers/${socialMedia}`);
+
         if (offers.data.code === 200) {
             setPrices(offers.data.offers.sort((a, b) => a.id - a.b));
         }
@@ -806,6 +806,10 @@ const AccountClientOffers = () => {
         }));
     };
 
+    useEffect(() => {
+        console.log(prices)
+    }, [prices]);
+    
     return (<section className="account-client">
             <div className="account-client-block" style={{position: "relative", marginBottom: '40px'}}>
                 <div className="account-client-back-button">
@@ -832,15 +836,13 @@ const AccountClientOffers = () => {
 
                 {influencers.length > 0 ? (
                     <div>
-                        {socialMedia === "instagram" && (
-                            <OffersList prices={prices}
-                                        setFilteredOffersByGenres={setFilteredOffersByGenres}
-                                        selectPrice={selectPrice}
-                                        filteredOffersByGenres={filteredOffersByGenres}
-                                        selectedOffersGenres={selectedOffersGenres}
-                                        influencers={influencers}
-                                        setSelectedOffersGenres={setSelectedOffersGenres}/>
-                        )}
+                        <OffersList prices={prices}
+                                    setFilteredOffersByGenres={setFilteredOffersByGenres}
+                                    selectPrice={selectPrice}
+                                    filteredOffersByGenres={filteredOffersByGenres}
+                                    selectedOffersGenres={selectedOffersGenres}
+                                    influencers={influencers}
+                                    setSelectedOffersGenres={setSelectedOffersGenres}/>
                         <div className="account-client-influencers-list-title">
                             <TitleSection title="Pick &" span="choose"/>
                         </div>

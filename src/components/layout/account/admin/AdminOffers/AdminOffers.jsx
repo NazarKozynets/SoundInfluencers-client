@@ -8,7 +8,13 @@ import GenreButtonList from "../../../../form/GenreButton/GenreButtonList";
 import AdminOffersList from "./offersComponents/AdminOffersList";
 import plusImg from "../../../../../images/icons/plus 2.svg";
 import {useDispatch, useSelector} from "react-redux";
-import {setCurrentWindow, setIsNew, setNewOffer} from "../../../../../redux/slice/admin-offers";
+import {
+    setCurrentWindow,
+    setInfluencersData,
+    setIsNew,
+    setNewOffer,
+    setSelectedSocialMedia
+} from "../../../../../redux/slice/admin-offers";
 import saveImg from "../../../../../images/icons/save 1.svg";
 import publishImg from "../../../../../images/icons/share 1.svg";
 import AdminDeletedOffers from "./offersComponents/AdminDeletedOffers";
@@ -23,17 +29,18 @@ import tabletIcon from "../../../../../images/icons/socialMedias/tablet.png";
 
 const AdminOffers = () => {
     const [data, setData] = useState(null);
-    const [influencers, setInfluencers] = useState(null);
     const [selectedOffersGenres, setSelectedOffersGenres] = useState([]);
     const [filteredOffersByGenres, setFilteredOffersByGenres] = useState([data]);
     const [deletedOffersList, setDeletedOffersList] = useState([]);
     const [isDeletedOffersOpen, setIsDeletedOffersOpen] = useState(false);
     const [isPublishedSuccessfullyModalOpen, setIsPublishedSuccessfullyModalOpen] = useState(false);
     const [isPublishedWerentSuccessfulModalOpen, setIsPublishedWerentSuccessfulModalOpen] = useState(false);
-    const [selectedSocialMedia, setSelectedSocialMedia] = useState('Instagram');
+    const [allOffersData, setAllOffersData] = useState([]);
     
     const deletedOffers = useSelector(state => state.adminOffers.deletedOffers);
     const newOffers = useSelector(state => state.adminOffers.newOffers);
+    const selectedSocialMedia = useSelector(state => state.adminOffers.selectedSocialMedia);
+    const influencers = useSelector(state => state.adminOffers.influencersData);
     
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -41,62 +48,84 @@ const AdminOffers = () => {
     const platforms = [{
         name: 'Instagram',
         secondName: 'IG',
-        icon: instaIcon
+        icon: instaIcon,
+        offers: []
     }, {
         name: 'TikTok',
         secondName: 'TT',
-        icon: tiktokIcon
+        icon: tiktokIcon,
+        offers: []
     }, {
         name: 'Facebook',
         secondName: 'FB',
-        icon: facebookIcon
+        icon: facebookIcon,
+        offers: []
     }, {
         name: 'YouTube',
         secondName: 'YT',
-        icon: youtubeIcon
+        icon: youtubeIcon,
+        offers: []
     }, {
         name: 'Spotify',
         secondName: 'SP',
-        icon: spotifyIcon
+        icon: spotifyIcon,
+        offers: []
     }, {
         name: 'SoundCloud',
         secondName: 'SC',
-        icon: soundcloudIcon
+        icon: soundcloudIcon,
+        offers: []
     }, {
         name: 'Press',
         secondName: 'PR',
-        icon: tabletIcon
+        icon: tabletIcon,
+        offers: []
     }]
 
     useEffect(() => {
-        getData();
-    }, [selectedSocialMedia]);
-
+        if (selectedSocialMedia) {
+            const platformData = allOffersData.find(
+                (platform) => platform.name === selectedSocialMedia
+            );
+            setData(platformData?.offers || []);
+        }
+    }, [selectedSocialMedia, allOffersData]);
+    
     const getData = async () => {
         try {
-            const [offers, offersTemp, result] = await Promise.all([
-                axios.get(`${process.env.REACT_APP_SERVER}/promos/offers`),
+            const [offers, result] = await Promise.all([
                 axios.get(`${process.env.REACT_APP_SERVER}/admin/offers/getAll`),
-                axios.get(`${process.env.REACT_APP_SERVER}/auth/influencers/` + selectedSocialMedia)
+                axios.get(`${process.env.REACT_APP_SERVER}/auth/influencers-all`)
             ]);
 
-            let offersArray = [];
-
             if (offers.status === 200) {
-                offersArray = offers.data.offers;
-            }
+                const updatedPlatforms = platforms.map((platform) => {
+                    let tempArr = [];
 
-            if (offersTemp.status === 200 && offersTemp.data.data && offersTemp.data.data.length > 0) {
-                setDeletedOffersList(offersTemp.data.data.filter(offer => offer.isDeleted));
-                
-                offersTemp.data.data = offersTemp.data.data.filter(offer => !offer.isDeleted);
-                
-                offersArray = offersArray.concat(offersTemp.data.data); 
+                    const platformOffers = offers.data.data.socialMedias[platform.name.toLowerCase()]?.offers || [];
+
+                    const platformSpecificTempOffers = offers.data.data.offersTemp?.filter(
+                        offer => offer.socialMedia === platform.name.toLowerCase() && !offer.isDeleted
+                    ) || [];
+
+                    tempArr = [...platformOffers, ...platformSpecificTempOffers];
+
+                    if (platform.name.toLowerCase() === selectedSocialMedia?.toLowerCase()) {
+                        setDeletedOffersList(
+                            offers.data.data.offersTemp?.filter(
+                                offer => offer.socialMedia === platform.name.toLowerCase() && offer.isDeleted
+                            ) || []
+                        );
+                    }
+
+                    return { ...platform, offers: tempArr };
+                });
+
+                setAllOffersData(updatedPlatforms);
             }
-            setData(offersArray);
 
             if (result.status === 200) {
-                setInfluencers(result.data.influencers);
+                dispatch(setInfluencersData(result.data.influencers));
             }
         } catch (error) {
             console.error('Error occurred while fetching data:', error);
@@ -149,7 +178,6 @@ const AdminOffers = () => {
     }, [deletedOffers]);
 
     useEffect(() => {
-        console.log(newOffers, 'newOffers');
         if (newOffers.length > 0) {
             setData((prevData) => {
                 const updatedData = prevData ? [...prevData, ...newOffers] : [...newOffers];
@@ -157,7 +185,7 @@ const AdminOffers = () => {
             });
         }
     }, [newOffers]);
-    
+
     const addNewOffer = () => {
         dispatch(setNewOffer({
             connectInfluencer: [],
@@ -191,11 +219,11 @@ const AdminOffers = () => {
                     isUpdated: false,
                 });
                 if (result.status === 200) {
-                    
+
                 }
             });
         }
-        
+
         if (newOffers.length > 0) {
             newOffers.forEach(async (offer) => {
                 const result = await axios.put(`${process.env.REACT_APP_SERVER}/admin/offers/save-to-temp`, {
@@ -231,16 +259,16 @@ const AdminOffers = () => {
 
     const handlePlatformClick = (platform) => {
         if (platform === 'Instagram') {
-            setSelectedSocialMedia('Instagram');
+            dispatch(setSelectedSocialMedia('Instagram'));
         } else {
             if (selectedSocialMedia === platform) {
-                setSelectedSocialMedia('Instagram');
+                dispatch(setSelectedSocialMedia('Instagram'));
             } else {
-                setSelectedSocialMedia(platform);
+                dispatch(setSelectedSocialMedia(platform));
             }
         }
     }
-    
+
     return (
         <section className="admin">
             <div>
@@ -304,18 +332,19 @@ const AdminOffers = () => {
                     </ModalWindow>
                 )}
 
+                <GenreButtonList setSelectedOffersGenres={setSelectedOffersGenres}
+                                 selectedOffersGenres={selectedOffersGenres}/>
+                <div className="admin-offers-add-offer">
+                    <button onClick={() => {
+                        addNewOffer();
+                    }}>
+                        <img src={plusImg} alt={'plus'}/>
+                        <span>ADD NEW OFFER</span>
+                    </button>
+                </div>
+
                 {data && data.length > 0 && filteredOffersByGenres && filteredOffersByGenres.length > 0 ? (
                     <div>
-                        <GenreButtonList setSelectedOffersGenres={setSelectedOffersGenres}
-                                         selectedOffersGenres={selectedOffersGenres}/>
-                        <div className="admin-offers-add-offer">
-                            <button onClick={() => {
-                                addNewOffer();
-                            }}>
-                                <img src={plusImg} alt={'plus'}/>
-                                <span>ADD NEW OFFER</span>
-                            </button>
-                        </div>
                         <AdminOffersList influencers={influencers} offers={filteredOffersByGenres}
                                          selectedOffersGenres={selectedOffersGenres}/>
 
