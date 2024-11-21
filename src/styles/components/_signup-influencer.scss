@@ -110,6 +110,7 @@
         width: 40px;
         height: 40px;
         margin-left: 30px;
+        margin-bottom: 3px;
       }
 
       span {
@@ -131,7 +132,7 @@
       cursor: pointer;
       background-color: #FF7A09BD;
       box-shadow: 0px 4px 20px 0px #FF7A09E5;
-      width: calc((100% - (20px * 3)) / 3) !important;
+      width: calc((100% - (40px * 3)) / 3) !important;
       height: 84px;
       display: flex;
       align-items: center;
@@ -184,6 +185,7 @@
     img {
       width: 150px;
       height: 150px;
+      object-fit: cover; 
       border-radius: 50%;
       box-shadow: grey 0px 0px 10px;
     }

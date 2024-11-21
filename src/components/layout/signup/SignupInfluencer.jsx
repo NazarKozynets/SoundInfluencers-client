@@ -283,7 +283,7 @@ const SignupInfluencer = () => {
                                     dispatch(setCurrentAccountId(id));
                                     dispatch(setCurrentWindow(1));
                                 }}>
-                                    <img src={pressIcon} alt="Press"/>
+                                    <img style={{marginBottom: 9}} src={pressIcon} alt="Press"/>
                                     <span>Press</span>
                                 </li>
                                 {data.attachedSocialMediaAccounts.length > 0 &&

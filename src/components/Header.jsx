@@ -22,7 +22,7 @@ const Header = ({userType = "client", page = "login", path = ""}) => {
     const logoutRequest = () => {
         localStorage.setItem("token", "");
         dispatch(setAuthenticated(false));
-        navigation("/login/client");
+        navigation("/");
     };
 
     const returnTextLogin = () => {

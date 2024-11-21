@@ -805,10 +805,6 @@ const AccountClientOffers = () => {
             ...newParams
         }));
     };
-
-    useEffect(() => {
-        console.log(prices)
-    }, [prices]);
     
     return (<section className="account-client">
             <div className="account-client-block" style={{position: "relative", marginBottom: '40px'}}>

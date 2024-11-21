@@ -473,14 +473,11 @@ const SignupInfluencerModalSocialMediaDetails = () => {
 
                             <div className="price-input-container">
                                 <p id='price-input-title'>{returnPriceInput()}</p>
-                                <div style={{display: 'flex', alignItems: 'center'}}>
+                                <div style={{display: 'flex', alignItems: 'center', gap: 20}}>
                                     <div id="price-input-field">
                                         <input type="text" placeholder='50'
                                                value={accountDetails.price}
                                                onChange={(e) => handleFieldChangeAccountDetails('price', e.target.value)}/>
-                                        <button>
-                                            Contact Us
-                                        </button>
                                     </div>
                                     <div>
                                         <SelectCurrency selectedCurrency={selectedCurrency}
