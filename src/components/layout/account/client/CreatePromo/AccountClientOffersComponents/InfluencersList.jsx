@@ -2,20 +2,26 @@ import React, {useEffect, useState} from "react";
 import ImageWithFallback from "../../../../../ImageWithFallback";
 import altLogo from "../../../../../../images/alt-logo.jpg";
 import instagram from "../../../../../../images/icons/instagram.svg";
+import tiktok from "../../../../../../images/icons/socialMedias/tiktok.png";
+import facebook from "../../../../../../images/icons/socialMedias/facebook.png";
+import youtube from "../../../../../../images/icons/socialMedias/youtube.png";
+import spotify from "../../../../../../images/icons/socialMedias/spotify.png";
+import soundcloud from "../../../../../../images/icons/socialMedias/soundcloud.png";
+import press from "../../../../../../images/icons/socialMedias/tablet.png";
+
 import {
     calculatePriceForOffersAndInfluencers,
-    doublePrice,
-    calculatePricePerFollower
 } from "../../../../../../utils/price";
 import {useSelector} from "react-redux";
 import genres from "../../../../../form/Offers/OffersMenu/Genres/Genres";
+import {useParams} from "react-router-dom";
 
 const InfluencersList = ({influencers, activeIndices, setActiveIndices, selectInfluencer, isSearch}) => {
+    const {socialMedia} = useParams();
+    
     const [flippedAccountIndeces, setFlippedAccountIndeces] = useState([]);
 
     const currentCurrency = useSelector((state) => state.createPromo.data.currency);
-
-    const selectInfluencers = useSelector((state) => state.createPromo.data.selectInfluencers);
 
     useEffect(() => {
         setFlippedAccountIndeces([]);
@@ -101,6 +107,27 @@ const InfluencersList = ({influencers, activeIndices, setActiveIndices, selectIn
         }
     };
 
+    const getSocialMediaIcon = (socialMedia) => {
+        switch (socialMedia) {
+            case "instagram":
+                return instagram;
+            case "tiktok":
+                return tiktok;
+            case "facebook":
+                return facebook;
+            case "youtube":
+                return youtube;
+            case "spotify":
+                return spotify;
+            case "soundcloud":
+                return soundcloud;
+            case "press":
+                return press;
+            default:
+                return instagram;
+        }
+    }
+    
     return (
         <div>
             {isSearch ? (
@@ -146,7 +173,7 @@ const InfluencersList = ({influencers, activeIndices, setActiveIndices, selectIn
                             <div className="account-client-choose-item-content-second-container">
                                 <div className="account-client-choose-item-content-second-container-left-part">
                                 <span className="account-client-choose-item-content-icon-container">
-                                    <img className="account-client-choose-item-content-icon" src={instagram}
+                                    <img className="account-client-choose-item-content-icon" src={getSocialMediaIcon(socialMedia)} alt={socialMedia}
                                          style={{paddingBottom: 0, pointerEvents: "none"}}/>
                                 </span>
                                     <p className="account-client-choose-item-content-text">
@@ -262,7 +289,7 @@ const InfluencersList = ({influencers, activeIndices, setActiveIndices, selectIn
                             <div className="account-client-choose-item-content-second-container">
                                 <div className="account-client-choose-item-content-second-container-left-part">
                                 <span className="account-client-choose-item-content-icon-container">
-                                    <img className="account-client-choose-item-content-icon" src={instagram}
+                                    <img className="account-client-choose-item-content-icon" src={getSocialMediaIcon(socialMedia)} alt={socialMedia}
                                          style={{paddingBottom: 0, pointerEvents: "none"}}/>
                                 </span>
                                     <p className="account-client-choose-item-content-text">

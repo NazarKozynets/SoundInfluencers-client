@@ -34,7 +34,6 @@ const AccountClientOffers = () => {
     const [filteredOffersByGenres, setFilteredOffersByGenres] = useState(prices);
     const dispatch = useDispatch();
     const [influencers, setInfluencers] = useState([]);
-    const [isSelectAll, setIsSelectAll] = useState(false);
     const [activeIndices, setActiveIndices] = useState([]);
     const [filteredInfluencers, setFilteredInfluencers] = useState(influencers);
     const [checkedGenres, setCheckedGenres] = useState({});
@@ -57,8 +56,6 @@ const AccountClientOffers = () => {
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
     const currentPrice = useSelector((state) => state.createPromo.data.selectPrice.variant);
-
-    const dataForm = useSelector((state) => state.createPromo.data);
 
     const customAmount = useSelector((state) => state.createPromo.data.selectPrice.amount);
 

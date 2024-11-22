@@ -110,7 +110,7 @@ const OffersList = ({
                                                                             style={{
                                                                                 maxWidth: '58px',
                                                                                 maxHeight: '58px',
-                                                                                gap: '0px',
+                                                                                borderRadius: '50%',
                                                                                 opacity: '0px',
                                                                             }}
                                                                             src={avatarUrl}
