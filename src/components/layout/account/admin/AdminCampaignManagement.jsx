@@ -19,6 +19,7 @@ import StandardButton from "../../../form/StandardButton";
 import TextInput from "../../../form/TextInput";
 import SubmitButton from "./form/Influencers/SubmitFooter/SubmitButton";
 import checkImg from "../../../../images/vector.png";
+import hideImg from "../../../../images/icons/hidden 63.svg";
 
 const AdminCampaignManagement = () => {
     const [data, setData] = useState();
@@ -88,7 +89,8 @@ const AdminCampaignManagement = () => {
         followersCount: '',
     });
     const [isDeleteInfluencerModalOpen, setIsDeleteInfluencerModalOpen] = useState(false);
-
+    const [isCpmAndResultHidden, setIsCpmAndResultHidden] = useState(false);
+    
     const navigate = useNavigate();
     const params = useParams();
     const getData = async () => {
@@ -132,6 +134,7 @@ const AdminCampaignManagement = () => {
 
     useEffect(() => {
         editCPMO();
+        setIsCpmAndResultHidden(data?.isCpmAndResultHidden);
     }, [data]);
 
     useEffect(() => {
@@ -593,9 +596,19 @@ const AdminCampaignManagement = () => {
         }
     }
     
-    useEffect(() => {
-        console.log(fieldsForChangeCampaign, fieldsForChangeVideo, fieldsForChangeInfluencer);
-    }, [fieldsForChangeCampaign, fieldsForChangeVideo, fieldsForChangeInfluencer]);
+    const hideCpmAndResult = async () => {
+        try {
+            const result = await axios.put(
+                `${process.env.REACT_APP_SERVER}/admin/promos/update/hideCpmAndResultForCampaign/${data._id}`,
+            );
+            
+            if (result.status === 200) {
+                setIsCpmAndResultHidden(!isCpmAndResultHidden);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
     
     return (
         <section className="admin">
@@ -662,9 +675,13 @@ const AdminCampaignManagement = () => {
                                     <p>Likes: <span>{totalLikes()}</span></p>
                                 </div>
                                 <div className="report-details-third">
-                                    <p>CPM: <span>{cpmObj.cpm.toFixed(2)}€</span></p>
+                                    <p>CPM: {!isCpmAndResultHidden && <span>{cpmObj.cpm.toFixed(2)}€</span>}
+                                        <button style={{marginLeft: 10}}>
+                                            <img src={hideImg} alt="hide" onClick={() => hideCpmAndResult()}/>
+                                        </button>
+                                    </p>
                                     <p>Average Instagram CPM: <span>5€ to 12€</span></p>
-                                    <p>Result: <span>{cpmObj.result}</span></p>
+                                    <p>Result: {!isCpmAndResultHidden && <span>{cpmObj.result}</span>}</p>
                                 </div>
                             </div>
 
