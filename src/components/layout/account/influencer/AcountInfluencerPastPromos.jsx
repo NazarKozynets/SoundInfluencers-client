@@ -5,9 +5,8 @@ import AltButton from "../../../form/AltButton";
 import UseVerify from "../../../../hooks/useVerify";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
-
 import arrow from "../../../../images/icons/arrow.svg";
-import instagram from "../../../../images/icons/socialMedias/instagram.png";
+import {getSocialMediaIcon} from "../../../../utils/typeOfSocialAccounts";
 
 function formatDate(inputDate) {
     const date = new Date(inputDate);
@@ -120,7 +119,7 @@ const AccountInfluencerPastPromos = () => {
                                                 className="account-client-past-promos-form-item-button">
                                                 <div
                                                     className="account-client-past-promos-form-item-button-inner-content">
-                                                    <img src={instagram} alt={"inst"}/>
+                                                    <img src={getSocialMediaIcon(item?.socialMedia)} alt={"inst"}/>
                                                     <p>{item?.campaignName?.length > 10 ? `${item.campaignName.slice(0, 10)}...` : item.campaignName}</p>
                                                 </div>
                                                 <span

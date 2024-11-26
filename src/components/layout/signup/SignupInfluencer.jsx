@@ -110,12 +110,12 @@ const SignupInfluencer = () => {
         dispatch(setCurrentAccountId(account._id));
         dispatch(setCurrentWindow(1));
     };
-    
+
     return (
         <section className="signup-influencer">
             <div className="container-form">
                 <div className="signup-influencer-block">
-                    <div>
+                    <div className="signup-influencer-title">
                         <TitleSection
                             title="Add Your details here"
                         />
@@ -123,7 +123,9 @@ const SignupInfluencer = () => {
                     </div>
 
                     <FormContainer style={{marginTop: "60px"}}>
-                        <TitleSection span='personal details'/>
+                        <div className='signup-influencer-title-first-form'>
+                            <TitleSection span='personal details'/>
+                        </div>
                         <TextInput title='First name' placeholder='Enter name'
                                    style={{maxWidth: '665px', margin: '77px auto 60px auto'}} value={data.firstName}
                                    setValue={(value) => dispatch(setFirstName(value))}/>
@@ -142,10 +144,13 @@ const SignupInfluencer = () => {
 
                     <FormContainer style={{marginTop: "100px"}}>
                         <div className='select-social-media'>
-                            <TitleSection span='brand account details'/>
+                            <div className="signup-influencer-title-second-form">
+                                <TitleSection span='brand account details'/>
+                            </div>
+                            
                             <p>Add at least one platform to submit your application</p>
 
-                            <ul className="social-medias-container">
+                            <ul className="  b">
                                 <li onClick={() => {
                                     dispatch(setSelectedSocialMedia('Instagram'));
                                     const id = generateMongoObjectId();

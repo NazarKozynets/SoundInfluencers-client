@@ -8,9 +8,7 @@ import {useNavigate} from "react-router-dom";
 import ModalWindow from "../../../ModalWindow";
 import StandardButton from "../../../form/StandardButton";
 import acceptIcon from "../../../../images/icons/accept.svg";
-
-import instagram from "../../../../images/icons/socialMedias/instagram.png";
-
+import {getSocialMediaIcon} from "../../../../utils/typeOfSocialAccounts";
 import arrow from "../../../../images/icons/arrow.svg";
 import Loading from "../../../form/PageLoading/pageLoading";
 
@@ -44,6 +42,7 @@ const AcountClientOngoingPromos = () => {
             );
             if (result.data.code === 200) {
                 setData(result.data.promos);
+                console.log(result.data.promos);
             }
         } catch (err) {
             console.log(err);
@@ -152,7 +151,7 @@ const AcountClientOngoingPromos = () => {
                                                     className="account-client-past-promos-form-item-button">
                                                     <div
                                                         className="account-client-past-promos-form-item-button-inner-content">
-                                                        <img src={instagram} alt={"inst"}/>
+                                                        <img src={getSocialMediaIcon(item?.socialMedia)} alt={"inst"}/>
                                                         <p>{item?.campaignName?.length > 10 ? `${item.campaignName.slice(0, 10)}...` : item.campaignName}</p>
                                                     </div>
                                                     <span

@@ -4,14 +4,11 @@ import FormContainer from "../../../form/FormContainer";
 import {useNavigate, useParams} from "react-router-dom";
 import axios from "axios";
 import UseVerify from "../../../../hooks/useVerify";
-import ResponseButton from "../../../form/ResponseButton";
 import StandardButton from "../../../form/StandardButton";
 import ImageWithFallback from "../../../ImageWithFallback";
 import altLogo from "../../../../images/alt-logo.jpg";
-import ModalWindow from "../../../ModalWindow";
-
 import arrow from "../../../../images/icons/arrow.svg";
-
+import {getSocialMedia} from "../../../../utils/typeOfSocialAccounts";
 
 const AcountInfluencerOngoingCurrent = () => {
     const params = useParams();
@@ -28,14 +25,16 @@ const AcountInfluencerOngoingCurrent = () => {
 
             if (result.data.code === 200) {
                 setData(result.data.promo);
-
                 const resultInfluencers = result.data.promo.selectInfluencers.map((influencer) => {
                     if (result.data.promo.videos && influencer.selectedVideo) {
                         const video = result.data.promo.videos.find(videoItem => videoItem.videoLink === influencer.selectedVideo);
 
                         return {
                             ...influencer,
-                            video: video || null
+                            video: video || null,
+                            campaignName: result.data.promo.campaignName,
+                            socialMedia: result.data.promo.socialMedia,
+                            client: result.data.promo.client,
                         };
                     }
                     return influencer;
@@ -53,10 +52,155 @@ const AcountInfluencerOngoingCurrent = () => {
     useEffect(() => {
         getData();
     }, []);
+    
+    const returnPostContent = (item) => {
+        if (item?.socialMedia === 'spotify' || item?.socialMedia === 'soundcloud') {
+            return (
+                <p>ss</p>
+            );
+        } else if (item?.socialMedia === 'press') {
+            return (
+                <div
+                    className="account-client-past-promos-form-current-content"
+                    style={{padding: "0 20px 30px 20px"}}
+                >
+                    <h2 className="account-client-past-promos-form-current-content-title">
+                        {item.campaignName ? item.campaignName : "Promo 1"}
+                    </h2>
+                    <p className="account-client-past-promos-form-current-content-client">
+                        {item ? getSocialMedia(item?.socialMedia) : "No Data"}:{" "}
+                        <span
+                            className="account-client-past-promos-form-current-content-client-value">
+                        {item ? item.instagramUsername : "No Data"}
+                      </span>
+                    </p>
+                    <p className="account-client-past-promos-form-current-content-client">
+                        Client:{" "}
+                        <span
+                            className="account-client-past-promos-form-current-content-client-value">
+                        {item ? item.client : "No Data"}
+                      </span>
+                    </p>
+                    <p className="account-client-past-promos-form-current-content-link">
+                        Link To Music / Event / News:{" "}
+                        <a
+                            href={item ? item.video?.videoLink : "No Data"}
+                            className="account-client-past-promos-form-current-content-link-value"
+                            target="_blank"
+                        >
+                            {item ? item.video?.videoLink.slice(0,10) + "..." : "No Data"}
+                        </a>
+                    </p>
 
-    useEffect(() => {
-        console.log(dataInfluencer, 'dataInfluencer');
-    }, [dataInfluencer]);
+                    <p className="account-client-past-promos-form-current-content-link">
+                        Link To Artwork & Press Shots:{" "}
+                        <a
+                            href={item ? item.video?.videoLink : "No Data"}
+                            className="account-client-past-promos-form-current-content-link-value"
+                            target="_blank"
+                        >
+                            {item ? item.video?.postDescription.slice(0,10) + "..." : "No Data"}
+                        </a>
+                    </p>
+                    <p className="account-client-past-promos-form-current-content-link">
+                        Link To Press Release:{" "}
+                        <a
+                            href={item ? item.video?.videoLink : "No Data"}
+                            className="account-client-past-promos-form-current-content-link-value"
+                            target="_blank"
+                        >
+                            {item ? item.video?.storyTag.slice(0,10) + "..." : "No Data"}
+                        </a>
+                    </p>
+                    <p className="account-client-past-promos-form-current-content-date">
+                        Date Request:{" "}
+                        <span
+                            className="account-client-past-promos-form-current-content-date-value">
+                        {item ? item.dateRequest : "No Data"}
+                      </span>
+                    </p>
+                    <p className="account-client-past-promos-form-current-content-wish">
+                        Special Requests:{" "}
+                        <span
+                            className="account-client-past-promos-form-current-content-wish-value">
+                        {item ? item.video?.specialWishes : "No Data"}
+                      </span>
+                    </p>
+                </div>
+            );
+        } else {
+            return (
+                <div
+                    className="account-client-past-promos-form-current-content"
+                    style={{padding: "0 20px 30px 20px"}}
+                >
+                    <h2 className="account-client-past-promos-form-current-content-title">
+                        {item?.campaignName ? item.campaignName : "Promo 1"}
+                    </h2>
+                    <p className="account-client-past-promos-form-current-content-client">
+                        {item ? getSocialMedia(item?.socialMedia) : "No Data"}:{" "}
+                        <span
+                            className="account-client-past-promos-form-current-content-client-value">
+                        {item ? item.instagramUsername : "No Data"}
+                      </span>
+                    </p>
+                    <p className="account-client-past-promos-form-current-content-client">
+                        Client:{" "}
+                        <span
+                            className="account-client-past-promos-form-current-content-client-value">
+                        {item ? item.client : "No Data"}
+                      </span>
+                    </p>
+                    <p className="account-client-past-promos-form-current-content-link">
+                        Videolink:{" "}
+                        <a
+                            href={item ? item.video?.videoLink : "No Data"}
+                            className="account-client-past-promos-form-current-content-link-value"
+                            target="_blank"
+                        >
+                            {item ? item.video?.videoLink : "No Data"}
+                        </a>
+                    </p>
+
+                    <p className="account-client-past-promos-form-current-content-desc">
+                        Description:{" "}
+                        <span
+                            className="account-client-past-promos-form-current-content-desc-value">
+                        {item ? item.video?.postDescription : "No Data"}
+                      </span>
+                    </p>
+                    <p className="account-client-past-promos-form-current-content-desc">
+                        Story Link:{" "}
+                        <span
+                            className="account-client-past-promos-form-current-content-desc-value">
+                        {item ? item.video?.swipeUpLink : "No Data"}
+                      </span>
+                    </p>
+                    <p className="account-client-past-promos-form-current-content-desc">
+                        Story Tag:{" "}
+                        <span
+                            className="account-client-past-promos-form-current-content-desc-value">
+                        {item ? item.video?.storyTag : "No Data"}
+                      </span>
+                    </p>
+                    <p className="account-client-past-promos-form-current-content-date">
+                        Date Request:{" "}
+                        <span
+                            className="account-client-past-promos-form-current-content-date-value">
+                        {item ? item.dateRequest : "No Data"}
+                      </span>
+                    </p>
+                    <p className="account-client-past-promos-form-current-content-wish">
+                        Special Requests:{" "}
+                        <span
+                            className="account-client-past-promos-form-current-content-wish-value">
+                        {item ? item.video?.specialWishes : "No Data"}
+                      </span>
+                    </p>
+                </div>
+            );
+        }
+    };
 
     return (
         <>
@@ -117,73 +261,7 @@ const AcountInfluencerOngoingCurrent = () => {
                                             fallbackSrc={altLogo}
                                         />
                                     </div>
-                                    <div
-                                        className="account-client-past-promos-form-current-content"
-                                        style={{padding: "0 20px 30px 20px"}}
-                                    >
-                                        <h2 className="account-client-past-promos-form-current-content-title">
-                                            Promo 1
-                                        </h2>
-                                        <p className="account-client-past-promos-form-current-content-client">
-                                            Instagram:{" "}
-                                            <span
-                                                className="account-client-past-promos-form-current-content-client-value">
-                        {params ? params.instagram : "No Data"}
-                      </span>
-                                        </p>
-                                        <p className="account-client-past-promos-form-current-content-client">
-                                            Client:{" "}
-                                            <span
-                                                className="account-client-past-promos-form-current-content-client-value">
-                        {data ? data.client : "No Data"}
-                      </span>
-                                        </p>
-                                        <p className="account-client-past-promos-form-current-content-link">
-                                            Videolink:{" "}
-                                            <a
-                                                href={dataInfluencer.length > 0 && dataInfluencer[0].video ? dataInfluencer[0].video.videoLink : "No Data"}
-                                                className="account-client-past-promos-form-current-content-link-value"
-                                                target="_blank"
-                                            >
-                                                {dataInfluencer.length > 0 && dataInfluencer[0].video ? dataInfluencer[0].video.videoLink : "N/A"}
-                                            </a>
-                                        </p>
-                                        <p className="account-client-past-promos-form-current-content-desc">
-                                            Description:{" "}
-                                            <span
-                                                className="account-client-past-promos-form-current-content-desc-value">
-        {dataInfluencer.length > 0 && dataInfluencer[0].video ? dataInfluencer[0].video.postDescription : "No Data"}
-    </span>
-                                        </p>
-                                        <p className="account-client-past-promos-form-current-content-date">
-                                            Date Request:{" "}
-                                            <span
-                                                className="account-client-past-promos-form-current-content-date-value">
-                        {data ? data.dateRequest : "No Data"}
-                      </span>
-                                        </p>
-                                        <p className="account-client-past-promos-form-current-content-date">
-                                            Story Tag:{" "}
-                                            <span
-                                                className="account-client-past-promos-form-current-content-date-value">
-                        {dataInfluencer.length > 0 && dataInfluencer[0].video ? dataInfluencer[0].video.storyTag : "No Data"}
-                      </span>
-                                        </p>
-                                        <p className="account-client-past-promos-form-current-content-date">
-                                            Story Link:{" "}
-                                            <span
-                                                className="account-client-past-promos-form-current-content-date-value">
-                        {dataInfluencer.length > 0 && dataInfluencer[0].video ? dataInfluencer[0].video.swipeUpLink : "No Data"}
-                      </span>
-                                        </p>
-                                        <p className="account-client-past-promos-form-current-content-wish">
-                                            Special Requests:{" "}
-                                            <span
-                                                className="account-client-past-promos-form-current-content-wish-value">
-        {dataInfluencer.length > 0 && dataInfluencer[0].video ? dataInfluencer[0].video.specialWishes : "No Data"}
-    </span>
-                                        </p>
-                                    </div>
+                                    {returnPostContent(dataInfluencer[0])}
                                 </div>
                                 <div
                                     style={{

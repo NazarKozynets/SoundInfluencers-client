@@ -1,13 +1,7 @@
 import React, {useEffect, useState} from "react";
 import ImageWithFallback from "../../../../../ImageWithFallback";
 import altLogo from "../../../../../../images/alt-logo.jpg";
-import instagram from "../../../../../../images/icons/instagram.svg";
-import tiktok from "../../../../../../images/icons/socialMedias/tiktok.png";
-import facebook from "../../../../../../images/icons/socialMedias/facebook.png";
-import youtube from "../../../../../../images/icons/socialMedias/youtube.png";
-import spotify from "../../../../../../images/icons/socialMedias/spotify.png";
-import soundcloud from "../../../../../../images/icons/socialMedias/soundcloud.png";
-import press from "../../../../../../images/icons/socialMedias/tablet.png";
+import {getSocialMediaIcon} from "../../../../../../utils/typeOfSocialAccounts";
 
 import {
     calculatePriceForOffersAndInfluencers,
@@ -107,27 +101,6 @@ const InfluencersList = ({influencers, activeIndices, setActiveIndices, selectIn
         }
     };
 
-    const getSocialMediaIcon = (socialMedia) => {
-        switch (socialMedia) {
-            case "instagram":
-                return instagram;
-            case "tiktok":
-                return tiktok;
-            case "facebook":
-                return facebook;
-            case "youtube":
-                return youtube;
-            case "spotify":
-                return spotify;
-            case "soundcloud":
-                return soundcloud;
-            case "press":
-                return press;
-            default:
-                return instagram;
-        }
-    }
-    
     return (
         <div>
             {isSearch ? (
@@ -159,6 +132,13 @@ const InfluencersList = ({influencers, activeIndices, setActiveIndices, selectIn
                                 src={influencers.logo}
                                 fallbackSrc={altLogo}
                                 className="account-client-choose-item-image"
+                                style={{
+                                    maxWidth: 60,
+                                    maxHeight: 60,
+                                    objectFit: 'cover',
+                                    borderRadius: '50%',
+                                    boxShadow: 'grey 0px 0px 10px'
+                                }}
                             />
                             <p className="account-client-choose-item-content-username">
                                 {influencers.instagramUsername}
@@ -275,6 +255,13 @@ const InfluencersList = ({influencers, activeIndices, setActiveIndices, selectIn
                                 src={item.logo}
                                 fallbackSrc={altLogo}
                                 className="account-client-choose-item-image"
+                                style={{
+                                    maxWidth: 60,
+                                    maxHeight: 60,
+                                    objectFit: 'cover',
+                                    borderRadius: '50%',
+                                    boxShadow: 'grey 0px 0px 10px'
+                                }}
                             />
                             <p className="account-client-choose-item-content-username">
                                 {item.instagramUsername}

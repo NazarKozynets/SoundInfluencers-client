@@ -1,3 +1,11 @@
+import instagram from "../images/icons/instagram.svg";
+import tiktok from "../images/icons/socialMedias/tiktok.png";
+import facebook from "../images/icons/socialMedias/facebook.png";
+import youtube from "../images/icons/socialMedias/youtube.png";
+import spotify from "../images/icons/socialMedias/spotify.png";
+import soundcloud from "../images/icons/socialMedias/soundcloud.png";
+import press from "../images/icons/socialMedias/tablet.png";
+
 export const typeOfAccounts = [
     {
         publicLink: "Instagram",
@@ -29,6 +37,44 @@ export const typeOfAccounts = [
     },
 ];
 
-export const getAccountType = (db) => {
-    return typeOfAccounts.find((account) => account.db === db).publicLink;
+export const getSocialMedia = (socialMedia) => {
+    switch (socialMedia) {
+        case "instagram":
+            return "Instagram";
+        case "tiktok":
+            return "TikTok";
+        case "facebook":
+            return "Facebook";
+        case "youtube":
+            return "YouTube";
+        case "spotify":
+            return "Spotify";
+        case "soundcloud":
+            return "Soundcloud";
+        case "press":
+            return "Press";
+        default:
+            return "Instagram";
+    }
+}
+
+export const getSocialMediaIcon = (socialMedia) => {
+    switch (socialMedia) {
+        case "instagram":
+            return instagram;
+        case "tiktok":
+            return tiktok;
+        case "facebook":
+            return facebook;
+        case "youtube":
+            return youtube;
+        case "spotify":
+            return spotify;
+        case "soundcloud":
+            return soundcloud;
+        case "press":
+            return press;
+        default:
+            return instagram;
+    }
 }

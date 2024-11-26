@@ -8,9 +8,7 @@ import axios from "axios";
 import ImageWithFallback from "../../../ImageWithFallback";
 import altLogo from "../../../../images/alt-logo.jpg";
 import StandardButton from "../../../form/StandardButton";
-
 import arrow from "../../../../images/icons/arrow.svg";
-
 
 const AcountClientPastPromosCurrent = () => {
     const params = useParams();

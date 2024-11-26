@@ -8,14 +8,11 @@ import {
     setCurrentWindow, setSocialMedia,
     updateSelectInfluencer, updateVideo
 } from "../../../../../redux/slice/create-promo";
-import checkImg from "../../../../../images/icons/check.svg";
-import Select, {components} from "react-select";
 import arrow from "../../../../../images/icons/arrow.svg";
 import watch from "../../../../../images/icons/view 1.svg"
 import edit from "../../../../../images/icons/edit 1.svg"
 import CustomSelect from "../../../../form/Offers/CampaignStrategySelect/CampaignStrategySelect";
 import ModalWindow from "../../../../ModalWindow";
-import FormContainer from "../../../../form/FormContainer";
 import TextInput from "../../../../form/TextInput";
 import TextArea from "../../../../form/TextArea";
 
@@ -89,13 +86,28 @@ const AccountClientCampaignStrategy = () => {
         }
     };
 
+    const returnPostName = () => {
+        if (socialMedia === "spotify" || socialMedia === "soundcloud") {
+            return "Song";
+        } else if (socialMedia === "press") {
+            return "Press Release";
+        } else {
+            return "Post Description";
+        }
+    }
+
+    const optionsForVideoColumn = dataPromo.videos.map((video, index) => ({
+        value: video.videoLink,
+        label: `${returnPostName()} ${index + 1}`
+    }));
+
     useEffect(() => {
         getSocialMediaAccounts();
     }, [dataPromo.selectInfluencers]);
 
     useEffect(() => {
         const initialSelectedVideos = dataPromo.selectInfluencers.reduce((acc, influencer) => {
-            acc[influencer.instagramUsername] = {value: 'Video 1', label: 'Select'};
+            acc[influencer.instagramUsername] = {value: `${returnPostName()} 1`, label: 'Select'};
             return acc;
         }, {});
 
@@ -138,7 +150,7 @@ const AccountClientCampaignStrategy = () => {
 
             const selectedVideo = selectedVideos[influencer.instagramUsername]?.value;
 
-            const videoLink = selectedVideo === "Video 1" && dataPromo.videos?.length > 0
+            const videoLink = selectedVideo === `${returnPostName()} 1` && dataPromo.videos?.length > 0
                 ? dataPromo.videos[0].videoLink
                 : null;
 
@@ -159,11 +171,6 @@ const AccountClientCampaignStrategy = () => {
         {value: "Before", label: 'Before'},
         {value: "After", label: 'After'},
     ];
-
-    const optionsForVideoColumn = dataPromo.videos.map((video, index) => ({
-        value: video.videoLink,
-        label: `Video ${index + 1}`
-    }));
 
     const handleDateChange = (influencerUsername, selectedOption) => {
         const newSelectedOptionDateRequest = {...selectedOptionDateRequest, [influencerUsername]: selectedOption};
@@ -289,7 +296,7 @@ const AccountClientCampaignStrategy = () => {
                     if (updatedSelectedVideos[user].value === video.videoLink) {
                         updatedSelectedVideos[user] = {
                             value: videoParams.videoLink,
-                            label: `Video ${videoIndex + 1}`
+                            label: `${returnPostName()} ${videoIndex + 1}`
                         };
                     }
                 });
@@ -297,6 +304,121 @@ const AccountClientCampaignStrategy = () => {
                 return updatedSelectedVideos;
             });
         };
+
+        const returnVideoContent = () => {
+            if (socialMedia === "spotify" || socialMedia === "soundcloud") {
+                return (
+                    <div>
+                        <TextInput
+                            title="Track Title"
+                            placeholder="Artist - Song Title"
+                            style={{marginTop: "30px"}}
+                            value={videoParams.postDescription}
+                            setValue={(value) => handleInputChange("postDescription", value)}
+                            silverColor={true}
+                        />
+                        <TextInput
+                            title={socialMedia === "spotify" ? "Spotify Track Link" : "Soundcloud Track Link"}
+                            placeholder={socialMedia === "spotify" ? "Enter spotify track link" : "Enter soundcloud track link"}
+                            style={{marginTop: "60px"}}
+                            value={videoParams.videoLink}
+                            setValue={(value) => handleInputChange("videoLink", value)}
+                            silverColor={true}
+                        />
+                        <TextArea
+                            title="Special Requests"
+                            placeholder="Enter special requests"
+                            style={{marginTop: "60px"}}
+                            value={videoParams.specialWishes}
+                            setValue={(value) => handleInputChange("specialWishes", value)}
+                            silverColor={true}
+                        />
+                    </div>
+                )
+            } else if (socialMedia === 'press') {
+                return (
+                    <div>
+                        <TextInput
+                            title="Link to Music, Events, News"
+                            placeholder="Enter link to music, events, news"
+                            style={{marginTop: "30px"}}
+                            value={videoParams.videoLink}
+                            setValue={(value) => handleInputChange("videoLink", value)}
+                            silverColor={true}
+                        />
+                        <TextArea
+                            title="Link to Artwork & Press Shots"
+                            placeholder="Enter link to artwork & press shots"
+                            style={{marginTop: "60px"}}
+                            value={videoParams.postDescription}
+                            setValue={(value) => handleInputChange("postDescription", value)}
+                            silverColor={true}
+                        />
+                        <TextInput
+                            title="Link to Press Release"
+                            placeholder="Enter link to press release"
+                            style={{marginTop: "60px"}}
+                            value={videoParams.storyTag}
+                            setValue={(value) => handleInputChange("storyTag", value)}
+                            silverColor={true}
+                        />
+                        <TextArea
+                            title="Special Requests"
+                            placeholder="Enter special requests"
+                            style={{marginTop: "60px"}}
+                            value={videoParams.specialWishes}
+                            setValue={(value) => handleInputChange("specialWishes", value)}
+                            silverColor={true}
+                        />
+                    </div>
+                )
+            } else {
+                return (
+                    <div>
+                        <TextInput
+                            title="Videolink"
+                            placeholder="Enter videolink"
+                            style={{marginTop: "30px"}}
+                            value={videoParams.videoLink}
+                            setValue={(value) => handleInputChange("videoLink", value)}
+                            silverColor={true}
+                        />
+                        <TextArea
+                            title="Post Description"
+                            placeholder="Enter description"
+                            style={{marginTop: "60px"}}
+                            value={videoParams.postDescription}
+                            setValue={(value) => handleInputChange("postDescription", value)}
+                            silverColor={true}
+                        />
+                        <TextInput
+                            title="Story Tag"
+                            placeholder="Enter story tag"
+                            style={{marginTop: "60px"}}
+                            value={videoParams.storyTag}
+                            setValue={(value) => handleInputChange("storyTag", value)}
+                            silverColor={true}
+                        />
+                        <TextInput
+                            title="Swipe Up Link"
+                            placeholder="Enter swipe up link"
+                            style={{marginTop: "60px"}}
+                            value={videoParams.swipeUpLink}
+                            setValue={(value) => handleInputChange("swipeUpLink", value)}
+                            silverColor={true}
+                        />
+                        <TextArea
+                            title="Special Requests"
+                            placeholder="Enter special requests"
+                            style={{marginTop: "60px"}}
+                            value={videoParams.specialWishes}
+                            setValue={(value) => handleInputChange("specialWishes", value)}
+                            silverColor={true}
+                        />
+                    </div>
+                )
+            }
+        }
 
         return (
             <div style={{marginTop: 25}}>
@@ -308,49 +430,10 @@ const AccountClientCampaignStrategy = () => {
                         textAlign: "center",
                     }}
                 >
-                    {`Video ${dataPromo.videos.findIndex(v => v.videoLink === video.videoLink) + 1}`}
+                    {`${returnPostName()} ${dataPromo.videos.findIndex(v => v.videoLink === video.videoLink) + 1}`}
                 </p>
                 <form style={{padding: 20}}>
-                    <TextInput
-                        title="Videolink"
-                        placeholder="Enter videolink"
-                        style={{marginTop: "30px"}}
-                        value={videoParams.videoLink}
-                        setValue={(value) => handleInputChange("videoLink", value)}
-                        silverColor={true}
-                    />
-                    <TextArea
-                        title="Post Description"
-                        placeholder="Enter description"
-                        style={{marginTop: "60px"}}
-                        value={videoParams.postDescription}
-                        setValue={(value) => handleInputChange("postDescription", value)}
-                        silverColor={true}
-                    />
-                    <TextInput
-                        title="Story Tag"
-                        placeholder="Enter story tag"
-                        style={{marginTop: "60px"}}
-                        value={videoParams.storyTag}
-                        setValue={(value) => handleInputChange("storyTag", value)}
-                        silverColor={true}
-                    />
-                    <TextInput
-                        title="Swipe Up Link"
-                        placeholder="Enter swipe up link"
-                        style={{marginTop: "60px"}}
-                        value={videoParams.swipeUpLink}
-                        setValue={(value) => handleInputChange("swipeUpLink", value)}
-                        silverColor={true}
-                    />
-                    <TextArea
-                        title="Special Requests"
-                        placeholder="Enter special requests"
-                        style={{marginTop: "60px"}}
-                        value={videoParams.specialWishes}
-                        setValue={(value) => handleInputChange("specialWishes", value)}
-                        silverColor={true}
-                    />
+                    {returnVideoContent()}
                     <StandardButton text="Save" style={{
                         width: "100%",
                         marginTop: 20,
@@ -417,7 +500,7 @@ const AccountClientCampaignStrategy = () => {
                                 {showMore && <th>Genres</th>}
                                 {showMore && <th>Top 5 Countries</th>}
                                 <th>Date Request</th>
-                                <th>Video</th>
+                                <th>{returnPostName()}</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -487,7 +570,7 @@ const AccountClientCampaignStrategy = () => {
                                                 setSelectedOption={(selectedOption) => handleVideoChange(influencer.instagramUsername, selectedOption)}
                                                 options={optionsForVideoColumn}
                                             />
-                                            {selectedVideos[influencer.instagramUsername] && selectedVideos[influencer.instagramUsername].value && selectedVideos[influencer.instagramUsername].value !== 'Video 1' && (
+                                            {selectedVideos[influencer.instagramUsername] && selectedVideos[influencer.instagramUsername].value && selectedVideos[influencer.instagramUsername].value !== `${returnPostName()} 1` && (
                                                 <button
                                                     onClick={() => {
                                                         const video = dataPromo.videos.find(video => video.videoLink === selectedVideos[influencer.instagramUsername].value);
@@ -598,7 +681,7 @@ const AccountClientCampaignStrategy = () => {
                                                 setSelectedOption={(selectedOption) => handleVideoChange(influencer.instagramUsername, selectedOption)}
                                                 options={optionsForVideoColumn}
                                             />
-                                            {selectedVideos[influencer.instagramUsername] && selectedVideos[influencer.instagramUsername].value && selectedVideos[influencer.instagramUsername].value !== 'Video 1' && (
+                                            {selectedVideos[influencer.instagramUsername] && selectedVideos[influencer.instagramUsername].value && selectedVideos[influencer.instagramUsername].value !== `${returnPostName()} 1` && (
                                                 <button
                                                     className="account-client-campaign-strategy-mobile-table-row-content-video-edit-button"
                                                     onClick={() => {
@@ -628,7 +711,7 @@ const AccountClientCampaignStrategy = () => {
                                                 </button>
                                             )}
                                         </div>
-                                        <p>Video</p>
+                                        <p>{returnPostName()}</p>
                                     </div>
                                 </td>
                             </tr>

@@ -6,9 +6,9 @@ export function calculatePriceForOffersAndInfluencers(price, currentCurrency) {
         case "€":
             return priceWithoutCurrency;
         case "£":
-            return Math.round(0.8559 * priceWithoutCurrency);
+            return Math.round(0.8313 * priceWithoutCurrency);
         case "$":
-            return Math.round(1.10 * priceWithoutCurrency);
+            return Math.round(1.042 * priceWithoutCurrency);
         default:
             return priceWithoutCurrency;
     }

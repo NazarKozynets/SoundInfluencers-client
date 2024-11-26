@@ -1,0 +1,36 @@
+.search-country-block {
+    position: relative; 
+    min-height: 50px; 
+    
+    @media (max-width: 600px) {
+        width: 70%; 
+    }
+}
+
+.input {
+    margin-bottom: 10px; 
+}
+
+.search-result-container {
+    position: absolute; 
+    top: 93%; 
+    left: 2%;
+    width: 100%; 
+    background: white; 
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.3); 
+    z-index: 10; 
+    max-height: 200px; 
+    overflow-y: auto; 
+    border-radius: 20px;
+}
+
+.search-result {
+    padding: 10px;
+    cursor: pointer;
+    font-family: Geometria;
+    font-weight: 500;
+}
+
+.search-result:hover {
+    background-color: #f0f0f0; 
+}

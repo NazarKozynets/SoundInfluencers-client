@@ -13,6 +13,8 @@ import InputFile from "../../form/InputFile";
 import StandardButton from "../../form/StandardButton";
 import axios from "axios";
 import SelectCurrency from "../../form/SelectCurrency/selectCurrency";
+import SearchBar from "../../form/SearchBar/SearchBar";
+import SearchCountry from "../../form/SearchCountry/SearchCountry";
 
 const SignupInfluencerModalSocialMediaDetails = () => {
     const data = useSelector((state) => state.signupInfluencer);
@@ -69,14 +71,14 @@ const SignupInfluencerModalSocialMediaDetails = () => {
             }
 
             for (let i = 0; i < accountDetails.musicStyleOther.length; i++) {
-                if (accountDetails.musicStyleOther[i] !== "House") { 
+                if (accountDetails.musicStyleOther[i] !== "House") {
                     genresSet.add(accountDetails.musicStyleOther[i]);
                 }
             }
         }
 
         setSelectedGenres(Array.from(genresSet));
-        
+
         if (accountDetails.countries && accountDetails.countries.length > 0) {
             setSelectedCountries(accountDetails.countries);
         }
@@ -201,9 +203,9 @@ const SignupInfluencerModalSocialMediaDetails = () => {
     const convertToEuro = () => {
         switch (selectedCurrency) {
             case "$":
-                return accountDetails.price = accountDetails.price * 0.85;
+                return accountDetails.price = Math.floor(accountDetails.price * 0.96);
             case "£":
-                return accountDetails.price = accountDetails.price * 1.17;
+                return accountDetails.price = Math.floor(accountDetails.price * 1.25);
             default:
                 return accountDetails.price;
         }
@@ -334,7 +336,9 @@ const SignupInfluencerModalSocialMediaDetails = () => {
                 <button onClick={() => prevPage()}>
                     <img src={backBtn} style={{transform: "rotate(180deg)"}}/>
                 </button>
-                <TitleSection title='Add your' span={data.selectedSocialMedia + ' account details'}/>
+                <div className="signup-influencer-title"> 
+                    <TitleSection title='Add your' span={data.selectedSocialMedia + ' account details'}/>
+                </div>
             </div>
             <div className="container-form">
                 <div className='signup-influencer-block'>
@@ -403,68 +407,68 @@ const SignupInfluencerModalSocialMediaDetails = () => {
                                         <div className='countries-container'>
                                             <div className='country'>
                                                 <span>#1</span>
-                                                <TextInput style={{padding: '13px 10px', width: '30%'}}
-                                                           silverColor={true}
-                                                           placeholder='19.4%'
-                                                           value={selectedCountries[0]?.percentage}
-                                                           setValue={(value) => handleCountryChange(0, "percentage", value)}/>
-                                                <TextInput style={{padding: '13px 10px'}}
-                                                           silverColor={true}
-                                                           value={selectedCountries[0]?.country}
-                                                           setValue={(value) => handleCountryChange(0, "country", value)}
-                                                           placeholder='United States'/>
+                                                    <TextInput style={{padding: '13px 10px', width: window.innerWidth < 768 ? '15%' : '30%'}}
+                                                               silverColor={true}
+                                                               placeholder='19.4%'
+                                                               value={selectedCountries[0]?.percentage}
+                                                               setValue={(value) => handleCountryChange(0, "percentage", value)}/>
+                                                    <div style={{marginTop: 10}}>
+                                                        <SearchCountry indexOfSelectingCountry={0}
+                                                                       handleCountryChange={handleCountryChange}
+                                                                       selectedCountries={selectedCountries}/>
+                                                    </div>
                                             </div>
                                             <div className='country'>
                                                 <span>#2</span>
-                                                <TextInput style={{padding: '13px 10px', width: '30%'}}
+                                                <TextInput style={{padding: '13px 10px', width: window.innerWidth < 768 ? '15%' : '30%'}}
                                                            silverColor={true}
                                                            placeholder='9.4%'
                                                            value={selectedCountries[1]?.percentage}
                                                            setValue={(value) => handleCountryChange(1, "percentage", value)}/>
-                                                <TextInput style={{padding: '13px 10px'}}
-                                                           silverColor={true}
-                                                           value={selectedCountries[1]?.country}
-                                                           setValue={(value) => handleCountryChange(1, "country", value)}
-                                                           placeholder='United Kingdom'/>
+                                                <div style={{marginTop: 10}}>
+                                                    <SearchCountry indexOfSelectingCountry={1}
+                                                                   handleCountryChange={handleCountryChange}
+                                                                   selectedCountries={selectedCountries}/>
+                                                </div>
                                             </div>
                                             <div className='country'>
                                                 <span>#3</span>
-                                                <TextInput style={{padding: '13px 10px', width: '30%'}}
+                                                <TextInput style={{padding: '13px 10px', width: window.innerWidth < 768 ? '15%' : '30%'}}
                                                            silverColor={true}
                                                            value={selectedCountries[2]?.percentage}
                                                            setValue={(value) => handleCountryChange(2, "percentage", value)}
                                                            placeholder='4.4%'/>
-                                                <TextInput style={{padding: '13px 10px'}}
-                                                           silverColor={true}
-                                                           value={selectedCountries[2]?.country}
-                                                           setValue={(value) => handleCountryChange(2, "country", value)}
-                                                           placeholder='Germany'/>
+                                                <div style={{marginTop: 10}}>
+                                                    <SearchCountry indexOfSelectingCountry={2}
+                                                                   handleCountryChange={handleCountryChange}
+                                                                   selectedCountries={selectedCountries}/>
+                                                </div>
                                             </div>
                                             <div className='country'>
                                                 <span>#4</span>
-                                                <TextInput style={{padding: '13px 10px', width: '30%'}}
+                                                <TextInput style={{padding: '13px 10px', width: window.innerWidth < 768 ? '15%' : '30%'}}
                                                            silverColor={true}
                                                            value={selectedCountries[3]?.percentage}
                                                            setValue={(value) => handleCountryChange(3, "percentage", value)}
                                                            placeholder='3.4%'/>
-                                                <TextInput style={{padding: '13px 10px'}}
-                                                           silverColor={true}
-                                                           value={selectedCountries[3]?.country}
-                                                           setValue={(value) => handleCountryChange(3, "country", value)}
-                                                           placeholder='Italy'/>
+                                                <div style={{marginTop: 10}}>
+                                                    <SearchCountry indexOfSelectingCountry={3}
+                                                                   handleCountryChange={handleCountryChange}
+                                                                   selectedCountries={selectedCountries}/>
+                                                </div>
                                             </div>
                                             <div className='country'>
                                                 <span>#5</span>
-                                                <TextInput style={{padding: '13px 10px', width: '30%'}}
+                                                <TextInput style={{padding: '13px 10px', width: window.innerWidth < 768 ? '15%' : '30%'}}
                                                            silverColor={true}
                                                            value={selectedCountries[4]?.percentage}
                                                            setValue={(value) => handleCountryChange(4, "percentage", value)}
                                                            placeholder='1.4%'/>
-                                                <TextInput style={{padding: '13px 10px'}}
-                                                           silverColor={true}
-                                                           value={selectedCountries[4]?.country}
-                                                           setValue={(value) => handleCountryChange(4, "country", value)}
-                                                           placeholder='Spain'/>
+                                                <div style={{marginTop: 10}}>
+                                                    <SearchCountry indexOfSelectingCountry={4}
+                                                                   handleCountryChange={handleCountryChange}
+                                                                   selectedCountries={selectedCountries}/>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -473,7 +477,7 @@ const SignupInfluencerModalSocialMediaDetails = () => {
 
                             <div className="price-input-container">
                                 <p id='price-input-title'>{returnPriceInput()}</p>
-                                <div style={{display: 'flex', alignItems: 'center', gap: 20}}>
+                                <div className="price-input-container-block">
                                     <div id="price-input-field">
                                         <input type="text" placeholder='50'
                                                value={accountDetails.price}

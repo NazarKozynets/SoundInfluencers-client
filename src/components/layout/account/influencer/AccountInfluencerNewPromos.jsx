@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import TitleSection from "../../../TitleSection";
 import FormContainer from "../../../form/FormContainer";
-import {useNavigate, useParams} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import axios from "axios";
 import UseVerify from "../../../../hooks/useVerify";
 import acceptIcon from "../../../../images/icons/accept.svg";
@@ -10,7 +10,7 @@ import ModalWindow from "../../../ModalWindow";
 import StandardButton from "../../../form/StandardButton";
 import ImageWithFallback from "../../../ImageWithFallback";
 import altLogo from "../../../../images/alt-logo.jpg";
-
+import {getSocialMedia} from "../../../../utils/typeOfSocialAccounts";
 import arrow from "../../../../images/icons/arrow.svg";
 
 const AcountInfluencerNewPromos = () => {
@@ -48,9 +48,7 @@ const AcountInfluencerNewPromos = () => {
             console.log(err);
         }
     };
-
-
-
+    
     const responsePromo = async (id, res, instagramUsername) => {
         if (!id || !res || !instagramUsername || isProcessing) return;
         setIsProcessing(true);
@@ -68,6 +66,200 @@ const AcountInfluencerNewPromos = () => {
         } finally {
             setIsProcessing(false);
         }
+    };
+    
+    const returnPostContent = (item, index) => {
+      if (item?.socialMedia === 'spotify' || item?.socialMedia === 'soundcloud') {
+          return (
+              <div
+                  className="account-client-past-promos-form-current-content"
+                  style={{padding: "0 20px 30px 20px"}}
+              >
+                  <h2 className="account-client-past-promos-form-current-content-title">
+                      {item?.campaignName ? item.campaignName : `PROMO ${index + 1}`}
+                  </h2>
+                  <p className="account-client-past-promos-form-current-content-client">
+                      {item ? getSocialMedia(item?.socialMedia) : "No Data"}:{" "}
+                      <span
+                          className="account-client-past-promos-form-current-content-client-value">
+                        {item ? item.instagramUsername : "No Data"}
+                      </span>
+                  </p>
+                  <p className="account-client-past-promos-form-current-content-client">
+                      Client:{" "}
+                      <span
+                          className="account-client-past-promos-form-current-content-client-value">
+                        {item ? item.client : "No Data"}
+                      </span>
+                  </p>
+                  <p className="account-client-past-promos-form-current-content-link">
+                      {getSocialMedia(item?.socialMedia)} Track Link:{" "}
+                      <a
+                          href={item ? item.video?.videoLink : "No Data"}
+                          className="account-client-past-promos-form-current-content-link-value"
+                          target="_blank"
+                      >
+                          {item ? item.video?.videoLink : "No Data"}
+                      </a>
+                  </p>
+                  <p className="account-client-past-promos-form-current-content-date">
+                      Date Request:{" "}
+                      <span
+                          className="account-client-past-promos-form-current-content-date-value">
+                        {item ? item.dateRequest : "No Data"}
+                      </span>
+                  </p>
+                  <p className="account-client-past-promos-form-current-content-wish">
+                      Special Requests:{" "}
+                      <span
+                          className="account-client-past-promos-form-current-content-wish-value">
+                        {item ? item.video?.specialWishes : "No Data"}
+                      </span>
+                  </p>
+              </div>
+          );
+      } else if (item?.socialMedia === 'press') {
+          return (
+              <div
+                  className="account-client-past-promos-form-current-content"
+                  style={{padding: "0 20px 30px 20px"}}
+              >
+                  <h2 className="account-client-past-promos-form-current-content-title">
+                      {item?.campaignName ? item.campaignName : `PROMO ${index + 1}`}
+                  </h2>
+                  <p className="account-client-past-promos-form-current-content-client">
+                      {item ? getSocialMedia(item?.socialMedia) : "No Data"}:{" "}
+                      <span
+                          className="account-client-past-promos-form-current-content-client-value">
+                        {item ? item.instagramUsername : "No Data"}
+                      </span>
+                  </p>
+                  <p className="account-client-past-promos-form-current-content-client">
+                      Client:{" "}
+                      <span
+                          className="account-client-past-promos-form-current-content-client-value">
+                        {item ? item.client : "No Data"}
+                      </span>
+                  </p>
+                  <p className="account-client-past-promos-form-current-content-link">
+                      Link To Music / Event / News:{" "}
+                      <a
+                          href={item ? item.video?.videoLink : "No Data"}
+                          className="account-client-past-promos-form-current-content-link-value"
+                          target="_blank"
+                      >
+                          {item ? item.video?.videoLink.slice(0, 10) + "..." : "No Data"}
+                      </a>
+                  </p>
+
+                  <p className="account-client-past-promos-form-current-content-link">
+                      Link To Artwork & Press Shots:{" "}
+                      <a
+                          href={item ? item.video?.videoLink : "No Data"}
+                          className="account-client-past-promos-form-current-content-link-value"
+                          target="_blank"
+                      >
+                          {item ? item.video?.postDescription.slice(0, 10) + "..." : "No Data"}
+                      </a>
+                  </p>
+                  <p className="account-client-past-promos-form-current-content-link">
+                      Link To Press Release:{" "}
+                      <a
+                          href={item ? item.video?.videoLink : "No Data"}
+                          className="account-client-past-promos-form-current-content-link-value"
+                          target="_blank"
+                      >
+                          {item ? item.video?.storyTag.slice(0, 10) + "..." : "No Data"}
+                      </a>
+                  </p>
+                  <p className="account-client-past-promos-form-current-content-date">
+                      Date Request:{" "}
+                      <span
+                          className="account-client-past-promos-form-current-content-date-value">
+                        {item ? item.dateRequest : "No Data"}
+                      </span>
+                  </p>
+                  <p className="account-client-past-promos-form-current-content-wish">
+                      Special Requests:{" "}
+                      <span
+                          className="account-client-past-promos-form-current-content-wish-value">
+                        {item ? item.video?.specialWishes : "No Data"}
+                      </span>
+                  </p>
+              </div>
+          );
+      } else {
+          return (
+              <div
+                  className="account-client-past-promos-form-current-content"
+                  style={{padding: "0 20px 30px 20px"}}
+              >
+                  <h2 className="account-client-past-promos-form-current-content-title">
+                      {item?.campaignName ? item.campaignName : `PROMO ${index + 1}`}
+                  </h2>
+                  <p className="account-client-past-promos-form-current-content-client">
+                      {item ? getSocialMedia(item?.socialMedia) : "No Data"}:{" "}
+                      <span
+                          className="account-client-past-promos-form-current-content-client-value">
+                        {item ? item.instagramUsername : "No Data"}
+                      </span>
+                  </p>
+                  <p className="account-client-past-promos-form-current-content-client">
+                      Client:{" "}
+                      <span
+                          className="account-client-past-promos-form-current-content-client-value">
+                        {item ? item.client : "No Data"}
+                      </span>
+                  </p>
+                  <p className="account-client-past-promos-form-current-content-link">
+                      Videolink:{" "}
+                      <a
+                          href={item ? item.video?.videoLink : "No Data"}
+                          className="account-client-past-promos-form-current-content-link-value"
+                          target="_blank"
+                      >
+                          {item ? item.video?.videoLink : "No Data"}
+                      </a>
+                  </p>
+
+                  <p className="account-client-past-promos-form-current-content-desc">
+                      Description:{" "}
+                      <span
+                          className="account-client-past-promos-form-current-content-desc-value">
+                        {item ? item.video?.postDescription : "No Data"}
+                      </span>
+                  </p>
+                  <p className="account-client-past-promos-form-current-content-desc">
+                      Story Link:{" "}
+                      <span
+                          className="account-client-past-promos-form-current-content-desc-value">
+                        {item ? item.video?.swipeUpLink : "No Data"}
+                      </span>
+                  </p>
+                  <p className="account-client-past-promos-form-current-content-desc">
+                      Story Tag:{" "}
+                      <span
+                          className="account-client-past-promos-form-current-content-desc-value">
+                        {item ? item.video?.storyTag : "No Data"}
+                      </span>
+                  </p>
+                  <p className="account-client-past-promos-form-current-content-date">
+                      Date Request:{" "}
+                      <span
+                          className="account-client-past-promos-form-current-content-date-value">
+                        {item ? item.dateRequest : "No Data"}
+                      </span>
+                  </p>
+                  <p className="account-client-past-promos-form-current-content-wish">
+                      Special Requests:{" "}
+                      <span
+                          className="account-client-past-promos-form-current-content-wish-value">
+                        {item ? item.video?.specialWishes : "No Data"}
+                      </span>
+                  </p>
+              </div>
+          );
+      }
     };
 
     useEffect(() => {
@@ -133,74 +325,7 @@ const AcountInfluencerNewPromos = () => {
                                             fallbackSrc={altLogo}
                                         />
                                     </div>
-                                    <div
-                                        className="account-client-past-promos-form-current-content"
-                                        style={{padding: "0 20px 30px 20px"}}
-                                    >
-                                        <h2 className="account-client-past-promos-form-current-content-title">
-                                            Promo {index + 1}
-                                        </h2>
-                                        <p className="account-client-past-promos-form-current-content-client">
-                                            Instagram:{" "}
-                                            <span
-                                                className="account-client-past-promos-form-current-content-client-value">
-                        {item ? item.instagramUsername : "No Data"}
-                      </span>
-                                        </p>
-                                        <p className="account-client-past-promos-form-current-content-client">
-                                            Client:{" "}
-                                            <span
-                                                className="account-client-past-promos-form-current-content-client-value">
-                        {item ? item.client : "No Data"}
-                      </span>
-                                        </p>
-                                        <p className="account-client-past-promos-form-current-content-link">
-                                            Videolink:{" "}
-                                            <a
-                                                href={item ? item.video?.videoLink : "No Data"}
-                                                className="account-client-past-promos-form-current-content-link-value"
-                                                target="_blank"
-                                            >
-                                                {item ? item.video?.videoLink : "No Data"}
-                                            </a>
-                                        </p>
-
-                                        <p className="account-client-past-promos-form-current-content-desc">
-                                            Description:{" "}
-                                            <span
-                                                className="account-client-past-promos-form-current-content-desc-value">
-                        {item ? item.video?.postDescription : "No Data"}
-                      </span>
-                                        </p>
-                                        <p className="account-client-past-promos-form-current-content-desc">
-                                            Story Link:{" "}
-                                            <span
-                                                className="account-client-past-promos-form-current-content-desc-value">
-                        {item ? item.video?.swipeUpLink : "No Data"}
-                      </span>
-                                        </p>
-                                        <p className="account-client-past-promos-form-current-content-desc">
-                                            Story Tag:{" "}
-                                            <span
-                                                className="account-client-past-promos-form-current-content-desc-value">
-                        {item ? item.video?.storyTag : "No Data"}
-                      </span>
-                                        </p>
-                                        <p className="account-client-past-promos-form-current-content-date">
-                                            Date Request:{" "}
-                                            <span
-                                                className="account-client-past-promos-form-current-content-date-value">
-                        {item ? item.dateRequest : "No Data"}
-                      </span>
-                                        </p>
-                                        <p className="account-client-past-promos-form-current-content-wish">
-                                            Special Requests:{" "}
-                                            <span
-                                                className="account-client-past-promos-form-current-content-wish-value">
-                        {item ? item.video?.specialWishes : "No Data"}
-                      </span>
-                                        </p>
-                                    </div>
+                                    {returnPostContent(item, index)}
                                 </div>
                                 <ResponseButton
                                     onClickYes={() => {

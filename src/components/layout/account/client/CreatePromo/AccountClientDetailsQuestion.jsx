@@ -9,12 +9,14 @@ import {
     setSelectPrice, setSelectPriceInfluencers
 } from "../../../../../redux/slice/create-promo";
 import {useDispatch, useSelector} from "react-redux";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 
 const AccountClientDetailsQuestion = () => {
     const dispatch = useDispatch();
     const navigation = useNavigate();
 
+    const {socialMedia} = useParams();
+    
     const selectPrice = useSelector((state) => state.createPromo.data.selectPrice);
     const data = useSelector((state) => state.createPromo.data);
     
@@ -39,6 +41,18 @@ const AccountClientDetailsQuestion = () => {
         dispatch(setClearCampaignDetails());
     };
 
+    const returnTitle = () => {
+        let obj = {title: '', span: ''};
+        if (socialMedia === "spotify" || socialMedia === "soundcloud") {
+            obj.title = 'submit';
+            obj.span = 'this song';
+        } else {
+            obj.title = 'post';
+            obj.span = 'this content';
+        }
+        return obj;
+    }
+
     return (
         <section className="account-client">
             <div className="account-client-back-button">
@@ -50,7 +64,7 @@ const AccountClientDetailsQuestion = () => {
             </div>
             <div className="container-form-details-question">
                 <div className="container-form-details-question-title">
-                    <TitleSection title="post" span="this content"/>
+                    <TitleSection title={returnTitle().title} span={returnTitle().span}/>
                 </div>
                 <div className="container-form-details-question-form">
                     <FormContainer style={{marginTop: "60px"}} >

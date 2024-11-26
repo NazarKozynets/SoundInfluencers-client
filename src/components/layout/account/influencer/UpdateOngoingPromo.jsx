@@ -30,7 +30,6 @@ const UpdateOngoingPromo = () => {
     });
 
     const [screenshot, setScreenshot] = useState(null);
-    const [isWindow, setIsWindow] = useState(false);
     const [isWindowTwo, setIsWindowTwo] = useState(false);
 
     const getData = async () => {
