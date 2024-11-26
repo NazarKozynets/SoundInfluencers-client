@@ -172,16 +172,16 @@ const PromoShare = () => {
                         <p>Price: <span>{dataPromo?.amount}{dataPromo?.currency}</span></p>
                         <p>Posts & Stories: <span>{dataPromo?.selectInfluencers.length}</span></p>
                     </div>
-                    <div className="report-details-second">
+                    <div className="report-details-third">
                         <p>Combined Followers: <span>{totalFollowers()}</span></p>
                         <p>Impressions: <span>{totalImpressions()}</span></p>
                         <p>Likes: <span>{totalLikes()}</span></p>
                     </div>
-                    <div className="report-details-third">
-                        <p>CPM: <span>{cpmObj.cpm.toFixed(2)}€</span></p>
-                        <p>Average Instagram CPM: <span>5€ to 12€</span></p>
-                        <p>Result: <span>{cpmObj.result}</span></p>
-                    </div>
+                    {/*<div className="report-details-third">*/}
+                    {/*    <p>CPM: <span>{cpmObj.cpm.toFixed(2)}€</span></p>*/}
+                    {/*    <p>Average Instagram CPM: <span>5€ to 12€</span></p>*/}
+                    {/*    <p>Result: <span>{cpmObj.result}</span></p>*/}
+                    {/*</div>*/}
                 </div>
 
                 <table className="report-table">
