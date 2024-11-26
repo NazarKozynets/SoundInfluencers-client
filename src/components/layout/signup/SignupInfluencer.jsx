@@ -38,6 +38,8 @@ const SignupInfluencer = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isSocialAccountsModalOpen, setIsSocialAccountsModalOpen] = useState(false);
 
+    const [errorcreate, setErrorCreate] = useState('');
+    
     useEffect(() => {
         setIsReadyToApply(checkIfReadyToApply());
     }, [data]);
@@ -92,6 +94,8 @@ const SignupInfluencer = () => {
                 }
             );
 
+            console.log(result);
+            
             if (result.data.code === 201) {
                 setIsErrorAfterSubmit(false);
                 setIsReadyToApply(false);
@@ -99,6 +103,7 @@ const SignupInfluencer = () => {
                 setIsModalOpen(true);
             } else {
                 setIsErrorAfterSubmit(true);
+                setErrorCreate(result.data.message);
             }
         } catch (error) {
             setIsErrorAfterSubmit(true);
@@ -328,6 +333,7 @@ const SignupInfluencer = () => {
                     {isErrorAfterSubmit && (
                         <div className="error-message">
                             <p>There was an error adding the account. Please try again.</p>
+                            <p>{errorcreate}</p>
                         </div>
                     )}
 
