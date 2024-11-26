@@ -150,7 +150,7 @@ const SignupInfluencer = () => {
                             
                             <p>Add at least one platform to submit your application</p>
 
-                            <ul className="  b">
+                            <ul className="social-medias-container">
                                 <li onClick={() => {
                                     dispatch(setSelectedSocialMedia('Instagram'));
                                     const id = generateMongoObjectId();
