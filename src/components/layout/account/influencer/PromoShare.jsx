@@ -303,7 +303,7 @@ const PromoShare = () => {
                     </>) : null}
                     <tr className="report-table-body-total">
                         <td className="report-table-body-total-price">
-                            TOTAL: {dataPromo ? dataPromo.selectPrice.price : 0}€
+                            TOTAL: {dataPromo ? dataPromo.amount : 0}€
                         </td>
 
                         <td className="report-table-body-total-row-item" style={{
