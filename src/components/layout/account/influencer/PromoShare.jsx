@@ -178,9 +178,9 @@ const PromoShare = () => {
                         <p>Likes: <span>{totalLikes()}</span></p>
                     </div>
                     <div className="report-details-third">
-                        <p>CPM: <span>{cpmObj.cpm.toFixed(2)}€</span></p>
+                        <p>CPM: {!dataPromo?.isCpmAndResultHidden && <span>{cpmObj.cpm.toFixed(2)}€</span>}</p>
                         <p>Average Instagram CPM: <span>5€ to 12€</span></p>
-                        <p>Result: <span>{cpmObj.result}</span></p>
+                        <p>Result: {!dataPromo?.isCpmAndResultHidden && <span>{cpmObj.result}</span>}</p>
                     </div>
                 </div>
 
@@ -303,7 +303,7 @@ const PromoShare = () => {
                     </>) : null}
                     <tr className="report-table-body-total">
                         <td className="report-table-body-total-price">
-                            TOTAL: {dataPromo ? dataPromo.selectPrice.price : 0}€
+                            TOTAL: {dataPromo ? dataPromo.amount : 0}€
                         </td>
 
                         <td className="report-table-body-total-row-item" style={{
