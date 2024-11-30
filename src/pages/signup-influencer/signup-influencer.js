@@ -16,7 +16,11 @@ const SignupInfluencerPage = () => {
             dispatch(setCurrentWindow(0));
         };
     }, []);
-    
+
+    useEffect(() => {
+        window.scrollTo(0, 0); 
+    }, [currentWindow]);
+
     return (
         <>
             <Header userType="client" path="Influencer" page="signup"/>

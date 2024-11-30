@@ -256,37 +256,39 @@ const SignupInfluencerModalSocialMediaDetails = () => {
     const addAccountToAttached = async () => {
         const {musicStyle, musicSubStyles, musicStyleOther} = filterMusicGenres();
 
-        const formData = new FormData();
-        formData.append('file', accountDetails.logo);
-        const response = await axios.post(
-            `${process.env.REACT_APP_SERVER}/promos/uploadScreenshot`,
-            formData,
-            {headers: {"Content-Type": "multipart/form-data"}}
-        );
-
+        let logoUrl = accountDetails.logo ? accountDetails.logo : null;
+        
+        if (imageUrl && imageUrl !== accountDetails.logo) {
+            const formData = new FormData();
+            formData.append('file', accountDetails.logo);
+            const response = await axios.post(
+                `${process.env.REACT_APP_SERVER}/promos/uploadScreenshot`,
+                formData,
+                {headers: {"Content-Type": "multipart/form-data"}}
+            );
+            if (response.data.code === 200) {
+                logoUrl = response.data.data;
+            }
+        }
+        
         convertToEuro();
 
-        if (response.data.code === 200) {
-            dispatch(updateCurrentAccountId({
-                ...accountDetails,
-                logo: response.data.data,
-                countries: selectedCountries,
-                musicStyle: musicStyle,
-                musicSubStyles: musicSubStyles || [],
-                musicStyleOther: musicStyleOther || [],
-            }));
-            dispatch(setCurrentWindow(0));
-        } else {
-            setIsErrorAfterSubmit(true);
-            console.log("Error uploading logo");
-        }
+        dispatch(updateCurrentAccountId({
+            ...accountDetails,
+            countries: selectedCountries,
+            musicStyle: musicStyle,
+            musicSubStyles: musicSubStyles || [],
+            musicStyleOther: musicStyleOther || [],
+            logo: logoUrl,
+        }));
+        dispatch(setCurrentWindow(0));
     };
 
     const saveAccount = async () => {
         const {musicStyle, musicSubStyles, musicStyleOther} = filterMusicGenres();
         let logoUrl = null;
 
-        if (imageUrl) {
+        if (imageUrl && imageUrl !== accountDetails.logo) {
             try {
                 const formData = new FormData();
                 formData.append('file', accountDetails.logo);
@@ -336,7 +338,7 @@ const SignupInfluencerModalSocialMediaDetails = () => {
                 <button onClick={() => prevPage()}>
                     <img src={backBtn} style={{transform: "rotate(180deg)"}}/>
                 </button>
-                <div className="signup-influencer-title"> 
+                <div className="signup-influencer-title">
                     <TitleSection title='Add your' span={data.selectedSocialMedia + ' account details'}/>
                 </div>
             </div>
@@ -407,20 +409,26 @@ const SignupInfluencerModalSocialMediaDetails = () => {
                                         <div className='countries-container'>
                                             <div className='country'>
                                                 <span>#1</span>
-                                                    <TextInput style={{padding: '13px 10px', width: window.innerWidth < 768 ? '15%' : '30%'}}
-                                                               silverColor={true}
-                                                               placeholder='19.4%'
-                                                               value={selectedCountries[0]?.percentage}
-                                                               setValue={(value) => handleCountryChange(0, "percentage", value)}/>
-                                                    <div style={{marginTop: 10}}>
-                                                        <SearchCountry indexOfSelectingCountry={0}
-                                                                       handleCountryChange={handleCountryChange}
-                                                                       selectedCountries={selectedCountries}/>
-                                                    </div>
+                                                <TextInput style={{
+                                                    padding: '13px 10px',
+                                                    width: window.innerWidth < 768 ? '15%' : '30%'
+                                                }}
+                                                           silverColor={true}
+                                                           placeholder='19.4%'
+                                                           value={selectedCountries[0]?.percentage}
+                                                           setValue={(value) => handleCountryChange(0, "percentage", value)}/>
+                                                <div style={{marginTop: 10}}>
+                                                    <SearchCountry indexOfSelectingCountry={0}
+                                                                   handleCountryChange={handleCountryChange}
+                                                                   selectedCountries={selectedCountries}/>
+                                                </div>
                                             </div>
                                             <div className='country'>
                                                 <span>#2</span>
-                                                <TextInput style={{padding: '13px 10px', width: window.innerWidth < 768 ? '15%' : '30%'}}
+                                                <TextInput style={{
+                                                    padding: '13px 10px',
+                                                    width: window.innerWidth < 768 ? '15%' : '30%'
+                                                }}
                                                            silverColor={true}
                                                            placeholder='9.4%'
                                                            value={selectedCountries[1]?.percentage}
@@ -433,7 +441,10 @@ const SignupInfluencerModalSocialMediaDetails = () => {
                                             </div>
                                             <div className='country'>
                                                 <span>#3</span>
-                                                <TextInput style={{padding: '13px 10px', width: window.innerWidth < 768 ? '15%' : '30%'}}
+                                                <TextInput style={{
+                                                    padding: '13px 10px',
+                                                    width: window.innerWidth < 768 ? '15%' : '30%'
+                                                }}
                                                            silverColor={true}
                                                            value={selectedCountries[2]?.percentage}
                                                            setValue={(value) => handleCountryChange(2, "percentage", value)}
@@ -446,7 +457,10 @@ const SignupInfluencerModalSocialMediaDetails = () => {
                                             </div>
                                             <div className='country'>
                                                 <span>#4</span>
-                                                <TextInput style={{padding: '13px 10px', width: window.innerWidth < 768 ? '15%' : '30%'}}
+                                                <TextInput style={{
+                                                    padding: '13px 10px',
+                                                    width: window.innerWidth < 768 ? '15%' : '30%'
+                                                }}
                                                            silverColor={true}
                                                            value={selectedCountries[3]?.percentage}
                                                            setValue={(value) => handleCountryChange(3, "percentage", value)}
@@ -459,7 +473,10 @@ const SignupInfluencerModalSocialMediaDetails = () => {
                                             </div>
                                             <div className='country'>
                                                 <span>#5</span>
-                                                <TextInput style={{padding: '13px 10px', width: window.innerWidth < 768 ? '15%' : '30%'}}
+                                                <TextInput style={{
+                                                    padding: '13px 10px',
+                                                    width: window.innerWidth < 768 ? '15%' : '30%'
+                                                }}
                                                            silverColor={true}
                                                            value={selectedCountries[4]?.percentage}
                                                            setValue={(value) => handleCountryChange(4, "percentage", value)}

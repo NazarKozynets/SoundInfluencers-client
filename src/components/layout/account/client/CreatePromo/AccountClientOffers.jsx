@@ -649,7 +649,11 @@ const AccountClientOffers = () => {
 
     const nextForm = () => {
         if (customAmount === 0 || selectInfluencers.length === 0) return;
-        dispatch(setCurrentWindow(1));
+        if (socialMedia === 'spotify' || socialMedia === 'soundcloud' || socialMedia === 'press') {
+            dispatch(setCurrentWindow(3));
+        } else {
+            dispatch(setCurrentWindow(1));
+        }
     };
 
     const applyFiltersAndSort = () => {
@@ -926,7 +930,7 @@ const AccountClientOffers = () => {
                                     )}
                                 </div>
                             </div>
-                            <OffersFooter/>
+                            <OffersFooter nextForm={nextForm}/>
                         </div>
 
                         {window.innerWidth < 768 && (

@@ -11,7 +11,7 @@ import {
     setCampaignName,
     setCreatedAt,
     addVideo,
-    updateVideo, removeVideo,
+    updateVideo, removeVideo, setSelectAmount, setSelectInfluencer, setSelectPriceInfluencers,
 } from "../../../../../redux/slice/create-promo";
 import arrow from "../../../../../images/icons/arrow.svg";
 import close from "../../../../../images/icons/close.svg";
@@ -30,6 +30,17 @@ const AccountClientPostContent = () => {
         createdAt: false,
     });
 
+    const selectPrice = useSelector((state) => state.createPromo.data.selectPrice);
+    const data = useSelector((state) => state.createPromo.data);
+
+    useEffect(() => {
+        dispatch(setSelectAmount(selectPrice.price));
+
+        const newSelectInfluencers = [...data.selectInfluencers, ...data.selectPriceInfluencers];
+        dispatch(setSelectInfluencer(newSelectInfluencers));
+        dispatch(setSelectPriceInfluencers([]));
+    }, []);
+    
     useEffect(() => {
         const today = new Date().toISOString().split("T")[0];
         dispatch(setCreatedAt(today));

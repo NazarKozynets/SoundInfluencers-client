@@ -99,7 +99,7 @@ const AcountInfluencerNewPromos = () => {
                           className="account-client-past-promos-form-current-content-link-value"
                           target="_blank"
                       >
-                          {item ? item.video?.videoLink : "No Data"}
+                          {item ? item.video?.videoLink.slice(0,15) + '...' : "No Data"}
                       </a>
                   </p>
                   <p className="account-client-past-promos-form-current-content-date">

@@ -56,7 +56,52 @@ const AcountInfluencerOngoingCurrent = () => {
     const returnPostContent = (item) => {
         if (item?.socialMedia === 'spotify' || item?.socialMedia === 'soundcloud') {
             return (
-                <p>ss</p>
+                <div
+                    className="account-client-past-promos-form-current-content"
+                    style={{padding: "0 20px 30px 20px"}}
+                >
+                    <h2 className="account-client-past-promos-form-current-content-title">
+                        {item.campaignName ? item.campaignName : "Promo 1"}
+                    </h2>
+                    <p className="account-client-past-promos-form-current-content-client">
+                        {item ? getSocialMedia(item?.socialMedia) : "No Data"}:{" "}
+                        <span
+                            className="account-client-past-promos-form-current-content-client-value">
+                        {item ? item.instagramUsername : "No Data"}
+                      </span>
+                    </p>
+                    <p className="account-client-past-promos-form-current-content-client">
+                        Client:{" "}
+                        <span
+                            className="account-client-past-promos-form-current-content-client-value">
+                        {item ? item.client : "No Data"}
+                      </span>
+                    </p>
+                    <p className="account-client-past-promos-form-current-content-link">
+                        {getSocialMedia(item?.socialMedia)} Track Link:{" "}
+                        <a
+                            href={item ? item.video?.videoLink : "No Data"}
+                            className="account-client-past-promos-form-current-content-link-value"
+                            target="_blank"
+                        >
+                            {item ? item.video?.videoLink.slice(0, 15) + "..." : "No Data"}
+                        </a>
+                    </p>
+                    <p className="account-client-past-promos-form-current-content-date">
+                        Date Request:{" "}
+                        <span
+                            className="account-client-past-promos-form-current-content-date-value">
+                        {item ? item.dateRequest : "No Data"}
+                      </span>
+                    </p>
+                    <p className="account-client-past-promos-form-current-content-wish">
+                        Special Requests:{" "}
+                        <span
+                            className="account-client-past-promos-form-current-content-wish-value">
+                        {item ? item.video?.specialWishes : "No Data"}
+                      </span>
+                    </p>
+                </div>
             );
         } else if (item?.socialMedia === 'press') {
             return (
@@ -88,7 +133,7 @@ const AcountInfluencerOngoingCurrent = () => {
                             className="account-client-past-promos-form-current-content-link-value"
                             target="_blank"
                         >
-                            {item ? item.video?.videoLink.slice(0,10) + "..." : "No Data"}
+                            {item ? item.video?.videoLink.slice(0, 10) + "..." : "No Data"}
                         </a>
                     </p>
 
@@ -99,7 +144,7 @@ const AcountInfluencerOngoingCurrent = () => {
                             className="account-client-past-promos-form-current-content-link-value"
                             target="_blank"
                         >
-                            {item ? item.video?.postDescription.slice(0,10) + "..." : "No Data"}
+                            {item ? item.video?.postDescription.slice(0, 10) + "..." : "No Data"}
                         </a>
                     </p>
                     <p className="account-client-past-promos-form-current-content-link">
@@ -109,7 +154,7 @@ const AcountInfluencerOngoingCurrent = () => {
                             className="account-client-past-promos-form-current-content-link-value"
                             target="_blank"
                         >
-                            {item ? item.video?.storyTag.slice(0,10) + "..." : "No Data"}
+                            {item ? item.video?.storyTag.slice(0, 10) + "..." : "No Data"}
                         </a>
                     </p>
                     <p className="account-client-past-promos-form-current-content-date">

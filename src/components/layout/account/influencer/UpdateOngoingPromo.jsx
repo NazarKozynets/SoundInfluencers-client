@@ -11,6 +11,7 @@ import UseVerify from "../../../../hooks/useVerify";
 import useVerify from "../../../../hooks/useVerify";
 import PageLoading from "../../../form/PageLoading/pageLoading";
 import {BarLoader, PuffLoader} from "react-spinners";
+import {getSocialMedia} from "../../../../utils/typeOfSocialAccounts";
 
 const UpdateOngoingPromo = () => {
     const params = useParams();
@@ -59,7 +60,7 @@ const UpdateOngoingPromo = () => {
             const formDataScreenshot = new FormData();
             formDataScreenshot.append("file", screenshot);
 
-            if (screenshotUrl) {
+            if (screenshotUrl && formData?.socialMedia !== "press") {
                 try {
                     const result = await axios.put(
                         `${process.env.REACT_APP_SERVER}/promos/update-ongoing?influencerId=${params.influencerId}&promoId=${params.promoId}&instagramUsername=${params.instagram}`,
@@ -69,6 +70,22 @@ const UpdateOngoingPromo = () => {
                         }
                     );
 
+                    if (result.data.code === 200) {
+                        getData();
+                        setIsWindowTwo(true);
+                    }
+                } catch (error) {
+                    console.error("Error updating promo", error);
+                }
+            } else if (formData?.socialMedia === "press") {
+                try {
+                    const result = await axios.put(
+                        `${process.env.REACT_APP_SERVER}/promos/update-ongoing?influencerId=${params.influencerId}&promoId=${params.promoId}&instagramUsername=${params.instagram}`,
+                        {
+                            ...formData,
+                        }
+                    );
+                    
                     if (result.data.code === 200) {
                         getData();
                         setIsWindowTwo(true);
@@ -114,99 +131,164 @@ const UpdateOngoingPromo = () => {
         }
     };
 
+    const returnForm = () => {
+        if (formData?.socialMedia === 'spotify' || formData?.socialMedia === 'soundcloud') {
+            return (
+                <FormContainer style={{marginTop: "60px"}}>
+                    <InputFile
+                        style={{maxWidth: "665px", margin: "60px auto 0 auto"}}
+                        title={`Screenshot of ${getSocialMedia(formData?.socialMedia)} Account including the Track`}
+                        placeholder={`Attach here the screenshot of the ${getSocialMedia(formData?.socialMedia)} playlist including the track`}
+                        setValue={(value) => {
+                            setScreenshot(value);
+                        }}
+                        setUploadProgress={setUploadProgress}
+                        onChange={handleFileChange}
+                    />
+
+                    {uploadProgress === true && (
+                        <div style={{
+                            width: '70%',
+                            margin: '20px auto',
+                            fontFamily: 'Geometria',
+                            fontSize: 18,
+                            fontWeight: 400,
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                        }}>
+                            <p style={{
+                                textAlign: 'center',
+                            }}>Please wait. Screenshot is loading</p>
+                            <div style={{
+                                display: 'flex',
+                                justifyContent: 'center',
+                                paddingBottom: 8,
+                                paddingLeft: 9
+                            }}>
+                                <PuffLoader color={"#3330e4"} loading={true} size={10}/>
+                            </div>
+                        </div>
+                    )}
+
+                    <div style={{marginTop: "60px", display: "flex", justifyContent: "center"}}>
+                        <StandartButton text="Submit" onClick={updateData} isBlue={true}/>
+                    </div>
+                </FormContainer>
+            )
+        } else if (formData?.socialMedia === 'press') {
+            return (
+                <FormContainer style={{marginTop: "60px"}}>
+                    <TextInput
+                        style={{maxWidth: "665px", margin: "60px auto 0 auto"}}
+                        title="Article Link"
+                        placeholder="Enter Article link"
+                        value={formData.postLink}
+                        setValue={(value) => setFormData({...formData, postLink: value})}
+                    />
+                    <div style={{marginTop: "60px", display: "flex", justifyContent: "center"}}>
+                        <StandartButton text="Submit" onClick={updateData}/>
+                    </div>
+                </FormContainer>
+            );
+        } else {
+            return (
+                <FormContainer style={{marginTop: "60px"}}>
+                    <InputFile
+                        style={{maxWidth: "665px", margin: "60px auto 0 auto"}}
+                        title="Screenshot insights"
+                        placeholder="Attach the screenshot of the insights"
+                        setValue={(value) => {
+                            setScreenshot(value);
+                        }}
+                        setUploadProgress={setUploadProgress}
+                        onChange={handleFileChange}
+                    />
+
+                    {uploadProgress === true && (
+                        <div style={{
+                            width: '70%',
+                            margin: '20px auto',
+                            fontFamily: 'Geometria',
+                            fontSize: 18,
+                            fontWeight: 400,
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                        }}>
+                            <p style={{
+                                textAlign: 'center',
+                            }}>Please wait. Screenshot is loading</p>
+                            <div style={{
+                                display: 'flex',
+                                justifyContent: 'center',
+                                paddingBottom: 8,
+                                paddingLeft: 9
+                            }}>
+                                <PuffLoader color={"#3330e4"} loading={true} size={10}/>
+                            </div>
+                        </div>
+                    )}
+
+                    <TextInput
+                        style={{maxWidth: "665px", margin: "60px auto 0 auto"}}
+                        title="Instagram link"
+                        placeholder="Enter Instagram link"
+                        value={formData.postLink}
+                        setValue={(value) => setFormData({...formData, postLink: value})}
+                    />
+
+                    <TextInput
+                        style={{maxWidth: "665px", margin: "60px auto 0 auto"}}
+                        title="Date Post"
+                        placeholder="Enter date post dd/mm/yyyy"
+                        value={formData.datePost}
+                        setValue={(value) => {
+                            const numericValue = value.replace(/[^\d]/g, "");
+
+                            let formattedValue = "";
+                            if (numericValue.length <= 2) {
+                                formattedValue = numericValue;
+                            } else if (numericValue.length <= 4) {
+                                formattedValue = `${numericValue.slice(0, 2)}/${numericValue.slice(2)}`;
+                            } else {
+                                formattedValue = `${numericValue.slice(0, 2)}/${numericValue.slice(2, 4)}/${numericValue.slice(4, 8)}`;
+                            }
+
+                            setFormData({...formData, datePost: formattedValue});
+                        }}
+                    />
+
+                    <TextInput
+                        style={{maxWidth: "665px", margin: "60px auto 0 auto"}}
+                        title="Impressions"
+                        placeholder="Enter impressions"
+                        value={formData.impressions}
+                        setValue={(value) => setFormData({...formData, impressions: value})}
+                    />
+
+                    <TextInput
+                        style={{maxWidth: "665px", margin: "60px auto 0 auto"}}
+                        title="Likes"
+                        placeholder="Enter the Likes number here"
+                        value={formData.like}
+                        setValue={(value) => setFormData({...formData, like: value})}
+                    />
+
+                    <div style={{marginTop: "60px", display: "flex", justifyContent: "center"}}>
+                        <StandartButton text="Submit" onClick={updateData}/>
+                    </div>
+                </FormContainer>
+            );
+        }
+    };
+
     return (
         <section className="invoice-result">
             <div className="container-form">
                 <div className="invoice-result-block">
                     <TitleSection title="campaign result"/>
-
-                    <FormContainer style={{marginTop: "60px"}}>
-                        <InputFile
-                            style={{maxWidth: "665px", margin: "60px auto 0 auto"}}
-                            title="Screenshot insights"
-                            placeholder="Attach the screenshot of the insights"
-                            setValue={(value) => {
-                                setScreenshot(value);
-                            }}
-                            setUploadProgress={setUploadProgress}
-                            onChange={handleFileChange}
-                        />
-
-
-                        {uploadProgress === true && (
-                            <div style={{
-                                width: '70%',
-                                margin: '20px auto',
-                                fontFamily: 'Geometria',
-                                fontSize: 18,
-                                fontWeight: 400,
-                                display: 'flex',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                            }}>
-                                <p style={{
-                                    textAlign: 'center',
-                                }}>Please wait. Screenshot is loading</p>
-                                <div style={{
-                                    display: 'flex',
-                                    justifyContent: 'center',
-                                    paddingBottom: 8,
-                                    paddingLeft: 9
-                                }}>
-                                    <PuffLoader color={"#3330e4"} loading={true} size={10}/>
-                                </div>
-                            </div>
-                        )}
-
-                        <TextInput
-                            style={{maxWidth: "665px", margin: "60px auto 0 auto"}}
-                            title="Instagram link"
-                            placeholder="Enter Instagram link"
-                            value={formData.postLink}
-                            setValue={(value) => setFormData({...formData, postLink: value})}
-                        />
-
-                        <TextInput
-                            style={{maxWidth: "665px", margin: "60px auto 0 auto"}}
-                            title="Date Post"
-                            placeholder="Enter date post dd/mm/yyyy"
-                            value={formData.datePost}
-                            setValue={(value) => {
-                                const numericValue = value.replace(/[^\d]/g, "");
-
-                                let formattedValue = "";
-                                if (numericValue.length <= 2) {
-                                    formattedValue = numericValue;
-                                } else if (numericValue.length <= 4) {
-                                    formattedValue = `${numericValue.slice(0, 2)}/${numericValue.slice(2)}`;
-                                } else {
-                                    formattedValue = `${numericValue.slice(0, 2)}/${numericValue.slice(2, 4)}/${numericValue.slice(4, 8)}`;
-                                }
-
-                                setFormData({...formData, datePost: formattedValue});
-                            }}
-                        />
-
-                        <TextInput
-                            style={{maxWidth: "665px", margin: "60px auto 0 auto"}}
-                            title="Impressions"
-                            placeholder="Enter impressions"
-                            value={formData.impressions}
-                            setValue={(value) => setFormData({...formData, impressions: value})}
-                        />
-
-                        <TextInput
-                            style={{maxWidth: "665px", margin: "60px auto 0 auto"}}
-                            title="Likes"
-                            placeholder="Enter the Likes number here"
-                            value={formData.like}
-                            setValue={(value) => setFormData({...formData, like: value})}
-                        />
-
-                        <div style={{marginTop: "60px", display: "flex", justifyContent: "center"}}>
-                            <StandartButton text="Submit" onClick={updateData}/>
-                        </div>
-                    </FormContainer>
+                    {returnForm()}
                 </div>
             </div>
 

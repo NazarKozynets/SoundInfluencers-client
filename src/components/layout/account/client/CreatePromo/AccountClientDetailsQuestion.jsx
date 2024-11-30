@@ -16,17 +16,6 @@ const AccountClientDetailsQuestion = () => {
     const navigation = useNavigate();
 
     const {socialMedia} = useParams();
-    
-    const selectPrice = useSelector((state) => state.createPromo.data.selectPrice);
-    const data = useSelector((state) => state.createPromo.data);
-    
-    useEffect(() => {
-        dispatch(setSelectAmount(selectPrice.price));
-        
-        const newSelectInfluencers = [...data.selectInfluencers, ...data.selectPriceInfluencers];
-        dispatch(setSelectInfluencer(newSelectInfluencers));
-        dispatch(setSelectPriceInfluencers([]));
-    }, []);
 
     const nextFormForNoButton = () => {
         dispatch(setCurrentWindow(2));
