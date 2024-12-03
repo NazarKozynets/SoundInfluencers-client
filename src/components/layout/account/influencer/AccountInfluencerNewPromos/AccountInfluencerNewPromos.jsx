@@ -1,17 +1,17 @@
 import React, {useEffect, useState} from "react";
-import TitleSection from "../../../TitleSection";
-import FormContainer from "../../../form/FormContainer";
+import TitleSection from "../../../../TitleSection";
+import FormContainer from "../../../../form/FormContainer";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
-import UseVerify from "../../../../hooks/useVerify";
-import acceptIcon from "../../../../images/icons/accept.svg";
-import ResponseButton from "../../../form/ResponseButton";
-import ModalWindow from "../../../ModalWindow";
-import StandardButton from "../../../form/StandardButton";
-import ImageWithFallback from "../../../ImageWithFallback";
-import altLogo from "../../../../images/alt-logo.jpg";
-import {getSocialMedia} from "../../../../utils/typeOfSocialAccounts";
-import arrow from "../../../../images/icons/arrow.svg";
+import UseVerify from "../../../../../hooks/useVerify";
+import acceptIcon from "../../../../../images/icons/accept.svg";
+import ResponseButton from "../../../../form/ResponseButton";
+import ModalWindow from "../../../../ModalWindow";
+import StandardButton from "../../../../form/StandardButton";
+import ImageWithFallback from "../../../../ImageWithFallback";
+import altLogo from "../../../../../images/alt-logo.jpg";
+import {getSocialMedia} from "../../../../../utils/typeOfSocialAccounts";
+import arrow from "../../../../../images/icons/arrow.svg";
 
 const AcountInfluencerNewPromos = () => {
     const [isOpenModal, setIsOpenModal] = useState(false);

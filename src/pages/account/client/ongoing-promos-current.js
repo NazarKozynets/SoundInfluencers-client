@@ -3,7 +3,7 @@ import Header from "../../../components/Header";
 import Background from "../../../components/Background";
 import AcountClientPastPromos from "../../../components/layout/account/client/AcountClientPastPromos";
 import AcountClientOngoingPromos from "../../../components/layout/account/client/AccountClientOngoingPromos";
-import ReportCampaigns from "../../../components/layout/account/influencer/ReportCampaigns";
+import ReportCampaigns from "../../../components/layout/account/client/ReportCampaigns";
 
 const AcountClientOngoingCurrentPage = () => {
   return (

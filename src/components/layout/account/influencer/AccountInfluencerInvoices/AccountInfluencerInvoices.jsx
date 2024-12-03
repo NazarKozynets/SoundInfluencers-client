@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
-import TitleSection from "../../../TitleSection";
-import AltButton from "../../../form/AltButton";
-import pdfIcon from "../../../../images/icons/pdf.svg";
+import TitleSection from "../../../../TitleSection";
+import AltButton from "../../../../form/AltButton";
+import pdfIcon from "../../../../../images/icons/pdf.svg";
 import axios from "axios";
-import UseVerify from "../../../../hooks/useVerify";
+import UseVerify from "../../../../../hooks/useVerify";
 import { useNavigate, useParams } from "react-router-dom";
 
 
-import arrow from "../../../../images/icons/arrow.svg";
+import arrow from "../../../../../images/icons/arrow.svg";
 
 
 function formatDate(dateString) {

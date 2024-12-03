@@ -1,7 +1,7 @@
 import React from "react";
 import Header from "../../../components/Header";
 import Background from "../../../components/Background";
-import AccountInfluencerInvoices from "../../../components/layout/account/influencer/AccountInfluencerInvoices";
+import AccountInfluencerInvoices from "../../../components/layout/account/influencer/AccountInfluencerInvoices/AccountInfluencerInvoices";
 
 const AccountInfluencerInvoicesPage = () => {
   return (

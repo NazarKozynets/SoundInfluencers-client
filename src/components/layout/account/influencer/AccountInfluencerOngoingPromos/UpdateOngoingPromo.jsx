@@ -1,17 +1,17 @@
 import React, {useEffect, useState} from "react";
-import TitleSection from "../../../TitleSection";
-import FormContainer from "../../../form/FormContainer";
-import TextInput from "../../../form/TextInput";
-import StandartButton from "../../../../components/form/StandardButton/index";
+import TitleSection from "../../../../TitleSection";
+import FormContainer from "../../../../form/FormContainer";
+import TextInput from "../../../../form/TextInput";
+import StandartButton from "../../../../form/StandardButton";
 import {useNavigate, useParams} from "react-router-dom";
 import axios from "axios";
-import ModalWindow from "../../../ModalWindow";
-import InputFile from "../../../form/InputFile";
-import UseVerify from "../../../../hooks/useVerify";
-import useVerify from "../../../../hooks/useVerify";
-import PageLoading from "../../../form/PageLoading/pageLoading";
+import ModalWindow from "../../../../ModalWindow";
+import InputFile from "../../../../form/InputFile";
+import UseVerify from "../../../../../hooks/useVerify";
+import useVerify from "../../../../../hooks/useVerify";
+import PageLoading from "../../../../form/PageLoading/pageLoading";
 import {BarLoader, PuffLoader} from "react-spinners";
-import {getSocialMedia} from "../../../../utils/typeOfSocialAccounts";
+import {getSocialMedia} from "../../../../../utils/typeOfSocialAccounts";
 
 const UpdateOngoingPromo = () => {
     const params = useParams();

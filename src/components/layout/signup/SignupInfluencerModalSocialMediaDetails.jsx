@@ -15,6 +15,7 @@ import axios from "axios";
 import SelectCurrency from "../../form/SelectCurrency/selectCurrency";
 import SearchBar from "../../form/SearchBar/SearchBar";
 import SearchCountry from "../../form/SearchCountry/SearchCountry";
+import {genres} from "../../../utils/genresList";
 
 const SignupInfluencerModalSocialMediaDetails = () => {
     const data = useSelector((state) => state.signupInfluencer);
@@ -30,18 +31,6 @@ const SignupInfluencerModalSocialMediaDetails = () => {
     const [isAllFieldsFilled, setIsAllFieldsFilled] = useState(false);
     const [isErrorAfterSubmit, setIsErrorAfterSubmit] = useState(false);
     const [selectedCurrency, setSelectedCurrency] = useState("€");
-
-    const genres = [
-        "Techno (Melodic, Minimal)",
-        "Techno (Hard, Peak)",
-        "House (Tech House)",
-        "House (Melodic, Afro)",
-        "EDM",
-        "D&B",
-        "Bass",
-        "Psy, Trance",
-        "Dubstep"
-    ];
 
     useEffect(() => {
         const genresSet = new Set();
@@ -280,6 +269,7 @@ const SignupInfluencerModalSocialMediaDetails = () => {
             musicSubStyles: musicSubStyles || [],
             musicStyleOther: musicStyleOther || [],
             logo: logoUrl,
+            categories: [],
         }));
         dispatch(setCurrentWindow(0));
     };
@@ -311,6 +301,7 @@ const SignupInfluencerModalSocialMediaDetails = () => {
             ...accountDetails,
             logo: logoUrl ? logoUrl : accountDetails.logo,
             countries: selectedCountries ? selectedCountries : [],
+            categories: [],
             musicStyle: musicStyle,
             musicSubStyles: musicSubStyles,
             musicStyleOther: musicStyleOther,

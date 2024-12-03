@@ -31,7 +31,7 @@ import {setAuthenticated} from "./redux/slice/authenticated";
 import SignupInfluencerLast from "./pages/signup-influencer/signup-influencer-last";
 import AccountInfluencerPastPromos from "./pages/account/influencer/past-promos";
 import AccountInfluencerPastPromosCurrentPage from "./pages/account/influencer/past-promos-current";
-import ReportCampaigns from "./components/layout/account/influencer/ReportCampaigns";
+import ReportCampaigns from "./components/layout/account/client/ReportCampaigns";
 import ReportCampaignsPage from "./pages/account/influencer/report-campaigns";
 import InvoiceResultPage from "./pages/account/influencer/invoice-result";
 import AccountClientCreatePromoPage from "./pages/account/client/create-promo";
@@ -60,6 +60,7 @@ import AccountAdminInvoicesInfluencers from "./pages/account/admin/admin-invoice
 import AccountAdminOffers from "./pages/account/admin/admin-offers-navigation";
 import PaymentInvoiceDownload from "./pages/account/client/payment-invoice-download";
 import AccountAdminCampaignManagement from "./pages/account/admin/admin-campaign-management";
+import InfluencerEditAccount from "./pages/account/influencer/details-edit-account";
 
 const App = () => {
     return (
@@ -191,6 +192,15 @@ const App = () => {
                             <PrivateRoute
                                 role="influencer"
                                 element={AccountInfluencerDetails}
+                            />
+                        }
+                    />
+                    <Route
+                        path="/account/influencer/details/:accountId"
+                        element={
+                            <PrivateRoute
+                                role="influencer"
+                                element={InfluencerEditAccount}
                             />
                         }
                     />

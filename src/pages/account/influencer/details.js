@@ -1,7 +1,7 @@
 import React from "react";
 import Header from "../../../components/Header";
 import Background from "../../../components/Background";
-import AccountInfluencerDetails from "../../../components/layout/account/influencer/AccountInfluencerDetails";
+import AccountInfluencerDetails from "../../../components/layout/account/influencer/InfluencerAccountDetails/AccountInfluencerDetails";
 
 const AccountInfluencerDetailsPage = () => {
   return (

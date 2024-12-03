@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import TitleSection from "../../../TitleSection";
-import FormContainer from "../../../form/FormContainer";
-import AltButton from "../../../form/AltButton";
-import UseVerify from "../../../../hooks/useVerify";
+import TitleSection from "../../../../TitleSection";
+import FormContainer from "../../../../form/FormContainer";
+import AltButton from "../../../../form/AltButton";
+import UseVerify from "../../../../../hooks/useVerify";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import {getSocialMediaIcon} from "../../../../utils/typeOfSocialAccounts";
-import arrow from "../../../../images/icons/arrow.svg";
+import {getSocialMediaIcon} from "../../../../../utils/typeOfSocialAccounts";
+import arrow from "../../../../../images/icons/arrow.svg";
 
 function formatDate(inputDate) {
   const date = new Date(inputDate);

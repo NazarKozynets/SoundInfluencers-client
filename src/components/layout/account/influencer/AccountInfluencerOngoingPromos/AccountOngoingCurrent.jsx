@@ -1,14 +1,14 @@
 import React, {useEffect, useState} from "react";
-import TitleSection from "../../../TitleSection";
-import FormContainer from "../../../form/FormContainer";
+import TitleSection from "../../../../TitleSection";
+import FormContainer from "../../../../form/FormContainer";
 import {useNavigate, useParams} from "react-router-dom";
 import axios from "axios";
-import UseVerify from "../../../../hooks/useVerify";
-import StandardButton from "../../../form/StandardButton";
-import ImageWithFallback from "../../../ImageWithFallback";
-import altLogo from "../../../../images/alt-logo.jpg";
-import arrow from "../../../../images/icons/arrow.svg";
-import {getSocialMedia} from "../../../../utils/typeOfSocialAccounts";
+import UseVerify from "../../../../../hooks/useVerify";
+import StandardButton from "../../../../form/StandardButton";
+import ImageWithFallback from "../../../../ImageWithFallback";
+import altLogo from "../../../../../images/alt-logo.jpg";
+import arrow from "../../../../../images/icons/arrow.svg";
+import {getSocialMedia} from "../../../../../utils/typeOfSocialAccounts";
 
 const AcountInfluencerOngoingCurrent = () => {
     const params = useParams();
