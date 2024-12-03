@@ -925,7 +925,7 @@ const AccountClientOffers = () => {
                                     )}
                                 </div>
                             </div>
-                            <OffersFooter/>
+                            <OffersFooter nextForm={nextForm}/>
                         </div>
 
                         {window.innerWidth < 768 && (

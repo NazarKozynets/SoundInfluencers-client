@@ -60,7 +60,7 @@ import AccountAdminInvoicesInfluencers from "./pages/account/admin/admin-invoice
 import AccountAdminOffers from "./pages/account/admin/admin-offers-navigation";
 import PaymentInvoiceDownload from "./pages/account/client/payment-invoice-download";
 import AccountAdminCampaignManagement from "./pages/account/admin/admin-campaign-management";
-import InfluencerEditAccount from "./pages/account/influencer/details-edit-account";
+// import InfluencerEditAccount from "./pages/account/influencer/details-edit-account";
 
 const App = () => {
     return (
@@ -145,7 +145,7 @@ const App = () => {
                         }
                     />
                     <Route
-                        path="/account/client/promo/:socialMedia"
+                        path="/account/client/instagram-promo"
                         element={
                             <PrivateRoute
                                 role="client"
@@ -195,15 +195,15 @@ const App = () => {
                             />
                         }
                     />
-                    <Route
-                        path="/account/influencer/details/:accountId"
-                        element={
-                            <PrivateRoute
-                                role="influencer"
-                                element={InfluencerEditAccount}
-                            />
-                        }
-                    />
+                    {/*<Route*/}
+                    {/*    path="/account/influencer/details/:accountId"*/}
+                    {/*    element={*/}
+                    {/*        <PrivateRoute*/}
+                    {/*            role="influencer"*/}
+                    {/*            element={InfluencerEditAccount}*/}
+                    {/*        />*/}
+                    {/*    }*/}
+                    {/*/>*/}
                     <Route
                         path="/account/influencer/invoices"
                         element={

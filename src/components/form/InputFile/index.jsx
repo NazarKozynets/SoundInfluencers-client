@@ -1,72 +1,69 @@
-import React from "react";
-import styles from "./style.module.css";
-import timeIcon from "../../../images/icons/time.svg";
+import React, { useEffect, useRef } from "react";
+import styles from "./styles.module.css";
 
 const InputFile = ({
-                     setValue,
-                     setUploadProgress, // Пропс для обновления прогресса
-                     title = "",
-                     error = false,
-                     style = {},
-                     disabled = false,
-                     disabledTime = "24",
-                     silverColor = false,
-                     className,
-                     ...args
+                       setValue,
+                       value,
+                       setUploadProgress,
+                       title = "",
+                       error = false,
+                       style = {},
+                       silverColor = false,
+                       className,
+                       placeholder,
+                       ...args
                    }) => {
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
+    const fileInputRef = useRef(null);
 
-    if (file && file.type.startsWith("image/")) {
-      setValue(file);
-      setUploadProgress(100); 
-    } else {
-      console.log("Selected file is not an image");
-      setUploadProgress(0); 
-    }
-  };
+    const handleFileChange = (event) => {
+        const file = event.target.files[0];
 
-  return (
-      <div className={styles.block} style={style}>
-        <label className={styles.label}>
-          <p className={styles.title}>{title}</p>
+        if (file && file.type.startsWith("image/")) {
+            setValue(file);
+            setUploadProgress(100);
+        } else {
+            console.log("Selected file is not an image");
+            setUploadProgress(0);
+        }
+    };
 
-          <input
-              type={disabled ? "text" : "file"}
-              style={{
-                borderColor: error ? "#FB1E1E" : "transparent",
-                height: "50px",
-              }}
-              className={
-                className
-                    ? `${className} ${styles.inputSilver}`
-                    : silverColor
-                        ? styles.inputSilver
-                        : styles.input
-              }
-              onChange={handleFileChange}
-              disabled={disabled}
-              accept="image/*" 
-              {...args}
-              placeholder={disabled ? "" : args.placeholder}
-          />
+    const handleClick = () => {
+        if (fileInputRef.current) {
+            fileInputRef.current.click();
+        }
+    };
 
-          {disabled ? (
-              <div className={styles.disabled}>
-                <img
-                    className={styles.disabledIcon}
-                    src={timeIcon}
-                    alt="Time Icon"
+    useEffect(() => {
+        if (!value && fileInputRef.current) {
+            fileInputRef.current.value = null; 
+        }
+    }, [value]);
+
+    return (
+        <div className={styles.block} style={style}>
+            <p className={styles.title}>{title}</p>
+            <div className={styles.fileUploadBlock}>
+                <input
+                    className={styles.input}
+                    type="file"
+                    ref={fileInputRef}
+                    onChange={handleFileChange}
+                    accept="image/*"
+                    placeholder={placeholder}
+                    {...args}
                 />
-                <p className={styles.disabledText}>
-                  {disabledTime} hours to unlock
+
+                <button className={styles.uploadButton} onClick={handleClick}>
+                    Upload
+                </button>
+
+                <p className={styles.placeholderAfterButton}>
+                    {value ? value.name : placeholder}
                 </p>
-              </div>
-          ) : null}
-          {error ? <p className={styles.error}>!</p> : null}
-        </label>
-      </div>
-  );
+            </div>
+            {error ? <p className={styles.error}>!</p> : null}
+        </div>
+    );
 };
 
 export default InputFile;

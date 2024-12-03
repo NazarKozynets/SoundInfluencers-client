@@ -4,16 +4,10 @@ import StandardButton from "../../StandardButton";
 import {setCurrentWindow} from "../../../../redux/slice/create-promo";
 import "./offersFooter.css";
 
-const OffersFooter = () => {
+const OffersFooter = ({nextForm}) => {
     const data = useSelector((state) => state.createPromo.data);
     
     const dispatch = useDispatch();
-    
-    const nextForm = () => {
-        if (data.amount !== 0 && (data.selectInfluencers.length !== 0 || data.selectPriceInfluencers.length !== 0)) {
-            dispatch(setCurrentWindow(1));
-        }
-    };
     
     const calculateActiveInfluencers = () => { 
         let activeInfluencers = 0;
