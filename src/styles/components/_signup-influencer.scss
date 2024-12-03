@@ -1,0 +1,418 @@
+.signup-influencer {
+  width: 100%;
+}
+
+.signup-influencer-title {
+  @media screen and (max-width: 850px) {
+    margin-top: 50px;
+  }
+}
+
+.signup-influencer-title-first-form {
+  @media screen and (max-width: 850px) {
+    margin-top: 50px;
+  }
+}
+
+.signup-influencer-title-second-form {
+  @media screen and (max-width: 850px) {
+    margin-top: 50px;
+  }
+}
+
+.signup-influencer-block {
+  padding-bottom: 80px;
+}
+
+.price-input-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 62px;
+
+  #price-input-title {
+    font-family: Geometria;
+    font-size: 18px;
+    font-weight: 500;
+    text-align: center;
+  }
+
+  .price-input-container-block {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+    @media screen and (max-width: 850px) {
+      flex-direction: column;
+    }
+  }
+  
+  #price-input-field {
+    max-width: 75%;
+
+    @media screen and (max-width: 850px) {
+      max-width: 60%;
+    }
+
+    height: 48px;
+    border-radius: 30px;
+    background: #EEF0F2;
+    margin: 17px auto 0 auto;
+    align-items: center;
+    display: flex;
+
+    input {
+      padding-left: 20px;
+    }
+
+    input::placeholder {
+      font-family: Geometria;
+      font-size: 18px;
+      font-weight: 300;
+      text-align: left;
+    }
+
+    button {
+      background: #3330E4;
+      width: 50%;
+      height: 100%;
+      border-radius: 30px;
+      font-family: Geometria;
+      font-size: 18px;
+      font-weight: 700;
+      text-align: center;
+      color: #FFFFFF;
+      cursor: pointer;
+    }
+  }
+}
+
+.apply-button {
+  display: flex;
+  justify-content: center;
+  margin-top: 80px;
+}
+
+.instagram-select-item-file {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  padding: 0;
+  height: 48px;
+  cursor: pointer;
+
+  span {
+    font-family: Geometria;
+    width: 90px;
+    font-size: 18px;
+    font-weight: 700;
+    text-align: center;
+    color: white;
+    background: #3330e4;
+    border-radius: 30px;
+    padding: 5px 10px;
+    align-items: center;
+    margin-left: -25px;
+  }
+}
+
+.select-social-media {
+  font-family: Geometria;
+  font-size: 18px;
+  font-weight: 500;
+  text-align: center;
+
+  .social-medias-container {
+    margin: 42px auto 0;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+
+    li {
+      width: calc((100% - (40px * 3)) / 3) !important;
+
+      @media screen and (max-width: 850px) {
+        width: calc((100% - (40px * 2)) / 2) !important;
+      }
+
+      @media screen and (max-width: 600px) {
+        width: calc((100% - (40px * 1)) / 1) !important;
+      }
+
+      height: 84px;
+      display: flex;
+      align-items: center;
+      border-radius: 30px;
+      box-shadow: 0px 4px 20px 0px #3330E480;
+      cursor: pointer;
+
+      img {
+        width: 40px;
+        height: 40px;
+        margin-left: 30px;
+        margin-bottom: 3px;
+      }
+
+      span {
+        font-family: Geometria;
+        font-size: 22px;
+        font-weight: 700;
+        line-height: 27.68px;
+        text-align: center;
+        margin-left: 14px;
+      }
+    }
+
+    li:hover {
+      background-color: #F5F5F5;
+      box-shadow: 0px 5px 23px 0px #3330E480;
+    }
+
+    .ready-account {
+      cursor: pointer;
+      background-color: #FF7A09BD;
+      box-shadow: 0px 4px 20px 0px #FF7A09E5;
+      width: calc((100% - (40px * 3)) / 3) !important;
+      height: 84px;
+      display: flex;
+      align-items: center;
+      border-radius: 30px;
+      position: relative;
+
+      li {
+        width: 100% !important;
+        height: 100%;
+        background-color: transparent !important;
+        box-shadow: none !important;
+        position: relative;
+      }
+
+      .length {
+        font-family: Geometria;
+        font-size: 20px;
+        font-weight: 500;
+        text-align: center;
+        background: #FB741E;
+        border-radius: 50%;
+        width: 32px;
+        height: 32px;
+        padding: 5px;
+        margin-left: 0;
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+  }
+}
+
+.error-message {
+  font-family: Geometria;
+  font-size: 20px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.signup-influencer-social-media-form {
+  @media screen and (max-width: 850px) {
+    margin-top: 50px;
+  }
+
+  .avatar-container {
+    display: flex;
+    justify-content: center;
+    margin-top: -20px;
+
+    img {
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 50%;
+      box-shadow: grey 0px 0px 10px;
+    }
+  }
+
+  .cancel-avatar-btn {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+
+    button {
+      background: #3330E4;
+      width: 122px;
+      height: 36px;
+      border-radius: 30px;
+      font-family: Geometria;
+      font-size: 18px;
+      font-weight: 700;
+      text-align: center;
+      color: #FFFFFF;
+      cursor: pointer;
+      box-shadow: 0px 2px 5px 0px grey;
+    }
+  }
+
+  .save-account-button {
+    display: flex;
+    justify-content: center;
+    margin-top: 60px;
+  }
+
+  .genres-countries {
+    @media screen and (max-width: 850px) {
+      display: flex;
+      flex-direction: column;
+      margin: -70px 0 0 0 !important;
+
+      .block {
+        width: 200% !important;
+        margin: 50px 0 0 0 !important;
+      }
+
+      .country {
+
+      }
+    }
+
+    margin: 60px auto 0;
+    display: flex;
+    width: 80%;
+    justify-content: space-between;
+
+    .block {
+      margin: 0 auto;
+      width: 50%;
+
+      #title {
+        font-family: Geometria;
+        font-size: 24px;
+        font-weight: 800;
+        color: blue;
+        margin: 0;
+      }
+
+      p {
+        font-family: Geometria;
+        font-size: 14px;
+        font-weight: 400;
+        margin-bottom: 20px;
+      }
+
+      .checkbox {
+        display: flex;
+        align-items: center;
+        font-family: Geometria;
+        font-size: 18px;
+        font-weight: 400;
+        margin-bottom: 7px;
+        position: relative;
+      }
+
+      .checkbox input[type="checkbox"] {
+        appearance: none;
+        width: 17px;
+        height: 17px;
+        border: 2px solid #ccc;
+        border-radius: 4px;
+        cursor: pointer;
+        position: relative;
+      }
+
+      .checkbox input[type="checkbox"]:checked {
+        background-color: blue;
+        border-color: blue;
+      }
+
+      .checkbox input[type="checkbox"]:checked::after {
+        content: '';
+        background-image: url("../../images/vector.png");
+        background-size: contain;
+        background-repeat: no-repeat;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 80%;
+        height: 80%;
+        transform: translate(-50%, -50%);
+      }
+
+      .checkbox label {
+        margin-left: 10px;
+        padding-top: 2px;
+      }
+
+
+      .countries-container {
+        width: 100%;
+
+        .country {
+          display: flex;
+          align-items: center;
+          height: 50px;
+          margin-bottom: 60px;
+          margin-top: -50px;
+
+          span {
+            font-family: Geometria;
+            font-size: 24px;
+            width: 24px;
+            font-weight: 800;
+            text-align: left;
+            color: blue;
+            margin-top: 100px;
+            margin-right: 10px;
+          }
+        }
+      }
+    }
+  }
+}
+
+.accounts-list-modal {
+  padding: 50px;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  .account-block {
+    width: calc((100% - (30px * 3)) / 3) !important;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    border-radius: 30px;
+    box-shadow: 0px 4px 20px 0px #3330E480;
+    cursor: pointer;
+    gap: 10px;
+    transition: background-color 0.15s ease;
+
+    img {
+      width: 32px;
+      height: 32px;
+      margin-left: 15px;
+    }
+
+    p {
+      font-family: Geometria;
+      font-size: 18px;
+      font-weight: 500;
+      text-align: center;
+    }
+  }
+
+  .account-block:hover {
+    background-color: #f2f2f2;
+  }
+}
+
+.delete-account-button {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}

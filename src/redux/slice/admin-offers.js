@@ -2,6 +2,9 @@ import {createSlice} from "@reduxjs/toolkit";
 
 const initialState = {
     currentWindow: 0,
+    offersData: [],
+    influencersData: [],
+    selectedSocialMedia: 'Instagram',
     isNew: false,
     newOffer: {
         connectInfluencer: [],
@@ -45,6 +48,12 @@ export const adminOffersSlice = createSlice({
         deleteGenreFromOffer: (state, action) => {
             state.deletedOffers.push(action.payload);
         },
+        setSelectedSocialMedia: (state, action) => {
+            state.selectedSocialMedia = action.payload;
+        },
+        setInfluencersData: (state, action) => {
+            state.influencersData = action.payload;
+        },
     },
 });
 
@@ -56,6 +65,8 @@ export const {
     deleteGenreFromOffer,
     setNewOffers,
     removeFromDeletedOffers,
+    setSelectedSocialMedia,
+    setInfluencersData,
 } = adminOffersSlice.actions;
 
 export default adminOffersSlice.reducer;
