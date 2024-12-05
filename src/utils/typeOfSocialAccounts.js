@@ -59,7 +59,7 @@ export const getSocialMedia = (socialMedia) => {
 }
 
 export const getSocialMediaIcon = (socialMedia) => {
-    switch (socialMedia) {
+    switch (socialMedia.toLowerCase()) {
         case "instagram":
             return instagram;
         case "tiktok":

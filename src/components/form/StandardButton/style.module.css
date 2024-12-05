@@ -1,63 +1,98 @@
 .button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-  padding: 10px 40px;
-  border-radius: 30px;
-  background: #ff7a09;
+    padding: 10px 40px;
+    border-radius: 30px;
+    background: #ff7a09;
 
-  color: var(--background);
-  text-align: center;
-  font-family: Geometria;
-  font-size: 24px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: normal;
+    color: var(--background);
+    text-align: center;
+    font-family: Geometria;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
 
-  box-shadow: 0px 0px 0px 0px rgba(255, 122, 9, 0.5);
+    box-shadow: 0px 0px 0px 0px rgba(255, 122, 9, 0.5);
 
-  transition: box-shadow 200ms linear;
+    transition: box-shadow 200ms linear;
 
-  cursor: pointer;
+    cursor: pointer;
 }
 
 .button:hover {
-  box-shadow: 0px 4px 4px 0px rgba(255, 122, 9, 0.5);
+    box-shadow: 0px 4px 4px 0px rgba(255, 122, 9, 0.5);
 }
+
 @media screen and (max-width: 768px) {
-  .button {
-    font-size: 22px;
-  }
-  .buttonBlue {
-    font-size: 22px;
-  }
+    .button {
+        font-size: 22px;
+    }
+
+    .buttonBlue {
+        font-size: 22px;
+    }
+
+    .buttonRed {
+        font-size: 22px;
+    }
 }
 
 .buttonBlue {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-  padding: 10px 40px;
-  border-radius: 30px;
-  background: blue;
+    padding: 10px 40px;
+    border-radius: 30px;
+    background: blue;
 
-  color: var(--background);
-  text-align: center;
-  font-family: Geometria;
-  font-size: 24px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: normal;
+    color: var(--background);
+    text-align: center;
+    font-family: Geometria;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
 
-  box-shadow: 0px 0px 0px 0px #3330E4;
+    box-shadow: 0px 0px 0px 0px #3330E4;
 
 
-  transition: box-shadow 200ms linear;
+    transition: box-shadow 200ms linear;
 
-  cursor: pointer;
+    cursor: pointer;
 }
+
 .buttonBlue:hover {
-  box-shadow: 0px 4px 4px 0px #3330E4;
+    box-shadow: 0px 4px 4px 0px #3330E4;
+}
+
+.buttonRed {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 10px 40px;
+    border-radius: 30px;
+    background: red;
+
+    color: var(--background);
+    text-align: center;
+    font-family: Geometria;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+
+    box-shadow: 0px 0px 0px 0px red;
+
+
+    transition: box-shadow 200ms linear;
+
+    cursor: pointer;
+}
+
+.buttonRed:hover {
+    box-shadow: 0px 4px 4px 0px red;
 }

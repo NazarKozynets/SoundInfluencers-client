@@ -10,7 +10,7 @@ import {
     setFirstName, setNewSocialMediaAccount,
     setPassword,
     setPhone,
-    setSelectedSocialMedia, setSignupClear, updateCurrentAccountId,
+    setSelectedSocialMedia, setSignupClear, 
 } from "../../../redux/slice/signup-influencer";
 import axios from "axios";
 import '../../../styles/components/_signup-influencer.scss';
@@ -26,7 +26,6 @@ import StandardButton from "../../form/StandardButton";
 import ModalWindow from "../../ModalWindow";
 import acceptImg from "../../../images/icons/accept.svg";
 import {useNavigate} from "react-router-dom";
-import seePasswordImg from "../../../images/icons/view 1.svg";
 
 const SignupInfluencer = () => {
     const dispatch = useDispatch();
@@ -94,8 +93,6 @@ const SignupInfluencer = () => {
                 }
             );
 
-            console.log(result);
-            
             if (result.data.code === 201) {
                 setIsErrorAfterSubmit(false);
                 setIsReadyToApply(false);

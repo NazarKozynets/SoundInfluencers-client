@@ -13,6 +13,21 @@ import {
 import {useNavigate} from "react-router-dom";
 import arrow from "../../../../../images/icons/arrow.svg";
 import {getSocialMediaIcon} from "../../../../../utils/typeOfSocialAccounts";
+import {
+    setClearAttachedSocialMediaAccounts,
+    setCurrentAccountId, setCurrentWindow,
+    setNewSocialMediaAccount,
+    setSelectedSocialMedia
+} from "../../../../../redux/slice/signup-influencer";
+import {generateMongoObjectId} from "../../../../../utils/generateId";
+import instaIcon from "../../../../../images/icons/socialMedias/instagram.png";
+import tikTokIcon from "../../../../../images/icons/socialMedias/tiktok.png";
+import spotifyIcon from "../../../../../images/icons/socialMedias/spotify.png";
+import soundCloudIcon from "../../../../../images/icons/socialMedias/soundcloud.png";
+import facebookIcon from "../../../../../images/icons/socialMedias/facebook.png";
+import youtubeIcon from "../../../../../images/icons/socialMedias/youtube.png";
+import pressIcon from "../../../../../images/icons/socialMedias/tablet.png";
+import {useDispatch, useSelector} from "react-redux";
 
 const AccountInfluencerDetails = () => {
     const navigation = useNavigate();
@@ -21,6 +36,7 @@ const AccountInfluencerDetails = () => {
         email: "",
         phone: "",
     });
+    const dataStore = useSelector((state) => state.signupInfluencer);
     const [isOpenPersonal, setIsOpenPersonal] = useState(false);
     const [isOpenPassword, setIsOpenPassword] = useState(false);
     const [dataPersonal, setDataPersonal] = useState({
@@ -43,6 +59,10 @@ const AccountInfluencerDetails = () => {
         newPassword: false,
         repeatPassword: false,
     });
+    const [errorSocialMedia, setErrorSocialMedia] = useState({
+        errorAfterAdding: [],
+    });
+    const [isSocialAccountsModalOpen, setIsSocialAccountsModalOpen] = useState(false);
     const [socialMediaAccounts, setSocialMediaAccounts] = useState({
         instagram: [],
         tiktok: [],
@@ -52,16 +72,33 @@ const AccountInfluencerDetails = () => {
         youtube: [],
         press: [],
     });
+    const [isAccountsReady, setIsAccountsReady] = useState(false);
 
     const navigate = useNavigate();
-    
+    const dispatch = useDispatch();
+
     useEffect(() => {
         getData();
     }, []);
 
-    // useEffect(() => {
-    //     console.log(socialMediaAccounts, 'socialMediaAccounts');
-    // }, [socialMediaAccounts]);
+    useEffect(() => {
+        const accounts = dataStore.attachedSocialMediaAccounts;
+
+        if (accounts && Array.isArray(accounts) && accounts.length > 0) {
+            const allAccountsReady = accounts.every(account =>
+                account.musicStyle &&
+                account.logo &&
+                account.price &&
+                account.instagramUsername &&
+                account.instagramLink &&
+                account.followersNumber
+            );
+
+            setIsAccountsReady(allAccountsReady);
+        } else {
+            setIsAccountsReady(false);
+        }
+    }, [dataStore]);
 
     const updateInfluencerPersonal = async () => {
         let errorPersonalList = {
@@ -189,18 +226,67 @@ const AccountInfluencerDetails = () => {
             });
 
             setSocialMediaAccounts({
-                instagram: dataFetch.instagram || [],
-                tiktok: dataFetch?.tiktok || [],
-                facebook: dataFetch?.facebook || [],
-                spotify: dataFetch?.spotify || [],
-                soundcloud: dataFetch?.soundcloud || [],
-                youtube: dataFetch?.youtube || [],
-                press: dataFetch?.press || [],
+                instagram: dataFetch.instagram.filter((acc) => !acc.isDeleted) || [],
+                tiktok: dataFetch?.tiktok.filter((acc) => !acc.isDeleted) || [],
+                facebook: dataFetch?.facebook.filter((acc) => !acc.isDeleted) || [],
+                spotify: dataFetch?.spotify.filter((acc) => !acc.isDeleted) || [],
+                soundcloud: dataFetch?.soundcloud.filter((acc) => !acc.isDeleted) || [],
+                youtube: dataFetch?.youtube.filter((acc) => !acc.isDeleted) || [],
+                press: dataFetch?.press.filter((acc) => !acc.isDeleted) || [],
             });
         } catch (err) {
             console.log(err);
         }
     };
+
+    const openSavedAccount = (account) => {
+        dispatch(setCurrentAccountId(account._id));
+        dispatch(setCurrentWindow(1));
+    };
+
+    const addSocialMediaAccounts = async () => {
+        try {
+            let accountsToAdd = {
+                instagram: [],
+                tiktok: [],
+                facebook: [],
+                spotify: [],
+                soundcloud: [],
+                youtube: [],
+                press: [],
+            };
+
+            dataStore.attachedSocialMediaAccounts.forEach((account) => {
+                accountsToAdd[account.typeOfSocialMedia.toLowerCase()].push(account);
+            });
+
+            const result = await axios.patch(`${process.env.REACT_APP_SERVER}/profile/influencer/add-social-media-accounts`, {
+                influencerId: data._id,
+                instagram: accountsToAdd.instagram,
+                tiktok: accountsToAdd.tiktok,
+                facebook: accountsToAdd.facebook,
+                spotify: accountsToAdd.spotify,
+                soundcloud: accountsToAdd.soundcloud,
+                youtube: accountsToAdd.youtube,
+                press: accountsToAdd.press,
+            });
+
+            console.log(result, 'result');
+
+            if (result.data.code === 200) {
+                await getData();
+                dispatch(setClearAttachedSocialMediaAccounts());
+                setIsAccountsReady(false);
+            } else {
+                setErrorSocialMedia({
+                    errorAfterAdding: result.data.errors,
+                })
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
 
     return (
         <>
@@ -327,7 +413,8 @@ const AccountInfluencerDetails = () => {
                                             )
                                             .map((account, index) => (
                                                 <div key={index} className="account-item">
-                                                    <img src={getSocialMediaIcon(account.typeOfSocialMedia)} alt='Logo'/>
+                                                    <img src={getSocialMediaIcon(account.typeOfSocialMedia)}
+                                                         alt='Logo'/>
                                                     <p>{account.instagramUsername || 'No username available'}</p>
                                                     <img src={edit} alt="edit" id="edit-account-img" onClick={() => {
                                                         navigate(`/account/influencer/details/${account._id}`)
@@ -336,6 +423,196 @@ const AccountInfluencerDetails = () => {
                                             ))}
                                     </div>
                                 </div>
+                            </div>
+
+                            <div className="account-influencer-details-wrapper">
+                                <div className="account-influencer-details-wrapper-header">
+                                    <p className="account-influencer-details-wrapper-header-title">
+                                        ADD NEW BRAND ACCOUNTS
+                                    </p>
+                                </div>
+
+                                <div className="select-social-media">
+                                    <ul className="social-medias-container">
+                                        <li onClick={() => {
+                                            dispatch(setSelectedSocialMedia('Instagram'));
+                                            const id = generateMongoObjectId();
+                                            dispatch(setNewSocialMediaAccount(
+                                                {
+                                                    _id: id,
+                                                    typeOfSocialMedia: 'Instagram',
+                                                    instagramUsername: '',
+                                                    instagramLink: '',
+                                                    followersNumber: '',
+                                                    logo: '',
+                                                    price: '',
+                                                }
+                                            ))
+                                            dispatch(setCurrentAccountId(id));
+                                            dispatch(setCurrentWindow(1));
+                                        }}>
+                                            <img src={instaIcon} alt="Instagram"/>
+                                            <span>Instagram</span>
+                                        </li>
+                                        <li onClick={() => {
+                                            dispatch(setSelectedSocialMedia('TikTok'));
+                                            const id = generateMongoObjectId();
+                                            dispatch(setNewSocialMediaAccount((
+                                                {
+                                                    _id: id,
+                                                    typeOfSocialMedia: 'TikTok',
+                                                    instagramUsername: '',
+                                                    instagramLink: '',
+                                                    followersNumber: '',
+                                                    logo: '',
+                                                    price: '',
+                                                }
+                                            )))
+                                            dispatch(setCurrentAccountId(id));
+                                            dispatch(setCurrentWindow(1));
+                                        }}>
+                                            <img src={tikTokIcon} alt="tikTok"/>
+                                            <span>TikTok</span>
+                                        </li>
+                                        <li onClick={() => {
+                                            dispatch(setSelectedSocialMedia('Spotify'));
+                                            const id = generateMongoObjectId();
+                                            dispatch(setNewSocialMediaAccount((
+                                                {
+                                                    _id: id,
+                                                    typeOfSocialMedia: 'Spotify',
+                                                    instagramUsername: '',
+                                                    instagramLink: '',
+                                                    followersNumber: '',
+                                                    logo: '',
+                                                    price: '',
+                                                }
+                                            )))
+                                            dispatch(setCurrentAccountId(id));
+                                            dispatch(setCurrentWindow(1));
+                                        }}>
+                                            <img src={spotifyIcon} alt="spotify"/>
+                                            <span>Spotify</span>
+                                        </li>
+                                        <li onClick={() => {
+                                            dispatch(setSelectedSocialMedia('SoundCloud'));
+                                            const id = generateMongoObjectId();
+                                            dispatch(setNewSocialMediaAccount((
+                                                {
+                                                    _id: id,
+                                                    typeOfSocialMedia: 'SoundCloud',
+                                                    instagramUsername: '',
+                                                    instagramLink: '',
+                                                    followersNumber: '',
+                                                    logo: '',
+                                                    price: '',
+                                                }
+                                            )))
+                                            dispatch(setCurrentAccountId(id));
+                                            dispatch(setCurrentWindow(1));
+                                        }}>
+                                            <img src={soundCloudIcon} alt="SoundCloud"/>
+                                            <span>SoundCloud</span>
+                                        </li>
+                                        <li onClick={() => {
+                                            dispatch(setSelectedSocialMedia('Facebook'));
+                                            const id = generateMongoObjectId();
+                                            dispatch(setNewSocialMediaAccount((
+                                                {
+                                                    _id: id,
+                                                    typeOfSocialMedia: 'Facebook',
+                                                    instagramUsername: '',
+                                                    instagramLink: '',
+                                                    followersNumber: '',
+                                                    logo: '',
+                                                    price: '',
+                                                }
+                                            )))
+                                            dispatch(setCurrentAccountId(id));
+                                            dispatch(setCurrentWindow(1));
+                                        }}>
+                                            <img src={facebookIcon} alt="facebook"/>
+                                            <span>Facebook</span>
+                                        </li>
+                                        <li onClick={() => {
+                                            dispatch(setSelectedSocialMedia('YouTube'));
+                                            const id = generateMongoObjectId();
+                                            dispatch(setNewSocialMediaAccount((
+                                                {
+                                                    _id: id,
+                                                    typeOfSocialMedia: 'YouTube',
+                                                    instagramUsername: '',
+                                                    instagramLink: '',
+                                                    followersNumber: '',
+                                                    logo: '',
+                                                    price: '',
+                                                }
+                                            )))
+                                            dispatch(setCurrentAccountId(id));
+                                            dispatch(setCurrentWindow(1));
+                                        }}>
+                                            <img src={youtubeIcon} alt="YouTube"/>
+                                            <span>YouTube</span>
+                                        </li>
+                                        <li onClick={() => {
+                                            dispatch(setSelectedSocialMedia('Press'));
+                                            const id = generateMongoObjectId();
+                                            dispatch(setNewSocialMediaAccount((
+                                                {
+                                                    _id: id,
+                                                    typeOfSocialMedia: 'Press',
+                                                    instagramUsername: '',
+                                                    instagramLink: '',
+                                                    followersNumber: '',
+                                                    logo: '',
+                                                    price: '',
+                                                }
+                                            )))
+                                            dispatch(setCurrentAccountId(id));
+                                            dispatch(setCurrentWindow(1));
+                                        }}>
+                                            <img style={{marginBottom: 9}} src={pressIcon} alt="Press"/>
+                                            <span>Press</span>
+                                        </li>
+                                        {dataStore.attachedSocialMediaAccounts.length > 0 &&
+                                            [...new Set(dataStore.attachedSocialMediaAccounts.map(account => account.typeOfSocialMedia))]
+                                                .map((type) => {
+                                                    const count = dataStore.attachedSocialMediaAccounts.filter((account) => account.typeOfSocialMedia === type).length;
+
+                                                    return (
+                                                        <div className='ready-account' key={type} onClick={() => {
+                                                            dispatch(setSelectedSocialMedia(type));
+                                                            setIsSocialAccountsModalOpen(true);
+                                                        }}>
+          <span className='length'>
+            {count}
+          </span>
+                                                            <li>
+                                                                <img
+                                                                    src={getSocialMediaIcon(type)}
+                                                                    alt={type}
+                                                                />
+                                                                <span>{type}</span>
+                                                            </li>
+                                                        </div>
+                                                    );
+                                                })
+                                        }
+                                    </ul>
+                                </div>
+                                {isAccountsReady && (
+                                    <StandardButton
+                                        style={{margin: '0 auto 33px auto', width: 210}}
+                                        text="Save"
+                                        onClick={() => addSocialMediaAccounts()}/>
+                                )}
+                                {errorSocialMedia.errorAfterAdding.length > 0 && (
+                                    <div className="error-after-adding">
+                                        {errorSocialMedia.errorAfterAdding.map((error, index) => (
+                                            <p key={index}>{error}</p>
+                                        ))}
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </div>
@@ -391,8 +668,6 @@ const AccountInfluencerDetails = () => {
                     <StandardButton text="Save changes" onClick={() => updateInfluencerPersonal()}
                                     style={{margin: '60px auto 0 auto'}}/>
                 </div>
-
-
             </ModalWindow>
 
             <ModalWindow
@@ -456,6 +731,21 @@ const AccountInfluencerDetails = () => {
                             onClick={() => updateInfluencerPassword()}
                         />
                     </div>
+                </div>
+            </ModalWindow>
+
+            <ModalWindow isOpen={isSocialAccountsModalOpen}
+                         setClose={() => setIsSocialAccountsModalOpen(false)}>
+                <div className="accounts-list-modal">
+                    {dataStore.attachedSocialMediaAccounts.filter((account) => account.typeOfSocialMedia === dataStore.selectedSocialMedia).map((account, index) => {
+                        return (
+                            <div className="account-block" onClick={() => openSavedAccount(account)}>
+                                <img src={getSocialMediaIcon(account.typeOfSocialMedia)}
+                                     alt={account.typeOfSocialMedia}/>
+                                <p>{account.instagramUsername ? account.instagramUsername : 'Account ' + ++index}</p>
+                            </div>
+                        )
+                    })}
                 </div>
             </ModalWindow>
         </>

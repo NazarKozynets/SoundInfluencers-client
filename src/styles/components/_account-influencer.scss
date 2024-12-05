@@ -65,6 +65,15 @@
   border-radius: 30px;
   background: var(--background);
 
+  .error-after-adding {
+    color: red;
+    font-family: Geometria;
+    font-size: 18px;
+    font-weight: 500;
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
   &-header {
     position: relative;
     border-radius: 30px 30px 0px 0px;
@@ -148,18 +157,117 @@
       }
     }
   }
+
+  .select-social-media {
+    margin-bottom: 60px;
+    font-family: Geometria;
+    font-size: 18px;
+    font-weight: 500;
+    text-align: center;
+
+    .social-medias-container {
+      margin: 42px auto 0;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 20px;
+
+      li {
+        width: calc((100% - (40px * 3)) / 3) !important;
+
+        @media screen and (max-width: 850px) {
+          width: calc((100% - (40px * 2)) / 2) !important;
+        }
+
+        @media screen and (max-width: 600px) {
+          width: calc((100% - (40px * 1)) / 1) !important;
+        }
+
+        height: 84px;
+        display: flex;
+        align-items: center;
+        border-radius: 30px;
+        box-shadow: 0px 4px 20px 0px #3330E480;
+        cursor: pointer;
+
+        img {
+          width: 40px;
+          height: 40px;
+          margin-left: 30px;
+          margin-bottom: 3px;
+        }
+
+        span {
+          font-family: Geometria;
+          font-size: 22px;
+          font-weight: 700;
+          line-height: 27.68px;
+          text-align: center;
+          margin-left: 14px;
+        }
+      }
+
+      li:hover {
+        background-color: #F5F5F5;
+        box-shadow: 0px 5px 23px 0px #3330E480;
+      }
+
+      .ready-account {
+        cursor: pointer;
+        background-color: #FF7A09BD;
+        box-shadow: 0px 4px 20px 0px #FF7A09E5;
+        width: calc((100% - (40px * 3)) / 3) !important;
+        height: 84px;
+        display: flex;
+        align-items: center;
+        border-radius: 30px;
+        position: relative;
+
+        li {
+          width: 100% !important;
+          height: 100%;
+          background-color: transparent !important;
+          box-shadow: none !important;
+          position: relative;
+        }
+
+        .length {
+          font-family: Geometria;
+          font-size: 20px;
+          font-weight: 500;
+          text-align: center;
+          background: #FB741E;
+          border-radius: 50%;
+          width: 32px;
+          height: 32px;
+          padding: 5px;
+          margin-left: 0;
+          position: absolute;
+          top: -8px;
+          right: -8px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+      }
+    }
+  }
+
 }
 
 .account-influencer-details-approved-accounts-list {
   display: flex;
-  flex-direction: column;
-  gap: 23px;
+  flex-wrap: wrap; 
+  gap: 23px 100px; 
+  justify-content: center; 
+
 
   .account-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 228px;
+    width: calc(40% - 11.5px); 
+    box-sizing: border-box; 
 
     p {
       font-family: Geometria;
@@ -178,5 +286,66 @@
       height: 32px;
       cursor: pointer;
     }
+  }
+}
+
+
+.delete-account-modal-window {
+  padding: 62px 64px 62px 64px;
+
+  .title-section {
+    font-family: Geometria;
+    font-size: 38px;
+    font-weight: 800;
+
+    p {
+      color: black;
+    }
+
+    span {
+      color: #FF7A09;
+      margin-left: 12px;
+    }
+  }
+
+  .warning-section {
+    color: red;
+    margin-top: 40px;
+
+    p {
+      font-family: Geometria;
+      font-size: 24px;
+      font-weight: 800;
+      text-align: left;
+    }
+
+    span {
+      font-family: Geometria;
+      font-size: 24px;
+      font-weight: 500;
+      text-align: left;
+    }
+  }
+
+  .inputs-section {
+    padding: 0;
+  }
+
+  .buttons-section {
+    display: flex;
+    justify-content: center;
+    gap: 13px;
+    margin-top: 33px;
+  }
+}
+
+.change-price-modal {
+  padding: 80px 64px 0 64px;
+
+  p {
+    font-family: Geometria;
+    font-size: 24px;
+    font-weight: 800;
+    text-align: center;
   }
 }

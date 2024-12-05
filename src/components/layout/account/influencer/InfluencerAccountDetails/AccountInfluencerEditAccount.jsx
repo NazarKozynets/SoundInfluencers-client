@@ -12,11 +12,13 @@ import {useNavigate, useParams} from "react-router-dom";
 import {getSocialMedia} from "../../../../../utils/typeOfSocialAccounts";
 import {genres} from "../../../../../utils/genresList";
 import axios from "axios";
+import AccountDetailsDeleteAccount from "./AccountDetailsDeleteAccount";
+import ModalWindow from "../../../../ModalWindow";
 
 const AccountInfluencerEditAccount = () => {
     const {accountId} = useParams();
     const navigate = useNavigate();
-    
+
     const [accountDetails, setAccountDetails] = useState({});
     const [isAccountFound, setIsAccountFound] = useState(true);
     const [isErrorAfterSubmit, setIsErrorAfterSubmit] = useState(false);
@@ -24,7 +26,9 @@ const AccountInfluencerEditAccount = () => {
     const [selectedGenres, setSelectedGenres] = useState([]);
     const [selectedCountries, setSelectedCountries] = useState([]);
     const [isAllFieldsFilled, setIsAllFieldsFilled] = useState(false);
-    
+    const [isDeleteAccountModalOpen, setIsDeleteAccountModalOpen] = useState(false);
+    const [isModalAfterChangingPriceOpen, setIsModalAfterChangingPriceOpen] = useState(false);
+
     useEffect(() => {
         getData();
     }, []);
@@ -39,17 +43,45 @@ const AccountInfluencerEditAccount = () => {
 
     const getData = async () => {
         try {
-            const { dataFetch } = await UseVerify();
+            const {dataFetch} = await UseVerify();
 
             try {
                 const allAccounts = [
-                    ...dataFetch.instagram.map(account => ({ ...account, typeOfSocialMedia: 'instagram', influencerId: dataFetch._id })),
-                    ...dataFetch.tiktok.map(account => ({ ...account, typeOfSocialMedia: 'tiktok', influencerId: dataFetch._id })),
-                    ...dataFetch.spotify.map(account => ({ ...account, typeOfSocialMedia: 'spotify', influencerId: dataFetch._id })),
-                    ...dataFetch.soundcloud.map(account => ({ ...account, typeOfSocialMedia: 'soundcloud', _id: dataFetch._id })),
-                    ...dataFetch.facebook.map(account => ({ ...account, typeOfSocialMedia: 'facebook', influencerId: dataFetch._id })),
-                    ...dataFetch.youtube.map(account => ({ ...account, typeOfSocialMedia: 'youtube', influencerId: dataFetch._id })),
-                    ...dataFetch.press.map(account => ({ ...account, typeOfSocialMedia: 'press', influencerId: dataFetch._id })),
+                    ...dataFetch.instagram.map(account => ({
+                        ...account,
+                        typeOfSocialMedia: 'instagram',
+                        influencerId: dataFetch._id
+                    })),
+                    ...dataFetch.tiktok.map(account => ({
+                        ...account,
+                        typeOfSocialMedia: 'tiktok',
+                        influencerId: dataFetch._id
+                    })),
+                    ...dataFetch.spotify.map(account => ({
+                        ...account,
+                        typeOfSocialMedia: 'spotify',
+                        influencerId: dataFetch._id
+                    })),
+                    ...dataFetch.soundcloud.map(account => ({
+                        ...account,
+                        typeOfSocialMedia: 'soundcloud',
+                        _id: dataFetch._id
+                    })),
+                    ...dataFetch.facebook.map(account => ({
+                        ...account,
+                        typeOfSocialMedia: 'facebook',
+                        influencerId: dataFetch._id
+                    })),
+                    ...dataFetch.youtube.map(account => ({
+                        ...account,
+                        typeOfSocialMedia: 'youtube',
+                        influencerId: dataFetch._id
+                    })),
+                    ...dataFetch.press.map(account => ({
+                        ...account,
+                        typeOfSocialMedia: 'press',
+                        influencerId: dataFetch._id
+                    })),
                 ];
 
                 const foundAccount = allAccounts.find(account => account._id === accountId);
@@ -57,7 +89,7 @@ const AccountInfluencerEditAccount = () => {
                 if (foundAccount) {
                     setAccountDetails(foundAccount);
                     setImageUrl(foundAccount.logo);
-                    
+
                     const genresSet = new Set();
 
                     if (foundAccount.musicStyle || foundAccount.musicSubStyles || foundAccount.musicStyleOther) {
@@ -93,7 +125,7 @@ const AccountInfluencerEditAccount = () => {
                         setSelectedCountries(foundAccount.countries);
                     }
                 } else {
-                    setIsAccountFound(false); 
+                    setIsAccountFound(false);
                 }
             } catch (err) {
                 console.log('Ошибка при поиске аккаунта:', err);
@@ -109,7 +141,7 @@ const AccountInfluencerEditAccount = () => {
             [field]: value
         });
     };
-    
+
     const handleAvatarChange = (file) => {
         if (file && file.type && file.type.startsWith("image/")) {
             setAccountDetails({
@@ -251,10 +283,10 @@ const AccountInfluencerEditAccount = () => {
                 return '';
         }
     }
-    
+
     const saveChanges = async () => {
         try {
-            const { musicStyle, musicSubStyles, musicStyleOther } = filterMusicGenres();
+            const {musicStyle, musicSubStyles, musicStyleOther} = filterMusicGenres();
 
             let logoUrl = accountDetails.logo ? accountDetails.logo : null;
 
@@ -270,7 +302,7 @@ const AccountInfluencerEditAccount = () => {
                     logoUrl = response.data.data;
                 }
             }
-            
+
             const result = await axios.put(`${process.env.REACT_APP_SERVER}/profile/influencer/update-social-media-account`, {
                 _id: accountDetails.influencerId,
                 typeOfSocialMedia: accountDetails.typeOfSocialMedia,
@@ -284,8 +316,10 @@ const AccountInfluencerEditAccount = () => {
                 musicStyleOther,
                 countries: selectedCountries,
                 categories: accountDetails.categories,
+                price: accountDetails.price,
+                publicPrice: accountDetails.publicPrice,
             })
-            
+
             if (result.data.code === 200) {
                 navigate(`/account/influencer/details`);
             }
@@ -293,7 +327,23 @@ const AccountInfluencerEditAccount = () => {
             console.log('Ошибка при сохранении изменений:', err);
         }
     };
-    
+
+    const sendMailAboutChangingPrice = async () => {
+        try {
+            const result = await axios.post(`${process.env.REACT_APP_SERVER}/profile/influencer/send-mail-price-change`, {
+                influencerId: accountDetails.influencerId,
+                accountId: accountDetails._id,
+                typeOfSocialMedia: accountDetails.typeOfSocialMedia,
+            });
+
+            if (result.data.code === 200) {
+                setIsModalAfterChangingPriceOpen(true);
+            }
+        } catch (err) {
+            console.log('Ошибка при отправке письма:', err);
+        }
+    };
+
     return (
         <section className="signup-influencer">
             <div className="admin-title-section">
@@ -303,7 +353,8 @@ const AccountInfluencerEditAccount = () => {
                 {!isAccountFound ? (
                     <TitleSection title="Account not found"/>
                 ) : (
-                    <TitleSection title="Edit your" span={`${getSocialMedia(accountDetails.typeOfSocialMedia)} account details`}/>
+                    <TitleSection title="Edit your"
+                                  span={`${getSocialMedia(accountDetails.typeOfSocialMedia)} account details`}/>
                 )}
             </div>
             {isAccountFound && (
@@ -460,7 +511,8 @@ const AccountInfluencerEditAccount = () => {
                                 <div className="price-input-container">
                                     <p id='price-input-title'>{returnPriceInput()}</p>
                                     <div className="price-input-container-block" style={{marginTop: 20}}>
-                                        <StandardButton text="Contact us to change price" isBlue={true}/>
+                                        <StandardButton text="Contact us to change price" isBlue={true}
+                                                        onClick={() => sendMailAboutChangingPrice()}/>
                                     </div>
                                 </div>
 
@@ -471,8 +523,8 @@ const AccountInfluencerEditAccount = () => {
                                 )}
 
                                 <div className="delete-account-button">
-                                    <StandardButton isBlue={true} text="Delete Account" onClick={() => {
-                                        saveChanges();
+                                    <StandardButton isRed={true} text="Delete Account" onClick={() => {
+                                        setIsDeleteAccountModalOpen(true);
                                     }}/>
                                 </div>
 
@@ -480,6 +532,26 @@ const AccountInfluencerEditAccount = () => {
                                     <div className="error-message">
                                         <p>There was an error adding the account. Please try again.</p>
                                     </div>
+                                )}
+
+                                <AccountDetailsDeleteAccount
+                                    _id={accountDetails.influencerId}
+                                    typeOfSocialMedia={accountDetails.typeOfSocialMedia}
+                                    accountId={accountId}
+                                    isOpen={isDeleteAccountModalOpen}
+                                    setClose={() => setIsDeleteAccountModalOpen(false)}
+                                />
+
+                                {isModalAfterChangingPriceOpen && (
+                                    <ModalWindow isOpen={isModalAfterChangingPriceOpen}
+                                                 setClose={() => setIsModalAfterChangingPriceOpen(false)}>
+                                        <div className="change-price-modal">
+                                            <p>The email has been delivered. Please await a response.</p>
+                                            <StandardButton style={{margin: "40px auto 40px", width: 300}} text="Close"
+                                                            onClick={() => setIsModalAfterChangingPriceOpen(false)}
+                                                            isBlue={true}/>
+                                        </div>
+                                    </ModalWindow>
                                 )}
                             </div>
                         </FormContainer>

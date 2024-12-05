@@ -64,7 +64,10 @@ export const signupInfluencerSlice = createSlice({
                     return account;
                 }
             );
-        }
+        },
+        setClearAttachedSocialMediaAccounts: (state) => {
+            state.attachedSocialMediaAccounts = [];
+        },
     },
 });
 
@@ -80,6 +83,7 @@ export const {
     deleteSocialMediaAccount,
     setCurrentAccountId,
     updateCurrentAccountId,
+    setClearAttachedSocialMediaAccounts,
 } = signupInfluencerSlice.actions;
 
 export default signupInfluencerSlice.reducer;
