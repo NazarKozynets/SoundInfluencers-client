@@ -6,12 +6,64 @@ const Countries = ({ filterParams, influencers, setCheckedCountries, setFiltered
     const [localCheckedCountries, setLocalCheckedCountries] = useState({});
 
     const isMobile = window.innerWidth <= 768;
-    
+
     const categories = {
-        'North America': ['US', 'Canada'],
-        'Europe': ['UK', 'Germany', 'Italy', 'Spain', 'France', 'Netherlands', 'Belgium'],
-        'LATAM': ['Mexico', 'Brazil', 'Argentina', 'Colombia', 'Chile']
+        'North America': [
+            'US', 'Canada', 'Mexico', 'Guatemala', 'Belize', 'El Salvador',
+            'Honduras', 'Costa Rica', 'Nicaragua', 'Panama', 'Bermuda',
+            'Bahamas', 'Haiti', 'Cuba', 'Jamaica', 'Dominican Republic',
+            'Dominica', 'St. Kitts and Nevis', 'St. Lucia',
+            'St. Vincent and The Grenadines', 'Barbados', 'Grenada',
+            'Trinidad and Tobago'
+        ],
+        'Europe': [
+            'UK', 'Germany', 'Italy', 'Spain', 'France', 'Netherlands',
+            'Belgium', 'Ireland', 'Portugal', 'Switzerland', 'Austria',
+            'Czech Republic', 'Poland', 'Romania', 'Slovakia', 'Croatia',
+            'Serbia', 'Bosnia and Herzegovina', 'Montenegro', 'Albania',
+            'Macedonia', 'Greece', 'Bulgaria', 'Norway', 'Sweden',
+            'Finland', 'Denmark', 'Estonia', 'Latvia', 'Lithuania',
+            'Belarus', 'Iceland', 'Andorra', 'Liechtenstein', 'Luxembourg',
+            'Malta'
+        ],
+        'LATAM': [
+            'Brazil', 'Argentina', 'Colombia', 'Chile', 'Peru', 'Bolivia',
+            'Paraguay', 'Uruguay', 'Venezuela', 'Ecuador', 'Guyana',
+            'Suriname'
+        ],
+        'Middle East': [
+            'Turkey', 'UAE', 'Qatar', 'Bahrain', 'Saudi Arabia', 'Kuwait',
+            'Iraq', 'Jordan', 'Israel', 'Lebanon', 'Syria', 'Oman', 'Yemen',
+            'Iran', 'Armenia', 'Azerbaijan', 'Cyprus'
+        ],
+        'Asia': [
+            'India', 'China', 'Japan', 'South Korea', 'North Korea', 'Mongolia',
+            'Nepal', 'Sri Lanka', 'Maldives', 'Bhutan', 'Bangladesh', 'Myanmar',
+            'Thailand', 'Laos', 'Cambodia', 'Vietnam', 'Malaysia',
+            'Singapore', 'Brunei', 'Indonesia', 'East Timor', 'Pakistan',
+            'Afghanistan', 'Turkmenistan', 'Uzbekistan', 'Tajikistan',
+            'Kyrgyzstan', 'Kazakhstan', 'Georgia'
+        ],
+        'Africa': [
+            'Morocco', 'Algeria', 'Tunisia', 'Libya', 'Egypt', 'Mauritania',
+            'Mali', 'Senegal', 'Gambia', 'Guinea Bissau', 'Guinea',
+            'Sierra Leone', 'Liberia', 'Ivory Coast', 'Ghana', 'Burkina',
+            'Togo', 'Benin', 'Niger', 'Nigeria', 'Chad', 'Cameroon',
+            'Central African Republic', 'North Sudan', 'South Sudan',
+            'Eritrea', 'Djibouti', 'Ethiopia', 'Somalia', 'Equatorial Guinea',
+            'Gabon', 'Republic of Congo', 'Democratic Republic of Congo',
+            'Uganda', 'Kenya', 'Rwanda', 'Burundi', 'Tanzania', 'Angola',
+            'Zambia', 'Malawi', 'Mozambique', 'Namibia', 'Botswana',
+            'Zimbabwe', 'South Africa', 'Lesotho', 'Swaziland',
+            'Seychelles', 'Comoros', 'Madagascar', 'Mauritius', 'Cape Verde'
+        ],
+        'Oceania': [
+            'Australia', 'New Zealand', 'Papua New Guinea', 'Fiji', 'Samoa',
+            'Tonga', 'Vanuatu', 'Solomon Islands', 'Micronesia',
+            'Marshall Islands', 'Palau', 'Nauru', 'Tuvalu', 'Kiribati'
+        ]
     };
+
 
     const handleCheckboxChange = (item, checked) => {
         let newCheckedCountries = { ...localCheckedCountries };

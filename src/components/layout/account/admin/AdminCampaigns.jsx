@@ -88,6 +88,7 @@ const AdminCampaigns = () => {
             const result = await axios(
                 `${process.env.REACT_APP_SERVER}/admin/promos/getAll`
             );
+            
             if (result.status === 200) {
                 setData(result.data.data);
             }
@@ -268,8 +269,6 @@ const AdminCampaigns = () => {
             const result = await axios.delete(
                 `${process.env.REACT_APP_SERVER}/admin/promos/delete/${campaignId}`
             );
-
-            console.log(result);
 
             if (result.status === 200) {
                 const updatedCampaigns = data.filter((campaign) => campaign._id !== campaignId);
