@@ -138,6 +138,10 @@ const AdminCampaignManagement = () => {
     }, [data]);
 
     useEffect(() => {
+        console.log(fieldsForChangeVideo, 'fieldsForChangeVideo');
+    }, [fieldsForChangeVideo]);
+
+    useEffect(() => {
         const handleClickOutside = (event) => {
             if (
                 containerRef.current &&
@@ -274,6 +278,7 @@ const AdminCampaignManagement = () => {
     }
 
     const selectInfluencer = (influencer) => {
+        console.log(influencer, 'influencer');
         if (fieldsForChangeVideo.selectedInstagramUsername !== influencer.instagramUsername) {
             setFieldsForChangeVideo({
                 _id: data._id,

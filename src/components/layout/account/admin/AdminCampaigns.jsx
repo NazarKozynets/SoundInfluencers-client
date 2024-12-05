@@ -20,7 +20,8 @@ const AdminCampaigns = () => {
     const [searchResult, setSearchResult] = useState();
     const [isShowModalPublicLink, setIsShowModalPublicLink] = useState(false);
     const [selectedCampaignId, setSelectedCampaignId] = useState('');
-
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [idForDelete, setIdForDelete] = useState('');
     const [fieldsForChange, setFieldsForChange] = useState({
         _id: '',
         userId: '',
@@ -59,11 +60,6 @@ const AdminCampaigns = () => {
             document.removeEventListener("mousedown", handleClickOutside);
         };
     }, []);
-
-    useEffect(() => {
-        console.log(data, 'data');
-    }, [data]);
-
 
     const selectCampaign = (campaign) => {
         if (fieldsForChange._id !== campaign._id) {
@@ -263,17 +259,17 @@ const AdminCampaigns = () => {
         return (publicPrice - priceForInfluencers).toLocaleString('en-US') + '€';
     }
 
-    const deleteCampaign = async (campaignId) => {
+    const deleteCampaign = async () => {
         try {
             const result = await axios.delete(
-                `${process.env.REACT_APP_SERVER}/admin/promos/delete/${campaignId}`
+                `${process.env.REACT_APP_SERVER}/admin/promos/delete/${idForDelete}`
             );
 
-            console.log(result);
-
             if (result.status === 200) {
-                const updatedCampaigns = data.filter((campaign) => campaign._id !== campaignId);
+                const updatedCampaigns = data.filter((campaign) => campaign._id !== idForDelete);
                 setData(updatedCampaigns);
+                setIdForDelete('');
+                setIsDeleteModalOpen(false);
             }
         } catch (error) {
             console.log(error);
@@ -643,7 +639,10 @@ const AdminCampaigns = () => {
                                                     style={{width: '15%', background: '#f0ecfc'}}>
                                                     <div style={{display: 'flex', gap: 10}}>
                                                         <img src={closeImg} alt="close"
-                                                             onClick={() => deleteCampaign(item._id)}
+                                                             onClick={() => {
+                                                                 setIdForDelete(item._id);
+                                                                 setIsDeleteModalOpen(true)
+                                                             }}
                                                              style={{width: 15, cursor: 'pointer'}}/>
                                                         <input
                                                             style={{
@@ -933,6 +932,39 @@ const AdminCampaigns = () => {
                                 </table>
                             </div>
                         </div>
+                        {isDeleteModalOpen && (
+                            <ModalWindow isOpen={isDeleteModalOpen} setClose={() => setIsDeleteModalOpen(false)}>
+                                <div style={{padding: "80px 80px 0 80px"}}>
+                                    <p style={{
+                                        fontFamily: "Geometria",
+                                        fontSize: 24,
+                                        fontWeight: 800,
+                                        textAlign: "center",
+                                    }}>
+                                        Are you sure you want to delete this campaign?
+                                        <br/>
+                                        <span style={{color: 'red'}}>
+                                            You won't be able to restore this!
+                                        </span>
+                                    </p>
+                                    <div style={{
+                                        display: 'flex',
+                                        gap: 30,
+                                        justifyContent: 'center',
+                                        marginTop: 40,
+                                        marginBottom: 64
+                                    }}>
+                                        <StandardButton text="Delete" style={{background: "red", width: 300}}
+                                                        onClick={() => deleteCampaign()}/>
+                                        <StandardButton text="Cancel" style={{width: 300}} isBlue={true}
+                                                        onClick={() => {
+                                                            setIdForDelete('');
+                                                            setIsDeleteModalOpen(false)
+                                                        }}/>
+                                    </div>
+                                </div>
+                            </ModalWindow>
+                        )}
                     </div>
                 ) : (
                     <Loading/>

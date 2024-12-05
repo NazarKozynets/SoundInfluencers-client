@@ -15,6 +15,7 @@ import {
 } from "../../../../../redux/slice/create-promo";
 import arrow from "../../../../../images/icons/arrow.svg";
 import close from "../../../../../images/icons/close.svg";
+import {generateMongoObjectId} from "../../../../../utils/generateId";
 
 const AccountClientPostContent = () => {
     const dispatch = useDispatch();
