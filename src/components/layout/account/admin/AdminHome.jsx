@@ -13,7 +13,7 @@ import axios from "axios";
 
 const AdminHome = () => {
     const navigate = useNavigate();
-
+    
     return (
         <section className="admin">
             <div>
