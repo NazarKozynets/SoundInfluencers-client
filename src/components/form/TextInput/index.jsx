@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "./style.module.css";
 import timeIcon from "../../../images/icons/time.svg";
+import {validateTextInput} from "../../../utils/validations";
 
 const TextInput = ({
                        value = "",
@@ -19,7 +20,7 @@ const TextInput = ({
     const handleBeforeInput = (event) => {
         const char = event.data;
 
-        if (!/^[\u0000-\u10FFFF]*$/.test(char)) {
+        if (!validateTextInput(char)) {
             event.preventDefault();
         }
     };
@@ -40,7 +41,7 @@ const TextInput = ({
                     onChange={({target}) => setValue(target.value)}
                     onBeforeInput={handleBeforeInput}
                     disabled={disabled}
-                    autoComplete="off"
+                    // autoComplete="off"
                     {...args}
                 />
                 {disabled ? (
