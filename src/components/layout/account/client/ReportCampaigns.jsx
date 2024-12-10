@@ -81,8 +81,8 @@ const ReportCampaigns = () => {
     }, [dataPromo])
 
     const editCPMO = () => {
-        if (dataPromo?.selectInfluencers?.find(influencer => influencer.impressions > 0)) {
-            const price = dataPromo?.amount ?? dataPromo?.selectPrice?.price ?? 0;
+        if (dataPromo?.selectInfluencers?.find(influencer => influencer.impressions > 0) && dataPromo?.isCpmAndResultHidden === false) {
+            const price = dataPromo?.amount || 0;
 
             if (price === 0) {
                 return;
@@ -126,7 +126,6 @@ const ReportCampaigns = () => {
         }
     }
 
-
     const getData = async () => {
         try {
             const {dataFetch} = await UseVerify();
@@ -134,7 +133,7 @@ const ReportCampaigns = () => {
                 `${process.env.REACT_APP_SERVER}/promos/ongoing/one?id=${params.id}&userId=${dataFetch._id}`
             );
             setCompany(dataFetch);
-            if (result.data.code === 200) {
+            if (result.data.code === 201) {
                 setDataPromo(result.data.promo);
 
                 const resultInfluencers = result.data.promo.selectInfluencers.map((influencer) => {
@@ -154,14 +153,6 @@ const ReportCampaigns = () => {
         } catch (err) {
             console.log(err);
         }
-    };
-
-    const totalFollowers = () => {
-        const total = data.reduce((prev, current) => {
-            return prev + extractNumber(current.followersNumber);
-        }, 0);
-
-        return total;
     };
 
     const totalImpressions = () => {
@@ -443,7 +434,7 @@ const ReportCampaigns = () => {
                         <p>Posts & Stories: <span>{dataPromo?.selectInfluencers.length}</span></p>
                     </div>
                     <div className="report-details-second">
-                        <p>Combined Followers: <span>{totalFollowers()}</span></p>
+                        <p>Combined Followers: <span>{dataPromo?.totalFollowers}</span></p>
                         <p>Impressions: <span>{totalImpressions()}</span></p>
                         <p>Likes: <span>{totalLikes()}</span></p>
                     </div>
@@ -582,7 +573,7 @@ const ReportCampaigns = () => {
                             fontWeight: 800,
                             textAlign: "center",
                         }}>
-                            {totalFollowers()}
+                            {dataPromo?.totalFollowers}
                         </td>
                         <td className="report-table-body-total-row-item-second"></td>
                         <td className="report-table-body-total-row-item"></td>

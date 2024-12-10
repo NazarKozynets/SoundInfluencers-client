@@ -12,7 +12,6 @@ import arrow from "../../../../images/icons/arrow.svg";
 
 const AcountClientPastPromosCurrent = () => {
     const params = useParams();
-
     const [data, setData] = useState({});
 
     const getData = async () => {

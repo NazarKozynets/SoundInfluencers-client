@@ -265,10 +265,11 @@ const AdminCampaigns = () => {
             const result = await axios.delete(
                 `${process.env.REACT_APP_SERVER}/admin/promos/delete/${idForDelete}`
             );
-
-            if (result.status === 200) {
+            
+            if (result.data.status === 200) {
                 const updatedCampaigns = data.filter((campaign) => campaign._id !== idForDelete);
                 setData(updatedCampaigns);
+                setIsDeleteModalOpen(false);
             }
         } catch (error) {
             console.log(error);
@@ -639,10 +640,10 @@ const AdminCampaigns = () => {
                                                     <div style={{display: 'flex', gap: 10}}>
                                                         <img src={closeImg} alt="close"
                                                              onClick={() => {
-                                                                 setIdForDelete(item._id);
-                                                                 setIsDeleteModalOpen(true)
+                                                                     setIdForDelete(item._id);
+                                                                     setIsDeleteModalOpen(true);
                                                              }}
-                                                             style={{width: 15, cursor: 'pointer'}}/>
+                                                             style={{width: 15, cursor: 'pointer', display: item?.isCopy === true && 'none'}}/>
                                                         <input
                                                             style={{
                                                                 fontFamily: "Geometria",
@@ -957,8 +958,8 @@ const AdminCampaigns = () => {
                                                         onClick={() => deleteCampaign()}/>
                                         <StandardButton text="Cancel" style={{width: 300}} isBlue={true}
                                                         onClick={() => {
-                                                            setIdForDelete('');
                                                             setIsDeleteModalOpen(false)
+                                                            setIdForDelete('');
                                                         }}/>
                                     </div>
                                 </div>

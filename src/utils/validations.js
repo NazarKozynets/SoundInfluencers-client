@@ -132,6 +132,6 @@ export function formatLink(inputLink) {
 }
 
 export function validateTextInput(text) {
-  const textRegex = /^[A-Za-z0-9.,!@#$%^&*()_+\-=\[\]{};:'"<>?/\\|\u{1F300}-\u{1FAFF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]*$/u;
+  const textRegex = /^[A-Za-z0-9.,!@#$%^&*()_+\-=\[\]{};:'"<>?/\\|\u{1F300}-\u{1FAFF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\s]*$/u;
   return textRegex.test(text);
 }

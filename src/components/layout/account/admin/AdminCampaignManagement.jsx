@@ -90,6 +90,7 @@ const AdminCampaignManagement = () => {
     });
     const [isDeleteInfluencerModalOpen, setIsDeleteInfluencerModalOpen] = useState(false);
     const [isCpmAndResultHidden, setIsCpmAndResultHidden] = useState(false);
+    const [isClosePromoModalOpen, setIsClosePromoModalOpen] = useState(false);
     
     const navigate = useNavigate();
     const params = useParams();
@@ -274,6 +275,8 @@ const AdminCampaignManagement = () => {
     }
 
     const selectInfluencer = (influencer) => {
+        if (data?.isCopy === true) return;
+        
         if (fieldsForChangeVideo.selectedInstagramUsername !== influencer.instagramUsername) {
             setFieldsForChangeVideo({
                 _id: data._id,
@@ -610,6 +613,30 @@ const AdminCampaignManagement = () => {
         }
     };
     
+    const closeCampaign = async () => {
+        try {
+            const campaignId = params.campaignId;
+            const result = await axios.post(`${process.env.REACT_APP_SERVER}/admin/promos/close-promo/${campaignId}`);
+            
+            if (result.status === 201) {
+                navigate('/admin/campaigns');
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    
+    const returnCopyLabel = () => {
+      if (data.isCopy) {
+          return (<p style={{color: 'red',fontFamily: "Geometria",
+              fontSize: '30px',
+              fontWeight: 800,
+              textAlign: "center",
+              width: '100%',
+              marginTop: 35,}}>CLOSED</p>);
+      }
+    };
+
     return (
         <section className="admin">
             <div>
@@ -622,7 +649,7 @@ const AdminCampaignManagement = () => {
                     </div>
                     {data && (
                         <div ref={containerCampaignRef} onClick={() => {
-                            if (fieldsForChangeCampaign.campaignName === '') {
+                            if (!data?.isCopy && fieldsForChangeCampaign.campaignName === '') {
                                 setFieldsForChangeCampaign({
                                     _id: data._id,
                                     campaignName: data.campaignName,
@@ -643,6 +670,8 @@ const AdminCampaignManagement = () => {
                                 name='campaignName'
                                 onChange={updateCampaignFieldsInput}
                             />
+
+                            {returnCopyLabel()}
 
                             <div className="report-details">
                                 <div className="report-details-first">
@@ -954,7 +983,7 @@ const AdminCampaignManagement = () => {
                                                     fontWeight: 400,
                                                     textAlign: 'center',
                                                 }}>
-                                                    {influencer?.followersCount}
+                                                    {influencer?.followersCount || influencer?.followersNumber}
                                                 </p>
                                             </td>
                                             {/*date post*/}
@@ -1783,7 +1812,45 @@ const AdminCampaignManagement = () => {
                                     </tfoot>
                                 </table>
                             </div>
+
+                            {!data?.isCopy && (
+                                <div className="admin-close-campaign-button">
+                                    <StandardButton style={{margin: '0 auto 50px auto'}} isRed={true} text="Close"
+                                                    onClick={() => setIsClosePromoModalOpen(true)}/>
+                                </div>
+                            )}
                         </div>
+
+                        {isClosePromoModalOpen && (
+                            <ModalWindow isOpen={isClosePromoModalOpen}
+                                         setClose={() => setIsClosePromoModalOpen(false)}>
+                                <div style={{padding: "80px 80px 0 80px"}}>
+                                    <p style={{
+                                        fontFamily: "Geometria",
+                                        fontSize: 24,
+                                        fontWeight: 800,
+                                        textAlign: "center",
+                                    }}>
+                                        Are you sure you want to <span style={{color: 'red'}}>CLOSE</span> this campaign?
+                                        <br/>
+                                    </p>
+                                    <div style={{
+                                        display: 'flex',
+                                        gap: 30,
+                                        justifyContent: 'center',
+                                        marginTop: 40,
+                                        marginBottom: 64
+                                    }}>
+                                        <StandardButton text="Close" style={{background: "red", width: 300}}
+                                                        onClick={() => closeCampaign()}/>
+                                        <StandardButton text="Cancel" style={{width: 300}} isBlue={true}
+                                                        onClick={() => {
+                                                            setIsClosePromoModalOpen(false)
+                                                        }}/>
+                                    </div>
+                                </div>
+                            </ModalWindow>
+                        )}
                     </div>
                 ) : (
                     <Loading/>
