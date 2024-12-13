@@ -91,7 +91,7 @@ const AdminCampaignManagement = () => {
     const [isDeleteInfluencerModalOpen, setIsDeleteInfluencerModalOpen] = useState(false);
     const [isCpmAndResultHidden, setIsCpmAndResultHidden] = useState(false);
     const [isClosePromoModalOpen, setIsClosePromoModalOpen] = useState(false);
-    
+
     const navigate = useNavigate();
     const params = useParams();
     const getData = async () => {
@@ -249,7 +249,7 @@ const AdminCampaignManagement = () => {
     };
 
     const totalLikes = () => {
-        if (!data?.selectInfluencers) return 0; 
+        if (!data?.selectInfluencers) return 0;
         const total = data.selectInfluencers.reduce((prev, current) => {
             return prev + extractNumber(current.like);
         }, 0);
@@ -275,8 +275,6 @@ const AdminCampaignManagement = () => {
     }
 
     const selectInfluencer = (influencer) => {
-        if (data?.isCopy === true) return;
-        
         if (fieldsForChangeVideo.selectedInstagramUsername !== influencer.instagramUsername) {
             setFieldsForChangeVideo({
                 _id: data._id,
@@ -417,6 +415,8 @@ const AdminCampaignManagement = () => {
                 }
             );
 
+            console.log(result)
+            
             if (result.status === 200) {
                 await updateCampaignData(fieldsForChangeCampaign._id);
                 setFieldsForChangeCampaign({
@@ -493,7 +493,7 @@ const AdminCampaignManagement = () => {
             }
         }
     };
-    
+
     useEffect(() => {
         if (selectedNewInfluencer.selectedVideo !== '') {
             const influencerIndex = newInfluencersList.findIndex(influencer => influencer.instagramUsername === selectedNewInfluencer.instagramUsername);
@@ -552,7 +552,7 @@ const AdminCampaignManagement = () => {
                 `${process.env.REACT_APP_SERVER}/admin/promos/update/add-influencer-to-promo`,
                 instaObj
             );
-            
+
             if (result.status === 200) {
                 await updateCampaignData(data._id);
                 removeNewInfluencerFromList(instagramUsername);
@@ -590,7 +590,7 @@ const AdminCampaignManagement = () => {
             const result = await axios.put(
                 `${process.env.REACT_APP_SERVER}/admin/promos/close-for-influencer/${campaignId}/${instagramUsername}`,
             );
-            
+
             if (result.status === 200) {
                 await updateCampaignData(campaignId);
             }
@@ -598,13 +598,13 @@ const AdminCampaignManagement = () => {
             console.log(error);
         }
     }
-    
+
     const hideCpmAndResult = async () => {
         try {
             const result = await axios.put(
                 `${process.env.REACT_APP_SERVER}/admin/promos/update/hideCpmAndResultForCampaign/${data._id}`,
             );
-            
+
             if (result.status === 200) {
                 setIsCpmAndResultHidden(!isCpmAndResultHidden);
             }
@@ -612,12 +612,12 @@ const AdminCampaignManagement = () => {
             console.log(error);
         }
     };
-    
+
     const closeCampaign = async () => {
         try {
             const campaignId = params.campaignId;
             const result = await axios.post(`${process.env.REACT_APP_SERVER}/admin/promos/close-promo/${campaignId}`);
-            
+
             if (result.status === 201) {
                 navigate('/admin/campaigns');
             }
@@ -625,16 +625,18 @@ const AdminCampaignManagement = () => {
             console.log(error);
         }
     }
-    
+
     const returnCopyLabel = () => {
-      if (data.isCopy) {
-          return (<p style={{color: 'red',fontFamily: "Geometria",
-              fontSize: '30px',
-              fontWeight: 800,
-              textAlign: "center",
-              width: '100%',
-              marginTop: 35,}}>CLOSED</p>);
-      }
+        if (data.isCopy) {
+            return (<p style={{
+                color: 'red', fontFamily: "Geometria",
+                fontSize: '30px',
+                fontWeight: 800,
+                textAlign: "center",
+                width: '100%',
+                marginTop: 35,
+            }}>CLOSED</p>);
+        }
     };
 
     return (
@@ -649,7 +651,7 @@ const AdminCampaignManagement = () => {
                     </div>
                     {data && (
                         <div ref={containerCampaignRef} onClick={() => {
-                            if (!data?.isCopy && fieldsForChangeCampaign.campaignName === '') {
+                            if (fieldsForChangeCampaign.campaignName === '') {
                                 setFieldsForChangeCampaign({
                                     _id: data._id,
                                     campaignName: data.campaignName,
@@ -721,6 +723,13 @@ const AdminCampaignManagement = () => {
                     )}
                 </div>
 
+                {!data?.isCopy && (
+                    <div className="admin-close-campaign-button">
+                        <StandardButton style={{margin: '0 auto 50px auto'}} isRed={true} text="COMPLETE"
+                                        onClick={() => setIsClosePromoModalOpen(true)}/>
+                    </div>
+                )}
+
                 {data ? (
                     <div>
                         <div ref={containerRef}>
@@ -760,7 +769,7 @@ const AdminCampaignManagement = () => {
                                             marginTop: 10,
                                             width: '100%',
                                         }}>{fieldsForChangeVideo?.oldVideoLink}</p>
-                                        
+
                                         <h1 style={{textAlign: 'center', marginTop: '30px'}}>SELECT FROM EXISTING</h1>
                                         <div style={{marginTop: 10, display: 'flex', justifyContent: 'center'}}>
                                             {data?.videos.map((video, index) => (
@@ -1105,9 +1114,20 @@ const AdminCampaignManagement = () => {
                                                     textAlign: 'left',
                                                 }}>
                                                     {getStatusForInfluencer(influencer) !== 'Closed' ? (
-                                                        <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+                                                        <div style={{
+                                                            display: 'flex',
+                                                            justifyContent: 'space-between',
+                                                            alignItems: 'center'
+                                                        }}>
                                                             {getStatusForInfluencer(influencer)}
-                                                            <img onClick={() => closeCampaignForInfluencer(influencer.instagramUsername, params.campaignId)} src={checkImg} alt='closePromo' style={{filter: 'invert(1)', width: 15, height: 15, paddingRight: 5}}/>
+                                                            <img
+                                                                onClick={() => closeCampaignForInfluencer(influencer.instagramUsername, params.campaignId)}
+                                                                src={checkImg} alt='closePromo' style={{
+                                                                filter: 'invert(1)',
+                                                                width: 15,
+                                                                height: 15,
+                                                                paddingRight: 5
+                                                            }}/>
                                                         </div>
                                                     ) : (
                                                         getStatusForInfluencer(influencer)
@@ -1812,13 +1832,6 @@ const AdminCampaignManagement = () => {
                                     </tfoot>
                                 </table>
                             </div>
-
-                            {!data?.isCopy && (
-                                <div className="admin-close-campaign-button">
-                                    <StandardButton style={{margin: '0 auto 50px auto'}} isRed={true} text="Close"
-                                                    onClick={() => setIsClosePromoModalOpen(true)}/>
-                                </div>
-                            )}
                         </div>
 
                         {isClosePromoModalOpen && (
@@ -1831,8 +1844,7 @@ const AdminCampaignManagement = () => {
                                         fontWeight: 800,
                                         textAlign: "center",
                                     }}>
-                                        Are you sure you want to <span style={{color: 'red'}}>CLOSE</span> this campaign?
-                                        <br/>
+                                        <b>Is the campaign completed?</b>
                                     </p>
                                     <div style={{
                                         display: 'flex',
@@ -1841,9 +1853,9 @@ const AdminCampaignManagement = () => {
                                         marginTop: 40,
                                         marginBottom: 64
                                     }}>
-                                        <StandardButton text="Close" style={{background: "red", width: 300}}
+                                        <StandardButton text="Yes, it's completed" style={{background: "red", width: 300}}
                                                         onClick={() => closeCampaign()}/>
-                                        <StandardButton text="Cancel" style={{width: 300}} isBlue={true}
+                                        <StandardButton text="No, it's not completed" style={{width: 300}} isBlue={true}
                                                         onClick={() => {
                                                             setIsClosePromoModalOpen(false)
                                                         }}/>

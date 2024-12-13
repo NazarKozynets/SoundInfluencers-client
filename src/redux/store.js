@@ -7,6 +7,7 @@ import createPromoReducer from "./slice/create-promo";
 import adminEditInvoiceReducer from "./slice/admin-edit-invoice";
 import adminOffersReducer from "./slice/admin-offers"
 import influencerDetailsReducer from "./slice/influencer-details";
+import influencerApprovedAccountsReducer from "./slice/influencer-approved-accounts";
 
 export const store = configureStore({
   reducer: {
@@ -18,5 +19,6 @@ export const store = configureStore({
     adminEditInvoice: adminEditInvoiceReducer,
     adminOffers: adminOffersReducer,
     influencerDetails: influencerDetailsReducer,
+    influencerApprovedAccounts: influencerApprovedAccountsReducer,
   },
 });

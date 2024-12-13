@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import TitleSection from "../../../TitleSection";
 import past from "../../../../images/icons/past.svg";
 import {useNavigate} from "react-router-dom";
@@ -9,10 +9,15 @@ import influencer from "../../../../images/icons/adminPanel/homePage/influencer 
 import offers from "../../../../images/icons/adminPanel/homePage/best-price 1.svg"
 import invoicesInfluencers from "../../../../images/icons/adminPanel/homePage/money 1.svg"
 import '../../../../styles/components/_admin.scss';
-import axios from "axios";
 
 const AdminHome = () => {
     const navigate = useNavigate();
+    
+    useEffect(() => {
+        if (window.sessionStorage.getItem("isAdmin") !== "true") {
+            navigate("/admin");
+        }
+    }, []);
 
     return (
         <section className="admin">

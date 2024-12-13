@@ -33,6 +33,7 @@ const AccountInfluencerPastPromos = () => {
             const result = await axios(
                 `${process.env.REACT_APP_SERVER}/promos/history-influencer?id=${dataFetch._id}`
             );
+            
             if (result.data.code === 200) {
                 setData(result.data.promos);
             }

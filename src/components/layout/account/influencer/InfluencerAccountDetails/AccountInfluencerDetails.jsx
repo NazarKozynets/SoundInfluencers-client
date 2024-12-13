@@ -415,7 +415,12 @@ const AccountInfluencerDetails = () => {
                                                 <div key={index} className="account-item">
                                                     <img src={getSocialMediaIcon(account.typeOfSocialMedia)}
                                                          alt='Logo'/>
-                                                    <p>{account.instagramUsername || 'No username available'}</p>
+                                                    <div>
+                                                        <p>{account.instagramUsername || 'No username available'}</p>
+                                                        {!account.isVerified && <div className="label-not-verified">
+                                                            <span>Under Approval</span>
+                                                        </div>}
+                                                    </div>
                                                     <img src={edit} alt="edit" id="edit-account-img" onClick={() => {
                                                         navigate(`/account/influencer/details/${account._id}`)
                                                     }}/>

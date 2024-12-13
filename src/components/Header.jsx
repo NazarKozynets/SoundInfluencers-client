@@ -21,6 +21,7 @@ const Header = ({userType = "client", page = "login", path = ""}) => {
 
     const logoutRequest = () => {
         localStorage.setItem("token", "");
+        window.sessionStorage.setItem("isAdmin", null);
         dispatch(setAuthenticated(false));
         navigation("/");
     };

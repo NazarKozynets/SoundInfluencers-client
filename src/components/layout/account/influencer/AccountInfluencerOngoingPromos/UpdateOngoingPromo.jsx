@@ -85,7 +85,7 @@ const UpdateOngoingPromo = () => {
                             ...formData,
                         }
                     );
-                    
+
                     if (result.data.code === 200) {
                         getData();
                         setIsWindowTwo(true);
