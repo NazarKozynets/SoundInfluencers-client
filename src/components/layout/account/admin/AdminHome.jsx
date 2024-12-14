@@ -12,12 +12,22 @@ import '../../../../styles/components/_admin.scss';
 
 const AdminHome = () => {
     const navigate = useNavigate();
-    
+
+    // useEffect(() => {
+    //     const handleStorageChange = () => {
+    //         if (window.sessionStorage.getItem("isAdmin") !== "true") {
+    //             navigate("/admin");
+    //         }
+    //     };
+    //
+    //     window.addEventListener("storage", handleStorageChange);
+    //     return () => window.removeEventListener("storage", handleStorageChange);
+    // }, []);
+
+
     useEffect(() => {
-        if (window.sessionStorage.getItem("isAdmin") !== "true") {
-            navigate("/admin");
-        }
-    }, []);
+        console.log(window.sessionStorage.getItem('isAdmin') === "true")
+    }, [])
 
     return (
         <section className="admin">

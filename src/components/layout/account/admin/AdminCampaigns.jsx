@@ -84,7 +84,7 @@ const AdminCampaigns = () => {
             const result = await axios(
                 `${process.env.REACT_APP_SERVER}/admin/promos/getAll`
             );
-            
+            console.log(result)
             if (result.status === 200) {
                 setData(result.data.data);
             }

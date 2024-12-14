@@ -992,7 +992,7 @@ const AdminCampaignManagement = () => {
                                                     fontWeight: 400,
                                                     textAlign: 'center',
                                                 }}>
-                                                    {influencer?.followersCount || influencer?.followersNumber}
+                                                    {influencer?.followersNumber}
                                                 </p>
                                             </td>
                                             {/*date post*/}

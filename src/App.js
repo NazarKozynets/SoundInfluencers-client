@@ -63,6 +63,7 @@ import AccountAdminCampaignManagement from "./pages/account/admin/admin-campaign
 import InfluencerEditAccount from "./pages/account/influencer/details-edit-account";
 import {SocketProvider} from "./redux/SocketContext";
 import AccountInfluencerApprovedAccounts from "./pages/account/influencer/approved-accounts";
+import AdminRoute from "./components/AdminRoute";
 
 const App = () => {
     return (
@@ -330,44 +331,14 @@ const App = () => {
                         {/*    window.sessionStorage.getItem('isAdmin') === "true" ? <PrivateRoute element={AccountAdminHome}/> :*/}
                         {/*        <PublicRoute element={AdminCheckPassword}/>*/}
                         {/*}/>*/}
-                        <Route path="/admin/home" element={
-                            <PrivateRoute element={AccountAdminHome}/>
-                        }/>
-                        <Route path="/admin/clients" element={
-                            window.sessionStorage.getItem('isAdmin') === "true" ?
-                                <PrivateRoute element={AccountAdminClients}/> :
-                                <PublicRoute element={AdminCheckPassword}/>
-                        }/>
-                        <Route path="/admin/influencers" element={
-                            window.sessionStorage.getItem('isAdmin') === "true" ?
-                                <PrivateRoute element={AccountAdminInfluencers}/> :
-                                <PublicRoute element={AdminCheckPassword}/>
-                        }/>
-                        <Route path="/admin/campaigns" element={
-                            window.sessionStorage.getItem('isAdmin') === "true" ?
-                                <PrivateRoute element={AccountAdminCampaigns}/> :
-                                <PublicRoute element={AdminCheckPassword}/>
-                        }/>
-                        <Route path="/admin/campaigns/campaign-management/:campaignId" element={
-                            window.sessionStorage.getItem('isAdmin') === "true" ?
-                                <PrivateRoute element={AccountAdminCampaignManagement}/> :
-                                <PublicRoute element={AdminCheckPassword}/>
-                        }/>
-                        <Route path="/admin/invoices-clients" element={
-                            window.sessionStorage.getItem('isAdmin') === "true" ?
-                                <PrivateRoute element={AccountAdminInvoicesClients}/> :
-                                <PublicRoute element={AdminCheckPassword}/>
-                        }/>
-                        <Route path="/admin/invoices-influencers" element={
-                            window.sessionStorage.getItem('isAdmin') === "true" ?
-                                <PrivateRoute element={AccountAdminInvoicesInfluencers}/> :
-                                <PublicRoute element={AdminCheckPassword}/>
-                        }/>
-                        <Route path="/admin/offers" element={
-                            window.sessionStorage.getItem('isAdmin') === "true" ?
-                                <PrivateRoute element={AccountAdminOffers}/> :
-                                <PublicRoute element={AdminCheckPassword}/>
-                        }/>
+                        <Route path="/admin/home" element={<AdminRoute element={<AccountAdminHome />} />} />
+                        <Route path="/admin/clients" element={<AdminRoute element={<AccountAdminClients />} />} />
+                        <Route path="/admin/influencers" element={<AdminRoute element={<AccountAdminInfluencers />} />} />
+                        <Route path="/admin/campaigns" element={<AdminRoute element={<AccountAdminCampaigns />} />} />
+                        <Route path="/admin/campaigns/campaign-management/:campaignId" element={<AdminRoute element={<AccountAdminCampaignManagement />} />} />
+                        <Route path="/admin/invoices-clients" element={<AdminRoute element={<AccountAdminInvoicesClients />} />} />
+                        <Route path="/admin/invoices-influencers" element={<AdminRoute element={<AccountAdminInvoicesInfluencers />} />} />
+                        <Route path="/admin/offers" element={<AdminRoute element={<AccountAdminOffers />} />} />
                     </Routes>
                 </ThemeProvider>
             </SocketProvider>
